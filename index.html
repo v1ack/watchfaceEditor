@@ -19,6 +19,12 @@
             display: none
         }
 
+        #watchface {
+            height: 176px;
+            width: 176px;
+            float: left;
+        }
+
         hr {
             border: none;
         }
@@ -45,6 +51,8 @@
                 <button id="clear" type="reset" onclick="clearjs()">Clear</button>
             </form>
             <button id="make" onclick="makeWf()">Load</button>
+            <button id="makepng" onclick="makepng()">Make PNG</button>
+            <a id="downloadpng" download style="display: none">Download</a>
         </div>
         <div id="allimages">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
@@ -53,9 +61,10 @@
     <script>
         var images, coords;
 
-        function clearjs(){
+        function clearjs() {
             coords = 0;
         }
+
         function clearimg() {
             document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
         }
@@ -143,7 +152,7 @@
                 }
             } else if (el.Alignment == 24) {
                 var size = el.Spacing * (val.length - 1) + document.getElementById(el.ImageIndex).width * val.length;
-                offset = div(((el.BottomRightX - el.TopLeftX) - size), 2);
+                offset = div(((el.BottomRightX - el.TopLeftX + 1) - size), 2);
                 console.log(offset);
                 while (val.length) {
                     t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
@@ -284,6 +293,32 @@
                     }
                 }
             }
+        }
+
+    </script>
+    <script type="text/javascript" src="html2canvas.comp.js"></script>
+    <script type="text/javascript">
+        function makepng() {
+            var l = document.getElementById("canvasshot");
+            if (l != null) l.parentElement.removeChild(l);
+            html2canvas(document.body, {
+                onrendered: function(canvas) {
+                    canvas.setAttribute("id", "canvasshot");
+                    document.getElementById("allimages").appendChild(canvas);
+                },
+                width: 176,
+                height: 176
+            });
+            setTimeout(function() {
+                var canvass = document.getElementById("canvasshot");
+                console.log(canvass);
+                ctx = canvass.getContext("2d");
+                savedData = new Image();
+                savedData.src = canvass.toDataURL("image/png");
+                var btn = document.getElementById("downloadpng");
+                btn.setAttribute('href', savedData.src);
+                btn.style.display = "inherit";
+            }, 500);
         }
 
     </script>
