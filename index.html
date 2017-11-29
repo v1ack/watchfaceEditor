@@ -1,0 +1,341 @@
+<html>
+
+<head>
+    <title>Get Image</title>
+    <style>
+        html,
+        body,
+        main {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            position: absolute;
+            top: 180px;
+        }
+
+        #allimages {
+            display: none
+        }
+
+        hr {
+            border: none;
+        }
+
+        #inputblock {
+            margin-left: 180px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id="watchface"></div>
+        <div id="inputblock">
+            <form>
+                Изображения:
+                <input id="inputimages" type="file" multiple>
+                <hr> JSON:
+                <input id="inputjs" type="file">
+                <hr>
+
+                <button id="clear" onclick="clearall()" type="reset">Clear</button>
+            </form><button id="make" onclick="makeWf()">Load</button>
+        </div>
+        <div id="allimages">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
+        </div>
+    </main>
+    <script>
+        var images, coords;
+        /*var imagesReq, coordReq, reqsDone = 0;
+        if (window.XMLHttpRequest) {
+            imagesReq = new XMLHttpRequest();
+            coordReq = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            imagesReq = new ActiveXObject("Microsoft.XMLHTTP");
+            coordReq = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        imagesReq.onreadystatechange = function() {
+            if (imagesReq.readyState == 4) {
+                images = JSON.parse(imagesReq.response);
+                if (reqsDone) makeWf();
+                else reqsDone++;
+            }
+        }
+        coordReq.onreadystatechange = function() {
+            if (coordReq.readyState == 4) {
+                coords = JSON.parse(coordReq.responseText);
+                if (reqsDone) makeWf();
+                else reqsDone++;
+            }
+        }
+        imagesReq.open('GET', "getfiles.php?d=0", true);
+        imagesReq.send('');
+        coordReq.open('GET', "getfiles.php?d=1", true);
+        coordReq.send('');*/
+        //document.getElementById("main").innerHTML +=image;
+        function clearall() {
+
+            document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
+            document.getElementById("watchface").innerHTML = '';
+            coords = 0;
+        }
+        function div(a, b){
+            var c =(a - a % b) / b;
+            return c;
+        }
+        function renderImage(file, id) {
+            // генерация нового объекта FileReader
+            var reader = new FileReader();
+            // подстановка изображения в атрибут src
+            reader.onload = function(event) {
+                the_url = event.target.result;
+                document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + id + "\" >";
+            }
+            // при считке файла, вызывается метод, описанный выше
+            console.log(file);
+            reader.readAsDataURL(file);
+        }
+        document.getElementById('inputimages').onchange = function() {
+            // выводим объект FileList
+            var i = 0;
+            console.log(this.files);
+            while (i < this.files.length) {
+                renderImage(this.files[i], i);
+                i++;
+            }
+        };
+        document.getElementById('inputjs').onchange = function() {
+            console.log(this.files);
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                //var output = document.getElementById("main");
+                coords = JSON.parse(e.target.result);
+                //output.textContent = e.target.result;
+            };
+            reader.readAsText(this.files[0]);
+        };
+
+
+        function setPos(t, el) {
+            t.style.left = el.X + "px";
+            t.style.top = el.Y + "px";
+        }
+
+        function insert(t) {
+            t.removeAttribute('id');
+            document.getElementById("watchface").appendChild(t);
+        }
+
+        function setTextPos(el, value) {
+            //el = coords.Battery.Text
+            var i = 0,
+                offset = 0,
+                t;
+            var val = Array();
+            while (value) {
+                val.push(value % 10);
+                value = (value - value % 10) / 10;
+            }
+            //console.log(val, el.Alignment);
+            if (el.Alignment == 20) {
+                val.reverse();
+                while (val.length) {
+                    t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                    val.pop();
+                }
+            } else if (el.Alignment == 18) {
+                while (val.length) {
+                    t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                    t.style.left = el.TopLeftX + offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                    val.pop();
+                }
+            } else if (el.Alignment == 34) {
+                val.reverse();
+                while (val.length) {
+                    t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                    t.style.top = el.BottomRightY - t.height + 1 + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                    val.pop();
+                }
+            } else if (el.Alignment == 24) {
+                //var center = (el.TopLeftX + el.BottomRightX);
+                //center = (center - center % 2) / 2;
+                var size = el.Spacing * (val.length - 1) + document.getElementById(el.ImageIndex).width * val.length;
+                offset = div(((el.BottomRightX - el.TopLeftX) - size), 2);
+                console.log(offset);
+                while (val.length) {
+                    t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                    t.style.left = el.TopLeftX + offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                    val.pop();
+                }
+            }
+            /*            while (value) {
+                            //console.log(document.getElementById(el.ImageIndex + value % 10), value);
+                            t = document.getElementById(el.ImageIndex + value % 10).cloneNode(false);
+                            t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                            t.style.top = el.BottomRightY - t.height + 1 + "px";
+                            insert(t);
+                            value = (value - value % 10) / 10;
+                            offset += t.width + el.Spacing;
+                            i++;
+                        }*/
+        }
+
+        function makeWf() {
+            document.getElementById("watchface").innerHTML = '';
+            var t = 0;
+            //Add all images to html
+            /*do {
+                document.getElementById("allimages").innerHTML += "<img src=\"" + images[t] + "\" id=\"" + t + "\">";
+                t++;
+            } while (t < images.length);*/
+            //Define all
+            var timeOnClock = [2, 0, 1, 8],
+                weekDay = 2,
+                day = 26,
+                battery = 2,
+                batteryT = 18,
+                calories = 1285,
+                steps = 18963,
+                distance = 105,
+                pulse = 72;
+            //Background
+            var t;
+            t = document.getElementById(coords.Background.Image.ImageIndex).cloneNode(false);
+            setPos(t, coords.Background.Image);
+            insert(t);
+
+            //Time
+            t = document.getElementById(coords.Time.Hours.Tens.ImageIndex + timeOnClock[0]).cloneNode(false);
+            setPos(t, coords.Time.Hours.Tens);
+            insert(t);
+            t = document.getElementById(coords.Time.Hours.Ones.ImageIndex + timeOnClock[1]).cloneNode(false);
+            setPos(t, coords.Time.Hours.Ones);
+            insert(t);
+            t = document.getElementById(coords.Time.Minutes.Tens.ImageIndex + timeOnClock[2]).cloneNode(false);
+            setPos(t, coords.Time.Minutes.Tens);
+            insert(t);
+            t = document.getElementById(coords.Time.Minutes.Ones.ImageIndex + timeOnClock[3]).cloneNode(false);
+            setPos(t, coords.Time.Minutes.Ones);
+            insert(t);
+
+            //DayOfTheWeek
+            if ('Date' in coords) {
+                if ('WeekDay' in coords.Date) {
+                    t = document.getElementById(coords.Date.WeekDay.ImageIndex + weekDay).cloneNode(false);
+                    setPos(t, coords.Date.WeekDay);
+                    insert(t);
+                }
+
+                //Date
+                if ('Separate' in coords.Date.MonthAndDay) {
+                    setTextPos(coords.Date.MonthAndDay.Separate.Day, day);
+                }
+            }
+
+            //Battery
+            if ('Battery' in coords) {
+                if ('Icon' in coords.Battery) {
+                    t = document.getElementById(coords.Battery.Icon.ImageIndex + battery).cloneNode(false);
+                    setPos(t, coords.Battery.Icon);
+                    insert(t);
+                }
+                //Text
+                if ('Text' in coords.Battery) {
+                    setTextPos(coords.Battery.Text, batteryT);
+                }
+            }
+
+            if ('Status' in coords) {
+                //Alarm
+                if ('Alarm' in coords.Status) {
+                    t = document.getElementById(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
+                    t.style.left = coords.Status.Alarm.Coordinates.X + "px";
+                    t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
+                    insert(t);
+                }
+
+                //BT
+                if ('Bluetooth' in coords.Status) {
+                    t = document.getElementById(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+                    t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
+                    t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
+                    insert(t);
+                }
+
+                //DoNotDistrurb
+                if ('DoNotDisturb' in coords.Status) {
+                    t = document.getElementById(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
+                    t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
+                    t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
+                    insert(t);
+                }
+
+                //Lock
+                if ('Lock' in coords.Status) {
+                    t = document.getElementById(coords.Status.Lock.ImageIndexOn).cloneNode(false);
+                    t.style.left = coords.Status.Lock.Coordinates.X + "px";
+                    t.style.top = coords.Status.Lock.Coordinates.Y + "px";
+                    insert(t);
+                }
+            }
+
+            if ('Weather' in coords) {
+                if ('Icon' in coords.Weather) {
+                    t = document.getElementById("weather").cloneNode(false);
+                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                    insert(t);
+                }
+            }
+
+            //Activity
+            if ('Activity' in coords) {
+                if ('Calories' in coords.Activity) {
+                    setTextPos(coords.Activity.Calories, calories);
+                }
+                if ('Steps' in coords.Activity) {
+                    setTextPos(coords.Activity.Steps, steps);
+                }
+                if ('Pulse' in coords.Activity) {
+                    setTextPos(coords.Activity.Pulse, pulse);
+                }
+                if ('Distance' in coords.Activity) {
+                    setTextPos(coords.Activity.Distance.Number, distance);
+                }
+            }
+            //WeatherText
+            if ('Weather' in coords) {
+                if ('Temperature' in coords.Weather) {
+                    if ('OneLine' in coords.Weather.Temperature.Today) {
+                        t = document.getElementById(coords.Weather.Temperature.Today.OneLine.Number.ImageIndex).cloneNode(false);
+                        setTextPos(coords.Weather.Temperature.Today.OneLine.Number, 12);
+                        insert(t);
+                    }
+                }
+            }
+
+
+            //coords.Weather.Temperature.Today.OneLine.Number
+        }
+
+    </script>
+</body>
+
+</html>
