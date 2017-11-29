@@ -50,33 +50,6 @@
     </main>
     <script>
         var images, coords;
-        /*var imagesReq, coordReq, reqsDone = 0;
-        if (window.XMLHttpRequest) {
-            imagesReq = new XMLHttpRequest();
-            coordReq = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            imagesReq = new ActiveXObject("Microsoft.XMLHTTP");
-            coordReq = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        imagesReq.onreadystatechange = function() {
-            if (imagesReq.readyState == 4) {
-                images = JSON.parse(imagesReq.response);
-                if (reqsDone) makeWf();
-                else reqsDone++;
-            }
-        }
-        coordReq.onreadystatechange = function() {
-            if (coordReq.readyState == 4) {
-                coords = JSON.parse(coordReq.responseText);
-                if (reqsDone) makeWf();
-                else reqsDone++;
-            }
-        }
-        imagesReq.open('GET', "getfiles.php?d=0", true);
-        imagesReq.send('');
-        coordReq.open('GET', "getfiles.php?d=1", true);
-        coordReq.send('');*/
-        //document.getElementById("main").innerHTML +=image;
         function clearall() {
 
             document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
@@ -88,19 +61,15 @@
             return c;
         }
         function renderImage(file, id) {
-            // генерация нового объекта FileReader
             var reader = new FileReader();
-            // подстановка изображения в атрибут src
             reader.onload = function(event) {
                 the_url = event.target.result;
                 document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + id + "\" >";
             }
-            // при считке файла, вызывается метод, описанный выше
             console.log(file);
             reader.readAsDataURL(file);
         }
         document.getElementById('inputimages').onchange = function() {
-            // выводим объект FileList
             var i = 0;
             console.log(this.files);
             while (i < this.files.length) {
@@ -112,9 +81,7 @@
             console.log(this.files);
             var reader = new FileReader();
             reader.onload = function(e) {
-                //var output = document.getElementById("main");
                 coords = JSON.parse(e.target.result);
-                //output.textContent = e.target.result;
             };
             reader.readAsText(this.files[0]);
         };
@@ -131,7 +98,6 @@
         }
 
         function setTextPos(el, value) {
-            //el = coords.Battery.Text
             var i = 0,
                 offset = 0,
                 t;
@@ -140,7 +106,6 @@
                 val.push(value % 10);
                 value = (value - value % 10) / 10;
             }
-            //console.log(val, el.Alignment);
             if (el.Alignment == 20) {
                 val.reverse();
                 while (val.length) {
@@ -171,8 +136,6 @@
                     val.pop();
                 }
             } else if (el.Alignment == 24) {
-                //var center = (el.TopLeftX + el.BottomRightX);
-                //center = (center - center % 2) / 2;
                 var size = el.Spacing * (val.length - 1) + document.getElementById(el.ImageIndex).width * val.length;
                 offset = div(((el.BottomRightX - el.TopLeftX) - size), 2);
                 console.log(offset);
@@ -185,27 +148,11 @@
                     val.pop();
                 }
             }
-            /*            while (value) {
-                            //console.log(document.getElementById(el.ImageIndex + value % 10), value);
-                            t = document.getElementById(el.ImageIndex + value % 10).cloneNode(false);
-                            t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                            t.style.top = el.BottomRightY - t.height + 1 + "px";
-                            insert(t);
-                            value = (value - value % 10) / 10;
-                            offset += t.width + el.Spacing;
-                            i++;
-                        }*/
         }
 
         function makeWf() {
             document.getElementById("watchface").innerHTML = '';
             var t = 0;
-            //Add all images to html
-            /*do {
-                document.getElementById("allimages").innerHTML += "<img src=\"" + images[t] + "\" id=\"" + t + "\">";
-                t++;
-            } while (t < images.length);*/
-            //Define all
             var timeOnClock = [2, 0, 1, 8],
                 weekDay = 2,
                 day = 26,
@@ -215,6 +162,7 @@
                 steps = 18963,
                 distance = 105,
                 pulse = 72;
+            
             //Background
             var t;
             t = document.getElementById(coords.Background.Image.ImageIndex).cloneNode(false);
@@ -330,9 +278,6 @@
                     }
                 }
             }
-
-
-            //coords.Weather.Temperature.Today.OneLine.Number
         }
 
     </script>
