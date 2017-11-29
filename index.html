@@ -36,13 +36,15 @@
         <div id="inputblock">
             <form>
                 Изображения:
-                <input id="inputimages" type="file" multiple>
-                <hr> JSON:
-                <input id="inputjs" type="file">
-                <hr>
-
-                <button id="clear" onclick="clearall()" type="reset">Clear</button>
-            </form><button id="make" onclick="makeWf()">Load</button>
+                <input id="inputimages" type="file" multiple accept=".png">
+                <button id="clear" type="reset" onclick="clearimg()">Clear</button>
+            </form>
+            <form>
+                JSON:
+                <input id="inputjs" type="file" accept=".json">
+                <button id="clear" type="reset" onclick="clearjs()">Clear</button>
+            </form>
+            <button id="make" onclick="makeWf()">Load</button>
         </div>
         <div id="allimages">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
@@ -50,16 +52,19 @@
     </main>
     <script>
         var images, coords;
-        function clearall() {
 
-            document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
-            document.getElementById("watchface").innerHTML = '';
+        function clearjs(){
             coords = 0;
         }
-        function div(a, b){
-            var c =(a - a % b) / b;
+        function clearimg() {
+            document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
+        }
+
+        function div(a, b) {
+            var c = (a - a % b) / b;
             return c;
         }
+
         function renderImage(file, id) {
             var reader = new FileReader();
             reader.onload = function(event) {
@@ -68,6 +73,7 @@
             }
             console.log(file);
             reader.readAsDataURL(file);
+            delete reader;
         }
         document.getElementById('inputimages').onchange = function() {
             var i = 0;
@@ -162,7 +168,7 @@
                 steps = 18963,
                 distance = 105,
                 pulse = 72;
-            
+
             //Background
             var t;
             t = document.getElementById(coords.Background.Image.ImageIndex).cloneNode(false);
