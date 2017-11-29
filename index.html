@@ -99,6 +99,7 @@
                 coords = JSON.parse(e.target.result);
             };
             reader.readAsText(this.files[0]);
+            delete reader;
         };
 
 
@@ -318,6 +319,7 @@
                 var btn = document.getElementById("downloadpng");
                 btn.setAttribute('href', savedData.src);
                 btn.style.display = "inherit";
+                delete savedData;
             }, 500);
         }
 
