@@ -52,7 +52,6 @@
             </form>
             <button id="make" onclick="makeWf()">Load</button>
             <button id="makepng" onclick="makepng()">Make PNG</button>
-            <a id="downloadpng" download style="display: none">Download</a>
         </div>
         <div id="allimages">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
@@ -316,13 +315,14 @@
                 ctx = canvass.getContext("2d");
                 savedData = new Image();
                 savedData.src = canvass.toDataURL("image/png");
-                var btn = document.getElementById("downloadpng");
-                btn.setAttribute('href', savedData.src);
-                btn.style.display = "inherit";
+                var a  = document.createElement('a');
+                a.href = savedData.src;
+                a.download = 'watchface.png';
+                a.click();
+                delete a;
                 delete savedData;
             }, 500);
         }
-
     </script>
 </body>
 
