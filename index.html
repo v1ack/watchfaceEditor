@@ -60,6 +60,59 @@
     <script>
         var images, coords;
 
+
+        function makeBlock(el, value) {
+            var block = Array(),
+                width = 0,
+                t,
+                val = Array();
+            while (value) {
+                val.push(value % 10);
+                value = (value - value % 10) / 10;
+            }
+            while (val.length) {
+                t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                //t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                //t.style.top = el.TopLeftY + "px";
+                //insert(t);
+                block.push(t);
+                width += t.width + el.Spacing;
+                val.pop();
+            }
+            width = width - el.Spacing;
+            return {
+                block,
+                width
+            }
+        }
+
+        function renderBlock(block, width, el) {
+            var t, offset = 0;
+            //block.reverse();
+            if (el.Alignment == 18) {
+                block.reverse();
+                while (block.length) {
+                    t = block.pop();
+                    t.style.left = el.TopLeftX + offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                }
+            } else if (el.Alignment == 20) {
+                while (block.length) {
+                    t = block.pop();
+                    t.style.left = el.BottomRightX - t.width - offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                }
+            }
+        }
+
+
+
+
+
         function clearjs() {
             coords = 0;
         }
@@ -113,8 +166,7 @@
         }
 
         function setTextPos(el, value) {
-            var i = 0,
-                offset = 0,
+            var offset = 0,
                 t;
             var val = Array();
             while (value) {
@@ -165,6 +217,7 @@
             }
         }
 
+
         function makeWf() {
             document.getElementById("watchface").innerHTML = '';
             var t = 0;
@@ -176,7 +229,8 @@
                 calories = 1285,
                 steps = 18963,
                 distance = 105,
-                pulse = 72;
+                pulse = 72,
+                temp = [12, 24];
 
             //Background
             var t;
@@ -287,9 +341,17 @@
             if ('Weather' in coords) {
                 if ('Temperature' in coords.Weather) {
                     if ('OneLine' in coords.Weather.Temperature.Today) {
-                        t = document.getElementById(coords.Weather.Temperature.Today.OneLine.Number.ImageIndex).cloneNode(false);
-                        setTextPos(coords.Weather.Temperature.Today.OneLine.Number, 12);
-                        insert(t);
+                        var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
+                            deg = document.getElementById(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false);
+                        t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[0]);
+                        t.block.push(sep);
+                        t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+                        var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[1]);
+                        t.block = t.block.concat(t2.block);
+                        t.width += t2.width;
+                        t.block.push(deg);
+                        t.width += deg.width;
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
                     }
                 }
             }
@@ -315,7 +377,7 @@
                 ctx = canvass.getContext("2d");
                 savedData = new Image();
                 savedData.src = canvass.toDataURL("image/png");
-                var a  = document.createElement('a');
+                var a = document.createElement('a');
                 a.href = savedData.src;
                 a.download = 'watchface.png';
                 a.click();
@@ -323,6 +385,7 @@
                 delete savedData;
             }, 500);
         }
+
     </script>
 </body>
 
