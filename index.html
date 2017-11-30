@@ -265,6 +265,7 @@
             insert(t);
 
             //Time
+            if('Time' in coords){
             t = document.getElementById(coords.Time.Hours.Tens.ImageIndex + timeOnClock[0]).cloneNode(false);
             setPos(t, coords.Time.Hours.Tens);
             insert(t);
@@ -277,7 +278,7 @@
             t = document.getElementById(coords.Time.Minutes.Ones.ImageIndex + timeOnClock[3]).cloneNode(false);
             setPos(t, coords.Time.Minutes.Ones);
             insert(t);
-
+            }
             //DayOfTheWeek
             if ('Date' in coords) {
                 if ('WeekDay' in coords.Date) {
