@@ -25,6 +25,12 @@
             float: left;
         }
 
+        #watchface-cover {
+            position: absolute;
+            width: 176px;
+            height: 176px;
+        }
+
         hr {
             border: none;
         }
@@ -39,6 +45,7 @@
 <body>
     <main>
         <div id="watchface"></div>
+        <div id="watchface-cover"></div>
         <div id="inputblock">
             <form>
                 Изображения:
@@ -102,6 +109,25 @@
                 while (block.length) {
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width - offset + "px";
+                    t.style.top = el.TopLeftY + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                }
+            } else if (el.Alignment == 34) {
+                while (block.length) {
+                    t = block.pop();
+                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                    t.style.top = el.BottomRightY - t.height + 1 + "px";
+                    insert(t);
+                    offset += t.width + el.Spacing;
+                }
+            } else if (el.Alignment == 24) {
+                block.reverse();
+                offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                console.log(offset);
+                while (block.length) {
+                    t = block.pop();
+                    t.style.left = el.TopLeftX + offset + "px";
                     t.style.top = el.TopLeftY + "px";
                     insert(t);
                     offset += t.width + el.Spacing;
