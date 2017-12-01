@@ -79,9 +79,6 @@
             }
             while (val.length) {
                 t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
-                //t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                //t.style.top = el.TopLeftY + "px";
-                //insert(t);
                 block.push(t);
                 width += t.width + el.Spacing;
                 val.pop();
@@ -108,7 +105,7 @@
             } else if (el.Alignment == 20) {
                 while (block.length) {
                     t = block.pop();
-                    t.style.left = el.BottomRightX - t.width - offset + "px";
+                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
                     t.style.top = el.TopLeftY + "px";
                     insert(t);
                     offset += t.width + el.Spacing;
@@ -201,6 +198,8 @@
             document.getElementById("watchface").innerHTML = '';
             var t = 0;
             var timeOnClock = [2, 0, 1, 8],
+                seconds = [4, 3],
+                am = 1,
                 weekDay = 2,
                 day = 10,
                 month = 12,
@@ -232,6 +231,19 @@
                 t = document.getElementById(coords.Time.Minutes.Ones.ImageIndex + timeOnClock[3]).cloneNode(false);
                 setPos(t, coords.Time.Minutes.Ones);
                 insert(t);
+                if ('Seconds' in coords.Time) {
+                    t = document.getElementById(coords.Time.Seconds.Tens.ImageIndex + seconds[0]).cloneNode(false);
+                    setPos(t, coords.Time.Seconds.Tens);
+                    insert(t);
+                    t = document.getElementById(coords.Time.Seconds.Ones.ImageIndex + seconds[1]).cloneNode(false);
+                    setPos(t, coords.Time.Seconds.Ones);
+                    insert(t);
+                }
+                if ('AmPm' in coords.Time) {
+                    t = am ? document.getElementById(coords.Time.AmPm.ImageIndexAm).cloneNode(false) : document.getElementById(coords.Time.AmPm.ImageIndexPm).cloneNode(false);
+                    setPos(t, coords.Time.AmPm);
+                    insert(t);
+                }
             }
 
             //Date
@@ -248,15 +260,15 @@
                     if ('Separate' in coords.Date.MonthAndDay) {
                         setTextPos(coords.Date.MonthAndDay.Separate.Day, day);
                     }
-                    if('OneLine' in coords.Date.MonthAndDay){
+                    if ('OneLine' in coords.Date.MonthAndDay) {
                         var dot = document.getElementById(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
-                    t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
-                    t.block.push(dot);
-                    t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                    var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
-                    t.block = t.block.concat(t2.block);
-                    t.width += t2.width;
-                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number);
+                        t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
+                        t.block.push(dot);
+                        t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                        var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
+                        t.block = t.block.concat(t2.block);
+                        t.width += t2.width;
+                        renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number);
                     }
                 }
             }
@@ -308,15 +320,6 @@
                 }
             }
 
-            if ('Weather' in coords) {
-                if ('Icon' in coords.Weather) {
-                    t = document.getElementById("weather").cloneNode(false);
-                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-                    insert(t);
-                }
-            }
-
             //Activity
             if ('Activity' in coords) {
                 if ('Calories' in coords.Activity) {
@@ -345,6 +348,12 @@
             }
             //WeatherText
             if ('Weather' in coords) {
+                if ('Icon' in coords.Weather) {
+                    t = document.getElementById("weather").cloneNode(false);
+                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                    insert(t);
+                }
                 if ('Temperature' in coords.Weather) {
                     if ('OneLine' in coords.Weather.Temperature.Today) {
                         var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
@@ -359,6 +368,15 @@
                         t.width += deg.width;
                         renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
                     }
+                    if ('Separate' in coords.Weather.Temperature.Today) {
+                        setTextPos(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
+                        setTextPos(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                    }
+                }
+                if ('AirPollution' in coords.Weather) {
+                    t = document.getElementById(coords.Weather.AirPollution.Icon.ImageIndex).cloneNode(false);
+                    setPos(t, coords.Weather.AirPollution.Icon);
+                    insert(t);
                 }
             }
         }
