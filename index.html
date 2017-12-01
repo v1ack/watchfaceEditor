@@ -398,9 +398,11 @@
                     }}
                     if('Current' in coords.Weather.Temperature){
                         t = makeBlock(coords.Weather.Temperature.Current.Number, temp[0]);
+                        if('DegreesImageIndex' in coords.Weather.Temperature.Current){
                             var deg = document.getElementById(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
                             t.block.push(deg);
                             t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                        }
                         renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number);
                     }
                 }
