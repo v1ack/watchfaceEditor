@@ -207,6 +207,7 @@
                 batteryT = 18,
                 calories = 1285,
                 steps = 18963,
+                stepsgoal = 12000,
                 distance = [5, 67],
                 pulse = 72,
                 temp = [12, 24];
@@ -258,7 +259,12 @@
                 //Date
                 if ('MonthAndDay' in coords.Date) {
                     if ('Separate' in coords.Date.MonthAndDay) {
-                        setTextPos(coords.Date.MonthAndDay.Separate.Day, day);
+                        if ('Day' in coords.Date.MonthAndDay.Separate) {
+                            setTextPos(coords.Date.MonthAndDay.Separate.Day, day);
+                        }
+                        if ('Month' in coords.Date.MonthAndDay.Separate) {
+                            setTextPos(coords.Date.MonthAndDay.Separate.Month, month);
+                        }
                     }
                     if ('OneLine' in coords.Date.MonthAndDay) {
                         var dot = document.getElementById(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
@@ -328,6 +334,9 @@
                 if ('Steps' in coords.Activity) {
                     setTextPos(coords.Activity.Steps, steps);
                 }
+                if ('StepsGoal' in coords.Activity) {
+                    setTextPos(coords.Activity.StepsGoal, stepsgoal);
+                }
                 if ('Pulse' in coords.Activity) {
                     setTextPos(coords.Activity.Pulse, pulse);
                 }
@@ -355,6 +364,7 @@
                     insert(t);
                 }
                 if ('Temperature' in coords.Weather) {
+                    if('Today' in coords.Weather.Temperature){
                     if ('OneLine' in coords.Weather.Temperature.Today) {
                         var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
                             deg = document.getElementById(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false);
@@ -369,8 +379,29 @@
                         renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
                     }
                     if ('Separate' in coords.Weather.Temperature.Today) {
-                        setTextPos(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
-                        setTextPos(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                            var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
+                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                            var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number);
+                        //setTextPos(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
+                        //setTextPos(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                    }}
+                    if('Current' in coords.Weather.Temperature){
+                        t = makeBlock(coords.Weather.Temperature.Current.Number, temp[0]);
+                            var deg = document.getElementById(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number);
                     }
                 }
                 if ('AirPollution' in coords.Weather) {
