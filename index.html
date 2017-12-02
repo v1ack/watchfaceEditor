@@ -47,16 +47,12 @@
         <div id="watchface"></div>
         <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
         <div id="inputblock">
-            <form>
-                Images:
-                <input id="inputimages" type="file" multiple accept=".png">
-                <button id="clear" type="reset" onclick="clearimg()">Clear</button>
-            </form>
-            <form>
-                JSON:
-                <input id="inputjs" type="file" accept=".json">
-                <button id="clear" type="reset" onclick="clearjs()">Clear</button>
-            </form>
+            Images:
+            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()"> 
+            <hr>
+            JSON:
+            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
+            <hr>
             <button id="make" onclick="makeWf()">Load</button>
             <button id="makepng" onclick="makepng()">Make PNG</button>
         </div>
@@ -177,9 +173,9 @@
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
         }
-        
+
         function setPosN(el, value) {
-            if(value == null) value = 0;
+            if (value == null) value = 0;
             t = document.getElementById(el.ImageIndex + value).cloneNode(false);
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
@@ -206,7 +202,7 @@
             }
             d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
             document.getElementById('svg-cont').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
-            if('CenterImage' in el){
+            if ('CenterImage' in el) {
                 setPosN(el.CenterImage);
             }
         }
