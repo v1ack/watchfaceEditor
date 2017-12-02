@@ -153,7 +153,7 @@
             reader.readAsDataURL(file);
             delete reader;
         }
-        
+
         document.getElementById('inputimages').onchange = function() {
             var i = 0;
             console.log(this.files);
@@ -162,7 +162,7 @@
                 i++;
             }
         }
-        
+
         document.getElementById('inputjs').onchange = function() {
             console.log(this.files);
             var reader = new FileReader();
@@ -177,6 +177,14 @@
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
         }
+        
+        function setPosN(el, value) {
+            if(value == null) value = 0;
+            t = document.getElementById(el.ImageIndex + value).cloneNode(false);
+            t.style.left = el.X + "px";
+            t.style.top = el.Y + "px";
+            insert(t);
+        }
 
         function insert(t) {
             t.removeAttribute('id');
@@ -188,6 +196,21 @@
             renderBlock(t.block, t.width, el);
         }
 
+        function drowAnalog(el, value) {
+            var col = el.Color.replace("0x", "#"),
+                d = "M 0 0 ",
+                iters = el.Shape.length,
+                fill = el.OnlyBorder ? "none" : col;
+            for (var i = 0; i < iters; i++) {
+                d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
+            }
+            d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
+            document.getElementById('svg-cont').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
+            if('CenterImage' in el){
+                setPosN(el.CenterImage);
+            }
+        }
+
         function makeWf() {
             document.getElementById("watchface").innerHTML = '';
             document.getElementById("svg-cont").innerHTML = '';
@@ -195,6 +218,7 @@
             var timeOnClock = [2, 0, 1, 8],
                 seconds = [4, 3],
                 am = 1,
+                analog = [45, 100, 260],
                 weekDay = 2,
                 day = 10,
                 month = 12,
@@ -208,32 +232,17 @@
                 temp = [12, 24];
 
             //Background
-            var t;
-            t = document.getElementById(coords.Background.Image.ImageIndex).cloneNode(false);
-            setPos(t, coords.Background.Image);
-            insert(t);
+            setPosN(coords.Background.Image);
 
             //Time
             if ('Time' in coords) {
-                t = document.getElementById(coords.Time.Hours.Tens.ImageIndex + timeOnClock[0]).cloneNode(false);
-                setPos(t, coords.Time.Hours.Tens);
-                insert(t);
-                t = document.getElementById(coords.Time.Hours.Ones.ImageIndex + timeOnClock[1]).cloneNode(false);
-                setPos(t, coords.Time.Hours.Ones);
-                insert(t);
-                t = document.getElementById(coords.Time.Minutes.Tens.ImageIndex + timeOnClock[2]).cloneNode(false);
-                setPos(t, coords.Time.Minutes.Tens);
-                insert(t);
-                t = document.getElementById(coords.Time.Minutes.Ones.ImageIndex + timeOnClock[3]).cloneNode(false);
-                setPos(t, coords.Time.Minutes.Ones);
-                insert(t);
+                setPosN(coords.Time.Hours.Tens, timeOnClock[0]);
+                setPosN(coords.Time.Hours.Ones, timeOnClock[1]);
+                setPosN(coords.Time.Minutes.Tens, timeOnClock[2]);
+                setPosN(coords.Time.Minutes.Ones, timeOnClock[3]);
                 if ('Seconds' in coords.Time) {
-                    t = document.getElementById(coords.Time.Seconds.Tens.ImageIndex + seconds[0]).cloneNode(false);
-                    setPos(t, coords.Time.Seconds.Tens);
-                    insert(t);
-                    t = document.getElementById(coords.Time.Seconds.Ones.ImageIndex + seconds[1]).cloneNode(false);
-                    setPos(t, coords.Time.Seconds.Ones);
-                    insert(t);
+                    setPosN(coords.Time.Seconds.Tens, seconds[0]);
+                    setPosN(coords.Time.Seconds.Ones, seconds[1]);
                 }
                 if ('AmPm' in coords.Time) {
                     t = am ? document.getElementById(coords.Time.AmPm.ImageIndexAm).cloneNode(false) : document.getElementById(coords.Time.AmPm.ImageIndexPm).cloneNode(false);
@@ -246,9 +255,7 @@
             if ('Date' in coords) {
                 //DayOfTheWeek
                 if ('WeekDay' in coords.Date) {
-                    t = document.getElementById(coords.Date.WeekDay.ImageIndex + weekDay).cloneNode(false);
-                    setPos(t, coords.Date.WeekDay);
-                    insert(t);
+                    setPosN(coords.Date.WeekDay, weekDay);
                 }
 
                 //Date
@@ -277,13 +284,19 @@
             //Battery
             if ('Battery' in coords) {
                 if ('Icon' in coords.Battery) {
-                    t = document.getElementById(coords.Battery.Icon.ImageIndex + battery).cloneNode(false);
-                    setPos(t, coords.Battery.Icon);
-                    insert(t);
+                    setPosN(coords.Battery.Icon, battery);
                 }
                 //Text
                 if ('Text' in coords.Battery) {
                     setTextPos(coords.Battery.Text, batteryT);
+                }
+                if ('Scale' in coords.Battery) {
+                    var end = div(coords.Battery.Scale.Segments.length, 2);
+                    for (var i = 0; i <= end; i++) {
+                        t = document.getElementById(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
+                        setPos(t, coords.Battery.Scale.Segments[i]);
+                        insert(t);
+                    }
                 }
             }
 
@@ -405,12 +418,33 @@
                     insert(t);
                 }
             }
-            
+
             //StepsProgress
-            if('StepsProgress' in coords){
-                if('Circle' in coords.StepsProgress){
-                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#")
-                    document.getElementById('svg-cont').innerHTML +=  "<g transform=\"rotate(" +( -90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\"><ellipse cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse></g>";
+            if ('StepsProgress' in coords) {
+                if ('Circle' in coords.StepsProgress) {
+                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
+                    document.getElementById('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
+                }
+                if ('Linear' in coords.StepsProgress) {
+                    var end = div(coords.StepsProgress.Linear.Segments.length, 2);
+                    for (var i = 0; i <= end; i++) {
+                        t = document.getElementById(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
+                        setPos(t, coords.StepsProgress.Linear.Segments[i]);
+                        insert(t);
+                    }
+                }
+            }
+
+            //Analog clock
+            if ('AnalogDialFace' in coords) {
+                if ('Hours' in coords.AnalogDialFace) {
+                    drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
+                }
+                if ('Minutes' in coords.AnalogDialFace) {
+                    drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
+                }
+                if ('Seconds' in coords.AnalogDialFace) {
+                    drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
                 }
             }
         }
