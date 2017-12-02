@@ -45,10 +45,10 @@
 <body>
     <main>
         <div id="watchface"></div>
-        <div id="watchface-cover"></div>
+        <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
         <div id="inputblock">
             <form>
-                Изображения:
+                Images:
                 <input id="inputimages" type="file" multiple accept=".png">
                 <button id="clear" type="reset" onclick="clearimg()">Clear</button>
             </form>
@@ -65,8 +65,7 @@
         </div>
     </main>
     <script>
-        var images, coords;
-
+        var coords;
 
         function makeBlock(el, value) {
             var block = Array(),
@@ -92,7 +91,6 @@
 
         function renderBlock(block, width, el) {
             var t, offset = 0;
-            //block.reverse();
             if (el.Alignment == 18) {
                 block.reverse();
                 while (block.length) {
@@ -132,10 +130,6 @@
             }
         }
 
-
-
-
-
         function clearjs() {
             coords = 0;
         }
@@ -159,6 +153,7 @@
             reader.readAsDataURL(file);
             delete reader;
         }
+        
         document.getElementById('inputimages').onchange = function() {
             var i = 0;
             console.log(this.files);
@@ -166,7 +161,8 @@
                 renderImage(this.files[i], i);
                 i++;
             }
-        };
+        }
+        
         document.getElementById('inputjs').onchange = function() {
             console.log(this.files);
             var reader = new FileReader();
@@ -175,8 +171,7 @@
             };
             reader.readAsText(this.files[0]);
             delete reader;
-        };
-
+        }
 
         function setPos(t, el) {
             t.style.left = el.X + "px";
@@ -193,9 +188,9 @@
             renderBlock(t.block, t.width, el);
         }
 
-
         function makeWf() {
             document.getElementById("watchface").innerHTML = '';
+            document.getElementById("svg-cont").innerHTML = '';
             var t = 0;
             var timeOnClock = [2, 0, 1, 8],
                 seconds = [4, 3],
@@ -341,7 +336,6 @@
                     setTextPos(coords.Activity.Pulse, pulse);
                 }
                 if ('Distance' in coords.Activity) {
-                    //setTextPos(coords.Activity.Distance.Number, distance);
                     var dot = document.getElementById(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
                         km = document.getElementById(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
                     t = makeBlock(coords.Activity.Distance.Number, distance[0]);
@@ -364,41 +358,40 @@
                     insert(t);
                 }
                 if ('Temperature' in coords.Weather) {
-                    if('Today' in coords.Weather.Temperature){
-                    if ('OneLine' in coords.Weather.Temperature.Today) {
-                        var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
-                            deg = document.getElementById(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false);
-                        t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[0]);
-                        t.block.push(sep);
-                        t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-                        var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[1]);
-                        t.block = t.block.concat(t2.block);
-                        t.width += t2.width;
-                        t.block.push(deg);
-                        t.width += deg.width;
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
+                    if ('Today' in coords.Weather.Temperature) {
+                        if ('OneLine' in coords.Weather.Temperature.Today) {
+                            var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
+                                deg = document.getElementById(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false);
+                            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[0]);
+                            t.block.push(sep);
+                            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+                            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[1]);
+                            t.block = t.block.concat(t2.block);
+                            t.width += t2.width;
+                            t.block.push(deg);
+                            t.width += deg.width;
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
+                        }
+                        if ('Separate' in coords.Weather.Temperature.Today) {
+                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                                var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                            }
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
+                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                                var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                            }
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number);
+                        }
                     }
-                    if ('Separate' in coords.Weather.Temperature.Today) {
-                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                            var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
-                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                            var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number);
-                        //setTextPos(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
-                        //setTextPos(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
-                    }}
-                    if('Current' in coords.Weather.Temperature){
+                    if ('Current' in coords.Weather.Temperature) {
                         t = makeBlock(coords.Weather.Temperature.Current.Number, temp[0]);
-                        if('DegreesImageIndex' in coords.Weather.Temperature.Current){
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
                             var deg = document.getElementById(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
                             t.block.push(deg);
                             t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
@@ -410,6 +403,14 @@
                     t = document.getElementById(coords.Weather.AirPollution.Icon.ImageIndex).cloneNode(false);
                     setPos(t, coords.Weather.AirPollution.Icon);
                     insert(t);
+                }
+            }
+            
+            //StepsProgress
+            if('StepsProgress' in coords){
+                if('Circle' in coords.StepsProgress){
+                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#")
+                    document.getElementById('svg-cont').innerHTML +=  "<g transform=\"rotate(" +( -90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\"><ellipse cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse></g>";
                 }
             }
         }
