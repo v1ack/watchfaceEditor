@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -10,6 +11,10 @@
             padding: 0;
         }
 
+        body {
+            overflow: hidden;
+        }
+
         img {
             position: absolute;
             top: 180px;
@@ -20,6 +25,8 @@
         }
 
         #watchface {
+            position: absolute;
+            top: 0;
             height: 176px;
             width: 176px;
             float: left;
@@ -29,6 +36,7 @@
             position: absolute;
             width: 176px;
             height: 176px;
+            top: 0;
         }
 
         hr {
@@ -36,31 +44,51 @@
         }
 
         #inputblock {
-            margin-left: 180px;
+            margin-left: 200px;
         }
 
     </style>
+    <link href="uikit/uikit.min.css" rel="stylesheet">
+    <script src="uikit/uikit.min.js"></script>
 </head>
 
 <body>
     <main>
         <div id="watchface"></div>
         <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
-        <div id="inputblock">
-            Images:
-            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()"> 
-            <hr>
-            JSON:
-            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
-            <hr>
-            <button id="make" onclick="makeWf()">Load</button>
-            <button id="makepng" onclick="makepng()">Make PNG</button>
+        <div id="inputblock" class="uk-margin">
+            <!--            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">-->
+            <div class="js-upload" uk-form-custom>
+                <span>Images: </span>
+                <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
+                <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+            </div>
+            <br>
+            <!--            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">-->
+            <div class="js-upload uk-margin" uk-form-custom>
+                <span>JSON: </span>
+                <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
+                <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+            </div>
+            <br>
+            <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
+            <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
         </div>
         <div id="allimages">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
     </main>
     <script>
+        var jsset = 0,
+            imagesset = 0;
+
+        function disableBtn(i) {
+            if (i)
+                document.getElementById("make").removeAttribute("disabled");
+            else
+                document.getElementById("make").setAttribute("disabled", "");
+        }
+
         var coords;
 
         function makeBlock(el, value) {
@@ -141,34 +169,78 @@
             return c;
         }
 
-        function renderImage(file, id) {
+        function renderImage(file) {
             var reader = new FileReader();
             reader.onload = function(event) {
                 the_url = event.target.result;
                 document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
             }
-            console.log(file);
+            //console.log(file);
             reader.readAsDataURL(file);
             delete reader;
         }
 
         document.getElementById('inputimages').onchange = function() {
-            var i = 0;
-            console.log(this.files);
-            while (i < this.files.length) {
-                renderImage(this.files[i], i);
-                i++;
+            if (this.files.length) {
+                var i = 0;
+                console.log(this.files);
+                while (i < this.files.length) {
+                    renderImage(this.files[i]);
+                    i++;
+                }
+                UIkit.notification("Images loaded", {
+                    status: 'success',
+                    timeout: 2000
+                });
+                imagesset = 1;
+                if (document.getElementById('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
+                    document.getElementById('inputimages').nextElementSibling.classList.remove("uk-button-danger");
+                document.getElementById('inputimages').nextElementSibling.classList.add("uk-label-success");
+            } else {
+                UIkit.notification("Images not selected", {
+                    status: 'warning',
+                    timeout: 2000
+                });
+                imagesset = 0;
+                if (document.getElementById('inputimages').nextElementSibling.classList.contains("uk-label-success")) document.getElementById('inputimages').nextElementSibling.classList.remove("uk-label-success");
+                document.getElementById('inputimages').nextElementSibling.classList.add("uk-button-danger");
             }
+            if (imagesset && jsset)
+                disableBtn(1);
+            else
+                disableBtn(0);
         }
 
         document.getElementById('inputjs').onchange = function() {
-            console.log(this.files);
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                coords = JSON.parse(e.target.result);
-            };
-            reader.readAsText(this.files[0]);
-            delete reader;
+            if (this.files.length) {
+                console.log(this.files);
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    coords = JSON.parse(e.target.result);
+                };
+                reader.readAsText(this.files[0]);
+                delete reader;
+                UIkit.notification("JSON loaded", {
+                    status: 'success',
+                    timeout: 2000
+                });
+                jsset = 1;
+                if (document.getElementById('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
+                    document.getElementById('inputjs').nextElementSibling.classList.remove("uk-button-danger");
+                document.getElementById('inputjs').nextElementSibling.classList.add("uk-label-success");
+            } else {
+                UIkit.notification("JSON not selected", {
+                    status: 'warning',
+                    timeout: 2000
+                });
+                jsset = 0;
+                if (document.getElementById('inputjs').nextElementSibling.classList.contains("uk-label-success")) document.getElementById('inputjs').nextElementSibling.classList.remove("uk-label-success");
+                document.getElementById('inputjs').nextElementSibling.classList.add("uk-button-danger");
+            }
+            if (imagesset && jsset)
+                disableBtn(1);
+            else
+                disableBtn(0);
         }
 
         function setPos(t, el) {
@@ -212,6 +284,7 @@
         function makeWf() {
             document.getElementById("watchface").innerHTML = '';
             document.getElementById("svg-cont").innerHTML = '';
+            UIkit.notification.closeAll()
             var t = 0;
             var timeOnClock = [2, 0, 3, 8],
                 seconds = [4, 3],
@@ -230,7 +303,7 @@
                 temp = [22, 24];
 
             //Background
-            if('Background' in coords)
+            if ('Background' in coords)
                 setPosN(coords.Background.Image);
 
             //Time
@@ -435,7 +508,7 @@
             if ('AnalogDialFace' in coords) {
                 if ('Hours' in coords.AnalogDialFace)
                     drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
-                if ('Minutes' in coords.AnalogDialFace) 
+                if ('Minutes' in coords.AnalogDialFace)
                     drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
                 if ('Seconds' in coords.AnalogDialFace)
                     drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
