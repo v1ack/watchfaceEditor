@@ -127,10 +127,12 @@
         }
 
         function clearjs() {
+            document.getElementById('inputjs').innerHTML = document.getElementById('inputjs').innerHTML;
             coords = 0;
         }
 
         function clearimg() {
+            document.getElementById('inputimages').innerHTML = document.getElementById('inputimages').innerHTML;
             document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
         }
 
@@ -143,7 +145,7 @@
             var reader = new FileReader();
             reader.onload = function(event) {
                 the_url = event.target.result;
-                document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + id + "\" >";
+                document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
             }
             console.log(file);
             reader.readAsDataURL(file);
@@ -228,7 +230,8 @@
                 temp = [22, 24];
 
             //Background
-            setPosN(coords.Background.Image);
+            if('Background' in coords)
+                setPosN(coords.Background.Image);
 
             //Time
             if ('Time' in coords) {
@@ -408,11 +411,8 @@
                         renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number);
                     }
                 }
-                if ('AirPollution' in coords.Weather) {
-                    t = document.getElementById(coords.Weather.AirPollution.Icon.ImageIndex).cloneNode(false);
-                    setPos(t, coords.Weather.AirPollution.Icon);
-                    insert(t);
-                }
+                if ('AirPollution' in coords.Weather)
+                    setPosN(coords.Weather.AirPollution.Icon);
             }
 
             //StepsProgress
@@ -433,15 +433,12 @@
 
             //Analog clock
             if ('AnalogDialFace' in coords) {
-                if ('Hours' in coords.AnalogDialFace) {
+                if ('Hours' in coords.AnalogDialFace)
                     drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
-                }
-                if ('Minutes' in coords.AnalogDialFace) {
+                if ('Minutes' in coords.AnalogDialFace) 
                     drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
-                }
-                if ('Seconds' in coords.AnalogDialFace) {
+                if ('Seconds' in coords.AnalogDialFace)
                     drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
-                }
             }
         }
 
