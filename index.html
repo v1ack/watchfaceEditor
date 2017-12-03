@@ -155,14 +155,20 @@
         }
 
         function clearjs() {
-            //document.getElementById('inputjs').value = '';
-            document.getElementById('inputjs').innerHTML = document.getElementById('inputjs').innerHTML;
+            if (navigator.userAgent.search(/Edge/) > 0) {
+                if (document.getElementById('inputjs') != null)
+                    document.getElementById('inputjs').value = '';
+            } else
+                document.getElementById('inputjs').innerHTML = document.getElementById('inputjs').innerHTML;
             coords = 0;
         }
 
         function clearimg() {
-            //document.getElementById('inputimages').value = '';
-            document.getElementById('inputimages').innerHTML = document.getElementById('inputimages').innerHTML;
+            if (navigator.userAgent.search(/Edge/) > 0) {
+                if (document.getElementById('inputimages') != null)
+                    document.getElementById('inputimages').value = '';
+            } else
+                document.getElementById('inputimages').innerHTML = document.getElementById('inputimages').innerHTML;
             document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
         }
 
@@ -177,7 +183,6 @@
                 the_url = event.target.result;
                 document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
             }
-            //console.log(file);
             reader.readAsDataURL(file);
             delete reader;
         }
