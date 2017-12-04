@@ -79,6 +79,12 @@
         </div>
     </main>
     <script>
+        if (navigator.userAgent.search(/Edge/) > 0) {
+        UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
+                        status: 'warning',
+                        timeout: 7500
+                    });
+        }
         var jsset = 0,
             imagesset = 0;
 
