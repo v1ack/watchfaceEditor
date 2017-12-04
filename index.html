@@ -12,7 +12,7 @@
         }
 
         body {
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         img {
@@ -20,31 +20,26 @@
             top: 180px;
         }
 
-        #allimages {
-            display: none
-        }
-
-        #watchfaceblock {
-            height: 176px;
+        #watchfaceimage {
+            background: url(bip_e.png);
+            padding-left: 43px;
+            padding-top: 163px;
+            height: 353px;
             position: relative;
+            width: 233px;
+        }
+        #watchfaceblock{
+            position: relative;
+            height: 176px;
             width: 176px;
-            float: left;
         }
 
         #watchface,
         #watchface-cover {
             position: absolute;
+            top: 0;
             height: 176px;
             width: 176px;
-        }
-
-        hr {
-            border: none;
-        }
-
-        #inputblock {
-            margin-left: 176px;
-            padding: 20px
         }
 
     </style>
@@ -52,13 +47,17 @@
     <script src="uikit/uikit.min.js"></script>
 </head>
 
-<body>
-    <main>
-        <div id="watchfaceblock">
-            <div id="watchface"></div>
-            <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
+<body class="uk-container uk-position-relative">
+    <main class="uk-grid">
+        <div class="uk-width-auto uk-first-column">
+            <div id="watchfaceimage">
+                <div id="watchfaceblock">
+                    <div id="watchface"></div>
+                    <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
+                </div>
+            </div>
         </div>
-        <div id="inputblock">
+        <div id="inputblock" class="uk-width-expand uk-padding">
             <div class="js-upload" uk-form-custom>
                 <span>Images: </span>
                 <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
@@ -74,17 +73,17 @@
             <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
             <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
         </div>
-        <div id="allimages">
+        <div id="allimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
     </main>
     <script>
         var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? 1 : 0;
         if (edgeBrowser) {
-        UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
-                        status: 'warning',
-                        timeout: 7500
-                    });
+            UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
+                status: 'warning',
+                timeout: 7500
+            });
         }
         var jsset = 0,
             imagesset = 0;
