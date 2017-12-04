@@ -24,19 +24,18 @@
             display: none
         }
 
-        #watchface {
-            position: absolute;
-            top: 0;
+        #watchfaceblock {
             height: 176px;
+            position: relative;
             width: 176px;
             float: left;
         }
 
+        #watchface,
         #watchface-cover {
             position: absolute;
-            width: 176px;
             height: 176px;
-            top: 0;
+            width: 176px;
         }
 
         hr {
@@ -44,7 +43,8 @@
         }
 
         #inputblock {
-            margin-left: 200px;
+            margin-left: 176px;
+            padding: 20px
         }
 
     </style>
@@ -54,17 +54,17 @@
 
 <body>
     <main>
-        <div id="watchface"></div>
-        <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
-        <div id="inputblock" class="uk-margin">
-            <!--            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">-->
+        <div id="watchfaceblock">
+            <div id="watchface"></div>
+            <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
+        </div>
+        <div id="inputblock">
             <div class="js-upload" uk-form-custom>
                 <span>Images: </span>
                 <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
                 <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
             </div>
             <br>
-            <!--            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">-->
             <div class="js-upload uk-margin" uk-form-custom>
                 <span>JSON: </span>
                 <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
@@ -536,29 +536,19 @@
     <script type="text/javascript" src="html2canvas.comp.js"></script>
     <script type="text/javascript">
         function makepng() {
-            var l = document.getElementById("canvasshot");
-            if (l != null) l.parentElement.removeChild(l);
-            html2canvas(document.body, {
+            html2canvas(document.getElementById("watchfaceblock"), {
                 onrendered: function(canvas) {
-                    canvas.setAttribute("id", "canvasshot");
-                    document.getElementById("allimages").appendChild(canvas);
-                },
-                width: 176,
-                height: 176
+                    ctx = canvas.getContext("2d");
+                    savedData = new Image();
+                    savedData.src = canvas.toDataURL("image/png");
+                    var a = document.createElement('a');
+                    a.href = savedData.src;
+                    a.download = 'watchface.png';
+                    a.click();
+                    delete a;
+                    delete savedData;
+                }
             });
-            setTimeout(function() {
-                var canvass = document.getElementById("canvasshot");
-                console.log(canvass);
-                ctx = canvass.getContext("2d");
-                savedData = new Image();
-                savedData.src = canvass.toDataURL("image/png");
-                var a = document.createElement('a');
-                a.href = savedData.src;
-                a.download = 'watchface.png';
-                a.click();
-                delete a;
-                delete savedData;
-            }, 500);
         }
 
     </script>
