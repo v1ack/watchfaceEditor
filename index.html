@@ -28,7 +28,8 @@
             position: relative;
             width: 233px;
         }
-        #watchfaceblock{
+
+        #watchfaceblock {
             position: relative;
             height: 176px;
             width: 176px;
@@ -71,7 +72,57 @@
             </div>
             <br>
             <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
+            <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars">Settings</button>
             <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
+            <div id="vars" hidden class="uk-margin-top">
+                <form class="uk-grid-small" uk-grid>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Time</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-time" type="time" placeholder="Some text...">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Date</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-date" type="date" placeholder="Some text...">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Battery</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-battery" type="number" placeholder="Some text..." min="0" max="100">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Calories</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-calories" type="number" placeholder="Some text..." min="0" max="9999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Steps</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-steps" type="number" placeholder="Some text..." min="0" max="99999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Steps goal</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Some text..." min="100" max="99999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Status</label>
+                        <div class="uk-form-controls uk-child-width-auto uk-grid">
+                            <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
+                            <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
+                            <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
+                            <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
         <div id="allimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
@@ -82,11 +133,84 @@
         if (edgeBrowser) {
             UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
                 status: 'warning',
+                pos: 'top-left',
                 timeout: 7500
             });
         }
+
+        function geti(el) {
+            return document.getElementById(el);
+        }
         var jsset = 0,
             imagesset = 0;
+        var timeOnClock = [2, 0, 3, 8],
+            seconds = [4, 3],
+            am = 1,
+            analog = [45, 100, 260],
+            weekDay = 2,
+            day = 20,
+            month = 12,
+            battery = 2,
+            batteryT = 20,
+            calories = 2285,
+            steps = 28963,
+            stepsgoal = 12000,
+            distance = [5, 67],
+            pulse = 72,
+            temp = [22, 24],
+            alarm = 1,
+            bluetooth = 1,
+            dnd = 1,
+            lock = 1;
+
+        geti("in-time").onchange = function() {
+            var t = geti("in-time").value.split(":");
+            timeOnClock[0] = Number(t[0][0]);
+            timeOnClock[1] = Number(t[0][1]);
+            timeOnClock[2] = Number(t[1][0]);
+            timeOnClock[3] = Number(t[1][1]);
+        }
+        geti("in-date").onchange = function() {
+            var t = geti("in-date").valueAsDate;
+            day = t.getDate();
+            month = t.getMonth() + 1;
+            weekDay = t.getDay() + 1;
+        }
+        geti("in-battery").onchange = function() {
+            if(geti("in-battery").value>100)geti("in-battery").value=100;
+            if(geti("in-battery").value<0)geti("in-battery").value=0;
+            batteryT = geti("in-battery").value;
+            if ('Battery' in coords)
+                if ('Icon' in coords.Battery)
+                    battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+        }
+        geti("in-alarm").onchange = function() {
+            alarm = geti("in-alarm").checked;
+        }
+        geti("in-bt").onchange = function() {
+            bluetooth = geti("in-bt").checked;
+        }
+        geti("in-dnd").onchange = function() {
+            dnd = geti("in-dnd").checked;
+        }
+        geti("in-lock").onchange = function() {
+            lock = geti("in-lock").checked;
+        }
+        geti("in-steps").onchange = function() {
+            if(geti("in-steps").value>99999)geti("in-steps").value=99999;
+            if(geti("in-steps").value<0)geti("in-steps").value=0;
+            steps = geti("in-steps").value;
+        }
+        geti("in-calories").onchange = function() {
+            if(geti("in-calories").value>9999)geti("in-calories").value=9999;
+            if(geti("in-calories").value<0)geti("in-calories").value=0;
+            calories = geti("in-calories").value;
+        }
+        geti("in-stepsgoal").onchange = function() {
+            if(geti("in-stepsgoal").value>99999)geti("in-stepsgoal").value=99999;
+            if(geti("in-stepsgoal").value<0)geti("in-stepsgoal").value=0;
+            stepsgoal = geti("in-stepsgoal").value;
+        }
 
         function disableBtn(i) {
             if (i)
@@ -202,6 +326,7 @@
                 }
                 UIkit.notification("Images loaded", {
                     status: 'success',
+                    pos: 'top-left',
                     timeout: 2000
                 });
                 imagesset = 1;
@@ -211,6 +336,7 @@
             } else {
                 UIkit.notification("Images not selected", {
                     status: 'warning',
+                    pos: 'top-left',
                     timeout: 2000
                 });
                 imagesset = 0;
@@ -234,6 +360,7 @@
                 delete reader;
                 UIkit.notification("JSON loaded", {
                     status: 'success',
+                    pos: 'top-left',
                     timeout: 2000
                 });
                 jsset = 1;
@@ -243,6 +370,7 @@
             } else {
                 UIkit.notification("JSON not selected", {
                     status: 'warning',
+                    pos: 'top-left',
                     timeout: 2000
                 });
                 jsset = 0;
@@ -299,21 +427,6 @@
                 document.getElementById("svg-cont").innerHTML = '';
                 UIkit.notification.closeAll()
                 var t = 0;
-                var timeOnClock = [2, 0, 3, 8],
-                    seconds = [4, 3],
-                    am = 1,
-                    analog = [45, 100, 260],
-                    weekDay = 2,
-                    day = 20,
-                    month = 12,
-                    battery = 2,
-                    batteryT = 20,
-                    calories = 2285,
-                    steps = 28963,
-                    stepsgoal = 12000,
-                    distance = [5, 67],
-                    pulse = 72,
-                    temp = [22, 24];
 
                 //Background
                 if ('Background' in coords)
@@ -356,10 +469,20 @@
                         if ('OneLine' in coords.Date.MonthAndDay) {
                             var dot = document.getElementById(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
                             t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
+                            if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                                if (!div(month, 10)) {
+                                    t.block.splice(-1, 0, geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                                    t.width += geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                                }
                             t.block.push(dot);
                             t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                             var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
                             t.block = t.block.concat(t2.block);
+                            if (coords.Date.MonthAndDay.TwoDigitsDay)
+                                if (!div(day, 10)) {
+                                    t.block.splice(-1, 0, geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                                    t.width += geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                                }
                             t.width += t2.width;
                             renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number);
                         }
@@ -387,7 +510,7 @@
 
                 if ('Status' in coords) {
                     //Alarm
-                    if ('Alarm' in coords.Status) {
+                    if ('Alarm' in coords.Status && alarm) {
                         t = document.getElementById(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.Alarm.Coordinates.X + "px";
                         t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
@@ -396,14 +519,17 @@
 
                     //BT
                     if ('Bluetooth' in coords.Status) {
-                        t = document.getElementById(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+                        if (bluetooth)
+                            t = document.getElementById(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+                        else
+                            t = document.getElementById(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
                         t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
                         t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
                         insert(t);
                     }
 
                     //DoNotDistrurb
-                    if ('DoNotDisturb' in coords.Status) {
+                    if ('DoNotDisturb' in coords.Status && dnd) {
                         t = document.getElementById(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
                         t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
@@ -411,7 +537,7 @@
                     }
 
                     //Lock
-                    if ('Lock' in coords.Status) {
+                    if ('Lock' in coords.Status && lock) {
                         t = document.getElementById(coords.Status.Lock.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.Lock.Coordinates.X + "px";
                         t.style.top = coords.Status.Lock.Coordinates.Y + "px";
@@ -531,6 +657,7 @@
                 if (error.name == "TypeError") {
                     UIkit.notification("Image for prorety not found", {
                         status: 'danger',
+                        pos: 'top-left',
                         timeout: 7500
                     });
                 }
