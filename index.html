@@ -72,44 +72,76 @@
             </div>
             <br>
             <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
-            <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars">Settings</button>
+            <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
             <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
-            <div id="vars" hidden class="uk-margin-top">
+            <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
+                <div class="uk-card-badge uk-label">Beta</div>
+                <h3 class="uk-card-title">Settings</h3>
                 <form class="uk-grid-small" uk-grid>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Time</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-time" type="time" placeholder="Some text...">
+                            <input class="uk-input" id="in-time" type="time" value="20:38">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Date</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-date" type="date" placeholder="Some text...">
+                            <input class="uk-input" id="in-date" type="date" value="2017-12-06">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Battery</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-battery" type="number" placeholder="Some text..." min="0" max="100">
+                            <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Calories</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-calories" type="number" placeholder="Some text..." min="0" max="9999">
+                            <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Steps</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-steps" type="number" placeholder="Some text..." min="0" max="99999">
+                            <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
                         <label class="uk-form-label">Steps goal</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Some text..." min="100" max="99999">
+                            <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Pulse</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Distance</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Weather day</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Weather night</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
+                        </div>
+                    </div>
+                    <div class="uk-width-1-4@s">
+                        <label class="uk-form-label">Seconds</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
@@ -138,7 +170,7 @@
             });
         }
 
-        function geti(el) {
+        function $(el) {
             return document.getElementById(el);
         }
         var jsset = 0,
@@ -150,10 +182,9 @@
             weekDay = 2,
             day = 20,
             month = 12,
-            battery = 2,
             batteryT = 20,
-            calories = 2285,
-            steps = 28963,
+            calories = 860,
+            steps = 5687,
             stepsgoal = 12000,
             distance = [5, 67],
             pulse = 72,
@@ -163,78 +194,103 @@
             dnd = 1,
             lock = 1;
 
-        geti("in-time").onchange = function() {
-            var t = geti("in-time").value.split(":");
+        $("in-time").onchange = function() {
+            var t = $("in-time").value.split(":");
             timeOnClock[0] = Number(t[0][0]);
             timeOnClock[1] = Number(t[0][1]);
             timeOnClock[2] = Number(t[1][0]);
             timeOnClock[3] = Number(t[1][1]);
+            analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
+            analog[1] = t[1] * 6;
         }
-        geti("in-date").onchange = function() {
-            var t = geti("in-date").valueAsDate;
+        $("in-date").onchange = function() {
+            var t = $("in-date").valueAsDate;
             day = t.getDate();
             month = t.getMonth() + 1;
             weekDay = t.getDay() + 1;
         }
-        geti("in-battery").onchange = function() {
-            if(geti("in-battery").value>100)geti("in-battery").value=100;
-            if(geti("in-battery").value<0)geti("in-battery").value=0;
-            batteryT = geti("in-battery").value;
-            if ('Battery' in coords)
-                if ('Icon' in coords.Battery)
-                    battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+        $("in-sec").onchange = function() {
+            if ($("in-sec").value > 59) $("in-sec").value = 59;
+            if ($("in-sec").value < 0) $("in-sec").value = 0;
+            var sec = $("in-sec").value;
+            seconds[0] = Number(sec.split("")[0]);
+            seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
+            analog[2] = sec * 6;
         }
-        geti("in-alarm").onchange = function() {
-            alarm = geti("in-alarm").checked;
+        $("in-battery").onchange = function() {
+            if ($("in-battery").value > 100) $("in-battery").value = 100;
+            if ($("in-battery").value < 0) $("in-battery").value = 0;
+            batteryT = $("in-battery").value;
         }
-        geti("in-bt").onchange = function() {
-            bluetooth = geti("in-bt").checked;
+        $("in-alarm").onchange = function() {
+            alarm = $("in-alarm").checked;
         }
-        geti("in-dnd").onchange = function() {
-            dnd = geti("in-dnd").checked;
+        $("in-bt").onchange = function() {
+            bluetooth = $("in-bt").checked;
         }
-        geti("in-lock").onchange = function() {
-            lock = geti("in-lock").checked;
+        $("in-dnd").onchange = function() {
+            dnd = $("in-dnd").checked;
         }
-        geti("in-steps").onchange = function() {
-            if(geti("in-steps").value>99999)geti("in-steps").value=99999;
-            if(geti("in-steps").value<0)geti("in-steps").value=0;
-            steps = geti("in-steps").value;
+        $("in-lock").onchange = function() {
+            lock = $("in-lock").checked;
         }
-        geti("in-calories").onchange = function() {
-            if(geti("in-calories").value>9999)geti("in-calories").value=9999;
-            if(geti("in-calories").value<0)geti("in-calories").value=0;
-            calories = geti("in-calories").value;
+        $("in-steps").onchange = function() {
+            if ($("in-steps").value > 99999) $("in-steps").value = 99999;
+            if ($("in-steps").value < 0) $("in-steps").value = 0;
+            steps = $("in-steps").value;
         }
-        geti("in-stepsgoal").onchange = function() {
-            if(geti("in-stepsgoal").value>99999)geti("in-stepsgoal").value=99999;
-            if(geti("in-stepsgoal").value<0)geti("in-stepsgoal").value=0;
-            stepsgoal = geti("in-stepsgoal").value;
+        $("in-distance").onchange = function() {
+            if ($("in-distance").value > 99) $("in-distance").value = 99;
+            if ($("in-distance").value < 0) $("in-distance").value = 0;
+            var dist = $("in-distance").value.split(".");
+            distance[0] = Number(dist[0]);
+            distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
+        }
+        $("in-pulse").onchange = function() {
+            if ($("in-pulse").value > 999) $("in-pulse").value = 999;
+            if ($("in-pulse").value < 0) $("in-pulse").value = 0;
+            pulse = $("in-pulse").value;
+        }
+        $("in-calories").onchange = function() {
+            if ($("in-calories").value > 9999) $("in-calories").value = 9999;
+            if ($("in-calories").value < 0) $("in-calories").value = 0;
+            calories = $("in-calories").value;
+        }
+        $("in-stepsgoal").onchange = function() {
+            if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
+            if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
+            stepsgoal = $("in-stepsgoal").value;
+        }
+        $("in-weatherd").onchange = function() {
+            if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
+            if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
+            temp[0] = $("in-weatherd").value;
+        }
+        $("in-weathern").onchange = function() {
+            if ($("in-weathern").value > 99) $("in-weathern").value = 99;
+            if ($("in-weathern").value < -99) $("in-weathern").value = -99;
+            temp[1] = $("in-weathern").value;
         }
 
         function disableBtn(i) {
             if (i)
-                document.getElementById("make").removeAttribute("disabled");
+                $("make").removeAttribute("disabled");
             else
-                document.getElementById("make").setAttribute("disabled", "");
+                $("make").setAttribute("disabled", "");
         }
 
         var coords;
 
         function makeBlock(el, value) {
+            value = value.toString();
             var block = Array(),
                 width = 0,
-                t,
-                val = Array();
-            while (value) {
-                val.push(value % 10);
-                value = (value - value % 10) / 10;
-            }
-            while (val.length) {
-                t = document.getElementById(el.ImageIndex + val[val.length - 1]).cloneNode(false);
+                t;
+            while (value != "") {
+                t = $(el.ImageIndex + Number(value[0])).cloneNode(false);
                 block.push(t);
                 width += t.width + el.Spacing;
-                val.pop();
+                value = value.substr(1);
             }
             width = width - el.Spacing;
             return {
@@ -286,20 +342,20 @@
 
         function clearjs() {
             if (edgeBrowser) {
-                if (document.getElementById('inputjs') != null)
-                    document.getElementById('inputjs').value = '';
+                if ($('inputjs') != null)
+                    $('inputjs').value = '';
             } else
-                document.getElementById('inputjs').innerHTML = document.getElementById('inputjs').innerHTML;
+                $('inputjs').innerHTML = $('inputjs').innerHTML;
             coords = 0;
         }
 
         function clearimg() {
             if (edgeBrowser) {
-                if (document.getElementById('inputimages') != null)
-                    document.getElementById('inputimages').value = '';
+                if ($('inputimages') != null)
+                    $('inputimages').value = '';
             } else
-                document.getElementById('inputimages').innerHTML = document.getElementById('inputimages').innerHTML;
-            document.getElementById('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
+                $('inputimages').innerHTML = $('inputimages').innerHTML;
+            $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
         }
 
         function div(a, b) {
@@ -310,13 +366,13 @@
             var reader = new FileReader();
             reader.onload = function(event) {
                 the_url = event.target.result;
-                document.getElementById('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
+                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
             }
             reader.readAsDataURL(file);
             delete reader;
         }
 
-        document.getElementById('inputimages').onchange = function() {
+        $('inputimages').onchange = function() {
             if (this.files.length) {
                 var i = 0;
                 console.log(this.files);
@@ -330,9 +386,9 @@
                     timeout: 2000
                 });
                 imagesset = 1;
-                if (document.getElementById('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
-                    document.getElementById('inputimages').nextElementSibling.classList.remove("uk-button-danger");
-                document.getElementById('inputimages').nextElementSibling.classList.add("uk-label-success");
+                if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
+                    $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
+                $('inputimages').nextElementSibling.classList.add("uk-label-success");
             } else {
                 UIkit.notification("Images not selected", {
                     status: 'warning',
@@ -340,8 +396,8 @@
                     timeout: 2000
                 });
                 imagesset = 0;
-                if (document.getElementById('inputimages').nextElementSibling.classList.contains("uk-label-success")) document.getElementById('inputimages').nextElementSibling.classList.remove("uk-label-success");
-                document.getElementById('inputimages').nextElementSibling.classList.add("uk-button-danger");
+                if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
+                $('inputimages').nextElementSibling.classList.add("uk-button-danger");
             }
             if (imagesset && jsset)
                 disableBtn(1);
@@ -349,7 +405,7 @@
                 disableBtn(0);
         }
 
-        document.getElementById('inputjs').onchange = function() {
+        $('inputjs').onchange = function() {
             if (this.files.length) {
                 console.log(this.files);
                 var reader = new FileReader();
@@ -364,9 +420,9 @@
                     timeout: 2000
                 });
                 jsset = 1;
-                if (document.getElementById('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
-                    document.getElementById('inputjs').nextElementSibling.classList.remove("uk-button-danger");
-                document.getElementById('inputjs').nextElementSibling.classList.add("uk-label-success");
+                if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
+                    $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
+                $('inputjs').nextElementSibling.classList.add("uk-label-success");
             } else {
                 UIkit.notification("JSON not selected", {
                     status: 'warning',
@@ -374,8 +430,8 @@
                     timeout: 2000
                 });
                 jsset = 0;
-                if (document.getElementById('inputjs').nextElementSibling.classList.contains("uk-label-success")) document.getElementById('inputjs').nextElementSibling.classList.remove("uk-label-success");
-                document.getElementById('inputjs').nextElementSibling.classList.add("uk-button-danger");
+                if ($('inputjs').nextElementSibling.classList.contains("uk-label-success")) $('inputjs').nextElementSibling.classList.remove("uk-label-success");
+                $('inputjs').nextElementSibling.classList.add("uk-button-danger");
             }
             if (imagesset && jsset)
                 disableBtn(1);
@@ -390,7 +446,7 @@
 
         function setPosN(el, value) {
             if (value == null) value = 0;
-            t = document.getElementById(el.ImageIndex + value).cloneNode(false);
+            t = $(el.ImageIndex + value).cloneNode(false);
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
             insert(t);
@@ -398,7 +454,7 @@
 
         function insert(t) {
             t.removeAttribute('id');
-            document.getElementById("watchface").appendChild(t);
+            $("watchface").appendChild(t);
         }
 
         function setTextPos(el, value) {
@@ -415,7 +471,7 @@
                 d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
             }
             d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
-            document.getElementById('svg-cont').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
+            $('svg-cont').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
             if ('CenterImage' in el) {
                 setPosN(el.CenterImage);
             }
@@ -423,8 +479,8 @@
 
         function makeWf() {
             try {
-                document.getElementById("watchface").innerHTML = '';
-                document.getElementById("svg-cont").innerHTML = '';
+                $("watchface").innerHTML = '';
+                $("svg-cont").innerHTML = '';
                 UIkit.notification.closeAll()
                 var t = 0;
 
@@ -443,7 +499,7 @@
                         setPosN(coords.Time.Seconds.Ones, seconds[1]);
                     }
                     if ('AmPm' in coords.Time) {
-                        t = am ? document.getElementById(coords.Time.AmPm.ImageIndexAm).cloneNode(false) : document.getElementById(coords.Time.AmPm.ImageIndexPm).cloneNode(false);
+                        t = am ? $(coords.Time.AmPm.ImageIndexAm).cloneNode(false) : $(coords.Time.AmPm.ImageIndexPm).cloneNode(false);
                         setPos(t, coords.Time.AmPm);
                         insert(t);
                     }
@@ -467,12 +523,12 @@
                             }
                         }
                         if ('OneLine' in coords.Date.MonthAndDay) {
-                            var dot = document.getElementById(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
+                            var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
                             t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
                             if (coords.Date.MonthAndDay.TwoDigitsMonth)
                                 if (!div(month, 10)) {
-                                    t.block.splice(-1, 0, geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
-                                    t.width += geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                                 }
                             t.block.push(dot);
                             t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
@@ -480,8 +536,8 @@
                             t.block = t.block.concat(t2.block);
                             if (coords.Date.MonthAndDay.TwoDigitsDay)
                                 if (!div(day, 10)) {
-                                    t.block.splice(-1, 0, geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
-                                    t.width += geti(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                                 }
                             t.width += t2.width;
                             renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number);
@@ -492,6 +548,7 @@
                 //Battery
                 if ('Battery' in coords) {
                     if ('Icon' in coords.Battery) {
+                        var battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
                         setPosN(coords.Battery.Icon, battery);
                     }
                     //Text
@@ -501,7 +558,7 @@
                     if ('Scale' in coords.Battery) {
                         var end = div(coords.Battery.Scale.Segments.length, 2);
                         for (var i = 0; i <= end; i++) {
-                            t = document.getElementById(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
+                            t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
                             setPos(t, coords.Battery.Scale.Segments[i]);
                             insert(t);
                         }
@@ -511,7 +568,7 @@
                 if ('Status' in coords) {
                     //Alarm
                     if ('Alarm' in coords.Status && alarm) {
-                        t = document.getElementById(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
+                        t = $(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.Alarm.Coordinates.X + "px";
                         t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
                         insert(t);
@@ -520,9 +577,9 @@
                     //BT
                     if ('Bluetooth' in coords.Status) {
                         if (bluetooth)
-                            t = document.getElementById(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+                            t = $(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
                         else
-                            t = document.getElementById(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
+                            t = $(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
                         t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
                         t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
                         insert(t);
@@ -530,7 +587,7 @@
 
                     //DoNotDistrurb
                     if ('DoNotDisturb' in coords.Status && dnd) {
-                        t = document.getElementById(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
+                        t = $(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
                         t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
                         insert(t);
@@ -538,7 +595,7 @@
 
                     //Lock
                     if ('Lock' in coords.Status && lock) {
-                        t = document.getElementById(coords.Status.Lock.ImageIndexOn).cloneNode(false);
+                        t = $(coords.Status.Lock.ImageIndexOn).cloneNode(false);
                         t.style.left = coords.Status.Lock.Coordinates.X + "px";
                         t.style.top = coords.Status.Lock.Coordinates.Y + "px";
                         insert(t);
@@ -560,8 +617,8 @@
                         setTextPos(coords.Activity.Pulse, pulse);
                     }
                     if ('Distance' in coords.Activity) {
-                        var dot = document.getElementById(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
-                            km = document.getElementById(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
+                        var dot = $(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
+                            km = $(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
                         t = makeBlock(coords.Activity.Distance.Number, distance[0]);
                         t.block.push(dot);
                         t.width += dot.width + coords.Activity.Distance.Number.Spacing;
@@ -576,7 +633,7 @@
                 //WeatherText
                 if ('Weather' in coords) {
                     if ('Icon' in coords.Weather) {
-                        t = document.getElementById("weather").cloneNode(false);
+                        t = $("weather").cloneNode(false);
                         t.style.left = coords.Weather.Icon.Coordinates.X + "px";
                         t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
                         insert(t);
@@ -584,12 +641,22 @@
                     if ('Temperature' in coords.Weather) {
                         if ('Today' in coords.Weather.Temperature) {
                             if ('OneLine' in coords.Weather.Temperature.Today) {
-                                var sep = document.getElementById(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
-                                    deg = document.getElementById(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false);
-                                t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[0]);
+                                var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
+                                    deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
+                                    minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+                                t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
+                                if (minus != 0) {
+                                    t.block.splice(0, 0, minus);
+                                    t.width += minus.width;
+                                }
                                 t.block.push(sep);
                                 t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-                                var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, temp[1]);
+                                var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
+                                minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+                                if (minus != 0) {
+                                    t2.block.splice(0, 0, minus);
+                                    t2.width += minus.width;
+                                }
                                 t.block = t.block.concat(t2.block);
                                 t.width += t2.width;
                                 t.block.push(deg);
@@ -597,28 +664,43 @@
                                 renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
                             }
                             if ('Separate' in coords.Weather.Temperature.Today) {
-                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, temp[0]);
+                                var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
                                 if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                                    var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                                    var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
                                     t.block.push(deg);
                                     t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
                                 }
+                                if (minus != 0) {
+                                    t.block.splice(0, 0, minus);
+                                    t.width += minus.width;
+                                }
                                 renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
-                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, temp[1]);
+                                minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
+                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
                                 if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                                    var deg = document.getElementById(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                                    var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
                                     t.block.push(deg);
                                     t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                                }
+                                if (minus != 0) {
+                                    t.block.splice(0, 0, minus);
+                                    t.width += minus.width;
                                 }
                                 renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number);
                             }
                         }
                         if ('Current' in coords.Weather.Temperature) {
-                            t = makeBlock(coords.Weather.Temperature.Current.Number, temp[0]);
+                            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+                            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
                             if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                                var deg = document.getElementById(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
+                                var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
                                 t.block.push(deg);
                                 t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
                             }
                             renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number);
                         }
@@ -631,12 +713,14 @@
                 if ('StepsProgress' in coords) {
                     if ('Circle' in coords.StepsProgress) {
                         var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                        document.getElementById('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
+                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
                     }
                     if ('Linear' in coords.StepsProgress) {
-                        var end = div(coords.StepsProgress.Linear.Segments.length, 2);
+                        var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+                        if (end > coords.StepsProgress.Linear.Segments.length - 1)
+                            end = coords.StepsProgress.Linear.Segments.length - 1;
                         for (var i = 0; i <= end; i++) {
-                            t = document.getElementById(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
+                            t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
                             setPos(t, coords.StepsProgress.Linear.Segments[i]);
                             insert(t);
                         }
@@ -668,7 +752,7 @@
     <script type="text/javascript" src="html2canvas.comp.js"></script>
     <script type="text/javascript">
         function makepng() {
-            html2canvas(document.getElementById("watchfaceblock"), {
+            html2canvas($("watchfaceblock"), {
                 onrendered: function(canvas) {
                     ctx = canvas.getContext("2d");
                     savedData = new Image();
