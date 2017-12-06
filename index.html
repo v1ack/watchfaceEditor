@@ -464,7 +464,7 @@
 
         function drowAnalog(el, value) {
             var col = el.Color.replace("0x", "#"),
-                d = "M 0 0 ",
+                d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
                 iters = el.Shape.length,
                 fill = el.OnlyBorder ? "none" : col;
             for (var i = 0; i < iters; i++) {
@@ -556,7 +556,7 @@
                         setTextPos(coords.Battery.Text, batteryT);
                     }
                     if ('Scale' in coords.Battery) {
-                        var end = div(coords.Battery.Scale.Segments.length, 2);
+                        var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
                         for (var i = 0; i <= end; i++) {
                             t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
                             setPos(t, coords.Battery.Scale.Segments[i]);
@@ -713,8 +713,15 @@
                 if ('StepsProgress' in coords) {
                     if ('Circle' in coords.StepsProgress) {
                         var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
+                        var full = Math.floor(2*coords.StepsProgress.Circle.RadiusX*Math.PI);
+                        var fill = Math.round(steps / (stepsgoal / full));
+                        if(fill>full)fill=full;
+                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
                     }
+                    /*if ('Circle' in coords.StepsProgress) {
+                        var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
+                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
+                    }*/
                     if ('Linear' in coords.StepsProgress) {
                         var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
                         if (end > coords.StepsProgress.Linear.Segments.length - 1)
