@@ -173,12 +173,14 @@
         function $(el) {
             return document.getElementById(el);
         }
+        function $c(el) {
+            return document.getElementById(el).cloneNode(false);
+        }
         var jsset = 0,
             imagesset = 0;
-        var timeOnClock = [2, 0, 3, 8],
+        var timeOnClock = ["20", "38"],
             seconds = [4, 3],
-            am = 1,
-            analog = [45, 100, 260],
+            analog = [259, 228, 60],
             weekDay = 2,
             day = 20,
             month = 12,
@@ -196,10 +198,8 @@
 
         $("in-time").onchange = function() {
             var t = $("in-time").value.split(":");
-            timeOnClock[0] = Number(t[0][0]);
-            timeOnClock[1] = Number(t[0][1]);
-            timeOnClock[2] = Number(t[1][0]);
-            timeOnClock[3] = Number(t[1][1]);
+            timeOnClock[0] = t[0];
+            timeOnClock[1] = t[1];
             analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
             analog[1] = t[1] * 6;
         }
@@ -446,7 +446,7 @@
 
         function setPosN(el, value) {
             if (value == null) value = 0;
-            t = $(el.ImageIndex + value).cloneNode(false);
+            t = $c(el.ImageIndex + value);
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
             insert(t);
@@ -490,19 +490,28 @@
 
                 //Time
                 if ('Time' in coords) {
-                    setPosN(coords.Time.Hours.Tens, timeOnClock[0]);
-                    setPosN(coords.Time.Hours.Ones, timeOnClock[1]);
-                    setPosN(coords.Time.Minutes.Tens, timeOnClock[2]);
-                    setPosN(coords.Time.Minutes.Ones, timeOnClock[3]);
                     if ('Seconds' in coords.Time) {
                         setPosN(coords.Time.Seconds.Tens, seconds[0]);
                         setPosN(coords.Time.Seconds.Ones, seconds[1]);
                     }
                     if ('AmPm' in coords.Time) {
-                        t = am ? $(coords.Time.AmPm.ImageIndexAm).cloneNode(false) : $(coords.Time.AmPm.ImageIndexPm).cloneNode(false);
+                        var am = 1;
+                        if(Number(timeOnClock[0])>12){
+                            timeOnClock[0] = (Number(timeOnClock[0]) - 12).toString();
+                            if(timeOnClock[0].length == 1)
+                                timeOnClock[0] = "0" + timeOnClock[0];
+                            am = 0;
+                        }
+                        
+                        t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
                         setPos(t, coords.Time.AmPm);
                         insert(t);
+                        
                     }
+                    setPosN(coords.Time.Hours.Tens, Number(timeOnClock[0][0]));
+                    setPosN(coords.Time.Hours.Ones, Number(timeOnClock[0][1]));
+                    setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]));
+                    setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]));
                 }
 
                 //Date
