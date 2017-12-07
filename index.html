@@ -50,10 +50,20 @@
 
 <body>
     <div class="uk-section-primary uk-preserve-color">
-        <nav class="uk-navbar-container"  style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
+        <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
                 <div uk-navbar>
                     <a class="uk-navbar-item uk-logo" href="#" style="color: white">Bip watchface view</a>
+                    <a class="uk-navbar-right" style="color: white" href="#modal-example" uk-toggle>Send feedback</a>
+                    <div id="modal-example" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <h2 class="uk-modal-title">Feedback</h2>
+                            <p>You can send feedback by Telegram to <a href="https://t.me/vlack">@vlack</a></p>
+                            <p class="uk-text-right">
+                                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -180,19 +190,19 @@
                     <li>
                         <ul uk-accordion>
                             <li class="uk-open">
-                                <h3 class="uk-accordion-title">Item 1</h3>
+                                <h3 class="uk-accordion-title">Time</h3>
                                 <div class="uk-accordion-content">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 </div>
                             </li>
                             <li>
-                                <h3 class="uk-accordion-title">Item 2</h3>
+                                <h3 class="uk-accordion-title">Date</h3>
                                 <div class="uk-accordion-content">
                                     <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
                                 </div>
                             </li>
                             <li>
-                                <h3 class="uk-accordion-title">Item 3</h3>
+                                <h3 class="uk-accordion-title">Status</h3>
                                 <div class="uk-accordion-content">
                                     <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
                                 </div>
