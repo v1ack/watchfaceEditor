@@ -177,7 +177,8 @@
             return document.getElementById(el).cloneNode(false);
         }
         var jsset = 0,
-            imagesset = 0;
+            imagesset = 0,
+            wfname="wanchface";
         var timeOnClock = ["20", "38"],
             seconds = [4, 3],
             analog = [259, 228, 60],
@@ -408,6 +409,8 @@
         $('inputjs').onchange = function() {
             if (this.files.length) {
                 console.log(this.files);
+                wfname=this.files[0].name.split(".")[0];
+                document.title="Watchface view " + wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     coords = JSON.parse(e.target.result);
@@ -775,7 +778,7 @@
                     savedData.src = canvas.toDataURL("image/png");
                     var a = document.createElement('a');
                     a.href = savedData.src;
-                    a.download = 'watchface.png';
+                    a.download = wfname + '.png';
                     a.click();
                     delete a;
                     delete savedData;
