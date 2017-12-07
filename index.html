@@ -86,7 +86,7 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li class="uk-disabled"><a href="#">Edit</a></li>
+                    <li id="editbutton" class="uk-disabled"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -448,6 +448,8 @@
             if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
             if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
             stepsgoal = $("in-stepsgoal").value;
+            if (stepsgoal == 75321)
+                $("editbutton").classList.remove("uk-disabled");
             removeByClass("c_act_stepsgoal");
             if ('Activity' in coords)
                 if ('StepsGoal' in coords.Activity)
@@ -1006,7 +1008,7 @@
         }
         draw.stepsprogress.circle = function() {
             var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-            var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI);
+            var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
             var fill = Math.round(steps / (stepsgoal / full));
             if (fill > full) fill = full;
             $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
