@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Get Image</title>
+    <title>Watchface view</title>
     <style>
         html,
         body,
@@ -36,7 +36,7 @@
         }
 
         #watchface,
-        #watchface-cover {
+        .watchface-cover {
             position: absolute;
             top: 0;
             height: 176px;
@@ -54,107 +54,143 @@
             <div id="watchfaceimage">
                 <div id="watchfaceblock">
                     <div id="watchface"></div>
-                    <div id="watchface-cover"><svg id="svg-cont" width="176" height="176"></svg></div>
+                    <div class="watchface-cover">
+                        <svg id="svg-cont-clock" width="176" height="176"></svg>
+                    </div>
+                    <div class="watchface-cover" style="top: 0;position: relative;">
+                        <svg id="svg-cont-steps" width="176" height="176"></svg>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="inputblock" class="uk-width-expand uk-padding">
-            <div class="js-upload" uk-form-custom>
-                <span>Images: </span>
-                <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
-                <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
-            </div>
-            <br>
-            <div class="js-upload uk-margin" uk-form-custom>
-                <span>JSON: </span>
-                <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
-                <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
-            </div>
-            <br>
-            <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
-            <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
-            <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
-            <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
-                <div class="uk-card-badge uk-label">Beta</div>
-                <h3 class="uk-card-title">Settings</h3>
-                <form class="uk-grid-small" uk-grid>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Time</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-time" type="time" value="20:38">
-                        </div>
+            <ul class="uk-tab" uk-switcher="connect: .switcher-container">
+                <li><a href="#">View</a></li>
+                <li class="uk-disabled"><a href="#">Edit</a></li>
+            </ul>
+            <ul class="uk-switcher switcher-container uk-margin">
+                <li>
+                    <div class="js-upload" uk-form-custom>
+                        <span>Images: </span>
+                        <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
+                        <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                     </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Date</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-date" type="date" value="2017-12-06">
-                        </div>
+                    <br>
+                    <div class="js-upload uk-margin" uk-form-custom>
+                        <span>JSON: </span>
+                        <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
+                        <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                     </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Battery</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
-                        </div>
+                    <br>
+                    <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
+                    <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
+                    <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
+                    <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
+                        <div class="uk-card-badge uk-label">Beta</div>
+                        <h3 class="uk-card-title">Settings</h3>
+                        <form class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Time</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-time" type="time" value="20:38">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Date</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-date" type="date" value="2017-12-06">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Battery</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Calories</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Steps</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Steps goal</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Pulse</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Distance</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Weather day</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Weather night</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Seconds</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label">Status</label>
+                                <div class="uk-form-controls uk-child-width-auto uk-grid">
+                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
+                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
+                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
+                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Calories</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Steps</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Steps goal</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Pulse</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Distance</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Weather day</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Weather night</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Seconds</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
-                        </div>
-                    </div>
-                    <div class="uk-width-1-4@s">
-                        <label class="uk-form-label">Status</label>
-                        <div class="uk-form-controls uk-child-width-auto uk-grid">
-                            <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
-                            <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
-                            <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
-                            <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </li>
+                <li>
+                    <ul uk-accordion>
+                        <li class="uk-open">
+                            <h3 class="uk-accordion-title">Item 1</h3>
+                            <div class="uk-accordion-content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 class="uk-accordion-title">Item 2</h3>
+                            <div class="uk-accordion-content">
+                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 class="uk-accordion-title">Item 3</h3>
+                            <div class="uk-accordion-content">
+                                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
         </div>
         <div id="allimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
@@ -173,12 +209,13 @@
         function $(el) {
             return document.getElementById(el);
         }
+
         function $c(el) {
             return document.getElementById(el).cloneNode(false);
         }
         var jsset = 0,
             imagesset = 0,
-            wfname="wanchface";
+            wfname = "wanchface";
         var timeOnClock = ["20", "38"],
             seconds = [4, 3],
             analog = [259, 228, 60],
@@ -225,20 +262,41 @@
         }
         $("in-alarm").onchange = function() {
             alarm = $("in-alarm").checked;
+            removeByClass("c_stat_alarm");
+            if ('Status' in coords)
+                if ('Alarm' in coords.Status && alarm)
+                    draw.status.alarm();
         }
         $("in-bt").onchange = function() {
             bluetooth = $("in-bt").checked;
+            removeByClass("c_stat_bt");
+            if ('Status' in coords)
+                if ('Bluetooth' in coords.Status)
+                    draw.status.bt();
+
         }
         $("in-dnd").onchange = function() {
             dnd = $("in-dnd").checked;
+            removeByClass("c_stat_dnd");
+            if ('Status' in coords)
+                if ('DoNotDisturb' in coords.Status && dnd)
+                    draw.status.dnd();
         }
         $("in-lock").onchange = function() {
             lock = $("in-lock").checked;
+            removeByClass("c_stat_lock");
+            if ('Status' in coords)
+                if ('Lock' in coords.Status && lock)
+                    draw.status.lock();
         }
         $("in-steps").onchange = function() {
             if ($("in-steps").value > 99999) $("in-steps").value = 99999;
             if ($("in-steps").value < 0) $("in-steps").value = 0;
             steps = $("in-steps").value;
+            removeByClass("c_act_steps");
+            if ('Activity' in coords)
+                if ('Steps' in coords.Activity)
+                    draw.activity.steps();
         }
         $("in-distance").onchange = function() {
             if ($("in-distance").value > 99) $("in-distance").value = 99;
@@ -246,31 +304,51 @@
             var dist = $("in-distance").value.split(".");
             distance[0] = Number(dist[0]);
             distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
+            removeByClass("c_act_distance");
+            if ('Activity' in coords)
+                if ('Distance' in coords.Activity)
+                    draw.activity.distance();
         }
         $("in-pulse").onchange = function() {
             if ($("in-pulse").value > 999) $("in-pulse").value = 999;
             if ($("in-pulse").value < 0) $("in-pulse").value = 0;
             pulse = $("in-pulse").value;
+            removeByClass("c_act_pulse");
+            if ('Activity' in coords)
+                if ('Pulse' in coords.Activity)
+                    draw.activity.pulse();
         }
         $("in-calories").onchange = function() {
             if ($("in-calories").value > 9999) $("in-calories").value = 9999;
             if ($("in-calories").value < 0) $("in-calories").value = 0;
             calories = $("in-calories").value;
+            removeByClass("c_act_cal");
+            if ('Activity' in coords)
+                if ('Calories' in coords.Activity)
+                    draw.activity.cal();
         }
         $("in-stepsgoal").onchange = function() {
             if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
             if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
             stepsgoal = $("in-stepsgoal").value;
+            removeByClass("c_act_stepsgoal");
+            if ('Activity' in coords)
+                if ('StepsGoal' in coords.Activity)
+                    draw.activity.stepsgoal();
         }
         $("in-weatherd").onchange = function() {
             if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
             if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
             temp[0] = $("in-weatherd").value;
+            removeByClass("c_temp");
+            draw.weather();
         }
         $("in-weathern").onchange = function() {
             if ($("in-weathern").value > 99) $("in-weathern").value = 99;
             if ($("in-weathern").value < -99) $("in-weathern").value = -99;
             temp[1] = $("in-weathern").value;
+            removeByClass("c_temp");
+            draw.weather();
         }
 
         function disableBtn(i) {
@@ -279,7 +357,6 @@
             else
                 $("make").setAttribute("disabled", "");
         }
-
         var coords;
 
         function makeBlock(el, value) {
@@ -300,7 +377,7 @@
             }
         }
 
-        function renderBlock(block, width, el) {
+        function renderBlock(block, width, el, cls) {
             var t, offset = 0;
             if (el.Alignment == 18) {
                 block.reverse();
@@ -308,7 +385,7 @@
                     t = block.pop();
                     t.style.left = el.TopLeftX + offset + "px";
                     t.style.top = el.TopLeftY + "px";
-                    insert(t);
+                    insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
             } else if (el.Alignment == 20) {
@@ -316,7 +393,7 @@
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
                     t.style.top = el.TopLeftY + "px";
-                    insert(t);
+                    insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
             } else if (el.Alignment == 34) {
@@ -324,7 +401,7 @@
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
                     t.style.top = el.BottomRightY - t.height + 1 + "px";
-                    insert(t);
+                    insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
             } else if (el.Alignment == 24) {
@@ -335,7 +412,7 @@
                     t = block.pop();
                     t.style.left = el.TopLeftX + offset + "px";
                     t.style.top = el.TopLeftY + "px";
-                    insert(t);
+                    insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
             }
@@ -363,6 +440,12 @@
             return (a - a % b) / b;
         }
 
+        function removeByClass(cl) {
+            var els = document.getElementsByClassName(cl);
+            for (var i = 0; els.length; i++)
+                $("watchface").removeChild(els[0]);
+        }
+
         function renderImage(file) {
             var reader = new FileReader();
             reader.onload = function(event) {
@@ -372,7 +455,6 @@
             reader.readAsDataURL(file);
             delete reader;
         }
-
         $('inputimages').onchange = function() {
             if (this.files.length) {
                 var i = 0;
@@ -405,12 +487,11 @@
             else
                 disableBtn(0);
         }
-
         $('inputjs').onchange = function() {
             if (this.files.length) {
                 console.log(this.files);
-                wfname=this.files[0].name.split(".")[0];
-                document.title="Watchface view " + wfname;
+                wfname = this.files[0].name.split(".")[0];
+                document.title = "Watchface view " + wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     coords = JSON.parse(e.target.result);
@@ -447,22 +528,22 @@
             t.style.top = el.Y + "px";
         }
 
-        function setPosN(el, value) {
-            if (value == null) value = 0;
+        function setPosN(el, value, cls) {
             t = $c(el.ImageIndex + value);
             t.style.left = el.X + "px";
             t.style.top = el.Y + "px";
-            insert(t);
+            insert(t, cls);
         }
 
-        function insert(t) {
+        function insert(t, name) {
             t.removeAttribute('id');
+            t.setAttribute("class", name)
             $("watchface").appendChild(t);
         }
 
-        function setTextPos(el, value) {
+        function setTextPos(el, value, cls) {
             var t = makeBlock(el, value);
-            renderBlock(t.block, t.width, el);
+            renderBlock(t.block, t.width, el, cls);
         }
 
         function drowAnalog(el, value) {
@@ -474,65 +555,63 @@
                 d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
             }
             d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
-            $('svg-cont').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
+            $('svg-cont-clock').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
             if ('CenterImage' in el) {
-                setPosN(el.CenterImage);
+                setPosN(el.CenterImage, 0, "c_an_img");
             }
         }
 
         function makeWf() {
             try {
                 $("watchface").innerHTML = '';
-                $("svg-cont").innerHTML = '';
+                $("svg-cont-clock").innerHTML = '';
+                $("svg-cont-steps").innerHTML = '';
                 UIkit.notification.closeAll()
                 var t = 0;
 
                 //Background
                 if ('Background' in coords)
-                    setPosN(coords.Background.Image);
+                    setPosN(coords.Background.Image, 0, "c_bg");
 
                 //Time
                 if ('Time' in coords) {
                     if ('Seconds' in coords.Time) {
-                        setPosN(coords.Time.Seconds.Tens, seconds[0]);
-                        setPosN(coords.Time.Seconds.Ones, seconds[1]);
+                        setPosN(coords.Time.Seconds.Tens, seconds[0], "c_sec");
+                        setPosN(coords.Time.Seconds.Ones, seconds[1], "c_sec");
                     }
                     if ('AmPm' in coords.Time) {
                         var am = 1;
-                        if(Number(timeOnClock[0])>12){
+                        if (Number(timeOnClock[0]) > 12) {
                             timeOnClock[0] = (Number(timeOnClock[0]) - 12).toString();
-                            if(timeOnClock[0].length == 1)
+                            if (timeOnClock[0].length == 1)
                                 timeOnClock[0] = "0" + timeOnClock[0];
                             am = 0;
                         }
-                        
+
                         t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
                         setPos(t, coords.Time.AmPm);
-                        insert(t);
-                        
+                        insert(t, "c_time_am");
+
                     }
-                    setPosN(coords.Time.Hours.Tens, Number(timeOnClock[0][0]));
-                    setPosN(coords.Time.Hours.Ones, Number(timeOnClock[0][1]));
-                    setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]));
-                    setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]));
+                    setPosN(coords.Time.Hours.Tens, Number(timeOnClock[0][0]), "c_time");
+                    setPosN(coords.Time.Hours.Ones, Number(timeOnClock[0][1]), "c_time");
+                    setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]), "c_time");
+                    setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]), "c_time");
                 }
 
                 //Date
                 if ('Date' in coords) {
                     //DayOfTheWeek
-                    if ('WeekDay' in coords.Date) {
-                        setPosN(coords.Date.WeekDay, weekDay);
-                    }
+                    if ('WeekDay' in coords.Date)
+                        setPosN(coords.Date.WeekDay, weekDay, "c_date");
 
                     //Date
                     if ('MonthAndDay' in coords.Date) {
                         if ('Separate' in coords.Date.MonthAndDay) {
-                            if ('Day' in coords.Date.MonthAndDay.Separate) {
-                                setTextPos(coords.Date.MonthAndDay.Separate.Day, day);
-                            }
-                            if ('Month' in coords.Date.MonthAndDay.Separate) {
-                                setTextPos(coords.Date.MonthAndDay.Separate.Month, month);
-                            }
+                            if ('Day' in coords.Date.MonthAndDay.Separate)
+                                setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+                            if ('Month' in coords.Date.MonthAndDay.Separate)
+                                setTextPos(coords.Date.MonthAndDay.Separate.Month, month, "c_date");
                         }
                         if ('OneLine' in coords.Date.MonthAndDay) {
                             var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
@@ -552,7 +631,7 @@
                                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                                 }
                             t.width += t2.width;
-                            renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number);
+                            renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
                         }
                     }
                 }
@@ -561,199 +640,61 @@
                 if ('Battery' in coords) {
                     if ('Icon' in coords.Battery) {
                         var battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
-                        setPosN(coords.Battery.Icon, battery);
+                        setPosN(coords.Battery.Icon, battery, "c_battery");
                     }
                     //Text
                     if ('Text' in coords.Battery) {
-                        setTextPos(coords.Battery.Text, batteryT);
+                        setTextPos(coords.Battery.Text, batteryT, "c_battery");
                     }
                     if ('Scale' in coords.Battery) {
                         var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
                         for (var i = 0; i <= end; i++) {
                             t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
                             setPos(t, coords.Battery.Scale.Segments[i]);
-                            insert(t);
+                            insert(t, "c_battery");
                         }
                     }
                 }
 
                 if ('Status' in coords) {
-                    //Alarm
-                    if ('Alarm' in coords.Status && alarm) {
-                        t = $(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
-                        t.style.left = coords.Status.Alarm.Coordinates.X + "px";
-                        t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
-                        insert(t);
-                    }
-
-                    //BT
-                    if ('Bluetooth' in coords.Status) {
-                        if (bluetooth)
-                            t = $(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
-                        else
-                            t = $(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
-                        t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
-                        t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
-                        insert(t);
-                    }
-
-                    //DoNotDistrurb
-                    if ('DoNotDisturb' in coords.Status && dnd) {
-                        t = $(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
-                        t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
-                        t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
-                        insert(t);
-                    }
-
-                    //Lock
-                    if ('Lock' in coords.Status && lock) {
-                        t = $(coords.Status.Lock.ImageIndexOn).cloneNode(false);
-                        t.style.left = coords.Status.Lock.Coordinates.X + "px";
-                        t.style.top = coords.Status.Lock.Coordinates.Y + "px";
-                        insert(t);
-                    }
+                    if ('Alarm' in coords.Status && alarm)
+                        draw.status.alarm();
+                    if ('Bluetooth' in coords.Status)
+                        draw.status.bt();
+                    if ('DoNotDisturb' in coords.Status && dnd)
+                        draw.status.dnd();
+                    if ('Lock' in coords.Status && lock)
+                        draw.status.lock();
                 }
 
                 //Activity
                 if ('Activity' in coords) {
-                    if ('Calories' in coords.Activity) {
-                        setTextPos(coords.Activity.Calories, calories);
-                    }
-                    if ('Steps' in coords.Activity) {
-                        setTextPos(coords.Activity.Steps, steps);
-                    }
-                    if ('StepsGoal' in coords.Activity) {
-                        setTextPos(coords.Activity.StepsGoal, stepsgoal);
-                    }
-                    if ('Pulse' in coords.Activity) {
-                        setTextPos(coords.Activity.Pulse, pulse);
-                    }
-                    if ('Distance' in coords.Activity) {
-                        var dot = $(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
-                            km = $(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
-                        t = makeBlock(coords.Activity.Distance.Number, distance[0]);
-                        t.block.push(dot);
-                        t.width += dot.width + coords.Activity.Distance.Number.Spacing;
-                        var t2 = makeBlock(coords.Activity.Distance.Number, distance[1]);
-                        t.block = t.block.concat(t2.block);
-                        t.width += t2.width;
-                        t.block.push(km);
-                        t.width += km.width;
-                        renderBlock(t.block, t.width, coords.Activity.Distance.Number);
-                    }
-                }
-                //WeatherText
-                if ('Weather' in coords) {
-                    if ('Icon' in coords.Weather) {
-                        t = $("weather").cloneNode(false);
-                        t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-                        t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-                        insert(t);
-                    }
-                    if ('Temperature' in coords.Weather) {
-                        if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today) {
-                                var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
-                                    deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
-                                    minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
-                                t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
-                                if (minus != 0) {
-                                    t.block.splice(0, 0, minus);
-                                    t.width += minus.width;
-                                }
-                                t.block.push(sep);
-                                t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-                                var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
-                                minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
-                                if (minus != 0) {
-                                    t2.block.splice(0, 0, minus);
-                                    t2.width += minus.width;
-                                }
-                                t.block = t.block.concat(t2.block);
-                                t.width += t2.width;
-                                t.block.push(deg);
-                                t.width += deg.width;
-                                renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number);
-                            }
-                            if ('Separate' in coords.Weather.Temperature.Today) {
-                                var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
-                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
-                                if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                                    var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
-                                    t.block.push(deg);
-                                    t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
-                                }
-                                if (minus != 0) {
-                                    t.block.splice(0, 0, minus);
-                                    t.width += minus.width;
-                                }
-                                renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
-                                minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
-                                t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
-                                if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                                    var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
-                                    t.block.push(deg);
-                                    t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-                                }
-                                if (minus != 0) {
-                                    t.block.splice(0, 0, minus);
-                                    t.width += minus.width;
-                                }
-                                renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number);
-                            }
-                        }
-                        if ('Current' in coords.Weather.Temperature) {
-                            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
-                            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
-                            if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                                var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
-                                t.block.push(deg);
-                                t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
-                            }
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number);
-                        }
-                    }
-                    if ('AirPollution' in coords.Weather)
-                        setPosN(coords.Weather.AirPollution.Icon);
+                    if ('Calories' in coords.Activity)
+                        draw.activity.cal();
+                    if ('Steps' in coords.Activity)
+                        draw.activity.steps();
+                    if ('StepsGoal' in coords.Activity)
+                        draw.activity.stepsgoal();
+                    if ('Pulse' in coords.Activity)
+                        draw.activity.pulse();
+                    if ('Distance' in coords.Activity)
+                        draw.activity.distance();
                 }
 
+                //WeatherText
+                draw.weather();
+
                 //StepsProgress
-                if ('StepsProgress' in coords) {
-                    if ('Circle' in coords.StepsProgress) {
-                        var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                        var full = Math.floor(2*coords.StepsProgress.Circle.RadiusX*Math.PI);
-                        var fill = Math.round(steps / (stepsgoal / full));
-                        if(fill>full)fill=full;
-                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
-                    }
-                    /*if ('Circle' in coords.StepsProgress) {
-                        var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                        $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
-                    }*/
-                    if ('Linear' in coords.StepsProgress) {
-                        var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
-                        if (end > coords.StepsProgress.Linear.Segments.length - 1)
-                            end = coords.StepsProgress.Linear.Segments.length - 1;
-                        for (var i = 0; i <= end; i++) {
-                            t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
-                            setPos(t, coords.StepsProgress.Linear.Segments[i]);
-                            insert(t);
-                        }
-                    }
-                }
+                draw.steps();
 
                 //Analog clock
                 if ('AnalogDialFace' in coords) {
                     if ('Hours' in coords.AnalogDialFace)
-                        drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
+                        draw.analog.hours();
                     if ('Minutes' in coords.AnalogDialFace)
-                        drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
+                        draw.analog.minutes();
                     if ('Seconds' in coords.AnalogDialFace)
-                        drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
+                        draw.analog.seconds();
                 }
             } catch (error) {
                 console.error(error);
@@ -763,6 +704,176 @@
                         pos: 'top-left',
                         timeout: 7500
                     });
+                }
+            }
+        }
+        var draw = {};
+        draw.activity = {};
+        draw.status = {};
+        draw.analog = {};
+
+        draw.analog.hours = function() {
+            drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
+        }
+        draw.analog.minutes = function() {
+            drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
+        }
+        draw.analog.seconds = function() {
+            drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
+        }
+        draw.status.alarm = function() {
+            t = $(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
+            t.style.left = coords.Status.Alarm.Coordinates.X + "px";
+            t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
+            insert(t, "c_stat_alarm");
+        }
+        draw.status.bt = function() {
+            if (bluetooth)
+                t = $(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+            else
+                t = $(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
+            t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
+            t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
+            insert(t, "c_stat_bt");
+        }
+        draw.status.dnd = function() {
+            t = $(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
+            t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
+            t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
+            insert(t, "c_stat_dnd");
+        }
+        draw.status.lock = function() {
+            t = $(coords.Status.Lock.ImageIndexOn).cloneNode(false);
+            t.style.left = coords.Status.Lock.Coordinates.X + "px";
+            t.style.top = coords.Status.Lock.Coordinates.Y + "px";
+            insert(t, "c_stat_lock");
+        }
+        draw.activity.cal = function() {
+            setTextPos(coords.Activity.Calories, calories, "c_act_cal");
+        }
+        draw.activity.steps = function() {
+            setTextPos(coords.Activity.Steps, steps, "c_act_steps");
+        }
+        draw.activity.stepsgoal = function() {
+            setTextPos(coords.Activity.StepsGoal, stepsgoal, "c_act_stepsg");
+        }
+        draw.activity.pulse = function() {
+            setTextPos(coords.Activity.Pulse, pulse, "c_act_pulse");
+        }
+        draw.activity.distance = function() {
+            var dot = $(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
+                km = $(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
+            t = makeBlock(coords.Activity.Distance.Number, distance[0]);
+            t.block.push(dot);
+            t.width += dot.width + coords.Activity.Distance.Number.Spacing;
+            var t2 = makeBlock(coords.Activity.Distance.Number, distance[1]);
+            t.block = t.block.concat(t2.block);
+            t.width += t2.width;
+            t.block.push(km);
+            t.width += km.width;
+            renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
+        }
+        draw.weather = function() {
+            if ('Weather' in coords) {
+                if ('Icon' in coords.Weather) {
+                    t = $("weather").cloneNode(false);
+                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                    insert(t, "c_weather_icon");
+                }
+                if ('Temperature' in coords.Weather) {
+                    if ('Today' in coords.Weather.Temperature) {
+                        if ('OneLine' in coords.Weather.Temperature.Today) {
+                            var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
+                                deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
+                                minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+                            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            t.block.push(sep);
+                            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+                            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
+                            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+                            if (minus != 0) {
+                                t2.block.splice(0, 0, minus);
+                                t2.width += minus.width;
+                            }
+                            t.block = t.block.concat(t2.block);
+                            t.width += t2.width;
+                            t.block.push(deg);
+                            t.width += deg.width;
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
+                        }
+                        if ('Separate' in coords.Weather.Temperature.Today) {
+                            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                                var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
+                            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
+                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                                var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
+                        }
+                    }
+                    if ('Current' in coords.Weather.Temperature) {
+                        var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+                        t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
+                            var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
+                    }
+                }
+                if ('AirPollution' in coords.Weather)
+                    setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
+            }
+        }
+        draw.steps = function() {
+            if ('StepsProgress' in coords) {
+                if ('Circle' in coords.StepsProgress) {
+                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
+                    var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI);
+                    var fill = Math.round(steps / (stepsgoal / full));
+                    if (fill > full) fill = full;
+                    $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
+                }
+                /*if ('Circle' in coords.StepsProgress) {
+                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
+                    $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
+                }*/
+                if ('Linear' in coords.StepsProgress) {
+                    var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+                    if (end > coords.StepsProgress.Linear.Segments.length - 1)
+                        end = coords.StepsProgress.Linear.Segments.length - 1;
+                    for (var i = 0; i <= end; i++) {
+                        t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
+                        setPos(t, coords.StepsProgress.Linear.Segments[i]);
+                        insert(t, "c_steps_linar");
+                    }
                 }
             }
         }
