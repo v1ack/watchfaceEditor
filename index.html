@@ -311,24 +311,26 @@
         }
         $("in-date").onchange = function() {
             var t = $("in-date").valueAsDate;
-            day = t.getDate();
-            month = t.getMonth() + 1;
-            weekDay = t.getDay() + 1;
-            removeByClass("c_date");
-            if ('Date' in coords) {
-                if ('WeekDay' in coords.Date)
-                    draw.date.weekday();
-                if ('MonthAndDay' in coords.Date) {
-                    if ('Separate' in coords.Date.MonthAndDay) {
-                        if ('Day' in coords.Date.MonthAndDay.Separate)
-                            draw.date.sepday();
-                        if ('Month' in coords.Date.MonthAndDay.Separate)
-                            draw.date.sepnight();
+            try {
+                day = t.getDate();
+                month = t.getMonth() + 1;
+                weekDay = t.getDay() + 1;
+                removeByClass("c_date");
+                if ('Date' in coords) {
+                    if ('WeekDay' in coords.Date)
+                        draw.date.weekday();
+                    if ('MonthAndDay' in coords.Date) {
+                        if ('Separate' in coords.Date.MonthAndDay) {
+                            if ('Day' in coords.Date.MonthAndDay.Separate)
+                                draw.date.sepday();
+                            if ('Month' in coords.Date.MonthAndDay.Separate)
+                                draw.date.sepmonth();
+                        }
+                        if ('OneLine' in coords.Date.MonthAndDay)
+                            draw.date.oneline();
                     }
-                    if ('OneLine' in coords.Date.MonthAndDay)
-                        draw.date.oneline();
                 }
-            }
+            } catch (e) {}
         }
         $("in-sec").onchange = function() {
             if ($("in-sec").value > 59) $("in-sec").value = 59;
@@ -699,7 +701,7 @@
                             if ('Day' in coords.Date.MonthAndDay.Separate)
                                 draw.date.sepday();
                             if ('Month' in coords.Date.MonthAndDay.Separate)
-                                draw.date.sepnight();
+                                draw.date.sepmonth();
                         }
                         if ('OneLine' in coords.Date.MonthAndDay)
                             draw.date.oneline();
@@ -816,10 +818,23 @@
             setPosN(coords.Date.WeekDay, weekDay, "c_date");
         }
         draw.date.sepday = function() {
-            setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+            //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, day);
+            if (coords.Date.MonthAndDay.TwoDigitsDay)
+                if (!div(day, 10)) {
+                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
+                    t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
+                }
+            renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
         }
-        draw.date.sepnight = function() {
-            setTextPos(coords.Date.MonthAndDay.Separate.Month, month, "c_date");
+        draw.date.sepmonth = function() {
+            var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, month);
+            if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                if (!div(month, 10)) {
+                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
+                    t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
+                }
+            renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
         }
         draw.date.oneline = function() {
             var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
