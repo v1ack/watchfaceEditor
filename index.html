@@ -510,7 +510,7 @@
                 width = 0,
                 t;
             while (value != "") {
-                t = $(el.ImageIndex + Number(value[0])).cloneNode(false);
+                t = $c(el.ImageIndex + Number(value[0]));
                 block.push(t);
                 width += t.width + el.Spacing;
                 value = value.substr(1);
@@ -837,11 +837,11 @@
             renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
         }
         draw.date.oneline = function() {
-            var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
+            var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
             t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
             if (coords.Date.MonthAndDay.TwoDigitsMonth)
                 if (!div(month, 10)) {
-                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                 }
             t.block.push(dot);
@@ -850,7 +850,7 @@
             t.block = t.block.concat(t2.block);
             if (coords.Date.MonthAndDay.TwoDigitsDay)
                 if (!div(day, 10)) {
-                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                 }
             t.width += t2.width;
@@ -866,7 +866,7 @@
         draw.battery.scale = function() {
             var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
             for (var i = 0; i <= end; i++) {
-                t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
+                t = $c(coords.Battery.Scale.StartImageIndex + i);
                 setPos(t, coords.Battery.Scale.Segments[i]);
                 insert(t, "c_battery_scale");
             }
@@ -881,28 +881,28 @@
             drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
         }
         draw.status.alarm = function() {
-            t = $(coords.Status.Alarm.ImageIndexOn).cloneNode(false);
+            t = $c(coords.Status.Alarm.ImageIndexOn);
             t.style.left = coords.Status.Alarm.Coordinates.X + "px";
             t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
             insert(t, "c_stat_alarm");
         }
         draw.status.bt = function() {
             if (bluetooth)
-                t = $(coords.Status.Bluetooth.ImageIndexOn).cloneNode(false);
+                t = $c(coords.Status.Bluetooth.ImageIndexOn);
             else
-                t = $(coords.Status.Bluetooth.ImageIndexOff).cloneNode(false);
+                t = $c(coords.Status.Bluetooth.ImageIndexOff);
             t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
             t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
             insert(t, "c_stat_bt");
         }
         draw.status.dnd = function() {
-            t = $(coords.Status.DoNotDisturb.ImageIndexOn).cloneNode(false);
+            t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
             t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
             t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
             insert(t, "c_stat_dnd");
         }
         draw.status.lock = function() {
-            t = $(coords.Status.Lock.ImageIndexOn).cloneNode(false);
+            t = $c(coords.Status.Lock.ImageIndexOn);
             t.style.left = coords.Status.Lock.Coordinates.X + "px";
             t.style.top = coords.Status.Lock.Coordinates.Y + "px";
             insert(t, "c_stat_lock");
@@ -920,8 +920,8 @@
             setTextPos(coords.Activity.Pulse, pulse, "c_act_pulse");
         }
         draw.activity.distance = function() {
-            var dot = $(coords.Activity.Distance.DecimalPointImageIndex).cloneNode(false),
-                km = $(coords.Activity.Distance.SuffixImageIndex).cloneNode(false);
+            var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
+                km = $c(coords.Activity.Distance.SuffixImageIndex);
             t = makeBlock(coords.Activity.Distance.Number, distance[0]);
             t.block.push(dot);
             t.width += dot.width + coords.Activity.Distance.Number.Spacing;
@@ -933,15 +933,15 @@
             renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
         }
         draw.weather.icon = function() {
-            t = $("weather").cloneNode(false);
+            t = $c("weather");
             t.style.left = coords.Weather.Icon.Coordinates.X + "px";
             t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
             insert(t, "c_weather_icon");
         }
         draw.weather.temp.oneline = function() {
-            var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
-                deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
-                minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+            var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
+                deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
+                minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
             t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
             if (minus != 0) {
                 t.block.splice(0, 0, minus);
@@ -950,7 +950,7 @@
             t.block.push(sep);
             t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
             var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
-            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+            minus = temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
             if (minus != 0) {
                 t2.block.splice(0, 0, minus);
                 t2.width += minus.width;
@@ -962,10 +962,10 @@
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
         }
         draw.weather.temp.sep = function() {
-            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+            var minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
             t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
                 t.block.push(deg);
                 t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
             }
@@ -974,10 +974,10 @@
                 t.width += minus.width;
             }
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
-            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
+            minus = temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
             t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
                 t.block.push(deg);
                 t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
             }
@@ -988,10 +988,10 @@
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
         }
         draw.weather.temp.current = function() {
-            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+            var minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
             t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
+                var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
                 t.block.push(deg);
                 t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
             }
@@ -1016,7 +1016,7 @@
             if (end > coords.StepsProgress.Linear.Segments.length - 1)
                 end = coords.StepsProgress.Linear.Segments.length - 1;
             for (var i = 0; i <= end; i++) {
-                t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
+                t = $c(coords.StepsProgress.Linear.StartImageIndex + i);
                 setPos(t, coords.StepsProgress.Linear.Segments[i]);
                 insert(t, "c_steps_linear");
             }
