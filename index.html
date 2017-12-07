@@ -105,6 +105,7 @@
                         <!--                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>-->
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
                         <button id="makepng" class="uk-button uk-button-default" onclick="makepng()" disabled>Make PNG</button>
+                        <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> With watch</label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <div class="uk-card-badge uk-label">Beta</div>
                             <h3 class="uk-card-title">Settings</h3>
@@ -1028,7 +1029,10 @@
     <script type="text/javascript" src="html2canvas.comp.js"></script>
     <script type="text/javascript">
         function makepng() {
-            html2canvas($("watchfaceblock"), {
+            var el = "watchfaceblock";
+            if ($("makepngwithwatch").checked)
+                el = "watchfaceimage"
+            html2canvas($(el), {
                 onrendered: function(canvas) {
                     ctx = canvas.getContext("2d");
                     savedData = new Image();
@@ -1042,21 +1046,7 @@
                 }
             });
         }
-        function makepngwithwatch() {
-            html2canvas($("watchfaceimage"), {
-                onrendered: function(canvas) {
-                    ctx = canvas.getContext("2d");
-                    savedData = new Image();
-                    savedData.src = canvas.toDataURL("image/png");
-                    var a = document.createElement('a');
-                    a.href = savedData.src;
-                    a.download = wfname + '.png';
-                    a.click();
-                    delete a;
-                    delete savedData;
-                }
-            });
-        }
+
     </script>
 </body>
 
