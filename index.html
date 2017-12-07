@@ -240,12 +240,39 @@
             timeOnClock[1] = t[1];
             analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
             analog[1] = t[1] * 6;
+            $("svg-cont-clock").innerHTML = '';
+            if ('AnalogDialFace' in coords) {
+                if ('Hours' in coords.AnalogDialFace)
+                    draw.analog.hours();
+                if ('Minutes' in coords.AnalogDialFace)
+                    draw.analog.minutes();
+                if ('Seconds' in coords.AnalogDialFace)
+                    draw.analog.seconds();
+            }
+            removeByClass("c_time");
+            if ('Time' in coords)
+                draw.time.time();
         }
         $("in-date").onchange = function() {
             var t = $("in-date").valueAsDate;
             day = t.getDate();
             month = t.getMonth() + 1;
             weekDay = t.getDay() + 1;
+            removeByClass("c_date");
+            if ('Date' in coords) {
+                if ('WeekDay' in coords.Date)
+                    draw.date.weekday();
+                if ('MonthAndDay' in coords.Date) {
+                    if ('Separate' in coords.Date.MonthAndDay) {
+                        if ('Day' in coords.Date.MonthAndDay.Separate)
+                            draw.date.sepday();
+                        if ('Month' in coords.Date.MonthAndDay.Separate)
+                            draw.date.sepnight();
+                    }
+                    if ('OneLine' in coords.Date.MonthAndDay)
+                        draw.date.oneline();
+                }
+            }
         }
         $("in-sec").onchange = function() {
             if ($("in-sec").value > 59) $("in-sec").value = 59;
@@ -254,11 +281,35 @@
             seconds[0] = Number(sec.split("")[0]);
             seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
             analog[2] = sec * 6;
+            $("svg-cont-clock").innerHTML = '';
+            if ('AnalogDialFace' in coords) {
+                if ('Hours' in coords.AnalogDialFace)
+                    draw.analog.hours();
+                if ('Minutes' in coords.AnalogDialFace)
+                    draw.analog.minutes();
+                if ('Seconds' in coords.AnalogDialFace)
+                    draw.analog.seconds();
+            }
+            removeByClass("c_sec");
+            if ('Time' in coords)
+                if ('Seconds' in coords.Time)
+                    draw.time.seconds();
         }
         $("in-battery").onchange = function() {
             if ($("in-battery").value > 100) $("in-battery").value = 100;
             if ($("in-battery").value < 0) $("in-battery").value = 0;
             batteryT = $("in-battery").value;
+            removeByClass("c_battery_icon");
+            removeByClass("c_battery_scale");
+            removeByClass("c_battery_text");
+            if ('Battery' in coords) {
+                if ('Icon' in coords.Battery)
+                    draw.battery.icon();
+                if ('Text' in coords.Battery)
+                    draw.battery.text();
+                if ('Scale' in coords.Battery)
+                    draw.battery.scale();
+            }
         }
         $("in-alarm").onchange = function() {
             alarm = $("in-alarm").checked;
@@ -297,6 +348,14 @@
             if ('Activity' in coords)
                 if ('Steps' in coords.Activity)
                     draw.activity.steps();
+            removeByClass("c_steps_linear");
+            $("svg-cont-steps").innerHTML = '';
+            if ('StepsProgress' in coords) {
+                if ('Circle' in coords.StepsProgress)
+                    draw.stepsprogress.circle();
+                if ('Linear' in coords.StepsProgress)
+                    draw.stepsprogress.linear();
+            }
         }
         $("in-distance").onchange = function() {
             if ($("in-distance").value > 99) $("in-distance").value = 99;
@@ -341,14 +400,36 @@
             if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
             temp[0] = $("in-weatherd").value;
             removeByClass("c_temp");
-            draw.weather();
+            if ('Weather' in coords) {
+                    if ('Icon' in coords.Weather)
+                        draw.weather.icon();
+                    if ('Temperature' in coords.Weather) {
+                        if ('Today' in coords.Weather.Temperature) {
+                            if ('OneLine' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.oneline();
+                            if ('Separate' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.sep();
+                        }
+                        if ('Current' in coords.Weather.Temperature)
+                            draw.weather.temp.current();
+                    }
+                    if ('AirPollution' in coords.Weather)
+                        draw.weather.air();
+                }
         }
         $("in-weathern").onchange = function() {
             if ($("in-weathern").value > 99) $("in-weathern").value = 99;
             if ($("in-weathern").value < -99) $("in-weathern").value = -99;
             temp[1] = $("in-weathern").value;
             removeByClass("c_temp");
-            draw.weather();
+            if ('Weather' in coords)
+                    if ('Temperature' in coords.Weather)
+                        if ('Today' in coords.Weather.Temperature) {
+                            if ('OneLine' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.oneline();
+                            if ('Separate' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.sep();
+                        }
         }
 
         function disableBtn(i) {
@@ -568,92 +649,34 @@
                 $("svg-cont-steps").innerHTML = '';
                 UIkit.notification.closeAll()
                 var t = 0;
-
-                //Background
                 if ('Background' in coords)
                     setPosN(coords.Background.Image, 0, "c_bg");
-
-                //Time
                 if ('Time' in coords) {
-                    if ('Seconds' in coords.Time) {
-                        setPosN(coords.Time.Seconds.Tens, seconds[0], "c_sec");
-                        setPosN(coords.Time.Seconds.Ones, seconds[1], "c_sec");
-                    }
-                    if ('AmPm' in coords.Time) {
-                        var am = 1;
-                        if (Number(timeOnClock[0]) > 12) {
-                            timeOnClock[0] = (Number(timeOnClock[0]) - 12).toString();
-                            if (timeOnClock[0].length == 1)
-                                timeOnClock[0] = "0" + timeOnClock[0];
-                            am = 0;
-                        }
-
-                        t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
-                        setPos(t, coords.Time.AmPm);
-                        insert(t, "c_time_am");
-
-                    }
-                    setPosN(coords.Time.Hours.Tens, Number(timeOnClock[0][0]), "c_time");
-                    setPosN(coords.Time.Hours.Ones, Number(timeOnClock[0][1]), "c_time");
-                    setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]), "c_time");
-                    setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]), "c_time");
+                    if ('Seconds' in coords.Time)
+                        draw.time.seconds();
+                    draw.time.time();
                 }
-
-                //Date
                 if ('Date' in coords) {
-                    //DayOfTheWeek
                     if ('WeekDay' in coords.Date)
-                        setPosN(coords.Date.WeekDay, weekDay, "c_date");
-
-                    //Date
+                        draw.date.weekday();
                     if ('MonthAndDay' in coords.Date) {
                         if ('Separate' in coords.Date.MonthAndDay) {
                             if ('Day' in coords.Date.MonthAndDay.Separate)
-                                setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+                                draw.date.sepday();
                             if ('Month' in coords.Date.MonthAndDay.Separate)
-                                setTextPos(coords.Date.MonthAndDay.Separate.Month, month, "c_date");
+                                draw.date.sepnight();
                         }
-                        if ('OneLine' in coords.Date.MonthAndDay) {
-                            var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
-                            t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
-                            if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                                if (!div(month, 10)) {
-                                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
-                                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                                }
-                            t.block.push(dot);
-                            t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
-                            t.block = t.block.concat(t2.block);
-                            if (coords.Date.MonthAndDay.TwoDigitsDay)
-                                if (!div(day, 10)) {
-                                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
-                                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                                }
-                            t.width += t2.width;
-                            renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
-                        }
+                        if ('OneLine' in coords.Date.MonthAndDay)
+                            draw.date.oneline();
                     }
                 }
-
-                //Battery
                 if ('Battery' in coords) {
-                    if ('Icon' in coords.Battery) {
-                        var battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
-                        setPosN(coords.Battery.Icon, battery, "c_battery");
-                    }
-                    //Text
-                    if ('Text' in coords.Battery) {
-                        setTextPos(coords.Battery.Text, batteryT, "c_battery");
-                    }
-                    if ('Scale' in coords.Battery) {
-                        var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
-                        for (var i = 0; i <= end; i++) {
-                            t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
-                            setPos(t, coords.Battery.Scale.Segments[i]);
-                            insert(t, "c_battery");
-                        }
-                    }
+                    if ('Icon' in coords.Battery)
+                        draw.battery.icon();
+                    if ('Text' in coords.Battery)
+                        draw.battery.text();
+                    if ('Scale' in coords.Battery)
+                        draw.battery.scale();
                 }
 
                 if ('Status' in coords) {
@@ -666,8 +689,6 @@
                     if ('Lock' in coords.Status && lock)
                         draw.status.lock();
                 }
-
-                //Activity
                 if ('Activity' in coords) {
                     if ('Calories' in coords.Activity)
                         draw.activity.cal();
@@ -680,14 +701,28 @@
                     if ('Distance' in coords.Activity)
                         draw.activity.distance();
                 }
-
-                //WeatherText
-                draw.weather();
-
-                //StepsProgress
-                draw.steps();
-
-                //Analog clock
+                if ('Weather' in coords) {
+                    if ('Icon' in coords.Weather)
+                        draw.weather.icon();
+                    if ('Temperature' in coords.Weather) {
+                        if ('Today' in coords.Weather.Temperature) {
+                            if ('OneLine' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.oneline();
+                            if ('Separate' in coords.Weather.Temperature.Today)
+                                draw.weather.temp.sep();
+                        }
+                        if ('Current' in coords.Weather.Temperature)
+                            draw.weather.temp.current();
+                    }
+                    if ('AirPollution' in coords.Weather)
+                        draw.weather.air();
+                }
+                if ('StepsProgress' in coords) {
+                    if ('Circle' in coords.StepsProgress)
+                        draw.stepsprogress.circle();
+                    if ('Linear' in coords.StepsProgress)
+                        draw.stepsprogress.linear();
+                }
                 if ('AnalogDialFace' in coords) {
                     if ('Hours' in coords.AnalogDialFace)
                         draw.analog.hours();
@@ -711,7 +746,81 @@
         draw.activity = {};
         draw.status = {};
         draw.analog = {};
+        draw.battery = {};
+        draw.date = {};
+        draw.time = {};
+        draw.stepsprogress = {};
+        draw.weather = {};
+        draw.weather.temp = {};
 
+        draw.time.time = function() {
+            if ('AmPm' in coords.Time) {
+                var am = 1;
+                if (Number(timeOnClock[0]) > 12) {
+                    timeOnClock[0] = (Number(timeOnClock[0]) - 12).toString();
+                    if (timeOnClock[0].length == 1)
+                        timeOnClock[0] = "0" + timeOnClock[0];
+                    am = 0;
+                }
+
+                t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
+                setPos(t, coords.Time.AmPm);
+                insert(t, "c_time_am");
+
+            }
+            setPosN(coords.Time.Hours.Tens, Number(timeOnClock[0][0]), "c_time");
+            setPosN(coords.Time.Hours.Ones, Number(timeOnClock[0][1]), "c_time");
+            setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]), "c_time");
+            setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]), "c_time");
+        }
+        draw.time.seconds = function() {
+            setPosN(coords.Time.Seconds.Tens, seconds[0], "c_sec");
+            setPosN(coords.Time.Seconds.Ones, seconds[1], "c_sec");
+        }
+        draw.date.weekday = function() {
+            setPosN(coords.Date.WeekDay, weekDay, "c_date");
+        }
+        draw.date.sepday = function() {
+            setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+        }
+        draw.date.sepnight = function() {
+            setTextPos(coords.Date.MonthAndDay.Separate.Month, month, "c_date");
+        }
+        draw.date.oneline = function() {
+            var dot = $(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex).cloneNode(false);
+            t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
+            if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                if (!div(month, 10)) {
+                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                }
+            t.block.push(dot);
+            t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
+            t.block = t.block.concat(t2.block);
+            if (coords.Date.MonthAndDay.TwoDigitsDay)
+                if (!div(day, 10)) {
+                    t.block.splice(-1, 0, $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).cloneNode(false));
+                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                }
+            t.width += t2.width;
+            renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
+        }
+        draw.battery.icon = function() {
+            var battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+            setPosN(coords.Battery.Icon, battery, "c_battery_icon");
+        }
+        draw.battery.text = function() {
+            setTextPos(coords.Battery.Text, batteryT, "c_battery_text");
+        }
+        draw.battery.scale = function() {
+            var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
+            for (var i = 0; i <= end; i++) {
+                t = $(coords.Battery.Scale.StartImageIndex + i).cloneNode(false);
+                setPos(t, coords.Battery.Scale.Segments[i]);
+                insert(t, "c_battery_scale");
+            }
+        }
         draw.analog.hours = function() {
             drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
         }
@@ -773,108 +882,93 @@
             t.width += km.width;
             renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
         }
-        draw.weather = function() {
-            if ('Weather' in coords) {
-                if ('Icon' in coords.Weather) {
-                    t = $("weather").cloneNode(false);
-                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-                    insert(t, "c_weather_icon");
-                }
-                if ('Temperature' in coords.Weather) {
-                    if ('Today' in coords.Weather.Temperature) {
-                        if ('OneLine' in coords.Weather.Temperature.Today) {
-                            var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
-                                deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
-                                minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
-                            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            t.block.push(sep);
-                            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-                            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
-                            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
-                            if (minus != 0) {
-                                t2.block.splice(0, 0, minus);
-                                t2.width += minus.width;
-                            }
-                            t.block = t.block.concat(t2.block);
-                            t.width += t2.width;
-                            t.block.push(deg);
-                            t.width += deg.width;
-                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
-                        }
-                        if ('Separate' in coords.Weather.Temperature.Today) {
-                            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
-                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
-                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                                var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
-                                t.block.push(deg);
-                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
-                            }
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
-                            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
-                            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
-                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                                var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
-                                t.block.push(deg);
-                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-                            }
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
-                        }
-                    }
-                    if ('Current' in coords.Weather.Temperature) {
-                        var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
-                        t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                            var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
-                        }
-                        if (minus != 0) {
-                            t.block.splice(0, 0, minus);
-                            t.width += minus.width;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
-                    }
-                }
-                if ('AirPollution' in coords.Weather)
-                    setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
-            }
+        draw.weather.icon = function() {
+            t = $("weather").cloneNode(false);
+            t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+            t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+            insert(t, "c_weather_icon");
         }
-        draw.steps = function() {
-            if ('StepsProgress' in coords) {
-                if ('Circle' in coords.StepsProgress) {
-                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                    var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI);
-                    var fill = Math.round(steps / (stepsgoal / full));
-                    if (fill > full) fill = full;
-                    $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
-                }
-                /*if ('Circle' in coords.StepsProgress) {
-                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-                    $('svg-cont').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + (coords.StepsProgress.Circle.RadiusX - div(coords.StepsProgress.Circle.Width, 2)) + "\" ry=\"" + (coords.StepsProgress.Circle.RadiusY - div(coords.StepsProgress.Circle.Width, 2)) + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"25% 75%\" stroke-linecap=\"round\"></ellipse>";
-                }*/
-                if ('Linear' in coords.StepsProgress) {
-                    var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
-                    if (end > coords.StepsProgress.Linear.Segments.length - 1)
-                        end = coords.StepsProgress.Linear.Segments.length - 1;
-                    for (var i = 0; i <= end; i++) {
-                        t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
-                        setPos(t, coords.StepsProgress.Linear.Segments[i]);
-                        insert(t, "c_steps_linar");
-                    }
-                }
+        draw.weather.temp.oneline = function() {
+            var sep = $(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex).cloneNode(false),
+                deg = $(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex).cloneNode(false),
+                minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
+            if (minus != 0) {
+                t.block.splice(0, 0, minus);
+                t.width += minus.width;
+            }
+            t.block.push(sep);
+            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
+            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex).cloneNode(false) : 0;
+            if (minus != 0) {
+                t2.block.splice(0, 0, minus);
+                t2.width += minus.width;
+            }
+            t.block = t.block.concat(t2.block);
+            t.width += t2.width;
+            t.block.push(deg);
+            t.width += deg.width;
+            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
+        }
+        draw.weather.temp.sep = function() {
+            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
+            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                var deg = $(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex).cloneNode(false);
+                t.block.push(deg);
+                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+            }
+            if (minus != 0) {
+                t.block.splice(0, 0, minus);
+                t.width += minus.width;
+            }
+            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
+            minus = temp[1] < 0 ? $(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex).cloneNode(false) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
+            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                var deg = $(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex).cloneNode(false);
+                t.block.push(deg);
+                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+            }
+            if (minus != 0) {
+                t.block.splice(0, 0, minus);
+                t.width += minus.width;
+            }
+            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
+        }
+        draw.weather.temp.current = function() {
+            var minus = temp[0] < 0 ? $(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex).cloneNode(false) : 0;
+            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
+            if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
+                var deg = $(coords.Weather.Temperature.Current.DegreesImageIndex).cloneNode(false);
+                t.block.push(deg);
+                t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+            }
+            if (minus != 0) {
+                t.block.splice(0, 0, minus);
+                t.width += minus.width;
+            }
+            renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
+        }
+        draw.weather.air = function() {
+            setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
+        }
+        draw.stepsprogress.circle = function() {
+            var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
+            var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI);
+            var fill = Math.round(steps / (stepsgoal / full));
+            if (fill > full) fill = full;
+            $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
+        }
+        draw.stepsprogress.linear = function() {
+            var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+            if (end > coords.StepsProgress.Linear.Segments.length - 1)
+                end = coords.StepsProgress.Linear.Segments.length - 1;
+            for (var i = 0; i <= end; i++) {
+                t = $(coords.StepsProgress.Linear.StartImageIndex + i).cloneNode(false);
+                setPos(t, coords.StepsProgress.Linear.Segments[i]);
+                insert(t, "c_steps_linear");
             }
         }
 
