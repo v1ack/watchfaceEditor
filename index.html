@@ -102,7 +102,7 @@
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                         </div>
                         <br>
-<!--                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>-->
+                        <!--                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>-->
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
                         <button id="makepng" class="uk-button uk-button-default" onclick="makepng()" disabled>Make PNG</button>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
@@ -489,13 +489,12 @@
         }
 
         function disableBtn(i) {
-            if (i){
+            if (i) {
                 //$("make").removeAttribute("disabled");
                 $("makepng").removeAttribute("disabled");
                 $("viewsettings").removeAttribute("disabled");
                 setTimeout(makeWf, 100);
-            }
-            else{
+            } else {
                 //$("make").setAttribute("disabled", "");
                 $("makepng").setAttribute("disabled", "");
                 $("viewsettings").setAttribute("disabled", "");
@@ -563,21 +562,22 @@
         }
 
         function clearjs() {
-            if (edgeBrowser) {
-                if ($('inputjs') != null)
-                    $('inputjs').value = '';
-            } else
-                $('inputjs').innerHTML = $('inputjs').innerHTML;
+            $('inputjs').value = '';
             coords = 0;
+            jsset = 0;
+            if ($('inputjs').nextElementSibling.classList.contains("uk-label-success"))
+                $('inputjs').nextElementSibling.classList.remove("uk-label-success");
+            $('inputjs').nextElementSibling.classList.add("uk-button-danger");
+            disableBtn(0);
         }
 
         function clearimg() {
-            if (edgeBrowser) {
-                if ($('inputimages') != null)
-                    $('inputimages').value = '';
-            } else
-                $('inputimages').innerHTML = $('inputimages').innerHTML;
+            $('inputimages').value = '';
+            imagesset = 0;
+            if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
+            $('inputimages').nextElementSibling.classList.add("uk-button-danger");
             $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
+            disableBtn(0);
         }
 
         function div(a, b) {
@@ -607,24 +607,10 @@
                     renderImage(this.files[i]);
                     i++;
                 }
-                UIkit.notification("Images loaded", {
-                    status: 'success',
-                    pos: 'top-left',
-                    timeout: 2000
-                });
                 imagesset = 1;
                 if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
                     $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
                 $('inputimages').nextElementSibling.classList.add("uk-label-success");
-            } else {
-                UIkit.notification("Images not selected", {
-                    status: 'warning',
-                    pos: 'top-left',
-                    timeout: 2000
-                });
-                imagesset = 0;
-                if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
-                $('inputimages').nextElementSibling.classList.add("uk-button-danger");
             }
             if (imagesset && jsset)
                 disableBtn(1);
@@ -642,24 +628,10 @@
                 };
                 reader.readAsText(this.files[0]);
                 delete reader;
-                UIkit.notification("JSON loaded", {
-                    status: 'success',
-                    pos: 'top-left',
-                    timeout: 2000
-                });
                 jsset = 1;
                 if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
                     $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
                 $('inputjs').nextElementSibling.classList.add("uk-label-success");
-            } else {
-                UIkit.notification("JSON not selected", {
-                    status: 'warning',
-                    pos: 'top-left',
-                    timeout: 2000
-                });
-                jsset = 0;
-                if ($('inputjs').nextElementSibling.classList.contains("uk-label-success")) $('inputjs').nextElementSibling.classList.remove("uk-label-success");
-                $('inputjs').nextElementSibling.classList.add("uk-button-danger");
             }
             if (imagesset && jsset)
                 disableBtn(1);
