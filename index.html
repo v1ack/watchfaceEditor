@@ -48,152 +48,163 @@
     <script src="uikit/uikit.min.js"></script>
 </head>
 
-<body class="uk-container uk-position-relative">
-    <main class="uk-grid">
-        <div class="uk-width-auto uk-first-column">
-            <div id="watchfaceimage">
-                <div id="watchfaceblock">
-                    <div id="watchface"></div>
-                    <div class="watchface-cover">
-                        <svg id="svg-cont-clock" width="176" height="176"></svg>
-                    </div>
-                    <div class="watchface-cover" style="top: 0;position: relative;">
-                        <svg id="svg-cont-steps" width="176" height="176"></svg>
+<body>
+    <div class="uk-section-primary uk-preserve-color">
+        <nav class="uk-navbar-container"  style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
+            <div class="uk-container uk-container-expand">
+                <div uk-navbar>
+                    <a class="uk-navbar-item uk-logo" href="#" style="color: white">Bip watchface view</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <main class="uk-container uk-position-relative uk-margin-top">
+        <div class="uk-grid">
+            <div class="uk-width-auto uk-first-column">
+                <div id="watchfaceimage">
+                    <div id="watchfaceblock">
+                        <div id="watchface"></div>
+                        <div class="watchface-cover">
+                            <svg id="svg-cont-clock" width="176" height="176"></svg>
+                        </div>
+                        <div class="watchface-cover" style="top: 0;position: relative;">
+                            <svg id="svg-cont-steps" width="176" height="176"></svg>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="inputblock" class="uk-width-expand uk-padding">
-            <ul class="uk-tab" uk-switcher="connect: .switcher-container">
-                <li><a href="#">View</a></li>
-                <li class="uk-disabled"><a href="#">Edit</a></li>
-            </ul>
-            <ul class="uk-switcher switcher-container uk-margin">
-                <li>
-                    <div class="js-upload" uk-form-custom>
-                        <span>Images: </span>
-                        <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
-                        <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
-                    </div>
-                    <br>
-                    <div class="js-upload uk-margin" uk-form-custom>
-                        <span>JSON: </span>
-                        <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
-                        <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
-                    </div>
-                    <br>
-                    <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
-                    <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
-                    <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
-                    <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
-                        <div class="uk-card-badge uk-label">Beta</div>
-                        <h3 class="uk-card-title">Settings</h3>
-                        <form class="uk-grid-small" uk-grid>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Time</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-time" type="time" value="20:38">
+            <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
+                <ul class="uk-tab" uk-switcher="connect: .switcher-container">
+                    <li><a href="#">View</a></li>
+                    <li class="uk-disabled"><a href="#">Edit</a></li>
+                </ul>
+                <ul class="uk-switcher switcher-container uk-margin">
+                    <li>
+                        <div class="js-upload" uk-form-custom>
+                            <span>Images: </span>
+                            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
+                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+                        </div>
+                        <br>
+                        <div class="js-upload uk-margin" uk-form-custom>
+                            <span>JSON: </span>
+                            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
+                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+                        </div>
+                        <br>
+                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
+                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
+                        <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
+                            <div class="uk-card-badge uk-label">Beta</div>
+                            <h3 class="uk-card-title">Settings</h3>
+                            <form class="uk-grid-small" uk-grid>
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Time</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-time" type="time" value="20:38">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Date</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-date" type="date" value="2017-12-06">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Date</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Battery</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Battery</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Calories</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Calories</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Steps</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Steps</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Steps goal</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Steps goal</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Pulse</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Pulse</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Distance</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Distance</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Weather day</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Weather day</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Weather night</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Weather night</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Seconds</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Seconds</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label">Status</label>
-                                <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
-                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
-                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
-                                    <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label">Status</label>
+                                    <div class="uk-form-controls uk-child-width-auto uk-grid">
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-                <li>
-                    <ul uk-accordion>
-                        <li class="uk-open">
-                            <h3 class="uk-accordion-title">Item 1</h3>
-                            <div class="uk-accordion-content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <h3 class="uk-accordion-title">Item 2</h3>
-                            <div class="uk-accordion-content">
-                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <h3 class="uk-accordion-title">Item 3</h3>
-                            <div class="uk-accordion-content">
-                                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <ul uk-accordion>
+                            <li class="uk-open">
+                                <h3 class="uk-accordion-title">Item 1</h3>
+                                <div class="uk-accordion-content">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 class="uk-accordion-title">Item 2</h3>
+                                <div class="uk-accordion-content">
+                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 class="uk-accordion-title">Item 3</h3>
+                                <div class="uk-accordion-content">
+                                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
-        </div>
-        <div id="allimages" class="uk-invisible">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
+            </div>
+            <div id="allimages" class="uk-invisible">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
+            </div>
         </div>
     </main>
     <script>
@@ -401,21 +412,21 @@
             temp[0] = $("in-weatherd").value;
             removeByClass("c_temp");
             if ('Weather' in coords) {
-                    if ('Icon' in coords.Weather)
-                        draw.weather.icon();
-                    if ('Temperature' in coords.Weather) {
-                        if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.oneline();
-                            if ('Separate' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.sep();
-                        }
-                        if ('Current' in coords.Weather.Temperature)
-                            draw.weather.temp.current();
+                if ('Icon' in coords.Weather)
+                    draw.weather.icon();
+                if ('Temperature' in coords.Weather) {
+                    if ('Today' in coords.Weather.Temperature) {
+                        if ('OneLine' in coords.Weather.Temperature.Today)
+                            draw.weather.temp.oneline();
+                        if ('Separate' in coords.Weather.Temperature.Today)
+                            draw.weather.temp.sep();
                     }
-                    if ('AirPollution' in coords.Weather)
-                        draw.weather.air();
+                    if ('Current' in coords.Weather.Temperature)
+                        draw.weather.temp.current();
                 }
+                if ('AirPollution' in coords.Weather)
+                    draw.weather.air();
+            }
         }
         $("in-weathern").onchange = function() {
             if ($("in-weathern").value > 99) $("in-weathern").value = 99;
@@ -423,13 +434,13 @@
             temp[1] = $("in-weathern").value;
             removeByClass("c_temp");
             if ('Weather' in coords)
-                    if ('Temperature' in coords.Weather)
-                        if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.oneline();
-                            if ('Separate' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.sep();
-                        }
+                if ('Temperature' in coords.Weather)
+                    if ('Today' in coords.Weather.Temperature) {
+                        if ('OneLine' in coords.Weather.Temperature.Today)
+                            draw.weather.temp.oneline();
+                        if ('Separate' in coords.Weather.Temperature.Today)
+                            draw.weather.temp.sep();
+                    }
         }
 
         function disableBtn(i) {
