@@ -1042,7 +1042,21 @@
                 }
             });
         }
-
+        function makepngwithwatch() {
+            html2canvas($("watchfaceimage"), {
+                onrendered: function(canvas) {
+                    ctx = canvas.getContext("2d");
+                    savedData = new Image();
+                    savedData.src = canvas.toDataURL("image/png");
+                    var a = document.createElement('a');
+                    a.href = savedData.src;
+                    a.download = wfname + '.png';
+                    a.click();
+                    delete a;
+                    delete savedData;
+                }
+            });
+        }
     </script>
 </body>
 
