@@ -102,9 +102,9 @@
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                         </div>
                         <br>
-                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>
-                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade">Settings</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng()">Make PNG</button>
+<!--                        <button id="make" class="uk-button uk-button-primary" onclick="makeWf()" disabled>Load</button>-->
+                        <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng()" disabled>Make PNG</button>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <div class="uk-card-badge uk-label">Beta</div>
                             <h3 class="uk-card-title">Settings</h3>
@@ -192,7 +192,42 @@
                             <li class="uk-open">
                                 <h3 class="uk-accordion-title">Time</h3>
                                 <div class="uk-accordion-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    <form>
+                                        <fieldset class="uk-fieldset">
+
+                                            <legend class="uk-legend">Legend</legend>
+
+                                            <div class="uk-margin">
+                                                <input class="uk-input" type="text" placeholder="Input">
+                                            </div>
+
+                                            <div class="uk-margin">
+                                                <select class="uk-select">
+                                                    <option>Option 01</option>
+                                                    <option>Option 02</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="uk-margin">
+                                                <textarea class="uk-textarea" rows="5" placeholder="Textarea"></textarea>
+                                            </div>
+
+                                            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                                                <label><input class="uk-radio" type="radio" name="radio2" checked> A</label>
+                                                <label><input class="uk-radio" type="radio" name="radio2"> B</label>
+                                            </div>
+
+                                            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                                                <label><input class="uk-checkbox" type="checkbox" checked> A</label>
+                                                <label><input class="uk-checkbox" type="checkbox"> B</label>
+                                            </div>
+
+                                            <div class="uk-margin">
+                                                <input class="uk-range" type="range" value="2" min="0" max="10" step="0.1">
+                                            </div>
+
+                                        </fieldset>
+                                    </form>
                                 </div>
                             </li>
                             <li>
@@ -454,10 +489,17 @@
         }
 
         function disableBtn(i) {
-            if (i)
-                $("make").removeAttribute("disabled");
-            else
-                $("make").setAttribute("disabled", "");
+            if (i){
+                //$("make").removeAttribute("disabled");
+                $("makepng").removeAttribute("disabled");
+                $("viewsettings").removeAttribute("disabled");
+                setTimeout(makeWf, 100);
+            }
+            else{
+                //$("make").setAttribute("disabled", "");
+                $("makepng").setAttribute("disabled", "");
+                $("viewsettings").setAttribute("disabled", "");
+            }
         }
         var coords;
 
@@ -509,7 +551,7 @@
             } else if (el.Alignment == 24) {
                 block.reverse();
                 offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
-                console.log(offset);
+                //console.log(offset);
                 while (block.length) {
                     t = block.pop();
                     t.style.left = el.TopLeftX + offset + "px";
@@ -560,7 +602,7 @@
         $('inputimages').onchange = function() {
             if (this.files.length) {
                 var i = 0;
-                console.log(this.files);
+                console.log("Images count: ", this.files.length);
                 while (i < this.files.length) {
                     renderImage(this.files[i]);
                     i++;
@@ -591,8 +633,8 @@
         }
         $('inputjs').onchange = function() {
             if (this.files.length) {
-                console.log(this.files);
                 wfname = this.files[0].name.split(".")[0];
+                console.log("Watchface name: ", wfname);
                 document.title = "Watchface view " + wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
