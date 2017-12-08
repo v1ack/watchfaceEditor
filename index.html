@@ -53,16 +53,35 @@
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
                 <div uk-navbar>
-                    <a class="uk-navbar-item uk-logo" href="#" style="color: white">Bip watchface view</a>
-                    <a class="uk-navbar-right" style="color: white" href="#modal-example" uk-toggle>Send feedback</a>
-                    <div id="modal-example" uk-modal>
-                        <div class="uk-modal-dialog uk-modal-body">
-                            <h2 class="uk-modal-title">Feedback</h2>
-                            <p>You can send feedback by Telegram to <a href="https://t.me/vlack">@vlack</a></p>
-                            <p class="uk-text-right">
-                                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-                            </p>
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-item uk-logo" href="#" style="color: white">Bip watchface view</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle>How to use</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-feedback" uk-toggle>Send feedback</a>
+                        <div id="modal-howto" uk-modal>
+                            <div class="uk-modal-dialog uk-modal-body">
+                                <h2 class="uk-modal-title">How to use</h2>
+                                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)</p>
+                                <p class="uk-text-right">
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                                </p>
+                            </div>
                         </div>
+                        <div id="modal-feedback" uk-modal>
+                            <div class="uk-modal-dialog uk-modal-body">
+                                <h2 class="uk-modal-title">Feedback</h2>
+                                <p>You can send feedback by Telegram to <a href="https://t.me/vlack">@vlack</a></p>
+                                <p class="uk-text-right">
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-navbar-right">
+                        <ul class="uk-navbar-nav">
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white">Home</a>
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/manual/" style="color: white">Manual</a>
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/watchface/upLoad/" style="color: white">Upload</a>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -1008,8 +1027,8 @@
             setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
         }
         draw.stepsprogress.circle = function() {
-            var col = coords.StepsProgress.Circle.Color.replace("0x", "#");
-            var full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
+            var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
+                full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
             var fill = Math.round(steps / (stepsgoal / full));
             if (fill > full) fill = full;
             $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
