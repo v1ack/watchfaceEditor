@@ -69,7 +69,7 @@
                             <div class="uk-modal-dialog uk-modal-body">
                                 <h2 class="uk-modal-title">How to use</h2>
                                 <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)
-                                <br><br>Also you can edit JSON on tab <b>Code</b>. To update preview just click out of JSON input</p>
+                                <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
                                 <p class="uk-text-right">
                                     <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
                                 </p>
@@ -114,8 +114,8 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init.time();"><a href="#">Edit</a></li>
-                    <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Code</a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init.time();"><a href="#">Design</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -362,7 +362,7 @@
                     <li>
                         <div class="uk-margin">
                             <pre contenteditable="true" id="codearea"></pre>
-                            <button class="uk-button uk-button-primar" onclick="exportjs()">Export JSON</button>
+                            <button class="uk-button uk-button-primary" onclick="exportjs()">Export JSON</button>
                         </div>
                     </li>
                 </ul>
@@ -390,6 +390,7 @@
         function $c(el) {
             return document.getElementById(el).cloneNode(false);
         }
+        var firstopen = 1;
         var jsset = 0,
             imagesset = 0,
             wfname = "wanchface";
@@ -1308,6 +1309,12 @@
                     var a = document.createElement('a');
                     a.href = savedData.src;
                     a.download = wfname + '.png';
+                    console.log(a);
+                    if(edgeBrowser){
+                        a.innerHTML = "Download PNG";
+                        $("inputblock").appendChild(a);
+                    }
+                    else
                     a.click();
                     delete a;
                     delete savedData;
@@ -1324,6 +1331,14 @@
 
         function fillarea() {
             $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            if(firstopen){
+                UIkit.notification("To update preview just click out of JSON input", {
+                status: 'primary',
+                pos: 'top-left',
+                timeout: 3000
+            });
+                firstopen = 0;
+            }
         }
         $("codearea").onblur = function(){
             coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
@@ -1349,7 +1364,6 @@
                 return '<span class="' + cls + '">' + match + '</span>';
             });
         }
-
     </script>
 </body>
 
