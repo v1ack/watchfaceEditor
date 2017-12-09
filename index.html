@@ -42,6 +42,14 @@
             height: 176px;
             width: 176px;
         }
+        #codearea{
+            height: 430px;
+        }
+        .string { color: green; }
+.number { color: #2CB3FC; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: #0234D9; }
 
     </style>
     <link href="uikit/uikit.min.css" rel="stylesheet">
@@ -106,6 +114,7 @@
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init.time();"><a href="#">Edit</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Code</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -333,17 +342,26 @@
                             <li>
                                 <h3 class="uk-accordion-title">Date</h3>
                                 <div class="uk-accordion-content">
-                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                                    <div class="uk-alert-warning" uk-alert>
+                                        <h3>In development</h3>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <h3 class="uk-accordion-title">Status</h3>
                                 <div class="uk-accordion-content">
-                                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
+                                    <div class="uk-alert-warning" uk-alert>
+                                        <h3>In development</h3>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
                         <button id="exportjs" class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
+                    </li>
+                    <li>
+                        <div class="uk-margin">
+                            <pre contenteditable="true" id="codearea"></pre>
+                        </div>
                     </li>
                 </ul>
 
@@ -598,11 +616,13 @@
                 //$("editbutton").classList.remove("uk-disabled");
                 $("makepng").removeAttribute("disabled");
                 $("viewsettings").removeAttribute("disabled");
+                $("codeopenbutton").classList.remove("uk-disabled");
                 setTimeout(makeWf, 100);
             } else {
                 $("editbutton").classList.add("uk-disabled");
                 $("makepng").setAttribute("disabled", "");
                 $("viewsettings").setAttribute("disabled", "");
+                $("codeopenbutton").classList.add("uk-disabled");
             }
         }
         var coords;
@@ -896,7 +916,7 @@
         draw.time.time = function() {
             var ntimeOnClock = timeOnClock[0];
             if ('AmPm' in coords.Time) {
-                var am = 1;                    
+                var am = 1;
                 if (Number(ntimeOnClock) > 12) {
                     ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
                     if (ntimeOnClock.length == 1)
@@ -1295,9 +1315,37 @@
 
         function exportjs() {
             var a = document.createElement('a');
-            a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords));
+            a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
             a.download = wfname + '.json';
             a.click();
+        }
+
+        function fillarea() {
+            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+        }
+        $("codearea").onblur = function(){
+            coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
+            makeWf();
+            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+        }
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
         }
 
     </script>
