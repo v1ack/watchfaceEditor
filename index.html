@@ -650,7 +650,7 @@
 
         function renderBlock(block, width, el, cls) {
             var t, offset = 0;
-            if (el.Alignment == 18) {
+            if (el.Alignment == 18 || el.Alignment == "TopLeft") {
                 block.reverse();
                 while (block.length) {
                     t = block.pop();
@@ -659,7 +659,7 @@
                     insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
-            } else if (el.Alignment == 20) {
+            } else if (el.Alignment == 20|| el.Alignment == "TopRight") {
                 while (block.length) {
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
@@ -675,7 +675,7 @@
                     insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
-            } else if (el.Alignment == 24) {
+            } else if (el.Alignment == 24 || el.Alignment == "TopCenter") {
                 block.reverse();
                 offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
                 //console.log(offset);
@@ -722,7 +722,7 @@
             var reader = new FileReader();
             reader.onload = function(event) {
                 the_url = event.target.result;
-                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
+                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
             }
             reader.readAsDataURL(file);
             delete reader;
