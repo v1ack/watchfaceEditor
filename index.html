@@ -18,6 +18,7 @@
         img {
             position: absolute;
             top: 180px;
+            image-rendering: pixelated;
         }
 
         #watchfaceimage {
@@ -42,14 +43,30 @@
             height: 176px;
             width: 176px;
         }
-        #codearea{
+
+        #codearea {
             height: 370px;
         }
-        .string { color: green; }
-.number { color: #2CB3FC; }
-.boolean { color: blue; }
-.null { color: magenta; }
-.key { color: #0234D9; }
+
+        .string {
+            color: #C431D8;
+        }
+
+        .number {
+            color: #2CB3FC;
+        }
+
+        .boolean {
+            color: #2A4FF4;
+        }
+
+        .null {
+            color: #D22830;
+        }
+
+        .key {
+            color: #0234D9;
+        }
 
     </style>
     <link href="uikit/uikit.min.css" rel="stylesheet">
@@ -69,7 +86,7 @@
                             <div class="uk-modal-dialog uk-modal-body">
                                 <h2 class="uk-modal-title">How to use</h2>
                                 <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)
-                                <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
+                                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
                                 <p class="uk-text-right">
                                     <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
                                 </p>
@@ -132,7 +149,7 @@
                         </div>
                         <br>
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng()" disabled>Make PNG</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng();" disabled>Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> With watch</label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <div class="uk-card-badge uk-label">Beta</div>
@@ -374,6 +391,12 @@
         </div>
     </main>
     <script type="text/javascript">
+        function addScript(url){
+            var e = document.createElement("script");
+            e.src = url;
+            e.type = "text/javascript";
+            document.getElementsByTagName("head")[0].appendChild(e);
+        }
         var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? 1 : 0;
         if (edgeBrowser) {
             UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
@@ -381,6 +404,8 @@
                 pos: 'top-left',
                 timeout: 7500
             });
+            addScript("js/FileSaver.min.js");
+            addScript("js/canvas-toBlob.js");
         }
 
         function $(el) {
@@ -620,7 +645,7 @@
                 $("makepng").removeAttribute("disabled");
                 $("viewsettings").removeAttribute("disabled");
                 $("codeopenbutton").classList.remove("uk-disabled");
-                setTimeout(makeWf, 100);
+                setTimeout(makeWf, 200);
             } else {
                 $("editbutton").classList.add("uk-disabled");
                 $("makepng").setAttribute("disabled", "");
@@ -659,7 +684,7 @@
                     insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
-            } else if (el.Alignment == 20|| el.Alignment == "TopRight") {
+            } else if (el.Alignment == 20 || el.Alignment == "TopRight") {
                 while (block.length) {
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
@@ -1295,75 +1320,81 @@
         }
 
     </script>
-    <script type="text/javascript" src="html2canvas.comp.js"></script>
+    <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript">
         function makepng() {
             var el = "watchfaceblock";
             if ($("makepngwithwatch").checked)
                 el = "watchfaceimage"
             html2canvas($(el), {
-                onrendered: function(canvas) {
-                    ctx = canvas.getContext("2d");
-                    savedData = new Image();
-                    savedData.src = canvas.toDataURL("image/png");
+                    onrendered: function(canvas) {
+                        ctx = canvas.getContext("2d");
+                        savedData = new Image();
+                        savedData.src = canvas.toDataURL("image/png");
+                        if (edgeBrowser) {
+                            canvas.toBlob(function(blob) {
+                                saveAs(blob, wfname + ".png");
+                            });
+                        } else {
+                            var a = document.createElement('a');
+                            a.href = savedData.src;
+                            a.download = wfname + '.png';
+                            a.click();
+                            delete a;
+                            delete savedData;
+                        }
+                    }});}
+
+            function exportjs() {
+                if (edgeBrowser) {
+                    var blob = new Blob([JSON.stringify(coords, null, 4)], {
+                        type: "text/plain;charset=utf-8"
+                    });
+                    saveAs(blob, wfname + '.json');
+                } else {
                     var a = document.createElement('a');
-                    a.href = savedData.src;
-                    a.download = wfname + '.png';
-                    console.log(a);
-                    if(edgeBrowser){
-                        a.innerHTML = "Download PNG";
-                        $("inputblock").appendChild(a);
-                    }
-                    else
+                    a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
+                    a.download = wfname + '.json';
                     a.click();
-                    delete a;
-                    delete savedData;
                 }
-            });
-        }
-
-        function exportjs() {
-            var a = document.createElement('a');
-            a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
-            a.download = wfname + '.json';
-            a.click();
-        }
-
-        function fillarea() {
-            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            if(firstopen){
-                UIkit.notification("To update preview just click out of JSON input", {
-                status: 'primary',
-                pos: 'top-left',
-                timeout: 3000
-            });
-                firstopen = 0;
             }
-        }
-        $("codearea").onblur = function(){
-            coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
-            makeWf();
-            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-        }
 
-        function syntaxHighlight(json) {
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
+            function fillarea() {
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                if (firstopen) {
+                    UIkit.notification("To update preview just click out of JSON input", {
+                        status: 'primary',
+                        pos: 'top-left',
+                        timeout: 3000
+                    });
+                    firstopen = 0;
                 }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
+            }
+            $("codearea").onblur = function() {
+                coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
+                makeWf();
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            }
+
+            function syntaxHighlight(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
+
     </script>
 </body>
 
