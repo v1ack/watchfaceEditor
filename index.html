@@ -23,7 +23,7 @@
         }
 
         #editor {
-            position: absolute;
+            position: relative;
             height: 528px;
             width: 528px;
         }
@@ -1066,20 +1066,44 @@
                 t.height *= 3;
                 t.width *= 3;
                 //$("editor").appendChild(t);
-                var classname=elements[i].classList[0];
-                if(!(classname in classes))
-                classes[classname]=[];
+                var classname = elements[i].classList[0];
+                if (!(classname in classes))
+                    classes[classname] = [];
                 classes[classname].push(t);
             }
             elements = $("editor").childNodes;
-            console.log(classes);
-            for (var elem in classes){
-                $("editor").innerHTML+='<div id="' + elem + '"></div>';
-                for(var i in classes[elem]){
+            //console.log(classes);
+            for (var elem in classes) {
+                var height = 0,
+                    width = 0;
+                $("editor").innerHTML += '<div id="' + elem + '"></div>';
+                for (var i in classes[elem]) {
                     $(elem).appendChild(classes[elem][i]);
                 }
+                if (classes[elem].length == 1) {
+                    height = classes[elem][0].height;
+                    width = classes[elem][0].width;
+                }
+                $(elem).style.height = height + "px";
+                $(elem).style.width = width + "px";
+                $(elem).style.position = "relative";
+                console.log($(elem));
+                function makeimgfromdiv(){
+                    html2canvas($("c_bg"), {
+                    onrendered: function(canvas) {
+                        console.log(canvas, $(elem));
+                        ctx = canvas.getContext("2d");
+                        image = new Image();
+                        image.src = canvas.toDataURL("image/png");
+                        //console.log(image.src, elem);
+                        $("editor").appendChild(image);
+                        delete image;
+                    }
+                })
+                }
+                setTimeout(makeimgfromdiv, 500);
+                jiri();
             }
-            //for (var elem in classes) {$(".item img." + elem).closest(".item".wrapAll('<div class="' + elem + '"></div>');}
         }
 
     </script>
@@ -1088,23 +1112,20 @@
         function makepng() {
             var el = "watchfaceblock";
             if ($("makepngwithwatch").checked)
-                el = "watchfaceimage"
+                el = "watchfaceimage";
             html2canvas($(el), {
                 onrendered: function(canvas) {
                     ctx = canvas.getContext("2d");
-                    savedData = new Image();
-                    savedData.src = canvas.toDataURL("image/png");
                     if (edgeBrowser) {
                         canvas.toBlob(function(blob) {
                             saveAs(blob, wfname + ".png");
                         });
                     } else {
                         var a = document.createElement('a');
-                        a.href = savedData.src;
+                        a.href = canvas.toDataURL("image/png");
                         a.download = wfname + '.png';
                         a.click();
                         delete a;
-                        delete savedData;
                     }
                 }
             });
@@ -1136,9 +1157,18 @@
             }
         }
         $("codearea").onblur = function() {
+            try{
             coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
             makeWf();
             $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            } catch(error){
+                UIkit.notification(error.message, {
+                    status: 'danger',
+                    pos: 'top-left',
+                    timeout: 5000
+                });
+                console.error(error);
+            }
         }
 
         function syntaxHighlight(json) {
