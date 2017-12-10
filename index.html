@@ -16,9 +16,16 @@
         }
 
         img {
+            max-width: 300%;
             position: absolute;
             top: 180px;
             image-rendering: pixelated;
+        }
+
+        #editor {
+            position: absolute;
+            height: 528px;
+            width: 528px;
         }
 
         #watchfaceimage {
@@ -131,7 +138,7 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init.time();"><a href="#">Design</a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -234,147 +241,8 @@
                         </div>
                     </li>
                     <li>
-                        <ul uk-accordion>
-                            <li class="uk-open">
-                                <h3 class="uk-accordion-title">Time</h3>
-                                <div class="uk-accordion-content">
-                                    <form>
-
-                                        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                                            <label class="uk-form-label">Time format</label>
-                                            <label><input class="uk-radio" type="radio" name="radio2" id="c-time-rad-24"> 24-hours</label>
-                                            <label><input class="uk-radio" type="radio" name="radio2" id="c-time-rad-12"> 12-hours</label>
-                                            <label><input class="uk-checkbox" type="checkbox" id="c-time-check-sec"> Show seconds</label>
-                                        </div>
-
-                                        <div class="uk-grid-small" uk-grid>
-                                            <div class="uk-grid-margin" style="width: 85px;">
-                                                <label class="uk-form-label">Hours tens</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-ht-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ht-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ht-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ht-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">Hours ones</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-ho-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ho-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ho-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-ho-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">Minutes tens</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-mt-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mt-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mt-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mt-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">Minutes ones</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-mo-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mo-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mo-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-mo-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">Seconds tens</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-st-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-st-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-st-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-st-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">Seconds ones</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-so-x" type="number" placeholder="X" min="0" max="176">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-so-y" type="number" placeholder="Y" min="0" max="176">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-so-f" type="number" placeholder="Frist" min="0" max="176" title="First image index" uk-tooltip="delay: 500; pos: bottom">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-so-c" type="number" placeholder="Count" min="0" max="176" title="Number of images" uk-tooltip="delay: 500; pos: bottom">
-                                                </div>
-                                            </div>
-                                            <div style="width: 85px;">
-                                                <label class="uk-form-label">AM/PM</label>
-                                                <div class="uk-form-controls">
-                                                    <input class="uk-input uk-form-small" id="c-time-format-x" type="number" placeholder="X" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-format-y" type="number" placeholder="Y" min="0" max="176" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-format-a" type="number" placeholder="AM" min="0" max="176" title="AM image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                                <div class="uk-form-controls" style="margin-top: 5px;">
-                                                    <input class="uk-input uk-form-small" id="c-time-format-p" type="number" placeholder="PM" min="0" max="176" title="PM image index" uk-tooltip="delay: 500; pos: bottom" onchange="editor.onchange.time();">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li>
-                                <h3 class="uk-accordion-title">Date</h3>
-                                <div class="uk-accordion-content">
-                                    <div class="uk-alert-warning" uk-alert>
-                                        <h3>In development</h3>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <h3 class="uk-accordion-title">Status</h3>
-                                <div class="uk-accordion-content">
-                                    <div class="uk-alert-warning" uk-alert>
-                                        <h3>In development</h3>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <button id="exportjs" class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
+                        <div id="editor">
+                        </div>
                     </li>
                     <li>
                         <div class="uk-margin">
@@ -391,7 +259,7 @@
         </div>
     </main>
     <script type="text/javascript">
-        function addScript(url){
+        function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
             e.type = "text/javascript";
@@ -1124,7 +992,7 @@
                 t.block.splice(0, 0, minus);
                 t.width += minus.width;
             }
-            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number);
+            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
             minus = temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
             t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
@@ -1187,136 +1055,31 @@
             for (var i = 0; i < end; i++)
                 $(elements[i]).removeAttribute("disabled");
         }
-        var editor = {};
-        editor.init = {};
-        editor.onchange = {};
-        editor.init.time = function() {
-            if ('Time' in coords) {
-                $("c-time-check-sec").onchange = function() {
-                    var elem = ["c-time-st-x", "c-time-st-y", "c-time-st-f", "c-time-st-c", "c-time-so-x", "c-time-so-y", "c-time-so-f", "c-time-so-c"];
-                    if ($("c-time-check-sec").checked) {
-                        coords.Time.Seconds = {};
-                        coords.Time.Seconds.Tens = {};
-                        coords.Time.Seconds.Ones = {};
-                        coords.Time.Seconds.Tens.X = Number($("c-time-st-x").value);
-                        coords.Time.Seconds.Tens.Y = Number($("c-time-st-y").value);
-                        coords.Time.Seconds.Tens.ImageIndex = Number($("c-time-st-f").value);
-                        coords.Time.Seconds.Tens.ImagesCount = Number($("c-time-st-c").value);
-                        coords.Time.Seconds.Ones.X = Number($("c-time-so-x").value);
-                        coords.Time.Seconds.Ones.Y = Number($("c-time-so-y").value);
-                        coords.Time.Seconds.Ones.ImageIndex = Number($("c-time-so-f").value);
-                        coords.Time.Seconds.Ones.ImagesCount = Number($("c-time-so-c").value);
-                        enableByIdArray(elem);
-                        draw.time.seconds();
-                    } else {
-                        delete coords.Time.Seconds;
-                        disableByIdArray(elem);
-                        removeByClass("c_sec");
-                    }
-                }
-                $("c-time-rad-12").onchange = function() {
-                    var elem = ["c-time-format-x", "c-time-format-y", "c-time-format-a", "c-time-format-p"];
-                    if (this.id == "c-time-rad-12") {
-                        coords.Time.AmPm = {};
-                        coords.Time.AmPm.X = Number($("c-time-format-x").value);
-                        coords.Time.AmPm.Y = Number($("c-time-format-y").value);
-                        coords.Time.AmPm.ImageIndexAm = Number($("c-time-format-a").value);
-                        coords.Time.AmPm.ImageIndexPm = Number($("c-time-format-p").value);
-                        enableByIdArray(elem);
-                    } else {
-                        delete coords.Time.AmPm;
-                        disableByIdArray(elem);
-                    }
-                    removeByClass("c_time_am");
-                    removeByClass("c_time");
-                    draw.time.time();
-                }
-                $("c-time-rad-24").onchange = $("c-time-rad-12").onchange;
-                $("c-time-ht-x").value = coords.Time.Hours.Tens.X;
-                $("c-time-ht-y").value = coords.Time.Hours.Tens.Y;
-                $("c-time-ht-f").value = coords.Time.Hours.Tens.ImageIndex;
-                $("c-time-ht-c").value = coords.Time.Hours.Tens.ImagesCount;
-                $("c-time-ho-x").value = coords.Time.Hours.Ones.X;
-                $("c-time-ho-y").value = coords.Time.Hours.Ones.Y;
-                $("c-time-ho-f").value = coords.Time.Hours.Ones.ImageIndex;
-                $("c-time-ho-c").value = coords.Time.Hours.Ones.ImagesCount;
-                $("c-time-mt-x").value = coords.Time.Minutes.Tens.X;
-                $("c-time-mt-y").value = coords.Time.Minutes.Tens.Y;
-                $("c-time-mt-f").value = coords.Time.Minutes.Tens.ImageIndex;
-                $("c-time-mt-c").value = coords.Time.Minutes.Tens.ImagesCount;
-                $("c-time-mo-x").value = coords.Time.Minutes.Ones.X;
-                $("c-time-mo-y").value = coords.Time.Minutes.Ones.Y;
-                $("c-time-mo-f").value = coords.Time.Minutes.Ones.ImageIndex;
-                $("c-time-mo-c").value = coords.Time.Minutes.Ones.ImagesCount;
-                if ('Seconds' in coords.Time) {
-                    $("c-time-check-sec").checked = true;
-                    $("c-time-st-x").value = coords.Time.Seconds.Tens.X;
-                    $("c-time-st-y").value = coords.Time.Seconds.Tens.Y;
-                    $("c-time-st-f").value = coords.Time.Seconds.Tens.ImageIndex;
-                    $("c-time-st-c").value = coords.Time.Seconds.Tens.ImagesCount;
-                    $("c-time-so-x").value = coords.Time.Seconds.Ones.X;
-                    $("c-time-so-y").value = coords.Time.Seconds.Ones.Y;
-                    $("c-time-so-f").value = coords.Time.Seconds.Ones.ImageIndex;
-                    $("c-time-so-c").value = coords.Time.Seconds.Ones.ImagesCount;
-                } else {
-                    var elem = ["c-time-st-x", "c-time-st-y", "c-time-st-f", "c-time-st-c", "c-time-so-x", "c-time-so-y", "c-time-so-f", "c-time-so-c"];
-                    disableByIdArray(elem);
-                }
-                if ('AmPm' in coords.Time) {
-                    $("c-time-rad-12").checked = true;
-                    $("c-time-format-x").value = coords.Time.AmPm.X;
-                    $("c-time-format-y").value = coords.Time.AmPm.Y;
-                    $("c-time-format-a").value = coords.Time.AmPm.ImageIndexAm;
-                    $("c-time-format-p").value = coords.Time.AmPm.ImageIndexPm;
-                } else {
-                    $("c-time-rad-24").checked = true;
-                    var elem = ["c-time-format-x", "c-time-format-y", "c-time-format-a", "c-time-format-p"];
-                    disableByIdArray(elem);
-                }
-            } else {
-                var elem = ["c-time-st-x", "c-time-st-y", "c-time-st-f", "c-time-st-c", "c-time-so-x", "c-time-so-y", "c-time-so-f", "c-time-so-c", "c-time-format-x", "c-time-format-y", "c-time-format-a", "c-time-format-p", "c-time-ht-x", "c-time-ht-y", "c-time-ht-f", "c-time-ht-c", "c-time-ho-x", "c-time-ho-y", "c-time-ho-f", "c-time-ho-c", "c-time-mt-x", "c-time-mt-y", "c-time-mt-f", "c-time-mt-c", "c-time-mo-x", "c-time-mo-y", "c-time-mo-f", "c-time-mo-c", "c-time-rad-12", "c-time-rad-24", "c-time-check-sec"];
-                disableByIdArray(elem);
+        var editor = {}
+        editor.init = function() {
+            var elements = $("watchface").childNodes;
+            var classes = {};
+            for (var i = 0; i < elements.length; i++) {
+                var t = elements[i].cloneNode(false);
+                t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
+                t.style.top = Number(t.style.top.replace("px", "")) * 3 + "px";
+                t.height *= 3;
+                t.width *= 3;
+                //$("editor").appendChild(t);
+                var classname=elements[i].classList[0];
+                if(!(classname in classes))
+                classes[classname]=[];
+                classes[classname].push(t);
             }
-        }
-        editor.onchange.time = function() {
-            coords.Time.Hours.Tens.X = Number($("c-time-ht-x").value);
-            coords.Time.Hours.Tens.Y = Number($("c-time-ht-y").value);
-            coords.Time.Hours.Tens.ImageIndex = Number($("c-time-ht-f").value);
-            coords.Time.Hours.Tens.ImagesCount = Number($("c-time-ht-c").value);
-            coords.Time.Hours.Ones.X = Number($("c-time-ho-x").value);
-            coords.Time.Hours.Ones.Y = Number($("c-time-ho-y").value);
-            coords.Time.Hours.Ones.ImageIndex = Number($("c-time-ho-f").value);
-            coords.Time.Hours.Ones.ImagesCount = Number($("c-time-ho-c").value);
-            coords.Time.Minutes.Tens.X = Number($("c-time-mt-x").value);
-            coords.Time.Minutes.Tens.Y = Number($("c-time-mt-y").value);
-            coords.Time.Minutes.Tens.ImageIndex = Number($("c-time-mt-f").value);
-            coords.Time.Minutes.Tens.ImagesCount = Number($("c-time-mt-c").value);
-            coords.Time.Minutes.Ones.X = Number($("c-time-mo-x").value);
-            coords.Time.Minutes.Ones.Y = Number($("c-time-mo-y").value);
-            coords.Time.Minutes.Ones.ImageIndex = Number($("c-time-mo-f").value);
-            coords.Time.Minutes.Ones.ImagesCount = Number($("c-time-mo-c").value);
-            if ('Seconds' in coords.Time) {
-                coords.Time.Seconds.Tens.X = Number($("c-time-st-x").value);
-                coords.Time.Seconds.Tens.Y = Number($("c-time-st-y").value);
-                coords.Time.Seconds.Tens.ImageIndex = Number($("c-time-st-f").value);
-                coords.Time.Seconds.Tens.ImagesCount = Number($("c-time-st-c").value);
-                coords.Time.Seconds.Ones.X = Number($("c-time-so-x").value);
-                coords.Time.Seconds.Ones.Y = Number($("c-time-so-y").value);
-                coords.Time.Seconds.Ones.ImageIndex = Number($("c-time-so-f").value);
-                coords.Time.Seconds.Ones.ImagesCount = Number($("c-time-so-c").value);
-                removeByClass("c_sec");
-                draw.time.seconds();
+            elements = $("editor").childNodes;
+            console.log(classes);
+            for (var elem in classes){
+                $("editor").innerHTML+='<div id="' + elem + '"></div>';
+                for(var i in classes[elem]){
+                    $(elem).appendChild(classes[elem][i]);
+                }
             }
-            if ('AmPm' in coords.Time) {
-                coords.Time.AmPm.X = Number($("c-time-format-x").value);
-                coords.Time.AmPm.Y = Number($("c-time-format-y").value);
-                coords.Time.AmPm.ImageIndexAm = Number($("c-time-format-a").value);
-                coords.Time.AmPm.ImageIndexPm = Number($("c-time-format-p").value);
-                removeByClass("c_time_am");
-            }
-            removeByClass("c_time");
-            if ('Time' in coords)
-                draw.time.time();
+            //for (var elem in classes) {$(".item img." + elem).closest(".item".wrapAll('<div class="' + elem + '"></div>');}
         }
 
     </script>
@@ -1327,73 +1090,75 @@
             if ($("makepngwithwatch").checked)
                 el = "watchfaceimage"
             html2canvas($(el), {
-                    onrendered: function(canvas) {
-                        ctx = canvas.getContext("2d");
-                        savedData = new Image();
-                        savedData.src = canvas.toDataURL("image/png");
-                        if (edgeBrowser) {
-                            canvas.toBlob(function(blob) {
-                                saveAs(blob, wfname + ".png");
-                            });
-                        } else {
-                            var a = document.createElement('a');
-                            a.href = savedData.src;
-                            a.download = wfname + '.png';
-                            a.click();
-                            delete a;
-                            delete savedData;
-                        }
-                    }});}
-
-            function exportjs() {
-                if (edgeBrowser) {
-                    var blob = new Blob([JSON.stringify(coords, null, 4)], {
-                        type: "text/plain;charset=utf-8"
-                    });
-                    saveAs(blob, wfname + '.json');
-                } else {
-                    var a = document.createElement('a');
-                    a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
-                    a.download = wfname + '.json';
-                    a.click();
-                }
-            }
-
-            function fillarea() {
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                if (firstopen) {
-                    UIkit.notification("To update preview just click out of JSON input", {
-                        status: 'primary',
-                        pos: 'top-left',
-                        timeout: 3000
-                    });
-                    firstopen = 0;
-                }
-            }
-            $("codearea").onblur = function() {
-                coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
-                makeWf();
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            }
-
-            function syntaxHighlight(json) {
-                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                    var cls = 'number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'key';
-                        } else {
-                            cls = 'string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'null';
+                onrendered: function(canvas) {
+                    ctx = canvas.getContext("2d");
+                    savedData = new Image();
+                    savedData.src = canvas.toDataURL("image/png");
+                    if (edgeBrowser) {
+                        canvas.toBlob(function(blob) {
+                            saveAs(blob, wfname + ".png");
+                        });
+                    } else {
+                        var a = document.createElement('a');
+                        a.href = savedData.src;
+                        a.download = wfname + '.png';
+                        a.click();
+                        delete a;
+                        delete savedData;
                     }
-                    return '<span class="' + cls + '">' + match + '</span>';
+                }
+            });
+        }
+
+        function exportjs() {
+            if (edgeBrowser) {
+                var blob = new Blob([JSON.stringify(coords, null, 4)], {
+                    type: "text/plain;charset=utf-8"
                 });
+                saveAs(blob, wfname + '.json');
+            } else {
+                var a = document.createElement('a');
+                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
+                a.download = wfname + '.json';
+                a.click();
             }
+        }
+
+        function fillarea() {
+            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            if (firstopen) {
+                UIkit.notification("To update preview just click out of JSON input", {
+                    status: 'primary',
+                    pos: 'top-left',
+                    timeout: 3000
+                });
+                firstopen = 0;
+            }
+        }
+        $("codearea").onblur = function() {
+            coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
+            makeWf();
+            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+        }
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
 
     </script>
 </body>
