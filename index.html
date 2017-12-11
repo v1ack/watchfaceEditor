@@ -51,6 +51,14 @@
             width: 176px;
         }
 
+        #indevbadge {
+            position: relative;
+            height: auto;
+            font-size: 10px;
+            line-height: initial;
+            top: -2px;
+        }
+
         #codearea {
             height: 370px;
         }
@@ -138,7 +146,7 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design <span class="uk-badge" id="indevbadge">In dev</span></a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -254,6 +262,15 @@
             </div>
             <div id="allimages" class="uk-invisible">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
+            </div>
+        </div>
+        <div id="jsonerrormodal" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">JSON error</h2>
+                <pre id="jsonerrortext"></pre>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-primary uk-modal-close" type="button">Ok</button>
+                </p>
             </div>
         </div>
     </main>
@@ -645,16 +662,17 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     try {
-                        coords = JSON.parse(e.target.result);
+                        coords = jsonlint.parse(e.target.result);
                     } catch (error) {
-                        UIkit.notification("Error in JSON", {
-                            status: 'danger',
-                            pos: 'top-left',
-                            timeout: 5000
-                        });
+                        $("jsonerrortext").innerHTML = error;
+
+                        function show() {
+                            UIkit.modal($("jsonerrormodal")).show()
+                        }
+                        setTimeout(show, 200);
                         console.error(error);
                     }
-                };
+                }
                 reader.readAsText(this.files[0]);
                 delete reader;
                 jsset = 1;
@@ -1125,6 +1143,7 @@
 
     </script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
+    <script type="text/javascript" src="js/jsonlint.js"></script>
     <script type="text/javascript">
         function makepng() {
             var el = "watchfaceblock";
@@ -1175,15 +1194,21 @@
         }
         $("codearea").onblur = function() {
             try {
-                coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>|<\w*\s\w*="#[\w\d]{6}">/g, ''));
+                coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/\w*>|<\w*\s\w*="#[\w\d]{6}">/g, ''));
                 makeWf();
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
             } catch (error) {
-                UIkit.notification(error.message, {
-                    status: 'danger',
-                    pos: 'top-left',
-                    timeout: 5000
-                });
+                $("jsonerrortext").innerHTML = error;
+
+                function show() {
+                    UIkit.modal($("jsonerrormodal")).show()
+                }
+                setTimeout(show, 200);
+                //                UIkit.notification(error.message, {
+                //                    status: 'danger',
+                //                    pos: 'top-left',
+                //                    timeout: 5000
+                //                });
                 console.error(error);
             }
         }
