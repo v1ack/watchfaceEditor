@@ -159,7 +159,6 @@
                         <button id="makepng" class="uk-button uk-button-default" onclick="makepng();" disabled>Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> With watch</label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
-                            <div class="uk-card-badge uk-label">Beta</div>
                             <h3 class="uk-card-title">Settings</h3>
                             <form class="uk-grid-small" uk-grid>
                                 <div class="uk-width-1-4@s">
@@ -645,7 +644,16 @@
                 document.title = "Watchface view " + wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    coords = JSON.parse(e.target.result);
+                    try {
+                        coords = JSON.parse(e.target.result);
+                    } catch (error) {
+                        UIkit.notification("Error in JSON", {
+                            status: 'danger',
+                            pos: 'top-left',
+                            timeout: 5000
+                        });
+                        console.error(error);
+                    }
                 };
                 reader.readAsText(this.files[0]);
                 delete reader;
@@ -1057,14 +1065,17 @@
         }
         var editor = {}
         editor.init = function() {
+            var t = 0;
             var elements = $("watchface").childNodes;
             var classes = {};
             for (var i = 0; i < elements.length; i++) {
                 var t = elements[i].cloneNode(false);
-                t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
+                t.style.left = Number(t.style.left.replace("px", "")) + "px";
+                t.style.top = Number(t.style.top.replace("px", "")) + "px";
+                /*t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
                 t.style.top = Number(t.style.top.replace("px", "")) * 3 + "px";
                 t.height *= 3;
-                t.width *= 3;
+                t.width *= 3;*/
                 //$("editor").appendChild(t);
                 var classname = elements[i].classList[0];
                 if (!(classname in classes))
@@ -1083,27 +1094,33 @@
                 if (classes[elem].length == 1) {
                     height = classes[elem][0].height;
                     width = classes[elem][0].width;
+                } else {
+                    height = classes[elem][0].height;
+                    width = classes[elem][0].width
                 }
                 $(elem).style.height = height + "px";
                 $(elem).style.width = width + "px";
                 $(elem).style.position = "relative";
                 console.log($(elem));
-                function makeimgfromdiv(){
-                    html2canvas($("c_bg"), {
-                    onrendered: function(canvas) {
-                        console.log(canvas, $(elem));
-                        ctx = canvas.getContext("2d");
-                        image = new Image();
-                        image.src = canvas.toDataURL("image/png");
-                        //console.log(image.src, elem);
-                        $("editor").appendChild(image);
-                        delete image;
-                    }
-                })
-                }
-                setTimeout(makeimgfromdiv, 500);
-                jiri();
+
+                //setTimeout(makeimgfromdiv(elem), t);
+                t += 300;
+                //jiri();
             }
+        }
+
+        function makeimgfromdiv(elemen) {
+            html2canvas($(elemen), {
+                onrendered: function(canvas) {
+                    //console.log(canvas, $(elem));
+                    //ctx = canvas.getContext("2d");
+                    //image = new Image();
+                    //image.src = canvas.toDataURL("image/png");
+                    //console.log(image.src, elem);
+                    $("editor").appendChild(canvas);
+                    //delete image;
+                }
+            })
         }
 
     </script>
@@ -1157,11 +1174,11 @@
             }
         }
         $("codearea").onblur = function() {
-            try{
-            coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>/g, ''));
-            makeWf();
-            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            } catch(error){
+            try {
+                coords = JSON.parse($("codearea").innerHTML.replace(/<\w*\s\w*="\w*">|<.\w*>|<\w*\s\w*="#[\w\d]{6}">/g, ''));
+                makeWf();
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            } catch (error) {
                 UIkit.notification(error.message, {
                     status: 'danger',
                     pos: 'top-left',
