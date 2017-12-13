@@ -301,27 +301,27 @@
         }
         var coords = 0;
         var data = {
-            timeOnClock : ["20", "38"],
-            seconds : [4, 3],
-            analog : [259, 228, 60],
-            weekDay : 2,
-            day : 20,
-            month : 12,
-            batteryT : 20,
-            calories : 860,
-            steps : 5687,
-            stepsgoal : 12000,
-            distance : [5, 67],
-            pulse : 72,
-            temp : [22, 24],
-            alarm : true,
-            bluetooth : true,
-            dnd : true,
-            lock : true,
-            firstopen : true,
-            jsset : false,
-            imagesset : false,
-            wfname : "wanchface"
+            timeOnClock: ["20", "38"],
+            seconds: [4, 3],
+            analog: [259, 228, 60],
+            weekDay: 2,
+            day: 20,
+            month: 12,
+            batteryT: 20,
+            calories: 860,
+            steps: 5687,
+            stepsgoal: 12000,
+            distance: [5, 67],
+            pulse: 72,
+            temp: [22, 24],
+            alarm: true,
+            bluetooth: true,
+            dnd: true,
+            lock: true,
+            firstopen: true,
+            jsset: false,
+            imagesset: false,
+            wfname: "wanchface"
         }
 
         $("in-time").onchange = function() {
@@ -826,246 +826,256 @@
                 }
             }
         }
-        var draw = {};
-        draw.activity = {};
-        draw.status = {};
-        draw.analog = {};
-        draw.battery = {};
-        draw.date = {};
-        draw.time = {};
-        draw.stepsprogress = {};
-        draw.weather = {};
-        draw.weather.temp = {};
+        var draw = {
+            time: {
+                time: function() {
+                    var ntimeOnClock = data.timeOnClock[0];
+                    if ('AmPm' in coords.Time) {
+                        var am = 1;
+                        if (Number(ntimeOnClock) > 12) {
+                            ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
+                            if (ntimeOnClock.length == 1)
+                                ntimeOnClock = "0" + ntimeOnClock;
+                            am = 0;
+                        }
+                        t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
+                        setPos(t, coords.Time.AmPm);
+                        insert(t, "c_time_am");
 
-        draw.time.time = function() {
-            var ntimeOnClock = data.timeOnClock[0];
-            if ('AmPm' in coords.Time) {
-                var am = 1;
-                if (Number(ntimeOnClock) > 12) {
-                    ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
-                    if (ntimeOnClock.length == 1)
-                        ntimeOnClock = "0" + ntimeOnClock;
-                    am = 0;
+                    }
+                    setPosN(coords.Time.Hours.Tens, Number(ntimeOnClock[0]), "c_time");
+                    setPosN(coords.Time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
+                    setPosN(coords.Time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
+                    setPosN(coords.Time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
+                },
+                seconds: function() {
+                    setPosN(coords.Time.Seconds.Tens, data.seconds[0], "c_sec");
+                    setPosN(coords.Time.Seconds.Ones, data.seconds[1], "c_sec");
                 }
-                t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
-                setPos(t, coords.Time.AmPm);
-                insert(t, "c_time_am");
+            },
+            date: {
+                weekday: function() {
+                    setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
+                },
+                sepday: function() {
+                    //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+                    var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
+                    if (coords.Date.MonthAndDay.TwoDigitsDay)
+                        if (!div(data.day, 10)) {
+                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
+                            t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
+                        }
+                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
+                },
+                sepmonth: function() {
+                    var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
+                    if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                        if (!div(data.month, 10)) {
+                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
+                            t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
+                        }
+                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
+                },
+                oneline: function() {
+                    var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
+                    t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.month);
+                    if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                        if (!div(data.month, 10)) {
+                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
+                            t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                        }
+                    t.block.push(dot);
+                    t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                    var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.day);
+                    t.block = t.block.concat(t2.block);
+                    if (coords.Date.MonthAndDay.TwoDigitsDay)
+                        if (!div(data.day, 10)) {
+                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
+                            t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                        }
+                    t.width += t2.width;
+                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
+                }
 
-            }
-            setPosN(coords.Time.Hours.Tens, Number(ntimeOnClock[0]), "c_time");
-            setPosN(coords.Time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
-            setPosN(coords.Time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
-            setPosN(coords.Time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
-        }
-        draw.time.seconds = function() {
-            setPosN(coords.Time.Seconds.Tens, data.seconds[0], "c_sec");
-            setPosN(coords.Time.Seconds.Ones, data.seconds[1], "c_sec");
-        }
-        draw.date.weekday = function() {
-            setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
-        }
-        draw.date.sepday = function() {
-            //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
-            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
-            if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(data.day, 10)) {
-                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
-                    t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
+            },
+            battery: {
+                icon: function() {
+                    var battery = Math.round(data.batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+                    setPosN(coords.Battery.Icon, battery, "c_battery_icon");
+                },
+                text: function() {
+                    setTextPos(coords.Battery.Text, data.batteryT, "c_battery_text");
+                },
+                scale: function() {
+                    var end = Math.round(data.batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
+                    for (var i = 0; i <= end; i++) {
+                        t = $c(coords.Battery.Scale.StartImageIndex + i);
+                        setPos(t, coords.Battery.Scale.Segments[i]);
+                        insert(t, "c_battery_scale");
+                    }
                 }
-            renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
-        }
-        draw.date.sepmonth = function() {
-            var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
-            if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                if (!div(data.month, 10)) {
-                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
-                    t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
+            },
+            analog: {
+                hours: function() {
+                    drowAnalog(coords.AnalogDialFace.Hours, data.analog[0]);
+                },
+                minutes: function() {
+                    drowAnalog(coords.AnalogDialFace.Minutes, data.analog[1]);
+                },
+                seconds: function() {
+                    drowAnalog(coords.AnalogDialFace.Seconds, data.analog[2]);
                 }
-            renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
-        }
-        draw.date.oneline = function() {
-            var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
-            t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.month);
-            if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                if (!div(data.month, 10)) {
-                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
-                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+            },
+            status: {
+                alarm: function() {
+                    t = $c(coords.Status.Alarm.ImageIndexOn);
+                    t.style.left = coords.Status.Alarm.Coordinates.X + "px";
+                    t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
+                    insert(t, "c_stat_alarm");
+                },
+                bt: function() {
+                    if (data.bluetooth)
+                        t = $c(coords.Status.Bluetooth.ImageIndexOn);
+                    else
+                        t = $c(coords.Status.Bluetooth.ImageIndexOff);
+                    t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
+                    t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
+                    insert(t, "c_stat_bt");
+                },
+                dnd: function() {
+                    t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
+                    t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
+                    t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
+                    insert(t, "c_stat_dnd");
+                },
+                lock: function() {
+                    t = $c(coords.Status.Lock.ImageIndexOn);
+                    t.style.left = coords.Status.Lock.Coordinates.X + "px";
+                    t.style.top = coords.Status.Lock.Coordinates.Y + "px";
+                    insert(t, "c_stat_lock");
                 }
-            t.block.push(dot);
-            t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.day);
-            t.block = t.block.concat(t2.block);
-            if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(data.day, 10)) {
-                    t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
-                    t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+            },
+            activity: {
+                cal: function() {
+                    setTextPos(coords.Activity.Calories, data.calories, "c_act_cal");
+                },
+                steps: function() {
+                    setTextPos(coords.Activity.Steps, data.steps, "c_act_steps");
+                },
+                stepsgoal: function() {
+                    setTextPos(coords.Activity.StepsGoal, data.stepsgoal, "c_act_stepsg");
+                },
+                pulse: function() {
+                    setTextPos(coords.Activity.Pulse, data.pulse, "c_act_pulse");
+                },
+                distance: function() {
+                    var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
+                        km = $c(coords.Activity.Distance.SuffixImageIndex);
+                    t = makeBlock(coords.Activity.Distance.Number, data.distance[0]);
+                    t.block.push(dot);
+                    t.width += dot.width + coords.Activity.Distance.Number.Spacing;
+                    var t2 = makeBlock(coords.Activity.Distance.Number, data.distance[1]);
+                    t.block = t.block.concat(t2.block);
+                    t.width += t2.width;
+                    t.block.push(km);
+                    t.width += km.width;
+                    renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
                 }
-            t.width += t2.width;
-            renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
-        }
-        draw.battery.icon = function() {
-            var battery = Math.round(data.batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
-            setPosN(coords.Battery.Icon, battery, "c_battery_icon");
-        }
-        draw.battery.text = function() {
-            setTextPos(coords.Battery.Text, data.batteryT, "c_battery_text");
-        }
-        draw.battery.scale = function() {
-            var end = Math.round(data.batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
-            for (var i = 0; i <= end; i++) {
-                t = $c(coords.Battery.Scale.StartImageIndex + i);
-                setPos(t, coords.Battery.Scale.Segments[i]);
-                insert(t, "c_battery_scale");
-            }
-        }
-        draw.analog.hours = function() {
-            drowAnalog(coords.AnalogDialFace.Hours, data.analog[0]);
-        }
-        draw.analog.minutes = function() {
-            drowAnalog(coords.AnalogDialFace.Minutes, data.analog[1]);
-        }
-        draw.analog.seconds = function() {
-            drowAnalog(coords.AnalogDialFace.Seconds, data.analog[2]);
-        }
-        draw.status.alarm = function() {
-            t = $c(coords.Status.Alarm.ImageIndexOn);
-            t.style.left = coords.Status.Alarm.Coordinates.X + "px";
-            t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
-            insert(t, "c_stat_alarm");
-        }
-        draw.status.bt = function() {
-            if (data.bluetooth)
-                t = $c(coords.Status.Bluetooth.ImageIndexOn);
-            else
-                t = $c(coords.Status.Bluetooth.ImageIndexOff);
-            t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
-            t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
-            insert(t, "c_stat_bt");
-        }
-        draw.status.dnd = function() {
-            t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
-            t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
-            t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
-            insert(t, "c_stat_dnd");
-        }
-        draw.status.lock = function() {
-            t = $c(coords.Status.Lock.ImageIndexOn);
-            t.style.left = coords.Status.Lock.Coordinates.X + "px";
-            t.style.top = coords.Status.Lock.Coordinates.Y + "px";
-            insert(t, "c_stat_lock");
-        }
-        draw.activity.cal = function() {
-            setTextPos(coords.Activity.Calories, data.calories, "c_act_cal");
-        }
-        draw.activity.steps = function() {
-            setTextPos(coords.Activity.Steps, data.steps, "c_act_steps");
-        }
-        draw.activity.stepsgoal = function() {
-            setTextPos(coords.Activity.StepsGoal, data.stepsgoal, "c_act_stepsg");
-        }
-        draw.activity.pulse = function() {
-            setTextPos(coords.Activity.Pulse, data.pulse, "c_act_pulse");
-        }
-        draw.activity.distance = function() {
-            var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
-                km = $c(coords.Activity.Distance.SuffixImageIndex);
-            t = makeBlock(coords.Activity.Distance.Number, data.distance[0]);
-            t.block.push(dot);
-            t.width += dot.width + coords.Activity.Distance.Number.Spacing;
-            var t2 = makeBlock(coords.Activity.Distance.Number, data.distance[1]);
-            t.block = t.block.concat(t2.block);
-            t.width += t2.width;
-            t.block.push(km);
-            t.width += km.width;
-            renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
-        }
-        draw.weather.icon = function() {
-            t = $c("weather");
-            t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-            t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-            insert(t, "c_weather_icon");
-        }
-        draw.weather.temp.oneline = function() {
-            var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
-                deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
-                minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[0]));
-            if (minus != 0) {
-                t.block.splice(0, 0, minus);
-                t.width += minus.width;
-            }
-            t.block.push(sep);
-            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[1]));
-            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
-            if (minus != 0) {
-                t2.block.splice(0, 0, minus);
-                t2.width += minus.width;
-            }
-            t.block = t.block.concat(t2.block);
-            t.width += t2.width;
-            t.block.push(deg);
-            t.width += deg.width;
-            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
-        }
-        draw.weather.temp.sep = function() {
-            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
-            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
-                t.block.push(deg);
-                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
-            }
-            if (minus != 0) {
-                t.block.splice(0, 0, minus);
-                t.width += minus.width;
-            }
-            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
-            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
-            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
-                t.block.push(deg);
-                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-            }
-            if (minus != 0) {
-                t.block.splice(0, 0, minus);
-                t.width += minus.width;
-            }
-            renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
-        }
-        draw.weather.temp.current = function() {
-            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
-            if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
-                t.block.push(deg);
-                t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
-            }
-            if (minus != 0) {
-                t.block.splice(0, 0, minus);
-                t.width += minus.width;
-            }
-            renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
-        }
-        draw.weather.air = function() {
-            setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
-        }
-        draw.stepsprogress.circle = function() {
-            var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
-                full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
-            var fill = Math.round(data.steps / (data.stepsgoal / full));
-            if (fill > full) fill = full;
-            $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
-        }
-        draw.stepsprogress.linear = function() {
-            var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
-            if (end > coords.StepsProgress.Linear.Segments.length - 1)
-                end = coords.StepsProgress.Linear.Segments.length - 1;
-            for (var i = 0; i <= end; i++) {
-                t = $c(coords.StepsProgress.Linear.StartImageIndex + i);
-                setPos(t, coords.StepsProgress.Linear.Segments[i]);
-                insert(t, "c_steps_linear");
+            },
+            stepsprogress: {
+                circle: function() {
+                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
+                        full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
+                    var fill = Math.round(data.steps / (data.stepsgoal / full));
+                    if (fill > full) fill = full;
+                    $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
+                },
+                linear: function() {
+                    var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+                    if (end > coords.StepsProgress.Linear.Segments.length - 1)
+                        end = coords.StepsProgress.Linear.Segments.length - 1;
+                    for (var i = 0; i <= end; i++) {
+                        t = $c(coords.StepsProgress.Linear.StartImageIndex + i);
+                        setPos(t, coords.StepsProgress.Linear.Segments[i]);
+                        insert(t, "c_steps_linear");
+                    }
+                }
+            },
+            weather: {
+                icon: function() {
+                    t = $c("weather");
+                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                    insert(t, "c_weather_icon");
+                },
+                temp: {
+                    oneline: function() {
+                        var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
+                            deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
+                            minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+                        t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[0]));
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        t.block.push(sep);
+                        t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+                        var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[1]));
+                        minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+                        if (minus != 0) {
+                            t2.block.splice(0, 0, minus);
+                            t2.width += minus.width;
+                        }
+                        t.block = t.block.concat(t2.block);
+                        t.width += t2.width;
+                        t.block.push(deg);
+                        t.width += deg.width;
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
+                    },
+                    sep: function() {
+                        var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                            var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
+                        minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
+                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                            var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
+                    },
+                    current: function() {
+                        var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                        t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
+                        if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
+                            var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
+                            t.block.push(deg);
+                            t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
+                    }
+                },
+                air: function() {
+                    setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
+                }
             }
         }
 
@@ -1083,49 +1093,50 @@
             for (var i = 0; i < end; i++)
                 $(elements[i]).removeAttribute("disabled");
         }
-        var editor = {}
-        editor.init = function() {
-            var t = 0;
-            var elements = $("watchface").childNodes;
-            var classes = {};
-            for (var i = 0; i < elements.length; i++) {
-                var t = elements[i].cloneNode(false);
-                t.style.left = Number(t.style.left.replace("px", "")) + "px";
-                t.style.top = Number(t.style.top.replace("px", "")) + "px";
-                /*t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
-                t.style.top = Number(t.style.top.replace("px", "")) * 3 + "px";
-                t.height *= 3;
-                t.width *= 3;*/
-                //$("editor").appendChild(t);
-                var classname = elements[i].classList[0];
-                if (!(classname in classes))
-                    classes[classname] = [];
-                classes[classname].push(t);
-            }
-            elements = $("editor").childNodes;
-            //console.log(classes);
-            for (var elem in classes) {
-                var height = 0,
-                    width = 0;
-                $("editor").innerHTML += '<div id="' + elem + '"></div>';
-                for (var i in classes[elem]) {
-                    $(elem).appendChild(classes[elem][i]);
+        var editor = {
+            init: function() {
+                var t = 0;
+                var elements = $("watchface").childNodes;
+                var classes = {};
+                for (var i = 0; i < elements.length; i++) {
+                    var t = elements[i].cloneNode(false);
+                    t.style.left = Number(t.style.left.replace("px", "")) + "px";
+                    t.style.top = Number(t.style.top.replace("px", "")) + "px";
+                    /*t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
+                    t.style.top = Number(t.style.top.replace("px", "")) * 3 + "px";
+                    t.height *= 3;
+                    t.width *= 3;*/
+                    //$("editor").appendChild(t);
+                    var classname = elements[i].classList[0];
+                    if (!(classname in classes))
+                        classes[classname] = [];
+                    classes[classname].push(t);
                 }
-                if (classes[elem].length == 1) {
-                    height = classes[elem][0].height;
-                    width = classes[elem][0].width;
-                } else {
-                    height = classes[elem][0].height;
-                    width = classes[elem][0].width
-                }
-                $(elem).style.height = height + "px";
-                $(elem).style.width = width + "px";
-                $(elem).style.position = "relative";
-                console.log($(elem));
+                elements = $("editor").childNodes;
+                //console.log(classes);
+                for (var elem in classes) {
+                    var height = 0,
+                        width = 0;
+                    $("editor").innerHTML += '<div id="' + elem + '"></div>';
+                    for (var i in classes[elem]) {
+                        $(elem).appendChild(classes[elem][i]);
+                    }
+                    if (classes[elem].length == 1) {
+                        height = classes[elem][0].height;
+                        width = classes[elem][0].width;
+                    } else {
+                        height = classes[elem][0].height;
+                        width = classes[elem][0].width
+                    }
+                    $(elem).style.height = height + "px";
+                    $(elem).style.width = width + "px";
+                    $(elem).style.position = "relative";
+                    console.log($(elem));
 
-                //setTimeout(makeimgfromdiv(elem), t);
-                t += 300;
-                //jiri();
+                    //setTimeout(makeimgfromdiv(elem), t);
+                    t += 300;
+                    //jiri();
+                }
             }
         }
 
