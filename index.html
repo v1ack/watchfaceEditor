@@ -260,9 +260,9 @@
                 </ul>
 
             </div>
-            <div id="allimages" class="uk-invisible">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
-            </div>
+        </div>
+        <div id="allimages" class="uk-invisible">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
         <div id="jsonerrormodal" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
@@ -281,7 +281,7 @@
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
-        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? 1 : 0;
+        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? true : false;
         if (edgeBrowser) {
             UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
                 status: 'warning',
@@ -299,34 +299,37 @@
         function $c(el) {
             return document.getElementById(el).cloneNode(false);
         }
-        var firstopen = 1;
-        var jsset = 0,
-            imagesset = 0,
-            wfname = "wanchface";
-        var timeOnClock = ["20", "38"],
-            seconds = [4, 3],
-            analog = [259, 228, 60],
-            weekDay = 2,
-            day = 20,
-            month = 12,
-            batteryT = 20,
-            calories = 860,
-            steps = 5687,
-            stepsgoal = 12000,
-            distance = [5, 67],
-            pulse = 72,
-            temp = [22, 24],
-            alarm = 1,
-            bluetooth = 1,
-            dnd = 1,
-            lock = 1;
+        var coords = 0;
+        var data = {
+            timeOnClock : ["20", "38"],
+            seconds : [4, 3],
+            analog : [259, 228, 60],
+            weekDay : 2,
+            day : 20,
+            month : 12,
+            batteryT : 20,
+            calories : 860,
+            steps : 5687,
+            stepsgoal : 12000,
+            distance : [5, 67],
+            pulse : 72,
+            temp : [22, 24],
+            alarm : true,
+            bluetooth : true,
+            dnd : true,
+            lock : true,
+            firstopen : true,
+            jsset : false,
+            imagesset : false,
+            wfname : "wanchface"
+        }
 
         $("in-time").onchange = function() {
             var t = $("in-time").value.split(":");
-            timeOnClock[0] = t[0];
-            timeOnClock[1] = t[1];
-            analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
-            analog[1] = t[1] * 6;
+            data.timeOnClock[0] = t[0];
+            data.timeOnClock[1] = t[1];
+            data.analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
+            data.analog[1] = t[1] * 6;
             $("svg-cont-clock").innerHTML = '';
             if ('AnalogDialFace' in coords) {
                 if ('Hours' in coords.AnalogDialFace)
@@ -343,9 +346,9 @@
         $("in-date").onchange = function() {
             var t = $("in-date").valueAsDate;
             try {
-                day = t.getDate();
-                month = t.getMonth() + 1;
-                weekDay = t.getDay() + 1;
+                data.day = t.getDate();
+                data.month = t.getMonth() + 1;
+                data.weekDay = t.getDay() + 1;
                 removeByClass("c_date");
                 if ('Date' in coords) {
                     if ('WeekDay' in coords.Date)
@@ -367,9 +370,9 @@
             if ($("in-sec").value > 59) $("in-sec").value = 59;
             if ($("in-sec").value < 0) $("in-sec").value = 0;
             var sec = $("in-sec").value;
-            seconds[0] = Number(sec.split("")[0]);
-            seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
-            analog[2] = sec * 6;
+            data.seconds[0] = Number(sec.split("")[0]);
+            data.seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
+            data.analog[2] = sec * 6;
             $("svg-cont-clock").innerHTML = '';
             if ('AnalogDialFace' in coords) {
                 if ('Hours' in coords.AnalogDialFace)
@@ -387,7 +390,7 @@
         $("in-battery").onchange = function() {
             if ($("in-battery").value > 100) $("in-battery").value = 100;
             if ($("in-battery").value < 0) $("in-battery").value = 0;
-            batteryT = $("in-battery").value;
+            data.batteryT = $("in-battery").value;
             removeByClass("c_battery_icon");
             removeByClass("c_battery_scale");
             removeByClass("c_battery_text");
@@ -401,14 +404,14 @@
             }
         }
         $("in-alarm").onchange = function() {
-            alarm = $("in-alarm").checked;
+            data.alarm = $("in-alarm").checked;
             removeByClass("c_stat_alarm");
             if ('Status' in coords)
-                if ('Alarm' in coords.Status && alarm)
+                if ('Alarm' in coords.Status && data.alarm)
                     draw.status.alarm();
         }
         $("in-bt").onchange = function() {
-            bluetooth = $("in-bt").checked;
+            data.bluetooth = $("in-bt").checked;
             removeByClass("c_stat_bt");
             if ('Status' in coords)
                 if ('Bluetooth' in coords.Status)
@@ -416,23 +419,23 @@
 
         }
         $("in-dnd").onchange = function() {
-            dnd = $("in-dnd").checked;
+            data.dnd = $("in-dnd").checked;
             removeByClass("c_stat_dnd");
             if ('Status' in coords)
-                if ('DoNotDisturb' in coords.Status && dnd)
+                if ('DoNotDisturb' in coords.Status && data.dnd)
                     draw.status.dnd();
         }
         $("in-lock").onchange = function() {
-            lock = $("in-lock").checked;
+            data.lock = $("in-lock").checked;
             removeByClass("c_stat_lock");
             if ('Status' in coords)
-                if ('Lock' in coords.Status && lock)
+                if ('Lock' in coords.Status && data.lock)
                     draw.status.lock();
         }
         $("in-steps").onchange = function() {
             if ($("in-steps").value > 99999) $("in-steps").value = 99999;
             if ($("in-steps").value < 0) $("in-steps").value = 0;
-            steps = $("in-steps").value;
+            data.steps = $("in-steps").value;
             removeByClass("c_act_steps");
             if ('Activity' in coords)
                 if ('Steps' in coords.Activity)
@@ -450,8 +453,8 @@
             if ($("in-distance").value > 99) $("in-distance").value = 99;
             if ($("in-distance").value < 0) $("in-distance").value = 0;
             var dist = $("in-distance").value.split(".");
-            distance[0] = Number(dist[0]);
-            distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
+            data.distance[0] = Number(dist[0]);
+            data.distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
             removeByClass("c_act_distance");
             if ('Activity' in coords)
                 if ('Distance' in coords.Activity)
@@ -460,7 +463,7 @@
         $("in-pulse").onchange = function() {
             if ($("in-pulse").value > 999) $("in-pulse").value = 999;
             if ($("in-pulse").value < 0) $("in-pulse").value = 0;
-            pulse = $("in-pulse").value;
+            data.pulse = $("in-pulse").value;
             removeByClass("c_act_pulse");
             if ('Activity' in coords)
                 if ('Pulse' in coords.Activity)
@@ -469,7 +472,7 @@
         $("in-calories").onchange = function() {
             if ($("in-calories").value > 9999) $("in-calories").value = 9999;
             if ($("in-calories").value < 0) $("in-calories").value = 0;
-            calories = $("in-calories").value;
+            data.calories = $("in-calories").value;
             removeByClass("c_act_cal");
             if ('Activity' in coords)
                 if ('Calories' in coords.Activity)
@@ -478,8 +481,8 @@
         $("in-stepsgoal").onchange = function() {
             if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
             if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
-            stepsgoal = $("in-stepsgoal").value;
-            if (stepsgoal == 75321)
+            data.stepsgoal = $("in-stepsgoal").value;
+            if (data.stepsgoal == 75321)
                 $("editbutton").classList.remove("uk-disabled");
             removeByClass("c_act_stepsgoal");
             if ('Activity' in coords)
@@ -489,7 +492,7 @@
         $("in-weatherd").onchange = function() {
             if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
             if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
-            temp[0] = $("in-weatherd").value;
+            data.temp[0] = $("in-weatherd").value;
             removeByClass("c_temp");
             if ('Weather' in coords) {
                 if ('Icon' in coords.Weather)
@@ -511,7 +514,7 @@
         $("in-weathern").onchange = function() {
             if ($("in-weathern").value > 99) $("in-weathern").value = 99;
             if ($("in-weathern").value < -99) $("in-weathern").value = -99;
-            temp[1] = $("in-weathern").value;
+            data.temp[1] = $("in-weathern").value;
             removeByClass("c_temp");
             if ('Weather' in coords)
                 if ('Temperature' in coords.Weather)
@@ -531,13 +534,12 @@
                 $("codeopenbutton").classList.remove("uk-disabled");
                 setTimeout(makeWf, 200);
             } else {
-                $("editbutton").classList.add("uk-disabled");
+                //$("editbutton").classList.add("uk-disabled");
                 $("makepng").setAttribute("disabled", "");
                 $("viewsettings").setAttribute("disabled", "");
                 $("codeopenbutton").classList.add("uk-disabled");
             }
         }
-        var coords;
 
         function makeBlock(el, value) {
             value = value.toString();
@@ -576,7 +578,7 @@
                     insert(t, cls);
                     offset += t.width + el.Spacing;
                 }
-            } else if (el.Alignment == 34) {
+            } else if (el.Alignment == 34 || el.Alignment == "BottomLeft") {
                 while (block.length) {
                     t = block.pop();
                     t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
@@ -601,7 +603,7 @@
         function clearjs() {
             $('inputjs').value = '';
             coords = 0;
-            jsset = 0;
+            data.jsset = false;
             if ($('inputjs').nextElementSibling.classList.contains("uk-label-success"))
                 $('inputjs').nextElementSibling.classList.remove("uk-label-success");
             $('inputjs').nextElementSibling.classList.add("uk-button-danger");
@@ -610,7 +612,7 @@
 
         function clearimg() {
             $('inputimages').value = '';
-            imagesset = 0;
+            data.imagesset = false;
             if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
             $('inputimages').nextElementSibling.classList.add("uk-button-danger");
             $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
@@ -644,21 +646,21 @@
                     renderImage(this.files[i]);
                     i++;
                 }
-                imagesset = 1;
+                data.imagesset = true;
                 if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
                     $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
                 $('inputimages').nextElementSibling.classList.add("uk-label-success");
             }
-            if (imagesset && jsset)
+            if (data.imagesset && data.jsset)
                 disableBtn(1);
             else
                 disableBtn(0);
         }
         $('inputjs').onchange = function() {
             if (this.files.length) {
-                wfname = this.files[0].name.split(".")[0];
-                console.log("Watchface name: ", wfname);
-                document.title = "Watchface view " + wfname;
+                data.wfname = this.files[0].name.split(".")[0];
+                console.log("Watchface name: ", data.wfname);
+                document.title = "Watchface view " + data.wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     try {
@@ -675,12 +677,12 @@
                 }
                 reader.readAsText(this.files[0]);
                 delete reader;
-                jsset = 1;
+                data.jsset = true;
                 if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
                     $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
                 $('inputjs').nextElementSibling.classList.add("uk-label-success");
             }
-            if (imagesset && jsset)
+            if (data.imagesset && data.jsset)
                 disableBtn(1);
             else
                 disableBtn(0);
@@ -762,13 +764,13 @@
                 }
 
                 if ('Status' in coords) {
-                    if ('Alarm' in coords.Status && alarm)
+                    if ('Alarm' in coords.Status && data.alarm)
                         draw.status.alarm();
                     if ('Bluetooth' in coords.Status)
                         draw.status.bt();
-                    if ('DoNotDisturb' in coords.Status && dnd)
+                    if ('DoNotDisturb' in coords.Status && data.dnd)
                         draw.status.dnd();
-                    if ('Lock' in coords.Status && lock)
+                    if ('Lock' in coords.Status && data.lock)
                         draw.status.lock();
                 }
                 if ('Activity' in coords) {
@@ -836,7 +838,7 @@
         draw.weather.temp = {};
 
         draw.time.time = function() {
-            var ntimeOnClock = timeOnClock[0];
+            var ntimeOnClock = data.timeOnClock[0];
             if ('AmPm' in coords.Time) {
                 var am = 1;
                 if (Number(ntimeOnClock) > 12) {
@@ -852,30 +854,30 @@
             }
             setPosN(coords.Time.Hours.Tens, Number(ntimeOnClock[0]), "c_time");
             setPosN(coords.Time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
-            setPosN(coords.Time.Minutes.Tens, Number(timeOnClock[1][0]), "c_time");
-            setPosN(coords.Time.Minutes.Ones, Number(timeOnClock[1][1]), "c_time");
+            setPosN(coords.Time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
+            setPosN(coords.Time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
         }
         draw.time.seconds = function() {
-            setPosN(coords.Time.Seconds.Tens, seconds[0], "c_sec");
-            setPosN(coords.Time.Seconds.Ones, seconds[1], "c_sec");
+            setPosN(coords.Time.Seconds.Tens, data.seconds[0], "c_sec");
+            setPosN(coords.Time.Seconds.Ones, data.seconds[1], "c_sec");
         }
         draw.date.weekday = function() {
-            setPosN(coords.Date.WeekDay, weekDay, "c_date");
+            setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
         }
         draw.date.sepday = function() {
             //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
-            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, day);
+            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.weekDay);
             if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(day, 10)) {
+                if (!div(data.weekDay, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
                 }
             renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
         }
         draw.date.sepmonth = function() {
-            var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, month);
+            var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
             if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                if (!div(month, 10)) {
+                if (!div(data.month, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
                 }
@@ -883,18 +885,18 @@
         }
         draw.date.oneline = function() {
             var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
-            t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, month);
+            t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.month);
             if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                if (!div(month, 10)) {
+                if (!div(data.month, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                 }
             t.block.push(dot);
             t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, day);
+            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.weekDay);
             t.block = t.block.concat(t2.block);
             if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(day, 10)) {
+                if (!div(data.weekDay, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                 }
@@ -902,14 +904,14 @@
             renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
         }
         draw.battery.icon = function() {
-            var battery = Math.round(batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+            var battery = Math.round(data.batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
             setPosN(coords.Battery.Icon, battery, "c_battery_icon");
         }
         draw.battery.text = function() {
-            setTextPos(coords.Battery.Text, batteryT, "c_battery_text");
+            setTextPos(coords.Battery.Text, data.batteryT, "c_battery_text");
         }
         draw.battery.scale = function() {
-            var end = Math.round(batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
+            var end = Math.round(data.batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
             for (var i = 0; i <= end; i++) {
                 t = $c(coords.Battery.Scale.StartImageIndex + i);
                 setPos(t, coords.Battery.Scale.Segments[i]);
@@ -917,13 +919,13 @@
             }
         }
         draw.analog.hours = function() {
-            drowAnalog(coords.AnalogDialFace.Hours, analog[0]);
+            drowAnalog(coords.AnalogDialFace.Hours, data.analog[0]);
         }
         draw.analog.minutes = function() {
-            drowAnalog(coords.AnalogDialFace.Minutes, analog[1]);
+            drowAnalog(coords.AnalogDialFace.Minutes, data.analog[1]);
         }
         draw.analog.seconds = function() {
-            drowAnalog(coords.AnalogDialFace.Seconds, analog[2]);
+            drowAnalog(coords.AnalogDialFace.Seconds, data.analog[2]);
         }
         draw.status.alarm = function() {
             t = $c(coords.Status.Alarm.ImageIndexOn);
@@ -932,7 +934,7 @@
             insert(t, "c_stat_alarm");
         }
         draw.status.bt = function() {
-            if (bluetooth)
+            if (data.bluetooth)
                 t = $c(coords.Status.Bluetooth.ImageIndexOn);
             else
                 t = $c(coords.Status.Bluetooth.ImageIndexOff);
@@ -953,24 +955,24 @@
             insert(t, "c_stat_lock");
         }
         draw.activity.cal = function() {
-            setTextPos(coords.Activity.Calories, calories, "c_act_cal");
+            setTextPos(coords.Activity.Calories, data.calories, "c_act_cal");
         }
         draw.activity.steps = function() {
-            setTextPos(coords.Activity.Steps, steps, "c_act_steps");
+            setTextPos(coords.Activity.Steps, data.steps, "c_act_steps");
         }
         draw.activity.stepsgoal = function() {
-            setTextPos(coords.Activity.StepsGoal, stepsgoal, "c_act_stepsg");
+            setTextPos(coords.Activity.StepsGoal, data.stepsgoal, "c_act_stepsg");
         }
         draw.activity.pulse = function() {
-            setTextPos(coords.Activity.Pulse, pulse, "c_act_pulse");
+            setTextPos(coords.Activity.Pulse, data.pulse, "c_act_pulse");
         }
         draw.activity.distance = function() {
             var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
                 km = $c(coords.Activity.Distance.SuffixImageIndex);
-            t = makeBlock(coords.Activity.Distance.Number, distance[0]);
+            t = makeBlock(coords.Activity.Distance.Number, data.distance[0]);
             t.block.push(dot);
             t.width += dot.width + coords.Activity.Distance.Number.Spacing;
-            var t2 = makeBlock(coords.Activity.Distance.Number, distance[1]);
+            var t2 = makeBlock(coords.Activity.Distance.Number, data.distance[1]);
             t.block = t.block.concat(t2.block);
             t.width += t2.width;
             t.block.push(km);
@@ -986,16 +988,16 @@
         draw.weather.temp.oneline = function() {
             var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
                 deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
-                minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[0]));
+                minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[0]));
             if (minus != 0) {
                 t.block.splice(0, 0, minus);
                 t.width += minus.width;
             }
             t.block.push(sep);
             t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(temp[1]));
-            minus = temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+            var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[1]));
+            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
             if (minus != 0) {
                 t2.block.splice(0, 0, minus);
                 t2.width += minus.width;
@@ -1007,8 +1009,8 @@
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
         }
         draw.weather.temp.sep = function() {
-            var minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(temp[0]));
+            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
                 var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
                 t.block.push(deg);
@@ -1019,8 +1021,8 @@
                 t.width += minus.width;
             }
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
-            minus = temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(temp[1]));
+            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
+            t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
                 var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
                 t.block.push(deg);
@@ -1033,8 +1035,8 @@
             renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
         }
         draw.weather.temp.current = function() {
-            var minus = temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(temp[0]));
+            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+            t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
             if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
                 var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
                 t.block.push(deg);
@@ -1052,12 +1054,12 @@
         draw.stepsprogress.circle = function() {
             var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
                 full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
-            var fill = Math.round(steps / (stepsgoal / full));
+            var fill = Math.round(data.steps / (data.stepsgoal / full));
             if (fill > full) fill = full;
             $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
         }
         draw.stepsprogress.linear = function() {
-            var end = Math.round(steps / (stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+            var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
             if (end > coords.StepsProgress.Linear.Segments.length - 1)
                 end = coords.StepsProgress.Linear.Segments.length - 1;
             for (var i = 0; i <= end; i++) {
@@ -1154,12 +1156,12 @@
                     ctx = canvas.getContext("2d");
                     if (edgeBrowser) {
                         canvas.toBlob(function(blob) {
-                            saveAs(blob, wfname + ".png");
+                            saveAs(blob, data.wfname + ".png");
                         });
                     } else {
                         var a = document.createElement('a');
                         a.href = canvas.toDataURL("image/png");
-                        a.download = wfname + '.png';
+                        a.download = data.wfname + '.png';
                         a.click();
                         delete a;
                     }
@@ -1172,24 +1174,24 @@
                 var blob = new Blob([JSON.stringify(coords, null, 4)], {
                     type: "text/plain;charset=utf-8"
                 });
-                saveAs(blob, wfname + '.json');
+                saveAs(blob, data.wfname + '.json');
             } else {
                 var a = document.createElement('a');
                 a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
-                a.download = wfname + '.json';
+                a.download = data.wfname + '.json';
                 a.click();
             }
         }
 
         function fillarea() {
             $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            if (firstopen) {
+            if (data.firstopen) {
                 UIkit.notification("To update preview just click out of JSON input", {
                     status: 'primary',
                     pos: 'top-left',
                     timeout: 3000
                 });
-                firstopen = 0;
+                data.firstopen = false;
             }
         }
         $("codearea").onblur = function() {
@@ -1204,11 +1206,6 @@
                     UIkit.modal($("jsonerrormodal")).show()
                 }
                 setTimeout(show, 200);
-                //                UIkit.notification(error.message, {
-                //                    status: 'danger',
-                //                    pos: 'top-left',
-                //                    timeout: 5000
-                //                });
                 console.error(error);
             }
         }
