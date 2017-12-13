@@ -83,6 +83,29 @@
             color: #0234D9;
         }
 
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        ::-webkit-scrollbar-button:start:decrement,
+        ::-webkit-scrollbar-button:end:increment,
+        ::-webkit-scrollbar-button:vertical:start:increment,
+        ::-webkit-scrollbar-button:vertical:end:decrement {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+            background-color: rgba(51, 153, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:vertical {
+            height: 50px;
+            background-color: rgba(51, 153, 255, 0.75);
+            border-radius: 3px;
+        }
+
     </style>
     <link href="uikit/uikit.min.css" rel="stylesheet">
     <script src="uikit/uikit.min.js"></script>
