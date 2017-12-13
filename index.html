@@ -866,9 +866,9 @@
         }
         draw.date.sepday = function() {
             //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
-            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.weekDay);
+            var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
             if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(data.weekDay, 10)) {
+                if (!div(data.day, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
                 }
@@ -893,10 +893,10 @@
                 }
             t.block.push(dot);
             t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.weekDay);
+            var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.day);
             t.block = t.block.concat(t2.block);
             if (coords.Date.MonthAndDay.TwoDigitsDay)
-                if (!div(data.weekDay, 10)) {
+                if (!div(data.day, 10)) {
                     t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
                     t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                 }
