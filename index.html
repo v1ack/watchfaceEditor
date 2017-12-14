@@ -656,7 +656,12 @@
             var reader = new FileReader();
             reader.onload = function(event) {
                 the_url = event.target.result;
-                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
+                if (!(isNaN(Number(file.name.replace('.png', ''))))) {
+                    $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
+                } else if (file.name == "weather.png") {
+                    $('weather').parentNode.removeChild($('weather'));
+                    $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
+                }
             }
             reader.readAsDataURL(file);
             delete reader;
