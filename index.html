@@ -371,7 +371,7 @@
             try {
                 data.day = t.getDate();
                 data.month = t.getMonth() + 1;
-                data.weekDay = t.getDay() + 1;
+                data.weekDay = t.getDay() > 0 ? t.getDay() - 1 : 6;
                 removeByClass("c_date");
                 if ('Date' in coords) {
                     if ('WeekDay' in coords.Date)
