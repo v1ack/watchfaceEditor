@@ -114,45 +114,24 @@
 </head>
 
 <body>
-    <div class="uk-section-primary uk-preserve-color">
+    <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
                 <div uk-navbar>
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo" href="#" style="color: white">Bip watchface view</a>
+                        <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface view</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle>How to use</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-feedback" uk-toggle>Send feedback</a>
-                        <div id="modal-howto" uk-modal>
-                            <div class="uk-modal-dialog uk-modal-body">
-                                <h2 class="uk-modal-title">How to use</h2>
-                                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)
-                                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
-                                <p class="uk-text-right">
-                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-                                </p>
-                            </div>
-                        </div>
-                        <div id="modal-feedback" uk-modal>
-                            <div class="uk-modal-dialog uk-modal-body">
-                                <h2 class="uk-modal-title">Feedback</h2>
-                                <p>You can send feedback by Telegram to <a href="https://t.me/vlack">@vlack</a></p>
-                                <p class="uk-text-right">
-                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-                                </p>
-                            </div>
-                        </div>
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white">Home</a>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/manual/" style="color: white">Manual</a>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/watchface/upLoad/" style="color: white">Upload</a>
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white">amazfitwatchfaces.com</a>
                         </ul>
                     </div>
                 </div>
             </div>
         </nav>
-    </div>
+    </header>
     <main class="uk-container uk-position-relative uk-margin-top">
         <div class="uk-grid">
             <div class="uk-width-auto uk-first-column">
@@ -289,6 +268,25 @@
         <div id="allimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
+        <div id="modal-howto" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">How to use</h2>
+                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)
+                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                </p>
+            </div>
+        </div>
+        <div id="modal-feedback" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Feedback</h2>
+                <p>You can send feedback by Telegram to <a href="https://t.me/vlack">@vlack</a></p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                </p>
+            </div>
+        </div>
         <div id="jsonerrormodal" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">JSON error</h2>
@@ -300,14 +298,14 @@
         </div>
     </main>
     <script type="text/javascript">
-        if('ancestorOrigins' in location)
-        if (location.ancestorOrigins.length > 0) {
-            UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
-                status: 'warning',
-                pos: 'top-center',
-                timeout: 10000
-            });
-        }
+        /*if ('ancestorOrigins' in location)
+                    if (location.ancestorOrigins.length > 0) {
+                        UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
+                            status: 'warning',
+                            pos: 'top-center',
+                            timeout: 10000
+                        });
+                    }*/
 
         function addScript(url) {
             var e = document.createElement("script");
@@ -527,6 +525,19 @@
                             t = block.pop();
                             t.style.left = el.TopLeftX + offset + "px";
                             t.style.top = el.TopLeftY + "px";
+                            view.insert(t, cls);
+                            offset += t.width + el.Spacing;
+                        }
+                    } else if (el.Alignment == "Center") {
+                        block.reverse();
+                        offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                        //console.log(offset, width, el.BottomRightX, el.TopLeftX, el);
+                        var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
+                        //console.log(topoffset, block[0].height, el.BottomRightY, el.TopLeftY);
+                        while (block.length) {
+                            t = block.pop();
+                            t.style.left = el.TopLeftX + offset + "px";
+                            t.style.top = el.TopLeftY + topoffset + "px";
                             view.insert(t, cls);
                             offset += t.width + el.Spacing;
                         }
@@ -1273,8 +1284,40 @@
         }
 
     </script>
-    <!-- Yandex.Metrika counter --> <script type="text/javascript" > if (location.protocol != "file:") {(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter46845507 = new Ya.Metrika({ id:46845507, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); }</script>    
-    <noscript><div><img src="https://mc.yandex.ru/watch/46845507" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        if (location.protocol != "file:") {
+            (function(d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter46845507 = new Ya.Metrika({
+                            id: 46845507,
+                            clickmap: true,
+                            trackLinks: true,
+                            accurateTrackBounce: true,
+                            webvisor: true
+                        });
+                    } catch (e) {}
+                });
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function() {
+                        n.parentNode.insertBefore(s, n);
+                    };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "https://mc.yandex.ru/metrika/watch.js";
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else {
+                    f();
+                }
+            })(document, window, "yandex_metrika_callbacks");
+        }
+
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46845507" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </body>
 
 </html>
