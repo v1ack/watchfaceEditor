@@ -107,6 +107,8 @@
         }
 
     </style>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link href="uikit/uikit.min.css" rel="stylesheet">
     <script src="uikit/uikit.min.js"></script>
 </head>
@@ -298,13 +300,14 @@
         </div>
     </main>
     <script type="text/javascript">
-        if(location.ancestorOrigins.length > 0){
+        if (location.ancestorOrigins.length > 0) {
             UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
                 status: 'warning',
                 pos: 'top-center',
                 timeout: 10000
             });
         }
+
         function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
