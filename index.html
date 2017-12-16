@@ -176,13 +176,13 @@
                     <li>
                         <div class="js-upload" uk-form-custom>
                             <span>Images: </span>
-                            <input id="inputimages" type="file" multiple accept=".png" onclick="clearimg()">
+                            <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                         </div>
                         <br>
                         <div class="js-upload uk-margin" uk-form-custom>
                             <span>JSON: </span>
-                            <input id="inputjs" type="file" accept=".json" onclick="clearjs()">
+                            <input id="inputjs" type="file" accept=".json" onclick="load.clearjs()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
                         </div>
                         <br>
@@ -195,76 +195,76 @@
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Time</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-time" type="time" value="20:38">
+                                        <input class="uk-input" id="in-time" type="time" value="20:38" onchange="view.time_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Date</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06">
+                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06" onchange="view.date_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Battery</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100">
+                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="view.battery_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Calories</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999">
+                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="view.calories_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Steps</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999">
+                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="view.steps_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Steps goal</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999">
+                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="view.stepsgoal_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Pulse</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999">
+                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="view.pulse_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Distance</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999">
+                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="view.distance_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Weather day</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99">
+                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="view.weatherd_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Weather night</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99">
+                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="view.weathern_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Seconds</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59">
+                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="view.sec_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Status</label>
                                     <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> Alarm</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> Bluetooth</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> Do not disturb</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> Lock</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="view.alarm_change();"> Alarm</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="view.bt_change();"> Bluetooth</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd" onchange="view.dnd_change();"> Do not disturb</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="view.lock_change();"> Lock</label>
                                     </div>
                                 </div>
                             </form>
@@ -322,325 +322,723 @@
         function $c(el) {
             return document.getElementById(el).cloneNode(false);
         }
-        var coords = 0;
-        var data = {
-            timeOnClock: ["20", "38"],
-            seconds: [4, 3],
-            analog: [259, 228, 60],
-            weekDay: 2,
-            day: 20,
-            month: 12,
-            batteryT: 20,
-            calories: 860,
-            steps: 5687,
-            stepsgoal: 12000,
-            distance: [5, 67],
-            pulse: 72,
-            temp: [22, 24],
-            alarm: true,
-            bluetooth: true,
-            dnd: true,
-            lock: true,
-            firstopen: true,
-            jsset: false,
-            imagesset: false,
-            wfname: "wanchface"
-        }
+        var coords = 0,
+            data = {
+                timeOnClock: ["20", "38"],
+                seconds: [4, 3],
+                analog: [259, 228, 60],
+                weekDay: 2,
+                day: 20,
+                month: 12,
+                batteryT: 20,
+                calories: 860,
+                steps: 5687,
+                stepsgoal: 12000,
+                distance: [5, 67],
+                pulse: 72,
+                temp: [22, 24],
+                alarm: true,
+                bluetooth: true,
+                dnd: true,
+                lock: true,
+                firstopen: true,
+                jsset: false,
+                imagesset: false,
+                wfname: "wanchface"
+            },
+            view = {
+                drawAnalog: function(el, value) {
+                    var col = el.Color.replace("0x", "#"),
+                        d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
+                        iters = el.Shape.length,
+                        fill = el.OnlyBorder ? "none" : col;
+                    for (var i = 0; i < iters; i++) {
+                        d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
+                    }
+                    d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
+                    $('svg-cont-clock').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
+                    if ('CenterImage' in el) {
+                        view.setPosN(el.CenterImage, 0, "c_an_img");
+                    }
+                },
+                setTextPos: function(el, value, cls) {
+                    var t = view.makeBlock(el, value);
+                    view.renderBlock(t.block, t.width, el, cls);
+                },
+                insert: function(t, name) {
+                    t.removeAttribute('id');
+                    t.setAttribute("class", name)
+                    $("watchface").appendChild(t);
+                },
 
-        $("in-time").onchange = function() {
-            var t = $("in-time").value.split(":");
-            data.timeOnClock[0] = t[0];
-            data.timeOnClock[1] = t[1];
-            data.analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
-            data.analog[1] = t[1] * 6;
-            $("svg-cont-clock").innerHTML = '';
-            if ('AnalogDialFace' in coords) {
-                if ('Hours' in coords.AnalogDialFace)
-                    draw.analog.hours();
-                if ('Minutes' in coords.AnalogDialFace)
-                    draw.analog.minutes();
-                if ('Seconds' in coords.AnalogDialFace)
-                    draw.analog.seconds();
-            }
-            removeByClass("c_time");
-            if ('Time' in coords)
-                draw.time.time();
-        }
-        $("in-date").onchange = function() {
-            var t = $("in-date").valueAsDate;
-            try {
-                data.day = t.getDate();
-                data.month = t.getMonth() + 1;
-                data.weekDay = t.getDay() > 0 ? t.getDay() - 1 : 6;
-                removeByClass("c_date");
-                if ('Date' in coords) {
-                    if ('WeekDay' in coords.Date)
-                        draw.date.weekday();
-                    if ('MonthAndDay' in coords.Date) {
-                        if ('Separate' in coords.Date.MonthAndDay) {
-                            if ('Day' in coords.Date.MonthAndDay.Separate)
-                                draw.date.sepday();
-                            if ('Month' in coords.Date.MonthAndDay.Separate)
-                                draw.date.sepmonth();
+                setPosN: function(el, value, cls) {
+                    t = $c(el.ImageIndex + value);
+                    t.style.left = el.X + "px";
+                    t.style.top = el.Y + "px";
+                    view.insert(t, cls);
+                },
+                setPos: function(t, el) {
+                    t.style.left = el.X + "px";
+                    t.style.top = el.Y + "px";
+                },
+                makeWf: function() {
+                    try {
+                        $("watchface").innerHTML = '';
+                        $("svg-cont-clock").innerHTML = '';
+                        $("svg-cont-steps").innerHTML = '';
+                        UIkit.notification.closeAll()
+                        var t = 0;
+                        if ('Background' in coords)
+                            view.setPosN(coords.Background.Image, 0, "c_bg");
+                        if ('Time' in coords) {
+                            if ('Seconds' in coords.Time)
+                                draw.time.seconds();
+                            draw.time.time();
                         }
-                        if ('OneLine' in coords.Date.MonthAndDay)
-                            draw.date.oneline();
+                        if ('Date' in coords) {
+                            if ('WeekDay' in coords.Date)
+                                draw.date.weekday();
+                            if ('MonthAndDay' in coords.Date) {
+                                if ('Separate' in coords.Date.MonthAndDay) {
+                                    if ('Day' in coords.Date.MonthAndDay.Separate)
+                                        draw.date.sepday();
+                                    if ('Month' in coords.Date.MonthAndDay.Separate)
+                                        draw.date.sepmonth();
+                                }
+                                if ('OneLine' in coords.Date.MonthAndDay)
+                                    draw.date.oneline();
+                            }
+                        }
+                        if ('Battery' in coords) {
+                            if ('Icon' in coords.Battery)
+                                draw.battery.icon();
+                            if ('Text' in coords.Battery)
+                                draw.battery.text();
+                            if ('Scale' in coords.Battery)
+                                draw.battery.scale();
+                        }
+
+                        if ('Status' in coords) {
+                            if ('Alarm' in coords.Status && data.alarm)
+                                draw.status.alarm();
+                            if ('Bluetooth' in coords.Status)
+                                draw.status.bt();
+                            if ('DoNotDisturb' in coords.Status && data.dnd)
+                                draw.status.dnd();
+                            if ('Lock' in coords.Status && data.lock)
+                                draw.status.lock();
+                        }
+                        if ('Activity' in coords) {
+                            if ('Calories' in coords.Activity)
+                                draw.activity.cal();
+                            if ('Steps' in coords.Activity)
+                                draw.activity.steps();
+                            if ('StepsGoal' in coords.Activity)
+                                draw.activity.stepsgoal();
+                            if ('Pulse' in coords.Activity)
+                                draw.activity.pulse();
+                            if ('Distance' in coords.Activity)
+                                draw.activity.distance();
+                        }
+                        if ('Weather' in coords) {
+                            if ('Icon' in coords.Weather)
+                                draw.weather.icon();
+                            if ('Temperature' in coords.Weather) {
+                                if ('Today' in coords.Weather.Temperature) {
+                                    if ('OneLine' in coords.Weather.Temperature.Today)
+                                        draw.weather.temp.oneline();
+                                    if ('Separate' in coords.Weather.Temperature.Today)
+                                        draw.weather.temp.sep();
+                                }
+                                if ('Current' in coords.Weather.Temperature)
+                                    draw.weather.temp.current();
+                            }
+                            if ('AirPollution' in coords.Weather)
+                                draw.weather.air();
+                        }
+                        if ('StepsProgress' in coords) {
+                            if ('Circle' in coords.StepsProgress)
+                                draw.stepsprogress.circle();
+                            if ('Linear' in coords.StepsProgress)
+                                draw.stepsprogress.linear();
+                        }
+                        if ('AnalogDialFace' in coords) {
+                            if ('Hours' in coords.AnalogDialFace)
+                                draw.analog.hours();
+                            if ('Minutes' in coords.AnalogDialFace)
+                                draw.analog.minutes();
+                            if ('Seconds' in coords.AnalogDialFace)
+                                draw.analog.seconds();
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        if (error.name == "TypeError") {
+                            UIkit.notification("Image for prorety not found", {
+                                status: 'danger',
+                                pos: 'top-left',
+                                timeout: 7500
+                            });
+                        }
+                    }
+                },
+                renderBlock: function(block, width, el, cls) {
+                    var t, offset = 0;
+                    if (el.Alignment == 18 || el.Alignment == "TopLeft") {
+                        block.reverse();
+                        while (block.length) {
+                            t = block.pop();
+                            t.style.left = el.TopLeftX + offset + "px";
+                            t.style.top = el.TopLeftY + "px";
+                            view.insert(t, cls);
+                            offset += t.width + el.Spacing;
+                        }
+                    } else if (el.Alignment == 20 || el.Alignment == "TopRight") {
+                        while (block.length) {
+                            t = block.pop();
+                            t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                            t.style.top = el.TopLeftY + "px";
+                            view.insert(t, cls);
+                            offset += t.width + el.Spacing;
+                        }
+                    } else if (el.Alignment == 34 || el.Alignment == "BottomLeft") {
+                        while (block.length) {
+                            t = block.pop();
+                            t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                            t.style.top = el.BottomRightY - t.height + 1 + "px";
+                            view.insert(t, cls);
+                            offset += t.width + el.Spacing;
+                        }
+                    } else if (el.Alignment == 24 || el.Alignment == "TopCenter") {
+                        block.reverse();
+                        offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                        //console.log(offset);
+                        while (block.length) {
+                            t = block.pop();
+                            t.style.left = el.TopLeftX + offset + "px";
+                            t.style.top = el.TopLeftY + "px";
+                            view.insert(t, cls);
+                            offset += t.width + el.Spacing;
+                        }
+                    }
+                },
+                makeBlock: function(el, value) {
+                    value = value.toString();
+                    var block = Array(),
+                        width = 0,
+                        t;
+                    while (value != "") {
+                        t = $c(el.ImageIndex + Number(value[0]));
+                        block.push(t);
+                        width += t.width + el.Spacing;
+                        value = value.substr(1);
+                    }
+                    width = width - el.Spacing;
+                    return {
+                        block,
+                        width
+                    }
+                },
+                time_change: function() {
+                    var t = $("in-time").value.split(":");
+                    data.timeOnClock[0] = t[0];
+                    data.timeOnClock[1] = t[1];
+                    data.analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
+                    data.analog[1] = t[1] * 6;
+                    $("svg-cont-clock").innerHTML = '';
+                    if ('AnalogDialFace' in coords) {
+                        if ('Hours' in coords.AnalogDialFace)
+                            draw.analog.hours();
+                        if ('Minutes' in coords.AnalogDialFace)
+                            draw.analog.minutes();
+                        if ('Seconds' in coords.AnalogDialFace)
+                            draw.analog.seconds();
+                    }
+                    removeByClass("c_time");
+                    if ('Time' in coords)
+                        draw.time.time();
+                },
+                date_change: function() {
+                    var t = $("in-date").valueAsDate;
+                    try {
+                        data.day = t.getDate();
+                        data.month = t.getMonth() + 1;
+                        data.weekDay = t.getDay() > 0 ? t.getDay() - 1 : 6;
+                        removeByClass("c_date");
+                        if ('Date' in coords) {
+                            if ('WeekDay' in coords.Date)
+                                draw.date.weekday();
+                            if ('MonthAndDay' in coords.Date) {
+                                if ('Separate' in coords.Date.MonthAndDay) {
+                                    if ('Day' in coords.Date.MonthAndDay.Separate)
+                                        draw.date.sepday();
+                                    if ('Month' in coords.Date.MonthAndDay.Separate)
+                                        draw.date.sepmonth();
+                                }
+                                if ('OneLine' in coords.Date.MonthAndDay)
+                                    draw.date.oneline();
+                            }
+                        }
+                    } catch (e) {}
+                },
+                sec_change: function() {
+                    if ($("in-sec").value > 59) $("in-sec").value = 59;
+                    if ($("in-sec").value < 0) $("in-sec").value = 0;
+                    var sec = $("in-sec").value;
+                    data.seconds[0] = Number(sec.split("")[0]);
+                    data.seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
+                    data.analog[2] = sec * 6;
+                    $("svg-cont-clock").innerHTML = '';
+                    if ('AnalogDialFace' in coords) {
+                        if ('Hours' in coords.AnalogDialFace)
+                            draw.analog.hours();
+                        if ('Minutes' in coords.AnalogDialFace)
+                            draw.analog.minutes();
+                        if ('Seconds' in coords.AnalogDialFace)
+                            draw.analog.seconds();
+                    }
+                    removeByClass("c_sec");
+                    if ('Time' in coords)
+                        if ('Seconds' in coords.Time)
+                            draw.time.seconds();
+                },
+                battery_change: function() {
+                    if ($("in-battery").value > 100) $("in-battery").value = 100;
+                    if ($("in-battery").value < 0) $("in-battery").value = 0;
+                    data.batteryT = $("in-battery").value;
+                    removeByClass("c_battery_icon");
+                    removeByClass("c_battery_scale");
+                    removeByClass("c_battery_text");
+                    if ('Battery' in coords) {
+                        if ('Icon' in coords.Battery)
+                            draw.battery.icon();
+                        if ('Text' in coords.Battery)
+                            draw.battery.text();
+                        if ('Scale' in coords.Battery)
+                            draw.battery.scale();
+                    }
+                },
+                alarm_change: function() {
+                    data.alarm = $("in-alarm").checked;
+                    removeByClass("c_stat_alarm");
+                    if ('Status' in coords)
+                        if ('Alarm' in coords.Status && data.alarm)
+                            draw.status.alarm();
+                },
+                bt_change: function() {
+                    data.bluetooth = $("in-bt").checked;
+                    removeByClass("c_stat_bt");
+                    if ('Status' in coords)
+                        if ('Bluetooth' in coords.Status)
+                            draw.status.bt();
+
+                },
+                dnd_change: function() {
+                    data.dnd = $("in-dnd").checked;
+                    removeByClass("c_stat_dnd");
+                    if ('Status' in coords)
+                        if ('DoNotDisturb' in coords.Status && data.dnd)
+                            draw.status.dnd();
+                },
+                lock_change: function() {
+                    data.lock = $("in-lock").checked;
+                    removeByClass("c_stat_lock");
+                    if ('Status' in coords)
+                        if ('Lock' in coords.Status && data.lock)
+                            draw.status.lock();
+                },
+                steps_change: function() {
+                    if ($("in-steps").value > 99999) $("in-steps").value = 99999;
+                    if ($("in-steps").value < 0) $("in-steps").value = 0;
+                    data.steps = $("in-steps").value;
+                    removeByClass("c_act_steps");
+                    if ('Activity' in coords)
+                        if ('Steps' in coords.Activity)
+                            draw.activity.steps();
+                    removeByClass("c_steps_linear");
+                    $("svg-cont-steps").innerHTML = '';
+                    if ('StepsProgress' in coords) {
+                        if ('Circle' in coords.StepsProgress)
+                            draw.stepsprogress.circle();
+                        if ('Linear' in coords.StepsProgress)
+                            draw.stepsprogress.linear();
+                    }
+                },
+                distance_change: function() {
+                    if ($("in-distance").value > 99) $("in-distance").value = 99;
+                    if ($("in-distance").value < 0) $("in-distance").value = 0;
+                    var dist = $("in-distance").value.split(".");
+                    data.distance[0] = Number(dist[0]);
+                    data.distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
+                    removeByClass("c_act_distance");
+                    if ('Activity' in coords)
+                        if ('Distance' in coords.Activity)
+                            draw.activity.distance();
+                },
+                pulse_change: function() {
+                    if ($("in-pulse").value > 999) $("in-pulse").value = 999;
+                    if ($("in-pulse").value < 0) $("in-pulse").value = 0;
+                    data.pulse = $("in-pulse").value;
+                    removeByClass("c_act_pulse");
+                    if ('Activity' in coords)
+                        if ('Pulse' in coords.Activity)
+                            draw.activity.pulse();
+                },
+                calories_change: function() {
+                    if ($("in-calories").value > 9999) $("in-calories").value = 9999;
+                    if ($("in-calories").value < 0) $("in-calories").value = 0;
+                    data.calories = $("in-calories").value;
+                    removeByClass("c_act_cal");
+                    if ('Activity' in coords)
+                        if ('Calories' in coords.Activity)
+                            draw.activity.cal();
+                },
+                stepsgoal_change: function() {
+                    if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
+                    if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
+                    data.stepsgoal = $("in-stepsgoal").value;
+                    if (data.stepsgoal == 75321)
+                        $("editbutton").classList.remove("uk-disabled");
+                    removeByClass("c_act_stepsgoal");
+                    if ('Activity' in coords)
+                        if ('StepsGoal' in coords.Activity)
+                            draw.activity.stepsgoal();
+                },
+                weatherd_change: function() {
+                    if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
+                    if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
+                    data.temp[0] = $("in-weatherd").value;
+                    removeByClass("c_temp");
+                    if ('Weather' in coords) {
+                        if ('Icon' in coords.Weather)
+                            draw.weather.icon();
+                        if ('Temperature' in coords.Weather) {
+                            if ('Today' in coords.Weather.Temperature) {
+                                if ('OneLine' in coords.Weather.Temperature.Today)
+                                    draw.weather.temp.oneline();
+                                if ('Separate' in coords.Weather.Temperature.Today)
+                                    draw.weather.temp.sep();
+                            }
+                            if ('Current' in coords.Weather.Temperature)
+                                draw.weather.temp.current();
+                        }
+                        if ('AirPollution' in coords.Weather)
+                            draw.weather.air();
+                    }
+                },
+                weathern_change: function() {
+                    if ($("in-weathern").value > 99) $("in-weathern").value = 99;
+                    if ($("in-weathern").value < -99) $("in-weathern").value = -99;
+                    data.temp[1] = $("in-weathern").value;
+                    removeByClass("c_temp");
+                    if ('Weather' in coords)
+                        if ('Temperature' in coords.Weather)
+                            if ('Today' in coords.Weather.Temperature) {
+                                if ('OneLine' in coords.Weather.Temperature.Today)
+                                    draw.weather.temp.oneline();
+                                if ('Separate' in coords.Weather.Temperature.Today)
+                                    draw.weather.temp.sep();
+                            }
+                }
+            },
+            load = {
+                disableBtn: function(i) {
+                    if (i) {
+                        //$("editbutton").classList.remove("uk-disabled");
+                        $("makepng").removeAttribute("disabled");
+                        $("viewsettings").removeAttribute("disabled");
+                        $("codeopenbutton").classList.remove("uk-disabled");
+                        setTimeout(view.makeWf, 200);
+                    } else {
+                        //$("editbutton").classList.add("uk-disabled");
+                        $("makepng").setAttribute("disabled", "");
+                        $("viewsettings").setAttribute("disabled", "");
+                        $("codeopenbutton").classList.add("uk-disabled");
+                    }
+                },
+                clearjs: function() {
+                    $('inputjs').value = '';
+                    coords = 0;
+                    data.jsset = false;
+                    if ($('inputjs').nextElementSibling.classList.contains("uk-label-success"))
+                        $('inputjs').nextElementSibling.classList.remove("uk-label-success");
+                    $('inputjs').nextElementSibling.classList.add("uk-button-danger");
+                    load.disableBtn(0);
+                },
+                clearimg: function() {
+                    $('inputimages').value = '';
+                    data.imagesset = false;
+                    if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
+                    $('inputimages').nextElementSibling.classList.add("uk-button-danger");
+                    $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
+                    load.disableBtn(0);
+                },
+                renderImage: function(file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        the_url = event.target.result;
+                        if (!(isNaN(Number(file.name.replace('.png', ''))))) {
+                            $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
+                        } else if (file.name == "weather.png") {
+                            $('weather').parentNode.removeChild($('weather'));
+                            $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                    delete reader;
+                }
+            },
+            draw = {
+                time: {
+                    time: function() {
+                        var ntimeOnClock = data.timeOnClock[0];
+                        if ('AmPm' in coords.Time) {
+                            var am = 1;
+                            if (Number(ntimeOnClock) > 12) {
+                                ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
+                                if (ntimeOnClock.length == 1)
+                                    ntimeOnClock = "0" + ntimeOnClock;
+                                am = 0;
+                            }
+                            t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
+                            view.setPos(t, coords.Time.AmPm);
+                            view.insert(t, "c_time_am");
+
+                        }
+                        view.setPosN(coords.Time.Hours.Tens, Number(ntimeOnClock[0]), "c_time");
+                        view.setPosN(coords.Time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
+                        view.setPosN(coords.Time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
+                        view.setPosN(coords.Time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
+                    },
+                    seconds: function() {
+                        view.setPosN(coords.Time.Seconds.Tens, data.seconds[0], "c_sec");
+                        view.setPosN(coords.Time.Seconds.Ones, data.seconds[1], "c_sec");
+                    }
+                },
+                date: {
+                    weekday: function() {
+                        view.setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
+                    },
+                    sepday: function() {
+                        //view.setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
+                        var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
+                        if (coords.Date.MonthAndDay.TwoDigitsDay)
+                            if (!div(data.day, 10)) {
+                                t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
+                                t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
+                            }
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
+                    },
+                    sepmonth: function() {
+                        var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
+                        if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                            if (!div(data.month, 10)) {
+                                t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
+                                t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
+                            }
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
+                    },
+                    oneline: function() {
+                        var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
+                        t = view.makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.month);
+                        if (coords.Date.MonthAndDay.TwoDigitsMonth)
+                            if (!div(data.month, 10)) {
+                                t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
+                                t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                            }
+                        t.block.push(dot);
+                        t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                        var t2 = view.makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.day);
+                        t.block = t.block.concat(t2.block);
+                        if (coords.Date.MonthAndDay.TwoDigitsDay)
+                            if (!div(data.day, 10)) {
+                                t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
+                                t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
+                            }
+                        t.width += t2.width;
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
+                    }
+
+                },
+                battery: {
+                    icon: function() {
+                        var battery = Math.round(data.batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
+                        view.setPosN(coords.Battery.Icon, battery, "c_battery_icon");
+                    },
+                    text: function() {
+                        view.setTextPos(coords.Battery.Text, data.batteryT, "c_battery_text");
+                    },
+                    scale: function() {
+                        var end = Math.round(data.batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
+                        for (var i = 0; i <= end; i++) {
+                            t = $c(coords.Battery.Scale.StartImageIndex + i);
+                            view.setPos(t, coords.Battery.Scale.Segments[i]);
+                            view.insert(t, "c_battery_scale");
+                        }
+                    }
+                },
+                analog: {
+                    hours: function() {
+                        view.drawAnalog(coords.AnalogDialFace.Hours, data.analog[0]);
+                    },
+                    minutes: function() {
+                        view.drawAnalog(coords.AnalogDialFace.Minutes, data.analog[1]);
+                    },
+                    seconds: function() {
+                        view.drawAnalog(coords.AnalogDialFace.Seconds, data.analog[2]);
+                    }
+                },
+                status: {
+                    alarm: function() {
+                        t = $c(coords.Status.Alarm.ImageIndexOn);
+                        t.style.left = coords.Status.Alarm.Coordinates.X + "px";
+                        t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
+                        view.insert(t, "c_stat_alarm");
+                    },
+                    bt: function() {
+                        if (data.bluetooth)
+                            t = $c(coords.Status.Bluetooth.ImageIndexOn);
+                        else
+                            t = $c(coords.Status.Bluetooth.ImageIndexOff);
+                        t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
+                        t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
+                        view.insert(t, "c_stat_bt");
+                    },
+                    dnd: function() {
+                        t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
+                        t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
+                        t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
+                        view.insert(t, "c_stat_dnd");
+                    },
+                    lock: function() {
+                        t = $c(coords.Status.Lock.ImageIndexOn);
+                        t.style.left = coords.Status.Lock.Coordinates.X + "px";
+                        t.style.top = coords.Status.Lock.Coordinates.Y + "px";
+                        view.insert(t, "c_stat_lock");
+                    }
+                },
+                activity: {
+                    cal: function() {
+                        view.setTextPos(coords.Activity.Calories, data.calories, "c_act_cal");
+                    },
+                    steps: function() {
+                        view.setTextPos(coords.Activity.Steps, data.steps, "c_act_steps");
+                    },
+                    stepsgoal: function() {
+                        view.setTextPos(coords.Activity.StepsGoal, data.stepsgoal, "c_act_stepsg");
+                    },
+                    pulse: function() {
+                        view.setTextPos(coords.Activity.Pulse, data.pulse, "c_act_pulse");
+                    },
+                    distance: function() {
+                        var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
+                            km = $c(coords.Activity.Distance.SuffixImageIndex);
+                        t = view.makeBlock(coords.Activity.Distance.Number, data.distance[0]);
+                        t.block.push(dot);
+                        t.width += dot.width + coords.Activity.Distance.Number.Spacing;
+                        var t2 = view.makeBlock(coords.Activity.Distance.Number, data.distance[1]);
+                        t.block = t.block.concat(t2.block);
+                        t.width += t2.width;
+                        t.block.push(km);
+                        t.width += km.width;
+                        view.renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
+                    }
+                },
+                stepsprogress: {
+                    circle: function() {
+                        var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
+                            full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
+                        var fill = Math.round(data.steps / (data.stepsgoal / full));
+                        if (fill > full) fill = full;
+                        $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
+                    },
+                    linear: function() {
+                        var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+                        if (end > coords.StepsProgress.Linear.Segments.length - 1)
+                            end = coords.StepsProgress.Linear.Segments.length - 1;
+                        for (var i = 0; i <= end; i++) {
+                            t = $c(coords.StepsProgress.Linear.StartImageIndex + i);
+                            view.setPos(t, coords.StepsProgress.Linear.Segments[i]);
+                            view.insert(t, "c_steps_linear");
+                        }
+                    }
+                },
+                weather: {
+                    icon: function() {
+                        t = $c("weather");
+                        t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                        t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                        view.insert(t, "c_weather_icon");
+                    },
+                    temp: {
+                        oneline: function() {
+                            var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
+                                deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
+                                minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+                            t = view.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[0]));
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            t.block.push(sep);
+                            t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
+                            var t2 = view.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[1]));
+                            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
+                            if (minus != 0) {
+                                t2.block.splice(0, 0, minus);
+                                t2.width += minus.width;
+                            }
+                            t.block = t.block.concat(t2.block);
+                            t.width += t2.width;
+                            t.block.push(deg);
+                            t.width += deg.width;
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
+                        },
+                        sep: function() {
+                            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                            t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                                var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
+                            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
+                            t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                                var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
+                        },
+                        current: function() {
+                            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                            t = view.makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
+                            if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
+                                var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
+                                t.block.push(deg);
+                                t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
+                            }
+                            if (minus != 0) {
+                                t.block.splice(0, 0, minus);
+                                t.width += minus.width;
+                            }
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
+                        }
+                    },
+                    air: function() {
+                        view.setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
                     }
                 }
-            } catch (e) {}
-        }
-        $("in-sec").onchange = function() {
-            if ($("in-sec").value > 59) $("in-sec").value = 59;
-            if ($("in-sec").value < 0) $("in-sec").value = 0;
-            var sec = $("in-sec").value;
-            data.seconds[0] = Number(sec.split("")[0]);
-            data.seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
-            data.analog[2] = sec * 6;
-            $("svg-cont-clock").innerHTML = '';
-            if ('AnalogDialFace' in coords) {
-                if ('Hours' in coords.AnalogDialFace)
-                    draw.analog.hours();
-                if ('Minutes' in coords.AnalogDialFace)
-                    draw.analog.minutes();
-                if ('Seconds' in coords.AnalogDialFace)
-                    draw.analog.seconds();
-            }
-            removeByClass("c_sec");
-            if ('Time' in coords)
-                if ('Seconds' in coords.Time)
-                    draw.time.seconds();
-        }
-        $("in-battery").onchange = function() {
-            if ($("in-battery").value > 100) $("in-battery").value = 100;
-            if ($("in-battery").value < 0) $("in-battery").value = 0;
-            data.batteryT = $("in-battery").value;
-            removeByClass("c_battery_icon");
-            removeByClass("c_battery_scale");
-            removeByClass("c_battery_text");
-            if ('Battery' in coords) {
-                if ('Icon' in coords.Battery)
-                    draw.battery.icon();
-                if ('Text' in coords.Battery)
-                    draw.battery.text();
-                if ('Scale' in coords.Battery)
-                    draw.battery.scale();
-            }
-        }
-        $("in-alarm").onchange = function() {
-            data.alarm = $("in-alarm").checked;
-            removeByClass("c_stat_alarm");
-            if ('Status' in coords)
-                if ('Alarm' in coords.Status && data.alarm)
-                    draw.status.alarm();
-        }
-        $("in-bt").onchange = function() {
-            data.bluetooth = $("in-bt").checked;
-            removeByClass("c_stat_bt");
-            if ('Status' in coords)
-                if ('Bluetooth' in coords.Status)
-                    draw.status.bt();
-
-        }
-        $("in-dnd").onchange = function() {
-            data.dnd = $("in-dnd").checked;
-            removeByClass("c_stat_dnd");
-            if ('Status' in coords)
-                if ('DoNotDisturb' in coords.Status && data.dnd)
-                    draw.status.dnd();
-        }
-        $("in-lock").onchange = function() {
-            data.lock = $("in-lock").checked;
-            removeByClass("c_stat_lock");
-            if ('Status' in coords)
-                if ('Lock' in coords.Status && data.lock)
-                    draw.status.lock();
-        }
-        $("in-steps").onchange = function() {
-            if ($("in-steps").value > 99999) $("in-steps").value = 99999;
-            if ($("in-steps").value < 0) $("in-steps").value = 0;
-            data.steps = $("in-steps").value;
-            removeByClass("c_act_steps");
-            if ('Activity' in coords)
-                if ('Steps' in coords.Activity)
-                    draw.activity.steps();
-            removeByClass("c_steps_linear");
-            $("svg-cont-steps").innerHTML = '';
-            if ('StepsProgress' in coords) {
-                if ('Circle' in coords.StepsProgress)
-                    draw.stepsprogress.circle();
-                if ('Linear' in coords.StepsProgress)
-                    draw.stepsprogress.linear();
-            }
-        }
-        $("in-distance").onchange = function() {
-            if ($("in-distance").value > 99) $("in-distance").value = 99;
-            if ($("in-distance").value < 0) $("in-distance").value = 0;
-            var dist = $("in-distance").value.split(".");
-            data.distance[0] = Number(dist[0]);
-            data.distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
-            removeByClass("c_act_distance");
-            if ('Activity' in coords)
-                if ('Distance' in coords.Activity)
-                    draw.activity.distance();
-        }
-        $("in-pulse").onchange = function() {
-            if ($("in-pulse").value > 999) $("in-pulse").value = 999;
-            if ($("in-pulse").value < 0) $("in-pulse").value = 0;
-            data.pulse = $("in-pulse").value;
-            removeByClass("c_act_pulse");
-            if ('Activity' in coords)
-                if ('Pulse' in coords.Activity)
-                    draw.activity.pulse();
-        }
-        $("in-calories").onchange = function() {
-            if ($("in-calories").value > 9999) $("in-calories").value = 9999;
-            if ($("in-calories").value < 0) $("in-calories").value = 0;
-            data.calories = $("in-calories").value;
-            removeByClass("c_act_cal");
-            if ('Activity' in coords)
-                if ('Calories' in coords.Activity)
-                    draw.activity.cal();
-        }
-        $("in-stepsgoal").onchange = function() {
-            if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
-            if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
-            data.stepsgoal = $("in-stepsgoal").value;
-            if (data.stepsgoal == 75321)
-                $("editbutton").classList.remove("uk-disabled");
-            removeByClass("c_act_stepsgoal");
-            if ('Activity' in coords)
-                if ('StepsGoal' in coords.Activity)
-                    draw.activity.stepsgoal();
-        }
-        $("in-weatherd").onchange = function() {
-            if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
-            if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
-            data.temp[0] = $("in-weatherd").value;
-            removeByClass("c_temp");
-            if ('Weather' in coords) {
-                if ('Icon' in coords.Weather)
-                    draw.weather.icon();
-                if ('Temperature' in coords.Weather) {
-                    if ('Today' in coords.Weather.Temperature) {
-                        if ('OneLine' in coords.Weather.Temperature.Today)
-                            draw.weather.temp.oneline();
-                        if ('Separate' in coords.Weather.Temperature.Today)
-                            draw.weather.temp.sep();
-                    }
-                    if ('Current' in coords.Weather.Temperature)
-                        draw.weather.temp.current();
-                }
-                if ('AirPollution' in coords.Weather)
-                    draw.weather.air();
-            }
-        }
-        $("in-weathern").onchange = function() {
-            if ($("in-weathern").value > 99) $("in-weathern").value = 99;
-            if ($("in-weathern").value < -99) $("in-weathern").value = -99;
-            data.temp[1] = $("in-weathern").value;
-            removeByClass("c_temp");
-            if ('Weather' in coords)
-                if ('Temperature' in coords.Weather)
-                    if ('Today' in coords.Weather.Temperature) {
-                        if ('OneLine' in coords.Weather.Temperature.Today)
-                            draw.weather.temp.oneline();
-                        if ('Separate' in coords.Weather.Temperature.Today)
-                            draw.weather.temp.sep();
-                    }
-        }
-
-        function disableBtn(i) {
-            if (i) {
-                //$("editbutton").classList.remove("uk-disabled");
-                $("makepng").removeAttribute("disabled");
-                $("viewsettings").removeAttribute("disabled");
-                $("codeopenbutton").classList.remove("uk-disabled");
-                setTimeout(makeWf, 200);
-            } else {
-                //$("editbutton").classList.add("uk-disabled");
-                $("makepng").setAttribute("disabled", "");
-                $("viewsettings").setAttribute("disabled", "");
-                $("codeopenbutton").classList.add("uk-disabled");
-            }
-        }
-
-        function makeBlock(el, value) {
-            value = value.toString();
-            var block = Array(),
-                width = 0,
-                t;
-            while (value != "") {
-                t = $c(el.ImageIndex + Number(value[0]));
-                block.push(t);
-                width += t.width + el.Spacing;
-                value = value.substr(1);
-            }
-            width = width - el.Spacing;
-            return {
-                block,
-                width
-            }
-        }
-
-        function renderBlock(block, width, el, cls) {
-            var t, offset = 0;
-            if (el.Alignment == 18 || el.Alignment == "TopLeft") {
-                block.reverse();
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.TopLeftX + offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 20 || el.Alignment == "TopRight") {
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 34 || el.Alignment == "BottomLeft") {
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                    t.style.top = el.BottomRightY - t.height + 1 + "px";
-                    insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 24 || el.Alignment == "TopCenter") {
-                block.reverse();
-                offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
-                //console.log(offset);
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.TopLeftX + offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            }
-        }
-
-        function clearjs() {
-            $('inputjs').value = '';
-            coords = 0;
-            data.jsset = false;
-            if ($('inputjs').nextElementSibling.classList.contains("uk-label-success"))
-                $('inputjs').nextElementSibling.classList.remove("uk-label-success");
-            $('inputjs').nextElementSibling.classList.add("uk-button-danger");
-            disableBtn(0);
-        }
-
-        function clearimg() {
-            $('inputimages').value = '';
-            data.imagesset = false;
-            if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
-            $('inputimages').nextElementSibling.classList.add("uk-button-danger");
-            $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
-            disableBtn(0);
-        }
+            };
 
         function div(a, b) {
             return (a - a % b) / b;
@@ -652,26 +1050,12 @@
                 $("watchface").removeChild(els[0]);
         }
 
-        function renderImage(file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                the_url = event.target.result;
-                if (!(isNaN(Number(file.name.replace('.png', ''))))) {
-                    $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
-                } else if (file.name == "weather.png") {
-                    $('weather').parentNode.removeChild($('weather'));
-                    $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
-                }
-            }
-            reader.readAsDataURL(file);
-            delete reader;
-        }
         $('inputimages').onchange = function() {
             if (this.files.length) {
                 var i = 0;
                 console.log("Images count: ", this.files.length);
                 while (i < this.files.length) {
-                    renderImage(this.files[i]);
+                    load.renderImage(this.files[i]);
                     i++;
                 }
                 data.imagesset = true;
@@ -680,9 +1064,9 @@
                 $('inputimages').nextElementSibling.classList.add("uk-label-success");
             }
             if (data.imagesset && data.jsset)
-                disableBtn(1);
+                load.disableBtn(1);
             else
-                disableBtn(0);
+                load.disableBtn(0);
         }
         $('inputjs').onchange = function() {
             if (this.files.length) {
@@ -711,400 +1095,9 @@
                 $('inputjs').nextElementSibling.classList.add("uk-label-success");
             }
             if (data.imagesset && data.jsset)
-                disableBtn(1);
+                load.disableBtn(1);
             else
-                disableBtn(0);
-        }
-
-        function setPos(t, el) {
-            t.style.left = el.X + "px";
-            t.style.top = el.Y + "px";
-        }
-
-        function setPosN(el, value, cls) {
-            t = $c(el.ImageIndex + value);
-            t.style.left = el.X + "px";
-            t.style.top = el.Y + "px";
-            insert(t, cls);
-        }
-
-        function insert(t, name) {
-            t.removeAttribute('id');
-            t.setAttribute("class", name)
-            $("watchface").appendChild(t);
-        }
-
-        function setTextPos(el, value, cls) {
-            var t = makeBlock(el, value);
-            renderBlock(t.block, t.width, el, cls);
-        }
-
-        function drowAnalog(el, value) {
-            var col = el.Color.replace("0x", "#"),
-                d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
-                iters = el.Shape.length,
-                fill = el.OnlyBorder ? "none" : col;
-            for (var i = 0; i < iters; i++) {
-                d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
-            }
-            d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
-            $('svg-cont-clock').innerHTML += "<path d=\"" + d + "\" transform=\"rotate(" + value + " " + el.Center.X + " " + el.Center.Y + ") rotate(-90 " + el.Center.X + " 0)\" fill=\"" + fill + "\" stroke=\"" + col + "\"></path>";
-            if ('CenterImage' in el) {
-                setPosN(el.CenterImage, 0, "c_an_img");
-            }
-        }
-
-        function makeWf() {
-            try {
-                $("watchface").innerHTML = '';
-                $("svg-cont-clock").innerHTML = '';
-                $("svg-cont-steps").innerHTML = '';
-                UIkit.notification.closeAll()
-                var t = 0;
-                if ('Background' in coords)
-                    setPosN(coords.Background.Image, 0, "c_bg");
-                if ('Time' in coords) {
-                    if ('Seconds' in coords.Time)
-                        draw.time.seconds();
-                    draw.time.time();
-                }
-                if ('Date' in coords) {
-                    if ('WeekDay' in coords.Date)
-                        draw.date.weekday();
-                    if ('MonthAndDay' in coords.Date) {
-                        if ('Separate' in coords.Date.MonthAndDay) {
-                            if ('Day' in coords.Date.MonthAndDay.Separate)
-                                draw.date.sepday();
-                            if ('Month' in coords.Date.MonthAndDay.Separate)
-                                draw.date.sepmonth();
-                        }
-                        if ('OneLine' in coords.Date.MonthAndDay)
-                            draw.date.oneline();
-                    }
-                }
-                if ('Battery' in coords) {
-                    if ('Icon' in coords.Battery)
-                        draw.battery.icon();
-                    if ('Text' in coords.Battery)
-                        draw.battery.text();
-                    if ('Scale' in coords.Battery)
-                        draw.battery.scale();
-                }
-
-                if ('Status' in coords) {
-                    if ('Alarm' in coords.Status && data.alarm)
-                        draw.status.alarm();
-                    if ('Bluetooth' in coords.Status)
-                        draw.status.bt();
-                    if ('DoNotDisturb' in coords.Status && data.dnd)
-                        draw.status.dnd();
-                    if ('Lock' in coords.Status && data.lock)
-                        draw.status.lock();
-                }
-                if ('Activity' in coords) {
-                    if ('Calories' in coords.Activity)
-                        draw.activity.cal();
-                    if ('Steps' in coords.Activity)
-                        draw.activity.steps();
-                    if ('StepsGoal' in coords.Activity)
-                        draw.activity.stepsgoal();
-                    if ('Pulse' in coords.Activity)
-                        draw.activity.pulse();
-                    if ('Distance' in coords.Activity)
-                        draw.activity.distance();
-                }
-                if ('Weather' in coords) {
-                    if ('Icon' in coords.Weather)
-                        draw.weather.icon();
-                    if ('Temperature' in coords.Weather) {
-                        if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.oneline();
-                            if ('Separate' in coords.Weather.Temperature.Today)
-                                draw.weather.temp.sep();
-                        }
-                        if ('Current' in coords.Weather.Temperature)
-                            draw.weather.temp.current();
-                    }
-                    if ('AirPollution' in coords.Weather)
-                        draw.weather.air();
-                }
-                if ('StepsProgress' in coords) {
-                    if ('Circle' in coords.StepsProgress)
-                        draw.stepsprogress.circle();
-                    if ('Linear' in coords.StepsProgress)
-                        draw.stepsprogress.linear();
-                }
-                if ('AnalogDialFace' in coords) {
-                    if ('Hours' in coords.AnalogDialFace)
-                        draw.analog.hours();
-                    if ('Minutes' in coords.AnalogDialFace)
-                        draw.analog.minutes();
-                    if ('Seconds' in coords.AnalogDialFace)
-                        draw.analog.seconds();
-                }
-            } catch (error) {
-                console.error(error);
-                if (error.name == "TypeError") {
-                    UIkit.notification("Image for prorety not found", {
-                        status: 'danger',
-                        pos: 'top-left',
-                        timeout: 7500
-                    });
-                }
-            }
-        }
-        var draw = {
-            time: {
-                time: function() {
-                    var ntimeOnClock = data.timeOnClock[0];
-                    if ('AmPm' in coords.Time) {
-                        var am = 1;
-                        if (Number(ntimeOnClock) > 12) {
-                            ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
-                            if (ntimeOnClock.length == 1)
-                                ntimeOnClock = "0" + ntimeOnClock;
-                            am = 0;
-                        }
-                        t = am ? $c(coords.Time.AmPm.ImageIndexAm) : $c(coords.Time.AmPm.ImageIndexPm);
-                        setPos(t, coords.Time.AmPm);
-                        insert(t, "c_time_am");
-
-                    }
-                    setPosN(coords.Time.Hours.Tens, Number(ntimeOnClock[0]), "c_time");
-                    setPosN(coords.Time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
-                    setPosN(coords.Time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
-                    setPosN(coords.Time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
-                },
-                seconds: function() {
-                    setPosN(coords.Time.Seconds.Tens, data.seconds[0], "c_sec");
-                    setPosN(coords.Time.Seconds.Ones, data.seconds[1], "c_sec");
-                }
-            },
-            date: {
-                weekday: function() {
-                    setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
-                },
-                sepday: function() {
-                    //setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
-                    var t = makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
-                    if (coords.Date.MonthAndDay.TwoDigitsDay)
-                        if (!div(data.day, 10)) {
-                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
-                            t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
-                        }
-                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
-                },
-                sepmonth: function() {
-                    var t = makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
-                    if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                        if (!div(data.month, 10)) {
-                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
-                            t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
-                        }
-                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
-                },
-                oneline: function() {
-                    var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
-                    t = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.month);
-                    if (coords.Date.MonthAndDay.TwoDigitsMonth)
-                        if (!div(data.month, 10)) {
-                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
-                            t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                        }
-                    t.block.push(dot);
-                    t.width += dot.width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                    var t2 = makeBlock(coords.Date.MonthAndDay.OneLine.Number, data.day);
-                    t.block = t.block.concat(t2.block);
-                    if (coords.Date.MonthAndDay.TwoDigitsDay)
-                        if (!div(data.day, 10)) {
-                            t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.OneLine.Number.ImageIndex));
-                            t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
-                        }
-                    t.width += t2.width;
-                    renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
-                }
-
-            },
-            battery: {
-                icon: function() {
-                    var battery = Math.round(data.batteryT / (100 / (coords.Battery.Icon.ImagesCount - 1)));
-                    setPosN(coords.Battery.Icon, battery, "c_battery_icon");
-                },
-                text: function() {
-                    setTextPos(coords.Battery.Text, data.batteryT, "c_battery_text");
-                },
-                scale: function() {
-                    var end = Math.round(data.batteryT / (100 / (coords.Battery.Scale.Segments.length - 1)));
-                    for (var i = 0; i <= end; i++) {
-                        t = $c(coords.Battery.Scale.StartImageIndex + i);
-                        setPos(t, coords.Battery.Scale.Segments[i]);
-                        insert(t, "c_battery_scale");
-                    }
-                }
-            },
-            analog: {
-                hours: function() {
-                    drowAnalog(coords.AnalogDialFace.Hours, data.analog[0]);
-                },
-                minutes: function() {
-                    drowAnalog(coords.AnalogDialFace.Minutes, data.analog[1]);
-                },
-                seconds: function() {
-                    drowAnalog(coords.AnalogDialFace.Seconds, data.analog[2]);
-                }
-            },
-            status: {
-                alarm: function() {
-                    t = $c(coords.Status.Alarm.ImageIndexOn);
-                    t.style.left = coords.Status.Alarm.Coordinates.X + "px";
-                    t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
-                    insert(t, "c_stat_alarm");
-                },
-                bt: function() {
-                    if (data.bluetooth)
-                        t = $c(coords.Status.Bluetooth.ImageIndexOn);
-                    else
-                        t = $c(coords.Status.Bluetooth.ImageIndexOff);
-                    t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
-                    t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
-                    insert(t, "c_stat_bt");
-                },
-                dnd: function() {
-                    t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
-                    t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
-                    t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
-                    insert(t, "c_stat_dnd");
-                },
-                lock: function() {
-                    t = $c(coords.Status.Lock.ImageIndexOn);
-                    t.style.left = coords.Status.Lock.Coordinates.X + "px";
-                    t.style.top = coords.Status.Lock.Coordinates.Y + "px";
-                    insert(t, "c_stat_lock");
-                }
-            },
-            activity: {
-                cal: function() {
-                    setTextPos(coords.Activity.Calories, data.calories, "c_act_cal");
-                },
-                steps: function() {
-                    setTextPos(coords.Activity.Steps, data.steps, "c_act_steps");
-                },
-                stepsgoal: function() {
-                    setTextPos(coords.Activity.StepsGoal, data.stepsgoal, "c_act_stepsg");
-                },
-                pulse: function() {
-                    setTextPos(coords.Activity.Pulse, data.pulse, "c_act_pulse");
-                },
-                distance: function() {
-                    var dot = $c(coords.Activity.Distance.DecimalPointImageIndex),
-                        km = $c(coords.Activity.Distance.SuffixImageIndex);
-                    t = makeBlock(coords.Activity.Distance.Number, data.distance[0]);
-                    t.block.push(dot);
-                    t.width += dot.width + coords.Activity.Distance.Number.Spacing;
-                    var t2 = makeBlock(coords.Activity.Distance.Number, data.distance[1]);
-                    t.block = t.block.concat(t2.block);
-                    t.width += t2.width;
-                    t.block.push(km);
-                    t.width += km.width;
-                    renderBlock(t.block, t.width, coords.Activity.Distance.Number, "c_act_distance");
-                }
-            },
-            stepsprogress: {
-                circle: function() {
-                    var col = coords.StepsProgress.Circle.Color.replace("0x", "#"),
-                        full = Math.floor(2 * coords.StepsProgress.Circle.RadiusX * Math.PI / 360 * (coords.StepsProgress.Circle.EndAngle - coords.StepsProgress.Circle.StartAngle));
-                    var fill = Math.round(data.steps / (data.stepsgoal / full));
-                    if (fill > full) fill = full;
-                    $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
-                },
-                linear: function() {
-                    var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
-                    if (end > coords.StepsProgress.Linear.Segments.length - 1)
-                        end = coords.StepsProgress.Linear.Segments.length - 1;
-                    for (var i = 0; i <= end; i++) {
-                        t = $c(coords.StepsProgress.Linear.StartImageIndex + i);
-                        setPos(t, coords.StepsProgress.Linear.Segments[i]);
-                        insert(t, "c_steps_linear");
-                    }
-                }
-            },
-            weather: {
-                icon: function() {
-                    t = $c("weather");
-                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-                    insert(t, "c_weather_icon");
-                },
-                temp: {
-                    oneline: function() {
-                        var sep = $c(coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex),
-                            deg = $c(coords.Weather.Temperature.Today.OneLine.DegreesImageIndex),
-                            minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
-                        t = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[0]));
-                        if (minus != 0) {
-                            t.block.splice(0, 0, minus);
-                            t.width += minus.width;
-                        }
-                        t.block.push(sep);
-                        t.width += sep.width + coords.Weather.Temperature.Today.OneLine.Number.Spacing;
-                        var t2 = makeBlock(coords.Weather.Temperature.Today.OneLine.Number, Math.abs(data.temp[1]));
-                        minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex) : 0;
-                        if (minus != 0) {
-                            t2.block.splice(0, 0, minus);
-                            t2.width += minus.width;
-                        }
-                        t.block = t.block.concat(t2.block);
-                        t.width += t2.width;
-                        t.block.push(deg);
-                        t.width += deg.width;
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
-                    },
-                    sep: function() {
-                        var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                            var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
-                        }
-                        if (minus != 0) {
-                            t.block.splice(0, 0, minus);
-                            t.width += minus.width;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
-                        minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
-                        t = makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                            var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-                        }
-                        if (minus != 0) {
-                            t.block.splice(0, 0, minus);
-                            t.width += minus.width;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
-                    },
-                    current: function() {
-                        var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-                        t = makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
-                        if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
-                            var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
-                            t.block.push(deg);
-                            t.width += deg.width + coords.Weather.Temperature.Current.Number.Spacing;
-                        }
-                        if (minus != 0) {
-                            t.block.splice(0, 0, minus);
-                            t.width += minus.width;
-                        }
-                        renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
-                    }
-                },
-                air: function() {
-                    setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
-                }
-            }
+                load.disableBtn(0);
         }
 
     </script>
@@ -1236,7 +1229,7 @@
         $("codearea").onblur = function() {
             try {
                 coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/\w*>|<\w*\s\w*="#[\w\d]{6}">/g, ''));
-                makeWf();
+                view.makeWf();
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
             } catch (error) {
                 $("jsonerrortext").innerHTML = error;
