@@ -26,6 +26,13 @@
             position: relative;
             height: 528px;
             width: 528px;
+            background: black
+        }
+
+        .editor-elem {
+            position: absolute;
+            outline: dotted 1px #fd3838;
+            outline-offset: -1px;
         }
 
         #watchfaceimage {
@@ -299,13 +306,13 @@
     </main>
     <script type="text/javascript">
         /*if ('ancestorOrigins' in location)
-                    if (location.ancestorOrigins.length > 0) {
-                        UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
-                            status: 'warning',
-                            pos: 'top-center',
-                            timeout: 10000
-                        });
-                    }*/
+                                                                            if (location.ancestorOrigins.length > 0) {
+                                                                                UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
+                                                                                    status: 'warning',
+                                                                                    pos: 'top-center',
+                                                                                    timeout: 10000
+                                                                                });
+                                                                            }*/
 
         function addScript(url) {
             var e = document.createElement("script");
@@ -765,13 +772,13 @@
             load = {
                 disableBtn: function(i) {
                     if (i) {
-                        //$("editbutton").classList.remove("uk-disabled");
+                        $("editbutton").classList.remove("uk-disabled");
                         $("makepng").removeAttribute("disabled");
                         $("viewsettings").removeAttribute("disabled");
                         $("codeopenbutton").classList.remove("uk-disabled");
                         setTimeout(view.makeWf, 200);
                     } else {
-                        //$("editbutton").classList.add("uk-disabled");
+                        $("editbutton").classList.add("uk-disabled");
                         $("makepng").setAttribute("disabled", "");
                         $("viewsettings").setAttribute("disabled", "");
                         $("codeopenbutton").classList.add("uk-disabled");
@@ -841,7 +848,6 @@
                         view.setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
                     },
                     sepday: function() {
-                        //view.setTextPos(coords.Date.MonthAndDay.Separate.Day, day, "c_date");
                         var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
                         if (coords.Date.MonthAndDay.TwoDigitsDay)
                             if (!div(data.day, 10)) {
@@ -1137,7 +1143,7 @@
                 $(elements[i]).removeAttribute("disabled");
         }
         var editor = {
-            init: function() {
+            initOld: function() {
                 var t = 0;
                 var elements = $("watchface").childNodes;
                 var classes = {};
@@ -1180,21 +1186,129 @@
                     t += 300;
                     //jiri();
                 }
-            }
-        }
-
-        function makeimgfromdiv(elemen) {
-            html2canvas($(elemen), {
-                onrendered: function(canvas) {
-                    //console.log(canvas, $(elem));
-                    //ctx = canvas.getContext("2d");
-                    //image = new Image();
-                    //image.src = canvas.toDataURL("image/png");
-                    //console.log(image.src, elem);
-                    $("editor").appendChild(canvas);
-                    //delete image;
+            },
+            makeBlock: function(el, id) {
+                $("editor").innerHTML +=
+                    '<div id="' + id + '" style="height:' + ((el.BottomRightY - el.TopLeftY + 1) * 3) + 'px; width:' + ((el.BottomRightX - el.TopLeftX + 1) * 3) + 'px; top:' + (el.TopLeftY * 3) + 'px; left:' + (el.TopLeftX * 3) + 'px;" class="editor-elem"></div>';
+            },
+            makeImg: function(el, id) {
+                $("editor").innerHTML +=
+                    '<div id="' + id + '" style="height:' + ($(el.ImageIndex).height * 3) + 'px; width:' + ($(el.ImageIndex).width * 3) + 'px; top:' + (el.Y * 3) + 'px; left:' + (el.X * 3) + 'px;" class="editor-elem"></div>';
+            },
+            makeImgStat: function(el, id) {
+                $("editor").innerHTML +=
+                    '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+            },
+            init: function() {
+                $("editor").innerHTML = '';
+                if ('Background' in coords) {
+                    var bg = $c(coords.Background.Image.ImageIndex);
+                    bg.style.left = Number(bg.style.left.replace("px", "")) * 3 + "px";
+                    bg.style.top = Number(bg.style.top.replace("px", "")) * 3 + "px";
+                    bg.height *= 3;
+                    bg.width *= 3;
+                    bg.removeAttribute("id");
+                    $("editor").appendChild(bg);
                 }
-            })
+                if ('Time' in coords) {
+                    this.makeImg(coords.Time.Hours.Tens, "e_time_ht");
+                    this.makeImg(coords.Time.Hours.Ones, "e_time_ho");
+                    this.makeImg(coords.Time.Minutes.Tens, "e_time_mt");
+                    this.makeImg(coords.Time.Minutes.Ones, "e_time_mo");
+                    if ('Seconds' in coords.Time) {
+                        this.makeImg(coords.Time.Seconds.Tens, "e_time_st");
+                        this.makeImg(coords.Time.Seconds.Ones, "e_time_so");
+                    }
+                    if ('AmPm' in coords.Time) {
+                        $("editor").innerHTML +=
+                            '<div id="e_time_am" style="height:' + ($(coords.Time.AmPm.ImageIndexAm).height * 3) + 'px; width:' + ($(coords.Time.AmPm.ImageIndexAm).width * 3) + 'px; top:' + (coords.Time.AmPm.Y * 3) + 'px; left:' + (coords.Time.AmPm.X * 3) + 'px;" class="editor-elem"></div>';
+                    }
+                }
+                if ('Date' in coords) {
+                    if ('WeekDay' in coords.Date) {
+                        this.makeImg(coords.Date.WeekDay, "e_date_weekday");
+                    }
+                    if ('MonthAndDay' in coords.Date) {
+                        if ('Separate' in coords.Date.MonthAndDay) {
+                            if ('Day' in coords.Date.MonthAndDay.Separate) {
+                                this.makeBlock(coords.Date.MonthAndDay.Separate.Day, "e_date_sep_day");
+                            }
+                            if ('Month' in coords.Date.MonthAndDay.Separate) {
+                                this.makeBlock(coords.Date.MonthAndDay.Separate.Month, "e_date_sep_month");
+                            }
+                        }
+                        if ('OneLine' in coords.Date.MonthAndDay) {
+                            this.makeBlock(coords.Date.MonthAndDay.OneLine.Number, "e_date_oneline");
+                        }
+                    }
+                }
+                if ('Activity' in coords) {
+                    if ('Calories' in coords.Activity)
+                        this.makeBlock(coords.Activity.Calories, "e_act_cal");
+                    if ('Steps' in coords.Activity)
+                        this.makeBlock(coords.Activity.Steps, "e_act_steps");
+                    if ('StepsGoal' in coords.Activity)
+                        this.makeBlock(coords.Activity.StepsGoal, "e_act_stepsgoal");
+                    if ('Pulse' in coords.Activity)
+                        this.makeBlock(coords.Activity.Pulse, "e_act_pulse");
+                    if ('Distance' in coords.Activity)
+                        this.makeBlock(coords.Activity.Distance.Number, "e_act_distance");
+                }
+                if ('Battery' in coords) {
+                    if ('Icon' in coords.Battery)
+                        this.makeImg(coords.Battery.Icon, "e_battery_icon");
+                    if ('Text' in coords.Battery)
+                        this.makeBlock(coords.Battery.Text, "e_battery_text");
+                    if ('Scale' in coords.Battery) {}
+                }
+                if ('Status' in coords) {
+                    if ('Alarm' in coords.Status)
+                        this.makeImgStat(coords.Status.Alarm, "e_stat_alarm");
+                    if ('Bluetooth' in coords.Status)
+                        this.makeImgStat(coords.Status.Bluetooth, "e_stat_bt");
+                    if ('DoNotDisturb' in coords.Status)
+                        this.makeImgStat(coords.Status.DoNotDisturb, "e_stat_dnd");
+                    if ('Lock' in coords.Status)
+                        this.makeImgStat(coords.Status.Lock, "e_stat_lock");
+                }
+                if ('Weather' in coords) {
+                    if ('Icon' in coords.Weather){
+                        $("editor").innerHTML +=
+                            '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                    }
+                    if ('Temperature' in coords.Weather) {
+                        if ('Today' in coords.Weather.Temperature) {
+                            if ('OneLine' in coords.Weather.Temperature.Today)
+                                this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
+                            if ('Separate' in coords.Weather.Temperature.Today){
+                                if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
+                                if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
+                            }
+                        }
+                        if ('Current' in coords.Weather.Temperature)
+                            this.makeBlock(coords.Weather.Temperature.Current, "e_weather_temp_current");
+                    }
+                    if ('AirPollution' in coords.Weather)
+                        this.makeImg(coords.Weather.AirPollution.Icon, "e_weather_air");
+                }
+                /*
+                if ('StepsProgress' in coords) {
+                    if ('Circle' in coords.StepsProgress)
+                        draw.stepsprogress.circle();
+                    if ('Linear' in coords.StepsProgress)
+                        draw.stepsprogress.linear();
+                }
+                if ('AnalogDialFace' in coords) {
+                    if ('Hours' in coords.AnalogDialFace)
+                        draw.analog.hours();
+                    if ('Minutes' in coords.AnalogDialFace)
+                        draw.analog.minutes();
+                    if ('Seconds' in coords.AnalogDialFace)
+                        draw.analog.seconds();
+                }*/
+            }
         }
 
     </script>
