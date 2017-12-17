@@ -306,13 +306,13 @@
     </main>
     <script type="text/javascript">
         /*if ('ancestorOrigins' in location)
-                                                                            if (location.ancestorOrigins.length > 0) {
-                                                                                UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
-                                                                                    status: 'warning',
-                                                                                    pos: 'top-center',
-                                                                                    timeout: 10000
-                                                                                });
-                                                                            }*/
+                                                                                    if (location.ancestorOrigins.length > 0) {
+                                                                                        UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
+                                                                                            status: 'warning',
+                                                                                            pos: 'top-center',
+                                                                                            timeout: 10000
+                                                                                        });
+                                                                                    }*/
 
         function addScript(url) {
             var e = document.createElement("script");
@@ -1208,6 +1208,7 @@
                     bg.height *= 3;
                     bg.width *= 3;
                     bg.removeAttribute("id");
+                    bg.classList.add("editor-elem");
                     $("editor").appendChild(bg);
                 }
                 if ('Time' in coords) {
@@ -1272,7 +1273,7 @@
                         this.makeImgStat(coords.Status.Lock, "e_stat_lock");
                 }
                 if ('Weather' in coords) {
-                    if ('Icon' in coords.Weather){
+                    if ('Icon' in coords.Weather) {
                         $("editor").innerHTML +=
                             '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
                     }
@@ -1280,15 +1281,15 @@
                         if ('Today' in coords.Weather.Temperature) {
                             if ('OneLine' in coords.Weather.Temperature.Today)
                                 this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
-                            if ('Separate' in coords.Weather.Temperature.Today){
+                            if ('Separate' in coords.Weather.Temperature.Today) {
                                 if ('Day' in coords.Weather.Temperature.Today.Separate)
-                                this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
+                                    this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
                                 if ('Night' in coords.Weather.Temperature.Today.Separate)
-                                this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
+                                    this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
                             }
                         }
                         if ('Current' in coords.Weather.Temperature)
-                            this.makeBlock(coords.Weather.Temperature.Current, "e_weather_temp_current");
+                            this.makeBlock(coords.Weather.Temperature.Current.Number, "e_weather_temp_current");
                     }
                     if ('AirPollution' in coords.Weather)
                         this.makeImg(coords.Weather.AirPollution.Icon, "e_weather_air");
