@@ -867,7 +867,7 @@
                                 t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
                                 t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
                             }
-                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date_sep");
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date_sepday");
                     },
                     sepmonth: function() {
                         var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
@@ -876,7 +876,7 @@
                                 t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
                                 t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
                             }
-                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date_sep");
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date_sepmonth");
                     },
                     oneline: function() {
                         var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
@@ -1230,13 +1230,13 @@
                             if ('Day' in coords.Date.MonthAndDay.Separate) {
                                 this.makeBlock(coords.Date.MonthAndDay.Separate.Day, "e_date_sep_day");
                                 setTimeout(function() {
-                                    initdrag('e_date_sep_day', coords.Date.MonthAndDay.Separate.Day, "c_date_sep", draw.date.sepday);
+                                    initdrag('e_date_sep_day', coords.Date.MonthAndDay.Separate.Day, "c_date_sepday", draw.date.sepday);
                                 }, 10);
                             }
                             if ('Month' in coords.Date.MonthAndDay.Separate) {
                                 this.makeBlock(coords.Date.MonthAndDay.Separate.Month, "e_date_sep_month");
                                 setTimeout(function() {
-                                    initdrag('e_date_sep_month', coords.Date.MonthAndDay.Separate.Month, "c_date_sep", draw.date.sepday);
+                                    initdrag('e_date_sep_month', coords.Date.MonthAndDay.Separate.Month, "c_date_sepmonth", draw.date.sepmonth);
                                 }, 10);
                             }
                         }
