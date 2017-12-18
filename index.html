@@ -259,7 +259,7 @@
                         </div>
                     </li>
                     <li>
-                        <div id="editor">
+                        <div id="editor" class="uk-card-default">
                         </div>
                     </li>
                     <li>
@@ -303,17 +303,17 @@
                 </p>
             </div>
         </div>
+        <div id="indevalert" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Warning</h2>
+                <p>This section is in development. Something may not work correctly</p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                </p>
+            </div>
+        </div>
     </main>
     <script type="text/javascript">
-        /*if ('ancestorOrigins' in location)
-                                                                                    if (location.ancestorOrigins.length > 0) {
-                                                                                        UIkit.notification('This site is available on <a href="https://v1ack.github.io/Bip-Watchface-View/" target="_blank">v1ack.github.io/Bip-Watchface-View/</a>', {
-                                                                                            status: 'warning',
-                                                                                            pos: 'top-center',
-                                                                                            timeout: 10000
-                                                                                        });
-                                                                                    }*/
-
         function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
@@ -338,6 +338,10 @@
         function $c(el) {
             return document.getElementById(el).cloneNode(false);
         }
+
+        function styleToNum(el) {
+            return Number(el.replace('px', ''));
+        }
         var coords = 0,
             data = {
                 timeOnClock: ["20", "38"],
@@ -357,10 +361,12 @@
                 bluetooth: true,
                 dnd: true,
                 lock: true,
-                firstopen: true,
+                local: (location.protocol != "file:" ? false : true),
+                firstopen_editor: true,
+                firstopen_constr: true,
                 jsset: false,
                 imagesset: false,
-                wfname: "wanchface"
+                wfname: "wanchface",
             },
             view = {
                 drawAnalog: function(el, value) {
@@ -725,8 +731,6 @@
                     if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
                     if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
                     data.stepsgoal = $("in-stepsgoal").value;
-                    if (data.stepsgoal == 75321)
-                        $("editbutton").classList.remove("uk-disabled");
                     removeByClass("c_act_stepsgoal");
                     if ('Activity' in coords)
                         if ('StepsGoal' in coords.Activity)
@@ -1143,50 +1147,6 @@
                 $(elements[i]).removeAttribute("disabled");
         }
         var editor = {
-            initOld: function() {
-                var t = 0;
-                var elements = $("watchface").childNodes;
-                var classes = {};
-                for (var i = 0; i < elements.length; i++) {
-                    var t = elements[i].cloneNode(false);
-                    t.style.left = Number(t.style.left.replace("px", "")) + "px";
-                    t.style.top = Number(t.style.top.replace("px", "")) + "px";
-                    /*t.style.left = Number(t.style.left.replace("px", "")) * 3 + "px";
-                    t.style.top = Number(t.style.top.replace("px", "")) * 3 + "px";
-                    t.height *= 3;
-                    t.width *= 3;*/
-                    //$("editor").appendChild(t);
-                    var classname = elements[i].classList[0];
-                    if (!(classname in classes))
-                        classes[classname] = [];
-                    classes[classname].push(t);
-                }
-                elements = $("editor").childNodes;
-                //console.log(classes);
-                for (var elem in classes) {
-                    var height = 0,
-                        width = 0;
-                    $("editor").innerHTML += '<div id="' + elem + '"></div>';
-                    for (var i in classes[elem]) {
-                        $(elem).appendChild(classes[elem][i]);
-                    }
-                    if (classes[elem].length == 1) {
-                        height = classes[elem][0].height;
-                        width = classes[elem][0].width;
-                    } else {
-                        height = classes[elem][0].height;
-                        width = classes[elem][0].width
-                    }
-                    $(elem).style.height = height + "px";
-                    $(elem).style.width = width + "px";
-                    $(elem).style.position = "relative";
-                    console.log($(elem));
-
-                    //setTimeout(makeimgfromdiv(elem), t);
-                    t += 300;
-                    //jiri();
-                }
-            },
             makeBlock: function(el, id) {
                 $("editor").innerHTML +=
                     '<div id="' + id + '" style="height:' + ((el.BottomRightY - el.TopLeftY + 1) * 3) + 'px; width:' + ((el.BottomRightX - el.TopLeftX + 1) * 3) + 'px; top:' + (el.TopLeftY * 3) + 'px; left:' + (el.TopLeftX * 3) + 'px;" class="editor-elem"></div>';
@@ -1200,6 +1160,13 @@
                     '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
             },
             init: function() {
+                if (data.firstopen_constr && !data.local) {
+                    function show() {
+                        UIkit.modal($("indevalert")).show()
+                    }
+                    setTimeout(show, 200);
+                    data.firstopen_constr = false;
+                }
                 $("editor").innerHTML = '';
                 if ('Background' in coords) {
                     var bg = $c(coords.Background.Image.ImageIndex);
@@ -1208,21 +1175,38 @@
                     bg.height *= 3;
                     bg.width *= 3;
                     bg.removeAttribute("id");
-                    bg.classList.add("editor-elem");
                     $("editor").appendChild(bg);
+                    setTimeout(function() {
+                        $("editor").childNodes[0].ondragstart = function() {
+                            return false;
+                        }
+                    }, 10);
                 }
                 if ('Time' in coords) {
                     this.makeImg(coords.Time.Hours.Tens, "e_time_ht");
                     this.makeImg(coords.Time.Hours.Ones, "e_time_ho");
                     this.makeImg(coords.Time.Minutes.Tens, "e_time_mt");
                     this.makeImg(coords.Time.Minutes.Ones, "e_time_mo");
+                    setTimeout(function() {
+                        initdrag('e_time_ht', coords.Time.Hours.Tens, "c_time", draw.time.time);
+                        initdrag('e_time_ho', coords.Time.Hours.Ones, "c_time", draw.time.time);
+                        initdrag('e_time_mt', coords.Time.Minutes.Tens, "c_time", draw.time.time);
+                        initdrag('e_time_mo', coords.Time.Minutes.Ones, "c_time", draw.time.time);
+                    }, 10);
                     if ('Seconds' in coords.Time) {
                         this.makeImg(coords.Time.Seconds.Tens, "e_time_st");
                         this.makeImg(coords.Time.Seconds.Ones, "e_time_so");
+                        setTimeout(function() {
+                            initdrag('e_time_st', coords.Time.Seconds.Tens, "c_sec", draw.time.seconds);
+                            initdrag('e_time_so', coords.Time.Seconds.Ones, "c_sec", draw.time.seconds);
+                        }, 10);
                     }
                     if ('AmPm' in coords.Time) {
                         $("editor").innerHTML +=
                             '<div id="e_time_am" style="height:' + ($(coords.Time.AmPm.ImageIndexAm).height * 3) + 'px; width:' + ($(coords.Time.AmPm.ImageIndexAm).width * 3) + 'px; top:' + (coords.Time.AmPm.Y * 3) + 'px; left:' + (coords.Time.AmPm.X * 3) + 'px;" class="editor-elem"></div>';
+                        setTimeout(function() {
+                            initdrag('e_time_am', coords.Time.AmPm, "c_time_am", draw.time.time);
+                        }, 10);
                     }
                 }
                 if ('Date' in coords) {
@@ -1309,7 +1293,84 @@
                     if ('Seconds' in coords.AnalogDialFace)
                         draw.analog.seconds();
                 }*/
+
             }
+        }
+
+    </script>
+    <script type="text/javascript">
+        function getOffsetRect(elem) {
+            var box = elem.getBoundingClientRect();
+
+            var body = document.body;
+            var docElem = document.documentElement;
+
+            var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+            var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+
+            var clientTop = docElem.clientTop || body.clientTop || 0;
+            var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+            var top = box.top + scrollTop - clientTop;
+            var left = box.left + scrollLeft - clientLeft;
+
+            return {
+                top: Math.round(top),
+                left: Math.round(left)
+            }
+        }
+
+        function initdrag(el, elcoords, cls, drawF) {
+            console.log(el);
+            el = $(el);
+
+            el.onmousedown = function(e) {
+
+                var ed = getOffsetRect($("editor"));
+                var coords = getCoords(el);
+                var shiftX = e.pageX - coords.left;
+                var shiftY = e.pageY - coords.top;
+
+                el.style.position = 'absolute';
+                moveAt(e);
+
+                el.style.zIndex = 1000;
+
+                function moveAt(e) {
+                    el.style.left = e.pageX - ed.left - shiftX + 'px';
+                    el.style.top = e.pageY - ed.top - shiftY + 'px';
+                }
+
+                $("editor").onmousemove = function(e) {
+                    moveAt(e);
+                };
+
+                el.onmouseup = function() {
+                    $("editor").onmousemove = null;
+                    el.onmouseup = null;
+                    el.style.zIndex = 'auto';
+                    el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
+                    el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                    elcoords.X = styleToNum(el.style.left) / 3;
+                    elcoords.Y = styleToNum(el.style.top) / 3;
+                    removeByClass(cls);
+                    drawF();
+                };
+
+            }
+
+            el.ondragstart = function() {
+                return false;
+            };
+
+            function getCoords(elem) {
+                var box = elem.getBoundingClientRect();
+                return {
+                    top: box.top + pageYOffset,
+                    left: box.left + pageXOffset
+                };
+            }
+
         }
 
     </script>
@@ -1346,7 +1407,7 @@
                 saveAs(blob, data.wfname + '.json');
             } else {
                 var a = document.createElement('a');
-                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
+                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
                 a.download = data.wfname + '.json';
                 a.click();
             }
@@ -1354,13 +1415,13 @@
 
         function fillarea() {
             $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            if (data.firstopen) {
+            if (data.firstopen_editor) {
                 UIkit.notification("To update preview just click out of JSON input", {
                     status: 'primary',
                     pos: 'top-left',
                     timeout: 3000
                 });
-                data.firstopen = false;
+                data.firstopen_editor = false;
             }
         }
         $("codearea").onblur = function() {
@@ -1401,7 +1462,7 @@
     </script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
-        if (location.protocol != "file:") {
+        if (!data.local) {
             (function(d, w, c) {
                 (w[c] = w[c] || []).push(function() {
                     try {
