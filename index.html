@@ -858,7 +858,7 @@
                 },
                 date: {
                     weekday: function() {
-                        view.setPosN(coords.Date.WeekDay, data.weekDay, "c_date");
+                        view.setPosN(coords.Date.WeekDay, data.weekDay, "c_date_weekday");
                     },
                     sepday: function() {
                         var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Day, data.day);
@@ -867,7 +867,7 @@
                                 t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Day.ImageIndex));
                                 t.width += $(coords.Date.MonthAndDay.Separate.Day.ImageIndex).width + coords.Date.MonthAndDay.Separate.Day.Spacing;
                             }
-                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date");
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Day, "c_date_sep");
                     },
                     sepmonth: function() {
                         var t = view.makeBlock(coords.Date.MonthAndDay.Separate.Month, data.month);
@@ -876,7 +876,7 @@
                                 t.block.splice(-1, 0, $c(coords.Date.MonthAndDay.Separate.Month.ImageIndex));
                                 t.width += $(coords.Date.MonthAndDay.Separate.Month.ImageIndex).width + coords.Date.MonthAndDay.Separate.Month.Spacing;
                             }
-                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date");
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.Separate.Month, "c_date_sep");
                     },
                     oneline: function() {
                         var dot = $c(coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
@@ -896,7 +896,7 @@
                                 t.width += $(coords.Date.MonthAndDay.OneLine.Number.ImageIndex).width + coords.Date.MonthAndDay.OneLine.Number.Spacing;
                             }
                         t.width += t2.width;
-                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date");
+                        view.renderBlock(t.block, t.width, coords.Date.MonthAndDay.OneLine.Number, "c_date_oneline");
                     }
 
                 },
@@ -1221,71 +1221,150 @@
                 if ('Date' in coords) {
                     if ('WeekDay' in coords.Date) {
                         this.makeImg(coords.Date.WeekDay, "e_date_weekday");
+                        setTimeout(function() {
+                            initdrag('e_date_weekday', coords.Date.WeekDay, "c_date_weekday", draw.date.weekday);
+                        }, 10);
                     }
                     if ('MonthAndDay' in coords.Date) {
                         if ('Separate' in coords.Date.MonthAndDay) {
                             if ('Day' in coords.Date.MonthAndDay.Separate) {
                                 this.makeBlock(coords.Date.MonthAndDay.Separate.Day, "e_date_sep_day");
+                                setTimeout(function() {
+                                    initdrag('e_date_sep_day', coords.Date.MonthAndDay.Separate.Day, "c_date_sep", draw.date.sepday);
+                                }, 10);
                             }
                             if ('Month' in coords.Date.MonthAndDay.Separate) {
                                 this.makeBlock(coords.Date.MonthAndDay.Separate.Month, "e_date_sep_month");
+                                setTimeout(function() {
+                                    initdrag('e_date_sep_month', coords.Date.MonthAndDay.Separate.Month, "c_date_sep", draw.date.sepday);
+                                }, 10);
                             }
                         }
                         if ('OneLine' in coords.Date.MonthAndDay) {
                             this.makeBlock(coords.Date.MonthAndDay.OneLine.Number, "e_date_oneline");
+                            setTimeout(function() {
+                                initdrag('e_date_oneline', coords.Date.MonthAndDay.OneLine.Number, "c_date_oneline", draw.date.oneline);
+                            }, 10);
                         }
                     }
                 }
                 if ('Activity' in coords) {
-                    if ('Calories' in coords.Activity)
+                    if ('Calories' in coords.Activity) {
                         this.makeBlock(coords.Activity.Calories, "e_act_cal");
-                    if ('Steps' in coords.Activity)
+                        setTimeout(function() {
+                            initdrag('e_act_cal', coords.Activity.Calories, "c_act_cal", draw.activity.cal);
+                        }, 10);
+                    }
+                    if ('Steps' in coords.Activity) {
                         this.makeBlock(coords.Activity.Steps, "e_act_steps");
-                    if ('StepsGoal' in coords.Activity)
+                        setTimeout(function() {
+                            initdrag('e_act_steps', coords.Activity.Steps, "c_act_steps", draw.activity.steps);
+                        }, 10);
+                    }
+                    if ('StepsGoal' in coords.Activity) {
                         this.makeBlock(coords.Activity.StepsGoal, "e_act_stepsgoal");
-                    if ('Pulse' in coords.Activity)
+                        setTimeout(function() {
+                            initdrag('e_act_stepsgoal', coords.Activity.StepsGoal, "c_act_stepsg", draw.activity.stepsgoal);
+                        }, 10);
+                    }
+                    if ('Pulse' in coords.Activity) {
                         this.makeBlock(coords.Activity.Pulse, "e_act_pulse");
-                    if ('Distance' in coords.Activity)
+                        setTimeout(function() {
+                            initdrag('e_act_pulse', coords.Activity.Pulse, "c_act_pulse", draw.activity.pulse);
+                        }, 10);
+                    }
+                    if ('Distance' in coords.Activity) {
                         this.makeBlock(coords.Activity.Distance.Number, "e_act_distance");
+                        setTimeout(function() {
+                            initdrag('e_act_distance', coords.Activity.Distance.Number, "c_act_distance", draw.activity.distance);
+                        }, 10);
+                    }
                 }
                 if ('Battery' in coords) {
-                    if ('Icon' in coords.Battery)
+                    if ('Icon' in coords.Battery) {
                         this.makeImg(coords.Battery.Icon, "e_battery_icon");
-                    if ('Text' in coords.Battery)
+                        setTimeout(function() {
+                            initdrag('e_battery_icon', coords.Battery.Icon, "c_battery_icon", draw.battery.icon);
+                        }, 10);
+                    }
+                    if ('Text' in coords.Battery) {
                         this.makeBlock(coords.Battery.Text, "e_battery_text");
+                        setTimeout(function() {
+                            initdrag('e_battery_text', coords.Battery.Text, "c_battery_text", draw.battery.text);
+                        }, 10);
+                    }
                     if ('Scale' in coords.Battery) {}
                 }
                 if ('Status' in coords) {
-                    if ('Alarm' in coords.Status)
+                    if ('Alarm' in coords.Status) {
                         this.makeImgStat(coords.Status.Alarm, "e_stat_alarm");
-                    if ('Bluetooth' in coords.Status)
+                        setTimeout(function() {
+                            initdrag('e_stat_alarm', coords.Status.Alarm.Coordinates, "c_stat_alarm", draw.status.alarm);
+                        }, 10);
+                    }
+                    if ('Bluetooth' in coords.Status) {
                         this.makeImgStat(coords.Status.Bluetooth, "e_stat_bt");
-                    if ('DoNotDisturb' in coords.Status)
+                        setTimeout(function() {
+                            initdrag('e_stat_bt', coords.Status.Bluetooth.Coordinates, "c_stat_bt", draw.status.bt);
+                        }, 10);
+                    }
+                    if ('DoNotDisturb' in coords.Status) {
                         this.makeImgStat(coords.Status.DoNotDisturb, "e_stat_dnd");
-                    if ('Lock' in coords.Status)
+                        setTimeout(function() {
+                            initdrag('e_stat_dnd', coords.Status.DoNotDisturb.Coordinates, "c_stat_dnd", draw.status.dnd);
+                        }, 10);
+                    }
+                    if ('Lock' in coords.Status) {
                         this.makeImgStat(coords.Status.Lock, "e_stat_lock");
+                        setTimeout(function() {
+                            initdrag('e_stat_lock', coords.Status.Lock.Coordinates, "c_stat_lock", draw.status.lock);
+                        }, 10);
+                    }
                 }
                 if ('Weather' in coords) {
                     if ('Icon' in coords.Weather) {
                         $("editor").innerHTML +=
                             '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                        setTimeout(function() {
+                            initdrag('e_weather_icon', coords.Weather.Icon.Coordinates, "c_weather_icon", draw.weather.icon);
+                        }, 10);
                     }
                     if ('Temperature' in coords.Weather) {
                         if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today)
+                            if ('OneLine' in coords.Weather.Temperature.Today) {
                                 this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
+                                setTimeout(function() {
+                                    initdrag('e_weather_temp_today_oneline', coords.Weather.Temperature.Today.OneLine.Number, "c_temp", draw.weather.temp.oneline);
+                                }, 10);
+                            }
                             if ('Separate' in coords.Weather.Temperature.Today) {
-                                if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                if ('Day' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
-                                if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                    setTimeout(function() {
+                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp", draw.weather.temp.sep);
+                                    }, 10);
+                                }
+                                if ('Night' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
+                                    setTimeout(function() {
+                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp", draw.weather.temp.sep);
+                                    }, 10);
+                                }
                             }
                         }
-                        if ('Current' in coords.Weather.Temperature)
+                        if ('Current' in coords.Weather.Temperature) {
                             this.makeBlock(coords.Weather.Temperature.Current.Number, "e_weather_temp_current");
+                            setTimeout(function() {
+                                initdrag('e_weather_temp_current', coords.Weather.Temperature.Current.Number, "c_temp", draw.weather.temp.current);
+                            }, 10);
+                        }
                     }
-                    if ('AirPollution' in coords.Weather)
+                    if ('AirPollution' in coords.Weather) {
                         this.makeImg(coords.Weather.AirPollution.Icon, "e_weather_air");
+                        setTimeout(function() {
+                            initdrag('e_weather_air', coords.Weather.AirPollution.Icon, "c_air", draw.weather.air);
+                        }, 10);
+                    }
                 }
                 /*
                 if ('StepsProgress' in coords) {
@@ -1360,8 +1439,17 @@
                     el.style.zIndex = 'auto';
                     el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
                     el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
-                    elcoords.X = styleToNum(el.style.left) / 3;
-                    elcoords.Y = styleToNum(el.style.top) / 3;
+                    if ('X' in elcoords) {
+                        elcoords.X = styleToNum(el.style.left) / 3;
+                        elcoords.Y = styleToNum(el.style.top) / 3;
+                    } else {
+                        var t1 = elcoords.TopLeftX,
+                            t2 = elcoords.TopLeftY;
+                        elcoords.TopLeftX = styleToNum(el.style.left) / 3;
+                        elcoords.TopLeftY = styleToNum(el.style.top) / 3;
+                        elcoords.BottomRightX += elcoords.TopLeftX - t1;
+                        elcoords.BottomRightY += elcoords.TopLeftY - t2;
+                    }
                     removeByClass(cls);
                     drawF();
                 };
