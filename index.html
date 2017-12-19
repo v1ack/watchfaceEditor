@@ -34,7 +34,7 @@
 
         .editor-elem {
             position: absolute;
-            outline: dotted 1px #fd3838;
+            outline: dotted 1px #1e87f0;
             outline-offset: -1px;
         }
 
@@ -749,7 +749,9 @@
                     if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
                     if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
                     data.temp[0] = $("in-weatherd").value;
-                    removeByClass("c_temp");
+                    removeByClass("c_temp_sep");
+                    removeByClass("c_temp_cur");
+                    removeByClass("c_temp_oneline");
                     if ('Weather' in coords) {
                         if ('Icon' in coords.Weather)
                             draw.weather.icon();
@@ -771,7 +773,8 @@
                     if ($("in-weathern").value > 99) $("in-weathern").value = 99;
                     if ($("in-weathern").value < -99) $("in-weathern").value = -99;
                     data.temp[1] = $("in-weathern").value;
-                    removeByClass("c_temp");
+                    removeByClass("c_temp_sep");
+                    removeByClass("c_temp_oneline");
                     if ('Weather' in coords)
                         if ('Temperature' in coords.Weather)
                             if ('Today' in coords.Weather.Temperature) {
@@ -1032,7 +1035,7 @@
                             t.width += t2.width;
                             t.block.push(deg);
                             t.width += deg.width;
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp");
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp_oneline");
                         },
                         sep: function() {
                             var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
@@ -1046,7 +1049,7 @@
                                 t.block.splice(0, 0, minus);
                                 t.width += minus.width;
                             }
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp");
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep");
                             minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
                             t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
                             if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
@@ -1058,7 +1061,7 @@
                                 t.block.splice(0, 0, minus);
                                 t.width += minus.width;
                             }
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp");
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep");
                         },
                         current: function() {
                             var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
@@ -1072,7 +1075,7 @@
                                 t.block.splice(0, 0, minus);
                                 t.width += minus.width;
                             }
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp");
+                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Current.Number, "c_temp_cur");
                         }
                     },
                     air: function() {
@@ -1334,20 +1337,20 @@
                             if ('OneLine' in coords.Weather.Temperature.Today) {
                                 this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
                                 setTimeout(function() {
-                                    initdrag('e_weather_temp_today_oneline', coords.Weather.Temperature.Today.OneLine.Number, "c_temp", draw.weather.temp.oneline);
+                                    initdrag('e_weather_temp_today_oneline', coords.Weather.Temperature.Today.OneLine.Number, "c_temp_oneline", draw.weather.temp.oneline);
                                 }, 10);
                             }
                             if ('Separate' in coords.Weather.Temperature.Today) {
                                 if ('Day' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
                                     setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp", draw.weather.temp.sep);
+                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep", draw.weather.temp.sep);
                                     }, 10);
                                 }
                                 if ('Night' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
                                     setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp", draw.weather.temp.sep);
+                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep", draw.weather.temp.sep);
                                     }, 10);
                                 }
                             }
@@ -1355,7 +1358,7 @@
                         if ('Current' in coords.Weather.Temperature) {
                             this.makeBlock(coords.Weather.Temperature.Current.Number, "e_weather_temp_current");
                             setTimeout(function() {
-                                initdrag('e_weather_temp_current', coords.Weather.Temperature.Current.Number, "c_temp", draw.weather.temp.current);
+                                initdrag('e_weather_temp_current', coords.Weather.Temperature.Current.Number, "c_temp_cur", draw.weather.temp.current);
                             }, 10);
                         }
                     }
