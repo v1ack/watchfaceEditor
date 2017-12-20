@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Watchface view</title>
+    <title>Watchface edit</title>
     <style>
         html,
         body,
@@ -12,7 +12,7 @@
         }
 
         body {
-            overflow-x: hidden;
+            /*            overflow-x: hidden;*/
         }
 
         img {
@@ -75,8 +75,13 @@
             top: -2px;
         }
 
+        .editor-button {
+            margin: 1px 10px !important;
+            width: 230px;
+        }
+
         #codearea {
-            height: 370px;
+            height: 390px;
         }
 
         .string {
@@ -135,7 +140,7 @@
             <div class="uk-container uk-container-expand">
                 <div uk-navbar>
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface view</a>
+                        <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface edit</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle>How to use</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-feedback" uk-toggle>Send feedback</a>
                     </div>
@@ -166,7 +171,7 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design <span class="uk-badge" id="indevbadge">In dev</span></a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design <span class="uk-badge" id="indevbadge">Beta</span></a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -274,8 +279,59 @@
                     </li>
                     <li>
                         <div class="uk-margin">
-                            <pre contenteditable="true" id="codearea"></pre>
-                            <button class="uk-button uk-button-primary" onclick="exportjs()">Export JSON</button>
+                            <div class="uk-grid uk-grid-collapse">
+                                <pre contenteditable="true" id="codearea" class="uk-width-expand"></pre>
+                                <ul uk-accordion style="width: 250px; margin-left: 15px;">
+                                    <li class="uk-open">
+                                        <h3 class="uk-accordion-title">Time</h3>
+                                        <div class="uk-accordion-content">
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgam();">Toggle 12/24h</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgsec();">Toggle seconds</button>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Date</h3>
+                                        <div class="uk-accordion-content">
+                                            <div class="uk-alert-warning" uk-alert>
+                                                <h3>In development</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Activity</h3>
+                                        <div class="uk-accordion-content">
+                                            <div class="uk-alert-warning" uk-alert>
+                                                <h3>In development</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Status</h3>
+                                        <div class="uk-accordion-content">
+                                            <div class="uk-alert-warning" uk-alert>
+                                                <h3>In development</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Battery</h3>
+                                        <div class="uk-accordion-content">
+                                            <div class="uk-alert-warning" uk-alert>
+                                                <h3>In development</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Weather</h3>
+                                        <div class="uk-accordion-content">
+                                            <div class="uk-alert-warning" uk-alert>
+                                                <h3>In development</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
                         </div>
                     </li>
                 </ul>
@@ -288,7 +344,7 @@
         <div id="modal-howto" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">How to use</h2>
-                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface (in development)
+                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
                     <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
@@ -1126,7 +1182,7 @@
             if (this.files.length) {
                 data.wfname = this.files[0].name.split(".")[0];
                 console.log("Watchface name: ", data.wfname);
-                document.title = "Watchface view " + data.wfname;
+                document.title = "Watchface edit " + data.wfname;
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     try {
@@ -1472,6 +1528,47 @@
                 };
             }
 
+        }
+
+        var jsoneditor = {
+            tgam: function() {
+                if ('AmPm' in coords.Time) {
+                    delete coords.Time.AmPm;
+                } else {
+                    coords.Time.AmPm = {
+                        X: 0,
+                        Y: 0,
+                        ImageIndexAm: 1,
+                        ImageIndexPm: 1
+                    };
+
+                }
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgsec: function() {
+                if ('Seconds' in coords.Time) {
+                    delete coords.Time.Seconds;
+                } else {
+                    coords.Time.Seconds = {
+                        Tens: {
+                            X: 0,
+                            Y: 0,
+                            ImageIndex: 1,
+                            ImagesCount: 10
+                        },
+                        Ones: {
+                            X: 15,
+                            Y: 0,
+                            ImageIndex: 1,
+                            ImagesCount: 10
+                        }
+                    };
+
+                }
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            }
         }
 
     </script>
