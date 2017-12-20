@@ -38,6 +38,12 @@
             outline-offset: -1px;
         }
 
+        #e_coords {
+            margin: 0 10px;
+            height: 25px;
+            width: 100px;
+        }
+
         #watchfaceimage {
             background: url(b.png);
             padding-left: 43px;
@@ -261,9 +267,10 @@
                             </form>
                         </div>
                     </li>
-                    <li>
+                    <li class="uk-grid uk-grid-collapse">
                         <div id="editor" class="uk-card-default">
                         </div>
+                        <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
                     </li>
                     <li>
                         <div class="uk-margin">
@@ -1422,6 +1429,7 @@
                 function moveAt(e) {
                     el.style.left = e.pageX - ed.left - shiftX + 'px';
                     el.style.top = e.pageY - ed.top - shiftY + 'px';
+                    $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
                 }
 
                 $("editor").onmousemove = function(e) {
@@ -1447,6 +1455,7 @@
                     }
                     removeByClass(cls);
                     drawF();
+                    $("e_coords").innerHTML = "Coordinates";
                 };
 
             }
