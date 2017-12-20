@@ -544,7 +544,7 @@
                             view.insert(t, cls);
                             offset += t.width + el.Spacing;
                         }
-                    } else if (el.Alignment == "Center") {
+                    } else if (el.Alignment == 72 || el.Alignment == "Center") {
                         block.reverse();
                         offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
                         //console.log(offset, width, el.BottomRightX, el.TopLeftX, el);
@@ -558,7 +558,7 @@
                             offset += t.width + el.Spacing;
                         }
                     } else {
-                        UIkit.notification("Site author is too lazy to do this type of alignment... But you can send him your watchface and he will do it for you", {
+                        UIkit.notification("Site author is too lazy to do this <b>(" + el.Alignment + ")</b> type of alignment... But you can send him your watchface and he will do it for you", {
                             status: 'warning',
                             pos: 'top-left',
                             timeout: 7500
@@ -1150,17 +1150,6 @@
     </script>
     <!--Constructor-->
     <script type="text/javascript">
-        function disableByIdArray(elements) {
-            var end = elements.length;
-            for (var i = 0; i < end; i++)
-                $(elements[i]).setAttribute("disabled", "");
-        }
-
-        function enableByIdArray(elements) {
-            var end = elements.length;
-            for (var i = 0; i < end; i++)
-                $(elements[i]).removeAttribute("disabled");
-        }
         var editor = {
             makeBlock: function(el, id) {
                 $("editor").innerHTML +=
