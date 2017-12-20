@@ -281,7 +281,7 @@
                         <div class="uk-margin">
                             <div class="uk-grid uk-grid-collapse">
                                 <pre contenteditable="true" id="codearea" class="uk-width-expand"></pre>
-                                <ul uk-accordion style="width: 250px; margin-left: 15px;">
+                                <ul uk-accordion style="width: 250px; margin-left: 15px; height: 390px">
                                     <li class="uk-open">
                                         <h3 class="uk-accordion-title">Time</h3>
                                         <div class="uk-accordion-content">
@@ -292,33 +292,36 @@
                                     <li>
                                         <h3 class="uk-accordion-title">Date</h3>
                                         <div class="uk-accordion-content">
-                                            <div class="uk-alert-warning" uk-alert>
-                                                <h3>In development</h3>
-                                            </div>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweekday();">Toggle week day</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgdateoneline();">Toggle date oneline</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgdateday();">Toggle day</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgdatemonth();">Toggle month</button>
                                         </div>
                                     </li>
                                     <li>
                                         <h3 class="uk-accordion-title">Activity</h3>
                                         <div class="uk-accordion-content">
-                                            <div class="uk-alert-warning" uk-alert>
-                                                <h3>In development</h3>
-                                            </div>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactsteps();">Toggle steps</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactstepsgoal();">Toggle steps goal</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactpulse();">Toggle pulse</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactcal();">Toggle calories</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactdist();">Toggle distance</button>
                                         </div>
                                     </li>
                                     <li>
                                         <h3 class="uk-accordion-title">Status</h3>
                                         <div class="uk-accordion-content">
-                                            <div class="uk-alert-warning" uk-alert>
-                                                <h3>In development</h3>
-                                            </div>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatalarm();">Toggle alarm</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatbt();">Toggle bluetooth</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatlock();">Toggle lock</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatdnd();">Toggle do not disturb</button>
                                         </div>
                                     </li>
                                     <li>
                                         <h3 class="uk-accordion-title">Battery</h3>
                                         <div class="uk-accordion-content">
-                                            <div class="uk-alert-warning" uk-alert>
-                                                <h3>In development</h3>
-                                            </div>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatteryicon();">Toggle icon</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatterytext();">Toggle number</button>
                                         </div>
                                     </li>
                                     <li>
@@ -1566,6 +1569,363 @@
                     };
 
                 }
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweekday: function() {
+                if (!('Date' in coords))
+                    coords.Date = {};
+                if ('WeekDay' in coords.Date)
+                    delete coords.Date.WeekDay;
+                else {
+                    coords.Date.WeekDay = {
+                        X: 0,
+                        Y: 0,
+                        ImageIndex: 1,
+                        ImagesCount: 7
+                    }
+                }
+                if (Object.keys(coords.Date).length == 0)
+                    delete coords.Date;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgdateoneline: function() {
+                if (!('Date' in coords))
+                    coords.Date = {};
+                if ('MonthAndDay' in coords.Date)
+                    delete coords.Date.MonthAndDay;
+                else {
+                    coords.Date.MonthAndDay = {
+                        OneLine: {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 20,
+                                Alignment: 'TopLeft',
+                                Spacing: 3,
+                                ImageIndex: 1,
+                                ImagesCount: 10
+                            },
+                            DelimiterImageIndex: 1
+                        },
+                        TwoDigitsMonth: true,
+                        TwoDigitsDay: true
+                    }
+                }
+                if (Object.keys(coords.Date).length == 0)
+                    delete coords.Date;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgdateday: function() {
+                if (!('Date' in coords))
+                    coords.Date = {};
+                if ('MonthAndDay' in coords.Date) {
+                    if (!('Separate' in coords.Date.MonthAndDay))
+                        delete coords.Date.MonthAndDay;
+                    else if ('Day' in coords.Date.MonthAndDay.Separate) {
+                        delete coords.Date.MonthAndDay.Separate.Day;
+                        if (!('Month' in coords.Date.MonthAndDay.Separate))
+                            delete coords.Date.MonthAndDay;
+                    } else {
+                        coords.Date.MonthAndDay.Separate.Day = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 20,
+                            BottomRightY: 20,
+                            Alignment: "TopLeft",
+                            Spacing: 3,
+                            ImageIndex: 1,
+                            ImagesCount: 10
+                        }
+                    }
+                } else {
+                    coords.Date.MonthAndDay = {
+                        Separate: {
+                            Day: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 20,
+                                Alignment: "TopLeft",
+                                Spacing: 3,
+                                ImageIndex: 1,
+                                ImagesCount: 10
+                            }
+                        },
+                        TwoDigitsMonth: true,
+                        TwoDigitsDay: true
+                    }
+                }
+                if (Object.keys(coords.Date).length == 0)
+                    delete coords.Date;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgdatemonth: function() {
+                if (!('Date' in coords))
+                    coords.Date = {};
+                if ('MonthAndDay' in coords.Date) {
+                    if (!('Separate' in coords.Date.MonthAndDay))
+                        delete coords.Date.MonthAndDay;
+                    else if ('Month' in coords.Date.MonthAndDay.Separate) {
+                        delete coords.Date.MonthAndDay.Separate.Month;
+                        if (!('Day' in coords.Date.MonthAndDay.Separate))
+                            delete coords.Date.MonthAndDay;
+                    } else {
+                        coords.Date.MonthAndDay.Separate.Month = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 20,
+                            BottomRightY: 20,
+                            Alignment: "TopLeft",
+                            Spacing: 3,
+                            ImageIndex: 1,
+                            ImagesCount: 10
+                        }
+                    }
+                } else {
+                    coords.Date.MonthAndDay = {
+                        Separate: {
+                            Month: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 20,
+                                Alignment: "TopLeft",
+                                Spacing: 3,
+                                ImageIndex: 1,
+                                ImagesCount: 10
+                            }
+                        },
+                        TwoDigitsMonth: true,
+                        TwoDigitsDay: true
+                    }
+                }
+                if (Object.keys(coords.Date).length == 0)
+                    delete coords.Date;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgstatalarm: function() {
+                if (!('Status' in coords))
+                    coords.Status = {};
+                if ('Alarm' in coords.Status)
+                    delete coords.Status.Alarm;
+                else
+                    coords.Status.Alarm = {
+                        Coordinates: {
+                            X: 0,
+                            Y: 0
+                        },
+                        ImageIndexOn: 1
+                    }
+                if (Object.keys(coords.Status).length == 0)
+                    delete coords.Status;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgstatbt: function() {
+                if (!('Status' in coords))
+                    coords.Status = {};
+                if ('Bluetooth' in coords.Status)
+                    delete coords.Status.Bluetooth;
+                else
+                    coords.Status.Bluetooth = {
+                        Coordinates: {
+                            X: 0,
+                            Y: 0
+                        },
+                        ImageIndexOn: 1,
+                        ImageIndexOff: 1
+                    }
+                if (Object.keys(coords.Status).length == 0)
+                    delete coords.Status;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgstatlock: function() {
+                if (!('Status' in coords))
+                    coords.Status = {};
+                if ('Lock' in coords.Status)
+                    delete coords.Status.Lock;
+                else
+                    coords.Status.Lock = {
+                        Coordinates: {
+                            X: 0,
+                            Y: 0
+                        },
+                        ImageIndexOn: 1
+                    }
+                if (Object.keys(coords.Status).length == 0)
+                    delete coords.Status;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgstatdnd: function() {
+                if (!('Status' in coords))
+                    coords.Status = {};
+                if ('DoNotDisturb' in coords.Status)
+                    delete coords.Status.DoNotDisturb;
+                else
+                    coords.Status.DoNotDisturb = {
+                        Coordinates: {
+                            X: 0,
+                            Y: 0
+                        },
+                        ImageIndexOn: 1
+                    }
+                if (Object.keys(coords.Status).length == 0)
+                    delete coords.Status;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgactsteps: function() {
+                if (!('Activity' in coords))
+                    coords.Activity = {};
+                if ('Steps' in coords.Activity)
+                    delete coords.Activity.Steps;
+                else
+                    coords.Activity.Steps = {
+                        TopLeftX: 0,
+                        TopLeftY: 0,
+                        BottomRightX: 20,
+                        BottomRightY: 20,
+                        Alignment: "TopLeft",
+                        Spacing: 3,
+                        ImageIndex: 1,
+                        ImagesCount: 10
+                    }
+                if (Object.keys(coords.Activity).length == 0)
+                    delete coords.Activity;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgactcal: function() {
+                if (!('Activity' in coords))
+                    coords.Activity = {};
+                if ('Calories' in coords.Activity)
+                    delete coords.Activity.Calories;
+                else
+                    coords.Activity.Calories = {
+                        TopLeftX: 0,
+                        TopLeftY: 0,
+                        BottomRightX: 20,
+                        BottomRightY: 20,
+                        Alignment: "TopLeft",
+                        Spacing: 3,
+                        ImageIndex: 1,
+                        ImagesCount: 10
+                    }
+                if (Object.keys(coords.Activity).length == 0)
+                    delete coords.Activity;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgactpulse: function() {
+                if (!('Activity' in coords))
+                    coords.Activity = {};
+                if ('Pulse' in coords.Activity)
+                    delete coords.Activity.Pulse;
+                else
+                    coords.Activity.Pulse = {
+                        TopLeftX: 0,
+                        TopLeftY: 0,
+                        BottomRightX: 20,
+                        BottomRightY: 20,
+                        Alignment: "TopLeft",
+                        Spacing: 3,
+                        ImageIndex: 1,
+                        ImagesCount: 10
+                    }
+                if (Object.keys(coords.Activity).length == 0)
+                    delete coords.Activity;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgactstepsgoal: function() {
+                if (!('Activity' in coords))
+                    coords.Activity = {};
+                if ('StepsGoal' in coords.Activity)
+                    delete coords.Activity.StepsGoal;
+                else
+                    coords.Activity.StepsGoal = {
+                        TopLeftX: 0,
+                        TopLeftY: 0,
+                        BottomRightX: 20,
+                        BottomRightY: 20,
+                        Alignment: "TopLeft",
+                        Spacing: 3,
+                        ImageIndex: 1,
+                        ImagesCount: 10
+                    }
+                if (Object.keys(coords.Activity).length == 0)
+                    delete coords.Activity;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgactdist: function() {
+                if (!('Activity' in coords))
+                    coords.Activity = {};
+                if ('Distance' in coords.Activity)
+                    delete coords.Activity.Distance;
+                else
+                    coords.Activity.Distance = {
+                        Number: {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 20,
+                            BottomRightY: 20,
+                            Alignment: "TopLeft",
+                            Spacing: 3,
+                            ImageIndex: 1,
+                            ImagesCount: 10
+                        },
+                        SuffixImageIndex: 1,
+                        DecimalPointImageIndex: 1
+                    }
+                if (Object.keys(coords.Activity).length == 0)
+                    delete coords.Activity;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgbatteryicon: function() {
+                if (!('Battery' in coords))
+                    coords.Battery = {};
+                if ('Icon' in coords.Battery)
+                    delete coords.Battery.Icon;
+                else
+                    coords.Battery.Icon = {
+                        X: 0,
+                        Y: 0,
+                        ImageIndex: 1,
+                        ImagesCount: 6
+                    }
+                if (Object.keys(coords.Battery).length == 0)
+                    delete coords.Battery;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgbatterytext: function() {
+                if (!('Battery' in coords))
+                    coords.Battery = {};
+                if ('Text' in coords.Battery)
+                    delete coords.Battery.Text;
+                else
+                    coords.Battery.Text = {
+                        TopLeftX: 0,
+                        TopLeftY: 0,
+                        BottomRightX: 20,
+                        BottomRightY: 20,
+                        Alignment: "TopLeft",
+                        Spacing: 3,
+                        ImageIndex: 1,
+                        ImagesCount: 10
+                    }
+                if (Object.keys(coords.Battery).length == 0)
+                    delete coords.Battery;
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
                 view.makeWf();
             }
