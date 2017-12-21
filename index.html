@@ -338,6 +338,7 @@
                                 </ul>
                             </div>
                             <button class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
+                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top">Default images here</a>
                         </div>
                     </li>
                 </ul>
@@ -352,7 +353,8 @@
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">How to use</h2>
                 <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
-                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input</p>
+                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages">here</a>
+                </p>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
                 </p>
@@ -389,6 +391,10 @@
     <script type="text/javascript">
         for (var i = 200; i <= 240; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
+        if(!('helpShown' in localStorage)){
+            UIkit.modal($("modal-howto")).show();
+            localStorage.helpShown = true;
+        }
 
         function addScript(url) {
             var e = document.createElement("script");
@@ -438,8 +444,8 @@
                 dnd: true,
                 lock: true,
                 local: (location.protocol != "file:" ? false : true),
-                firstopen_editor: true,
-                firstopen_constr: true,
+                firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true),
+                firstopen_constr: ('firstopen_constr' in sessionStorage ? false : true),
                 jsset: false,
                 imagesset: false,
                 wfname: "wanchface",
@@ -545,11 +551,11 @@
                                 if ('Today' in coords.Weather.Temperature) {
                                     if ('OneLine' in coords.Weather.Temperature.Today)
                                         draw.weather.temp.oneline();
-                                    if ('Separate' in coords.Weather.Temperature.Today){
-                                        if('Day' in coords.Weather.Temperature.Today.Separate)
-                                        draw.weather.temp.sep.day();
-                                        if('Night' in coords.Weather.Temperature.Today.Separate)
-                                        draw.weather.temp.sep.night();
+                                    if ('Separate' in coords.Weather.Temperature.Today) {
+                                        if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                            draw.weather.temp.sep.day();
+                                        if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                            draw.weather.temp.sep.night();
                                     }
                                 }
                                 if ('Current' in coords.Weather.Temperature)
@@ -839,11 +845,11 @@
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
                                     draw.weather.temp.oneline();
-                                if ('Separate' in coords.Weather.Temperature.Today){
-                                    if('Day' in coords.Weather.Temperature.Today.Separate)
-                                    draw.weather.temp.sep.day();
-                                    if('Night' in coords.Weather.Temperature.Today.Separate)
-                                    draw.weather.temp.sep.night();
+                                if ('Separate' in coords.Weather.Temperature.Today) {
+                                    if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.day();
+                                    if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.night();
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
@@ -864,11 +870,11 @@
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
                                     draw.weather.temp.oneline();
-                                if ('Separate' in coords.Weather.Temperature.Today){
-                                    if('Day' in coords.Weather.Temperature.Today.Separate)
-                                    draw.weather.temp.sep.day();
-                                    if('Night' in coords.Weather.Temperature.Today.Separate)
-                                    draw.weather.temp.sep.night();
+                                if ('Separate' in coords.Weather.Temperature.Today) {
+                                    if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.day();
+                                    if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.night();
                                 }
                             }
                 }
@@ -1253,6 +1259,7 @@
             },
             init: function() {
                 if (data.firstopen_constr && !data.local) {
+                    sessionStorage.firstopen_constr = false;
                     UIkit.notification("This section is in development. Something may not work correctly", {
                         status: 'primary',
                         pos: 'top-left',
@@ -2208,6 +2215,7 @@
         function fillarea() {
             $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
             if (data.firstopen_editor) {
+                sessionStorage.firstopen_editor = false;
                 UIkit.notification("To update preview just click out of JSON input", {
                     status: 'primary',
                     pos: 'top-left',
