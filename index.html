@@ -81,6 +81,13 @@
         }
 
         #codearea {
+            height: calc(100vh - 255px);
+            min-height: 390px;
+        }
+        
+        .codearearight{
+            width: 250px; 
+            margin-left: 15px!important;
             height: 390px;
         }
 
@@ -281,7 +288,7 @@
                         <div class="uk-margin">
                             <div class="uk-grid uk-grid-collapse">
                                 <pre contenteditable="true" id="codearea" class="uk-width-expand"></pre>
-                                <ul uk-accordion style="width: 250px; margin-left: 15px; height: 390px">
+                                <ul uk-accordion class="codearearight">
                                     <li class="uk-open">
                                         <h3 class="uk-accordion-title">Time</h3>
                                         <div class="uk-accordion-content">
@@ -1500,7 +1507,7 @@
         }
 
         function initdrag(el, elcoords, cls, drawF) {
-            console.log(el);
+            //console.log(el);
             el = $(el);
 
             el.onmousedown = function(e) {
