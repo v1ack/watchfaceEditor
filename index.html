@@ -327,9 +327,12 @@
                                     <li>
                                         <h3 class="uk-accordion-title">Weather</h3>
                                         <div class="uk-accordion-content">
-                                            <div class="uk-alert-warning" uk-alert>
-                                                <h3>In development</h3>
-                                            </div>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathericon();">Toggle icon</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweatherair();">Toggle air polution</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweatheroneline();">Toggle weather oneline</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathercur();">Toggle current weather</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathersepday();">Toggle day weather</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathersepnight();">Toggle night weather</button>
                                         </div>
                                     </li>
                                 </ul>
@@ -341,7 +344,8 @@
 
             </div>
         </div>
-        <div id="allimages" class="uk-invisible">
+        <div id="allimages" class="uk-invisible"></div>
+        <div id="defimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
         <div id="modal-howto" uk-modal>
@@ -383,6 +387,9 @@
         </div>
     </main>
     <script type="text/javascript">
+        for (var i = 200; i <= 240; i++)
+            $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
+
         function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
@@ -538,8 +545,12 @@
                                 if ('Today' in coords.Weather.Temperature) {
                                     if ('OneLine' in coords.Weather.Temperature.Today)
                                         draw.weather.temp.oneline();
-                                    if ('Separate' in coords.Weather.Temperature.Today)
-                                        draw.weather.temp.sep();
+                                    if ('Separate' in coords.Weather.Temperature.Today){
+                                        if('Day' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.day();
+                                        if('Night' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.night();
+                                    }
                                 }
                                 if ('Current' in coords.Weather.Temperature)
                                     draw.weather.temp.current();
@@ -818,7 +829,7 @@
                     if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
                     if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
                     data.temp[0] = $("in-weatherd").value;
-                    removeByClass("c_temp_sep");
+                    removeByClass("c_temp_sep_day");
                     removeByClass("c_temp_cur");
                     removeByClass("c_temp_oneline");
                     if ('Weather' in coords) {
@@ -828,8 +839,12 @@
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
                                     draw.weather.temp.oneline();
-                                if ('Separate' in coords.Weather.Temperature.Today)
-                                    draw.weather.temp.sep();
+                                if ('Separate' in coords.Weather.Temperature.Today){
+                                    if('Day' in coords.Weather.Temperature.Today.Separate)
+                                    draw.weather.temp.sep.day();
+                                    if('Night' in coords.Weather.Temperature.Today.Separate)
+                                    draw.weather.temp.sep.night();
+                                }
                             }
                             if ('Current' in coords.Weather.Temperature)
                                 draw.weather.temp.current();
@@ -842,15 +857,19 @@
                     if ($("in-weathern").value > 99) $("in-weathern").value = 99;
                     if ($("in-weathern").value < -99) $("in-weathern").value = -99;
                     data.temp[1] = $("in-weathern").value;
-                    removeByClass("c_temp_sep");
+                    removeByClass("c_temp_sep_night");
                     removeByClass("c_temp_oneline");
                     if ('Weather' in coords)
                         if ('Temperature' in coords.Weather)
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
                                     draw.weather.temp.oneline();
-                                if ('Separate' in coords.Weather.Temperature.Today)
-                                    draw.weather.temp.sep();
+                                if ('Separate' in coords.Weather.Temperature.Today){
+                                    if('Day' in coords.Weather.Temperature.Today.Separate)
+                                    draw.weather.temp.sep.day();
+                                    if('Night' in coords.Weather.Temperature.Today.Separate)
+                                    draw.weather.temp.sep.night();
+                                }
                             }
                 }
             },
@@ -883,7 +902,6 @@
                     data.imagesset = false;
                     if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
                     $('inputimages').nextElementSibling.classList.add("uk-button-danger");
-                    $('allimages').innerHTML = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC\" id=\"weather\">";
                     load.disableBtn(0);
                 },
                 renderImage: function(file) {
@@ -1106,31 +1124,35 @@
                             t.width += deg.width;
                             view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.OneLine.Number, "c_temp_oneline");
                         },
-                        sep: function() {
-                            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
-                            t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
-                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
-                                var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
-                                t.block.push(deg);
-                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                        sep: {
+                            day: function() {
+                                var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                                t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, Math.abs(data.temp[0]));
+                                if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Day) {
+                                    var deg = $c(coords.Weather.Temperature.Today.Separate.Day.DegreesImageIndex);
+                                    t.block.push(deg);
+                                    t.width += deg.width + coords.Weather.Temperature.Today.Separate.Day.Number.Spacing;
+                                }
+                                if (minus != 0) {
+                                    t.block.splice(0, 0, minus);
+                                    t.width += minus.width;
+                                }
+                                view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep_day");
+                            },
+                            night: function() {
+                                var minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
+                                t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
+                                if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
+                                    var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
+                                    t.block.push(deg);
+                                    t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
+                                }
+                                if (minus != 0) {
+                                    t.block.splice(0, 0, minus);
+                                    t.width += minus.width;
+                                }
+                                view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep_night");
                             }
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep");
-                            minus = data.temp[1] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex) : 0;
-                            t = view.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, Math.abs(data.temp[1]));
-                            if ('DegreesImageIndex' in coords.Weather.Temperature.Today.Separate.Night) {
-                                var deg = $c(coords.Weather.Temperature.Today.Separate.Night.DegreesImageIndex);
-                                t.block.push(deg);
-                                t.width += deg.width + coords.Weather.Temperature.Today.Separate.Night.Number.Spacing;
-                            }
-                            if (minus != 0) {
-                                t.block.splice(0, 0, minus);
-                                t.width += minus.width;
-                            }
-                            view.renderBlock(t.block, t.width, coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep");
                         },
                         current: function() {
                             var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
@@ -1231,10 +1253,11 @@
             },
             init: function() {
                 if (data.firstopen_constr && !data.local) {
-                    function show() {
-                        UIkit.modal($("indevalert")).show()
-                    }
-                    setTimeout(show, 200);
+                    UIkit.notification("This section is in development. Something may not work correctly", {
+                        status: 'primary',
+                        pos: 'top-left',
+                        timeout: 3000
+                    });
                     data.firstopen_constr = false;
                 }
                 $("editor").innerHTML = '';
@@ -1402,13 +1425,13 @@
                                 if ('Day' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
                                     setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep", draw.weather.temp.sep);
+                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep_day", draw.weather.temp.sep.day);
                                     }, 10);
                                 }
                                 if ('Night' in coords.Weather.Temperature.Today.Separate) {
                                     this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
                                     setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep", draw.weather.temp.sep);
+                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep_night", draw.weather.temp.sep.night);
                                     }, 10);
                                 }
                             }
@@ -1541,8 +1564,8 @@
                     coords.Time.AmPm = {
                         X: 0,
                         Y: 0,
-                        ImageIndexAm: 1,
-                        ImageIndexPm: 1
+                        ImageIndexAm: 233,
+                        ImageIndexPm: 234
                     };
 
                 }
@@ -1557,13 +1580,13 @@
                         Tens: {
                             X: 0,
                             Y: 0,
-                            ImageIndex: 1,
+                            ImageIndex: 200,
                             ImagesCount: 10
                         },
                         Ones: {
-                            X: 15,
+                            X: 10,
                             Y: 0,
-                            ImageIndex: 1,
+                            ImageIndex: 200,
                             ImagesCount: 10
                         }
                     };
@@ -1581,7 +1604,7 @@
                     coords.Date.WeekDay = {
                         X: 0,
                         Y: 0,
-                        ImageIndex: 1,
+                        ImageIndex: 210,
                         ImagesCount: 7
                     }
                 }
@@ -1601,14 +1624,14 @@
                             Number: {
                                 TopLeftX: 0,
                                 TopLeftY: 0,
-                                BottomRightX: 20,
-                                BottomRightY: 20,
+                                BottomRightX: 45,
+                                BottomRightY: 10,
                                 Alignment: 'TopLeft',
-                                Spacing: 3,
-                                ImageIndex: 1,
+                                Spacing: 2,
+                                ImageIndex: 200,
                                 ImagesCount: 10
                             },
-                            DelimiterImageIndex: 1
+                            DelimiterImageIndex: 219
                         },
                         TwoDigitsMonth: true,
                         TwoDigitsDay: true
@@ -1634,10 +1657,10 @@
                             TopLeftX: 0,
                             TopLeftY: 0,
                             BottomRightX: 20,
-                            BottomRightY: 20,
+                            BottomRightY: 10,
                             Alignment: "TopLeft",
-                            Spacing: 3,
-                            ImageIndex: 1,
+                            Spacing: 2,
+                            ImageIndex: 200,
                             ImagesCount: 10
                         }
                     }
@@ -1648,10 +1671,10 @@
                                 TopLeftX: 0,
                                 TopLeftY: 0,
                                 BottomRightX: 20,
-                                BottomRightY: 20,
+                                BottomRightY: 10,
                                 Alignment: "TopLeft",
-                                Spacing: 3,
-                                ImageIndex: 1,
+                                Spacing: 2,
+                                ImageIndex: 200,
                                 ImagesCount: 10
                             }
                         },
@@ -1679,10 +1702,10 @@
                             TopLeftX: 0,
                             TopLeftY: 0,
                             BottomRightX: 20,
-                            BottomRightY: 20,
+                            BottomRightY: 10,
                             Alignment: "TopLeft",
-                            Spacing: 3,
-                            ImageIndex: 1,
+                            Spacing: 2,
+                            ImageIndex: 200,
                             ImagesCount: 10
                         }
                     }
@@ -1693,10 +1716,10 @@
                                 TopLeftX: 0,
                                 TopLeftY: 0,
                                 BottomRightX: 20,
-                                BottomRightY: 20,
+                                BottomRightY: 10,
                                 Alignment: "TopLeft",
-                                Spacing: 3,
-                                ImageIndex: 1,
+                                Spacing: 2,
+                                ImageIndex: 200,
                                 ImagesCount: 10
                             }
                         },
@@ -1720,7 +1743,7 @@
                             X: 0,
                             Y: 0
                         },
-                        ImageIndexOn: 1
+                        ImageIndexOn: 224
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
@@ -1738,8 +1761,8 @@
                             X: 0,
                             Y: 0
                         },
-                        ImageIndexOn: 1,
-                        ImageIndexOff: 1
+                        ImageIndexOn: 220,
+                        ImageIndexOff: 221
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
@@ -1757,7 +1780,7 @@
                             X: 0,
                             Y: 0
                         },
-                        ImageIndexOn: 1
+                        ImageIndexOn: 223
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
@@ -1775,7 +1798,7 @@
                             X: 0,
                             Y: 0
                         },
-                        ImageIndexOn: 1
+                        ImageIndexOn: 222
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
@@ -1791,11 +1814,11 @@
                     coords.Activity.Steps = {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 20,
+                        BottomRightX: 45,
+                        BottomRightY: 10,
                         Alignment: "TopLeft",
-                        Spacing: 3,
-                        ImageIndex: 1,
+                        Spacing: 2,
+                        ImageIndex: 200,
                         ImagesCount: 10
                     }
                 if (Object.keys(coords.Activity).length == 0)
@@ -1812,11 +1835,11 @@
                     coords.Activity.Calories = {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 20,
+                        BottomRightX: 10,
+                        BottomRightY: 35,
                         Alignment: "TopLeft",
-                        Spacing: 3,
-                        ImageIndex: 1,
+                        Spacing: 2,
+                        ImageIndex: 200,
                         ImagesCount: 10
                     }
                 if (Object.keys(coords.Activity).length == 0)
@@ -1833,11 +1856,11 @@
                     coords.Activity.Pulse = {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 20,
+                        BottomRightX: 10,
+                        BottomRightY: 35,
                         Alignment: "TopLeft",
-                        Spacing: 3,
-                        ImageIndex: 1,
+                        Spacing: 2,
+                        ImageIndex: 200,
                         ImagesCount: 10
                     }
                 if (Object.keys(coords.Activity).length == 0)
@@ -1854,11 +1877,11 @@
                     coords.Activity.StepsGoal = {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 20,
+                        BottomRightX: 45,
+                        BottomRightY: 10,
                         Alignment: "TopLeft",
-                        Spacing: 3,
-                        ImageIndex: 1,
+                        Spacing: 2,
+                        ImageIndex: 200,
                         ImagesCount: 10
                     }
                 if (Object.keys(coords.Activity).length == 0)
@@ -1876,15 +1899,15 @@
                         Number: {
                             TopLeftX: 0,
                             TopLeftY: 0,
-                            BottomRightX: 20,
-                            BottomRightY: 20,
+                            BottomRightX: 45,
+                            BottomRightY: 10,
                             Alignment: "TopLeft",
-                            Spacing: 3,
-                            ImageIndex: 1,
+                            Spacing: 2,
+                            ImageIndex: 200,
                             ImagesCount: 10
                         },
-                        SuffixImageIndex: 1,
-                        DecimalPointImageIndex: 1
+                        SuffixImageIndex: 231,
+                        DecimalPointImageIndex: 232
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
@@ -1900,7 +1923,7 @@
                     coords.Battery.Icon = {
                         X: 0,
                         Y: 0,
-                        ImageIndex: 1,
+                        ImageIndex: 225,
                         ImagesCount: 6
                     }
                 if (Object.keys(coords.Battery).length == 0)
@@ -1917,15 +1940,226 @@
                     coords.Battery.Text = {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
+                        BottomRightX: 10,
                         BottomRightY: 20,
                         Alignment: "TopLeft",
-                        Spacing: 3,
-                        ImageIndex: 1,
+                        Spacing: 2,
+                        ImageIndex: 200,
                         ImagesCount: 10
                     }
                 if (Object.keys(coords.Battery).length == 0)
                     delete coords.Battery;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweathericon: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if ('Icon' in coords.Weather)
+                    delete coords.Weather.Icon;
+                else
+                    coords.Weather.Icon = {
+                        Coordinates: {
+                            X: 0,
+                            Y: 0
+                        }
+                    }
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweatherair: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if ('AirPollution' in coords.Weather)
+                    delete coords.Weather.AirPollution;
+                else
+                    coords.Weather.AirPollution = {
+                        Icon: {
+                            X: 0,
+                            Y: 0,
+                            ImageIndex: 235,
+                            ImagesCount: 6
+                        }
+                    }
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweatheroneline: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if (!('Temperature' in coords.Weather))
+                    coords.Weather.Temperature = {};
+                if ('Today' in coords.Weather.Temperature)
+                    delete coords.Weather.Temperature.Today;
+                else {
+                    coords.Weather.Temperature.Today = {
+                        OneLine: {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 50,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            MinusSignImageIndex: 217,
+                            DelimiterImageIndex: 219,
+                            AppendDegreesForBoth: false,
+                            DegreesImageIndex: 218
+                        }
+                    }
+                }
+                if (Object.keys(coords.Weather.Temperature).length == 0)
+                    delete coords.Weather.Temperature;
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweathercur: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if (!('Temperature' in coords.Weather))
+                    coords.Weather.Temperature = {};
+                if ('Current' in coords.Weather.Temperature)
+                    delete coords.Weather.Temperature.Current;
+                else {
+                    coords.Weather.Temperature.Current = {
+                        Number: {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 20,
+                            BottomRightY: 10,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        },
+                        MinusSignImageIndex: 217,
+                        DegreesImageIndex: 218
+
+                    }
+                }
+                if (Object.keys(coords.Weather.Temperature).length == 0)
+                    delete coords.Weather.Temperature;
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweathersepday: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if (!('Temperature' in coords.Weather))
+                    coords.Weather.Temperature = {};
+                if ('Today' in coords.Weather.Temperature) {
+                    if (!('Separate' in coords.Weather.Temperature.Today))
+                        delete coords.Weather.Temperature.Today;
+                    else if ('Day' in coords.Weather.Temperature.Today.Separate) {
+                        delete coords.Weather.Temperature.Today.Separate.Day;
+                        if (!('Night' in coords.Weather.Temperature.Today.Separate))
+                            delete coords.Weather.Temperature.Today;
+                    } else {
+                        coords.Weather.Temperature.Today.Separate.Day = {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            MinusSignImageIndex: 217,
+                            DegreesImageIndex: 218
+                        }
+                    }
+                } else {
+                    coords.Weather.Temperature.Today = {
+                        Separate: {
+                            Day: {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        }
+                    }
+                }
+                if (Object.keys(coords.Weather.Temperature).length == 0)
+                    delete coords.Weather.Temperature;
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                view.makeWf();
+            },
+            tgweathersepnight: function() {
+                if (!('Weather' in coords))
+                    coords.Weather = {};
+                if (!('Temperature' in coords.Weather))
+                    coords.Weather.Temperature = {};
+                if ('Today' in coords.Weather.Temperature) {
+                    if (!('Separate' in coords.Weather.Temperature.Today))
+                        delete coords.Weather.Temperature.Today;
+                    else if ('Night' in coords.Weather.Temperature.Today.Separate) {
+                        delete coords.Weather.Temperature.Today.Separate.Night;
+                        if (!('Day' in coords.Weather.Temperature.Today.Separate))
+                            delete coords.Weather.Temperature.Today;
+                    } else {
+                        coords.Weather.Temperature.Today.Separate.Night = {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            MinusSignImageIndex: 217,
+                            DegreesImageIndex: 218
+                        }
+                    }
+                } else {
+                    coords.Weather.Temperature.Today = {
+                        Separate: {
+                            Night: {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        }
+                    }
+                }
+                if (Object.keys(coords.Weather.Temperature).length == 0)
+                    delete coords.Weather.Temperature;
+                if (Object.keys(coords.Weather).length == 0)
+                    delete coords.Weather;
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
                 view.makeWf();
             }
