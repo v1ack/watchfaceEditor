@@ -80,9 +80,9 @@
             height: calc(100vh - 255px);
             min-height: 390px;
         }
-        
-        .codearearight{
-            width: 250px; 
+
+        .codearearight {
+            width: 250px;
             margin-left: 15px!important;
             height: 390px;
         }
@@ -341,7 +341,7 @@
                                 </ul>
                             </div>
                             <button class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
-                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank">Default images here</a>
+                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images here</a>
                         </div>
                     </li>
                 </ul>
@@ -394,7 +394,7 @@
     <script type="text/javascript">
         for (var i = 200; i <= 240; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
-        if(!('helpShown' in localStorage)){
+        if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
             localStorage.helpShown = true;
         }
@@ -1568,6 +1568,14 @@
         }
 
         var jsoneditor = {
+            updatecode: function(){
+                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex":\s2\d\d/g))
+                    $("defaultimages").classList.add("uk-label-success");
+                else
+                    $("defaultimages").classList.remove("uk-label-success");
+                view.makeWf();
+            },
             tgam: function() {
                 if ('AmPm' in coords.Time) {
                     delete coords.Time.AmPm;
@@ -1577,11 +1585,9 @@
                         Y: 0,
                         ImageIndexAm: 233,
                         ImageIndexPm: 234
-                    };
-
+                    }
                 }
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgsec: function() {
                 if ('Seconds' in coords.Time) {
@@ -1601,10 +1607,8 @@
                             ImagesCount: 10
                         }
                     };
-
                 }
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweekday: function() {
                 if (!('Date' in coords))
@@ -1621,8 +1625,7 @@
                 }
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgdateoneline: function() {
                 if (!('Date' in coords))
@@ -1650,8 +1653,7 @@
                 }
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgdateday: function() {
                 if (!('Date' in coords))
@@ -1695,8 +1697,7 @@
                 }
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgdatemonth: function() {
                 if (!('Date' in coords))
@@ -1740,8 +1741,7 @@
                 }
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgstatalarm: function() {
                 if (!('Status' in coords))
@@ -1758,8 +1758,7 @@
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgstatbt: function() {
                 if (!('Status' in coords))
@@ -1777,8 +1776,7 @@
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgstatlock: function() {
                 if (!('Status' in coords))
@@ -1795,8 +1793,7 @@
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgstatdnd: function() {
                 if (!('Status' in coords))
@@ -1813,8 +1810,7 @@
                     }
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgactsteps: function() {
                 if (!('Activity' in coords))
@@ -1834,8 +1830,7 @@
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgactcal: function() {
                 if (!('Activity' in coords))
@@ -1855,8 +1850,7 @@
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgactpulse: function() {
                 if (!('Activity' in coords))
@@ -1876,8 +1870,7 @@
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgactstepsgoal: function() {
                 if (!('Activity' in coords))
@@ -1897,8 +1890,7 @@
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgactdist: function() {
                 if (!('Activity' in coords))
@@ -1922,8 +1914,7 @@
                     }
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgbatteryicon: function() {
                 if (!('Battery' in coords))
@@ -1939,8 +1930,7 @@
                     }
                 if (Object.keys(coords.Battery).length == 0)
                     delete coords.Battery;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgbatterytext: function() {
                 if (!('Battery' in coords))
@@ -1960,8 +1950,7 @@
                     }
                 if (Object.keys(coords.Battery).length == 0)
                     delete coords.Battery;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweathericon: function() {
                 if (!('Weather' in coords))
@@ -1977,8 +1966,7 @@
                     }
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweatherair: function() {
                 if (!('Weather' in coords))
@@ -1996,8 +1984,7 @@
                     }
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweatheroneline: function() {
                 if (!('Weather' in coords))
@@ -2030,8 +2017,7 @@
                     delete coords.Weather.Temperature;
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweathercur: function() {
                 if (!('Weather' in coords))
@@ -2061,8 +2047,7 @@
                     delete coords.Weather.Temperature;
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweathersepday: function() {
                 if (!('Weather' in coords))
@@ -2116,8 +2101,7 @@
                     delete coords.Weather.Temperature;
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             },
             tgweathersepnight: function() {
                 if (!('Weather' in coords))
@@ -2171,8 +2155,7 @@
                     delete coords.Weather.Temperature;
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                view.makeWf();
+                this.updatecode();
             }
         }
 
@@ -2233,6 +2216,10 @@
                 coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
                 view.makeWf();
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+                if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex":\s2\d\d/g))
+                    $("defaultimages").classList.add("uk-label-success");
+                else
+                    $("defaultimages").classList.remove("uk-label-success");
             } catch (error) {
                 $("jsonerrortext").innerHTML = error;
 
