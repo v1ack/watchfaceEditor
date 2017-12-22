@@ -11,10 +11,6 @@
             padding: 0;
         }
 
-        body {
-            /*            overflow-x: hidden;*/
-        }
-
         img {
             max-width: 300%;
             position: absolute;
@@ -34,8 +30,8 @@
 
         .editor-elem {
             position: absolute;
-            outline: dotted 1px #1e87f0;
-            outline-offset: -1px;
+            outline: dotted 3px #1e87f0;
+            outline-offset: -3px;
         }
 
         #e_coords {
@@ -912,6 +908,7 @@
                 },
                 clearimg: function() {
                     $('inputimages').value = '';
+                    $('allimages').innerHTML = '';
                     data.imagesset = false;
                     if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
                     $('inputimages').nextElementSibling.classList.add("uk-button-danger");
@@ -2233,7 +2230,7 @@
         }
         $("codearea").onblur = function() {
             try {
-                coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&]*">/g, ''));
+                coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
                 view.makeWf();
                 $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
             } catch (error) {
@@ -2242,7 +2239,7 @@
                 function show() {
                     UIkit.modal($("jsonerrormodal")).show()
                 }
-                setTimeout(show, 200);
+                setTimeout(show, 250);
                 console.error(error);
             }
         }
