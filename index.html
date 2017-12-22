@@ -175,7 +175,7 @@
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design <span class="uk-badge" id="indevbadge">Beta</span></a></li>
-                    <li id="codeopenbutton" class="uk-disabled" onclick="fillarea();"><a href="#">Edit</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -192,7 +192,7 @@
                         </div>
                         <br>
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="makepng();" disabled>Make PNG</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="jsoneditor.makepng();" disabled>Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> With watch</label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <h3 class="uk-card-title">Settings</h3>
@@ -283,7 +283,7 @@
                     <li>
                         <div class="uk-margin">
                             <div class="uk-grid uk-grid-collapse">
-                                <pre contenteditable="true" id="codearea" class="uk-width-expand"></pre>
+                                <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="jsoneditor.codeareablur();"></pre>
                                 <ul uk-accordion class="codearearight">
                                     <li class="uk-open">
                                         <h3 class="uk-accordion-title">Time</h3>
@@ -340,7 +340,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button class="uk-button uk-button-primary uk-margin-top" onclick="exportjs()">Export JSON</button>
+                            <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()">Export JSON</button>
                             <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images here</a>
                         </div>
                     </li>
@@ -1568,8 +1568,8 @@
         }
 
         var jsoneditor = {
-            updatecode: function(){
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
+            updatecode: function() {
+                $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
                 if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex":\s2\d\d/g))
                     $("defaultimages").classList.add("uk-label-success");
                 else
@@ -1588,6 +1588,7 @@
                     }
                 }
                 this.updatecode();
+                jsoneditor.select('"AmPm":');
             },
             tgsec: function() {
                 if ('Seconds' in coords.Time) {
@@ -1609,6 +1610,7 @@
                     };
                 }
                 this.updatecode();
+                jsoneditor.select('"Seconds":');
             },
             tgweekday: function() {
                 if (!('Date' in coords))
@@ -1626,6 +1628,7 @@
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
                 this.updatecode();
+                jsoneditor.select('"WeekDay":');
             },
             tgdateoneline: function() {
                 if (!('Date' in coords))
@@ -1654,6 +1657,7 @@
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
                 this.updatecode();
+                jsoneditor.select('"MonthAndDay":');
             },
             tgdateday: function() {
                 if (!('Date' in coords))
@@ -1698,6 +1702,7 @@
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
                 this.updatecode();
+                jsoneditor.select('"MonthAndDay":');
             },
             tgdatemonth: function() {
                 if (!('Date' in coords))
@@ -1742,6 +1747,7 @@
                 if (Object.keys(coords.Date).length == 0)
                     delete coords.Date;
                 this.updatecode();
+                jsoneditor.select('"MonthAndDay":');
             },
             tgstatalarm: function() {
                 if (!('Status' in coords))
@@ -1759,6 +1765,7 @@
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
                 this.updatecode();
+                jsoneditor.select('"Alarm":');
             },
             tgstatbt: function() {
                 if (!('Status' in coords))
@@ -1777,6 +1784,7 @@
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
                 this.updatecode();
+                jsoneditor.select('"Bluetooth":');
             },
             tgstatlock: function() {
                 if (!('Status' in coords))
@@ -1794,6 +1802,7 @@
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
                 this.updatecode();
+                jsoneditor.select('"Lock":');
             },
             tgstatdnd: function() {
                 if (!('Status' in coords))
@@ -1811,6 +1820,7 @@
                 if (Object.keys(coords.Status).length == 0)
                     delete coords.Status;
                 this.updatecode();
+                jsoneditor.select('"DoNotDisturb":');
             },
             tgactsteps: function() {
                 if (!('Activity' in coords))
@@ -1831,6 +1841,7 @@
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
                 this.updatecode();
+                jsoneditor.select('"Steps":');
             },
             tgactcal: function() {
                 if (!('Activity' in coords))
@@ -1851,6 +1862,7 @@
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
                 this.updatecode();
+                jsoneditor.select('"Calories":');
             },
             tgactpulse: function() {
                 if (!('Activity' in coords))
@@ -1871,6 +1883,7 @@
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
                 this.updatecode();
+                jsoneditor.select('"Pulse":');
             },
             tgactstepsgoal: function() {
                 if (!('Activity' in coords))
@@ -1891,6 +1904,7 @@
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
                 this.updatecode();
+                jsoneditor.select('"StepsGoal":');
             },
             tgactdist: function() {
                 if (!('Activity' in coords))
@@ -1915,6 +1929,7 @@
                 if (Object.keys(coords.Activity).length == 0)
                     delete coords.Activity;
                 this.updatecode();
+                jsoneditor.select('"Distance":');
             },
             tgbatteryicon: function() {
                 if (!('Battery' in coords))
@@ -1931,6 +1946,7 @@
                 if (Object.keys(coords.Battery).length == 0)
                     delete coords.Battery;
                 this.updatecode();
+                jsoneditor.select('"Battery":');
             },
             tgbatterytext: function() {
                 if (!('Battery' in coords))
@@ -1951,6 +1967,7 @@
                 if (Object.keys(coords.Battery).length == 0)
                     delete coords.Battery;
                 this.updatecode();
+                jsoneditor.select('"Battery":');
             },
             tgweathericon: function() {
                 if (!('Weather' in coords))
@@ -1967,6 +1984,7 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Weather":');
             },
             tgweatherair: function() {
                 if (!('Weather' in coords))
@@ -1985,6 +2003,7 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Weather":');
             },
             tgweatheroneline: function() {
                 if (!('Weather' in coords))
@@ -2018,6 +2037,7 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Temperature":');
             },
             tgweathercur: function() {
                 if (!('Weather' in coords))
@@ -2040,7 +2060,6 @@
                         },
                         MinusSignImageIndex: 217,
                         DegreesImageIndex: 218
-
                     }
                 }
                 if (Object.keys(coords.Weather.Temperature).length == 0)
@@ -2048,6 +2067,7 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Temperature":');
             },
             tgweathersepday: function() {
                 if (!('Weather' in coords))
@@ -2102,6 +2122,7 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Temperature":');
             },
             tgweathersepnight: function() {
                 if (!('Weather' in coords))
@@ -2156,101 +2177,113 @@
                 if (Object.keys(coords.Weather).length == 0)
                     delete coords.Weather;
                 this.updatecode();
+                jsoneditor.select('"Temperature":');
+            },
+            select: function(s) {
+                var target = this.findspan(s);
+                if (!target) return 0;
+                var rng, sel;
+                rng = document.createRange();
+                rng.selectNode(target.childNodes[0])
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(rng);
+                $("codearea").scrollTop = target.offsetTop - 200;
+            },
+            findspan: function(s) {
+                for (var i = 0; i < $("codearea").childNodes.length; i++)
+                    if ($("codearea").childNodes[i].tagName == 'SPAN')
+                        if ($("codearea").childNodes[i].childNodes[0].data == s)
+                            return $("codearea").childNodes[i];
+            },
+            fillarea: function() {
+                $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
+                if (data.firstopen_editor) {
+                    sessionStorage.firstopen_editor = false;
+                    UIkit.notification("To update preview just click out of JSON input", {
+                        status: 'primary',
+                        pos: 'top-left',
+                        timeout: 3000
+                    });
+                    data.firstopen_editor = false;
+                }
+            },
+            syntaxHighlight: function(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            },
+            exportjs: function() {
+                if (edgeBrowser) {
+                    var blob = new Blob([JSON.stringify(coords, null, 4)], {
+                        type: "text/plain;charset=utf-8"
+                    });
+                    saveAs(blob, data.wfname + '.json');
+                } else {
+                    var a = document.createElement('a');
+                    a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
+                    a.download = data.wfname + '.json';
+                    a.click();
+                }
+            },
+            makepng: function() {
+                var el = "watchfaceblock";
+                if ($("makepngwithwatch").checked)
+                    el = "watchfaceimage";
+                html2canvas($(el), {
+                    onrendered: function(canvas) {
+                        ctx = canvas.getContext("2d");
+                        if (edgeBrowser) {
+                            canvas.toBlob(function(blob) {
+                                saveAs(blob, data.wfname + ".png");
+                            });
+                        } else {
+                            var a = document.createElement('a');
+                            a.href = canvas.toDataURL("image/png");
+                            a.download = data.wfname + '.png';
+                            a.click();
+                            delete a;
+                        }
+                    }
+                });
+            },
+            codeareablur: function() {
+                try {
+                    coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
+                    view.makeWf();
+                    $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
+                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex":\s2\d\d/g))
+                        $("defaultimages").classList.add("uk-label-success");
+                    else
+                        $("defaultimages").classList.remove("uk-label-success");
+                } catch (error) {
+                    $("jsonerrortext").innerHTML = error;
+
+                    function show() {
+                        UIkit.modal($("jsonerrormodal")).show()
+                    }
+                    setTimeout(show, 250);
+                    console.error(error);
+                }
             }
         }
 
     </script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript" src="js/jsonlint.js"></script>
-    <script type="text/javascript">
-        function makepng() {
-            var el = "watchfaceblock";
-            if ($("makepngwithwatch").checked)
-                el = "watchfaceimage";
-            html2canvas($(el), {
-                onrendered: function(canvas) {
-                    ctx = canvas.getContext("2d");
-                    if (edgeBrowser) {
-                        canvas.toBlob(function(blob) {
-                            saveAs(blob, data.wfname + ".png");
-                        });
-                    } else {
-                        var a = document.createElement('a');
-                        a.href = canvas.toDataURL("image/png");
-                        a.download = data.wfname + '.png';
-                        a.click();
-                        delete a;
-                    }
-                }
-            });
-        }
-
-        function exportjs() {
-            if (edgeBrowser) {
-                var blob = new Blob([JSON.stringify(coords, null, 4)], {
-                    type: "text/plain;charset=utf-8"
-                });
-                saveAs(blob, data.wfname + '.json');
-            } else {
-                var a = document.createElement('a');
-                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
-                a.download = data.wfname + '.json';
-                a.click();
-            }
-        }
-
-        function fillarea() {
-            $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-            if (data.firstopen_editor) {
-                sessionStorage.firstopen_editor = false;
-                UIkit.notification("To update preview just click out of JSON input", {
-                    status: 'primary',
-                    pos: 'top-left',
-                    timeout: 3000
-                });
-                data.firstopen_editor = false;
-            }
-        }
-        $("codearea").onblur = function() {
-            try {
-                coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
-                view.makeWf();
-                $("codearea").innerHTML = syntaxHighlight(JSON.stringify(coords, null, 4));
-                if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex":\s2\d\d/g))
-                    $("defaultimages").classList.add("uk-label-success");
-                else
-                    $("defaultimages").classList.remove("uk-label-success");
-            } catch (error) {
-                $("jsonerrortext").innerHTML = error;
-
-                function show() {
-                    UIkit.modal($("jsonerrormodal")).show()
-                }
-                setTimeout(show, 250);
-                console.error(error);
-            }
-        }
-
-        function syntaxHighlight(json) {
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
-
-    </script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         if (!data.local) {
