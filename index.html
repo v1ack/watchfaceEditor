@@ -1183,6 +1183,1033 @@
                         view.setPosN(coords.Weather.AirPollution.Icon, 0, "c_air");
                     }
                 }
+            },
+            editor = {
+                makeBlock: function(el, id) {
+                    $("editor").innerHTML +=
+                        '<div id="' + id + '" style="height:' + ((el.BottomRightY - el.TopLeftY + 1) * 3) + 'px; width:' + ((el.BottomRightX - el.TopLeftX + 1) * 3) + 'px; top:' + (el.TopLeftY * 3) + 'px; left:' + (el.TopLeftX * 3) + 'px;" class="editor-elem"></div>';
+                },
+                makeImg: function(el, id) {
+                    $("editor").innerHTML +=
+                        '<div id="' + id + '" style="height:' + ($(el.ImageIndex).height * 3) + 'px; width:' + ($(el.ImageIndex).width * 3) + 'px; top:' + (el.Y * 3) + 'px; left:' + (el.X * 3) + 'px;" class="editor-elem"></div>';
+                },
+                makeImgStat: function(el, id) {
+                    $("editor").innerHTML +=
+                        '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                },
+                init: function() {
+                    if (data.firstopen_constr && !data.local) {
+                        sessionStorage.firstopen_constr = false;
+                        UIkit.notification("This section is in development. Something may not work correctly", {
+                            status: 'primary',
+                            pos: 'top-left',
+                            timeout: 3000
+                        });
+                        data.firstopen_constr = false;
+                    }
+                    $("editor").innerHTML = '';
+                    if ('Background' in coords) {
+                        var bg = $c(coords.Background.Image.ImageIndex);
+                        bg.style.left = Number(bg.style.left.replace("px", "")) * 3 + "px";
+                        bg.style.top = Number(bg.style.top.replace("px", "")) * 3 + "px";
+                        bg.height *= 3;
+                        bg.width *= 3;
+                        bg.removeAttribute("id");
+                        $("editor").appendChild(bg);
+                        setTimeout(function() {
+                            $("editor").childNodes[0].ondragstart = function() {
+                                return false;
+                            }
+                        }, 10);
+                    }
+                    if ('Time' in coords) {
+                        this.makeImg(coords.Time.Hours.Tens, "e_time_ht");
+                        this.makeImg(coords.Time.Hours.Ones, "e_time_ho");
+                        this.makeImg(coords.Time.Minutes.Tens, "e_time_mt");
+                        this.makeImg(coords.Time.Minutes.Ones, "e_time_mo");
+                        setTimeout(function() {
+                            editor.initdrag('e_time_ht', coords.Time.Hours.Tens, "c_time", draw.time.time);
+                            editor.initdrag('e_time_ho', coords.Time.Hours.Ones, "c_time", draw.time.time);
+                            editor.initdrag('e_time_mt', coords.Time.Minutes.Tens, "c_time", draw.time.time);
+                            editor.initdrag('e_time_mo', coords.Time.Minutes.Ones, "c_time", draw.time.time);
+                        }, 10);
+                        if ('Seconds' in coords.Time) {
+                            this.makeImg(coords.Time.Seconds.Tens, "e_time_st");
+                            this.makeImg(coords.Time.Seconds.Ones, "e_time_so");
+                            setTimeout(function() {
+                                editor.initdrag('e_time_st', coords.Time.Seconds.Tens, "c_sec", draw.time.seconds);
+                                editor.initdrag('e_time_so', coords.Time.Seconds.Ones, "c_sec", draw.time.seconds);
+                            }, 10);
+                        }
+                        if ('AmPm' in coords.Time) {
+                            $("editor").innerHTML +=
+                                '<div id="e_time_am" style="height:' + ($(coords.Time.AmPm.ImageIndexAm).height * 3) + 'px; width:' + ($(coords.Time.AmPm.ImageIndexAm).width * 3) + 'px; top:' + (coords.Time.AmPm.Y * 3) + 'px; left:' + (coords.Time.AmPm.X * 3) + 'px;" class="editor-elem"></div>';
+                            setTimeout(function() {
+                                editor.initdrag('e_time_am', coords.Time.AmPm, "c_time_am", draw.time.time);
+                            }, 10);
+                        }
+                    }
+                    if ('Date' in coords) {
+                        if ('WeekDay' in coords.Date) {
+                            this.makeImg(coords.Date.WeekDay, "e_date_weekday");
+                            setTimeout(function() {
+                                editor.initdrag('e_date_weekday', coords.Date.WeekDay, "c_date_weekday", draw.date.weekday);
+                            }, 10);
+                        }
+                        if ('MonthAndDay' in coords.Date) {
+                            if ('Separate' in coords.Date.MonthAndDay) {
+                                if ('Day' in coords.Date.MonthAndDay.Separate) {
+                                    this.makeBlock(coords.Date.MonthAndDay.Separate.Day, "e_date_sep_day");
+                                    setTimeout(function() {
+                                        editor.initdrag('e_date_sep_day', coords.Date.MonthAndDay.Separate.Day, "c_date_sepday", draw.date.sepday);
+                                    }, 10);
+                                }
+                                if ('Month' in coords.Date.MonthAndDay.Separate) {
+                                    this.makeBlock(coords.Date.MonthAndDay.Separate.Month, "e_date_sep_month");
+                                    setTimeout(function() {
+                                        editor.initdrag('e_date_sep_month', coords.Date.MonthAndDay.Separate.Month, "c_date_sepmonth", draw.date.sepmonth);
+                                    }, 10);
+                                }
+                            }
+                            if ('OneLine' in coords.Date.MonthAndDay) {
+                                this.makeBlock(coords.Date.MonthAndDay.OneLine.Number, "e_date_oneline");
+                                setTimeout(function() {
+                                    editor.initdrag('e_date_oneline', coords.Date.MonthAndDay.OneLine.Number, "c_date_oneline", draw.date.oneline);
+                                }, 10);
+                            }
+                        }
+                    }
+                    if ('Activity' in coords) {
+                        if ('Calories' in coords.Activity) {
+                            this.makeBlock(coords.Activity.Calories, "e_act_cal");
+                            setTimeout(function() {
+                                editor.initdrag('e_act_cal', coords.Activity.Calories, "c_act_cal", draw.activity.cal);
+                            }, 10);
+                        }
+                        if ('Steps' in coords.Activity) {
+                            this.makeBlock(coords.Activity.Steps, "e_act_steps");
+                            setTimeout(function() {
+                                editor.initdrag('e_act_steps', coords.Activity.Steps, "c_act_steps", draw.activity.steps);
+                            }, 10);
+                        }
+                        if ('StepsGoal' in coords.Activity) {
+                            this.makeBlock(coords.Activity.StepsGoal, "e_act_stepsgoal");
+                            setTimeout(function() {
+                                editor.initdrag('e_act_stepsgoal', coords.Activity.StepsGoal, "c_act_stepsg", draw.activity.stepsgoal);
+                            }, 10);
+                        }
+                        if ('Pulse' in coords.Activity) {
+                            this.makeBlock(coords.Activity.Pulse, "e_act_pulse");
+                            setTimeout(function() {
+                                editor.initdrag('e_act_pulse', coords.Activity.Pulse, "c_act_pulse", draw.activity.pulse);
+                            }, 10);
+                        }
+                        if ('Distance' in coords.Activity) {
+                            this.makeBlock(coords.Activity.Distance.Number, "e_act_distance");
+                            setTimeout(function() {
+                                editor.initdrag('e_act_distance', coords.Activity.Distance.Number, "c_act_distance", draw.activity.distance);
+                            }, 10);
+                        }
+                    }
+                    if ('Battery' in coords) {
+                        if ('Icon' in coords.Battery) {
+                            this.makeImg(coords.Battery.Icon, "e_battery_icon");
+                            setTimeout(function() {
+                                editor.initdrag('e_battery_icon', coords.Battery.Icon, "c_battery_icon", draw.battery.icon);
+                            }, 10);
+                        }
+                        if ('Text' in coords.Battery) {
+                            this.makeBlock(coords.Battery.Text, "e_battery_text");
+                            setTimeout(function() {
+                                editor.initdrag('e_battery_text', coords.Battery.Text, "c_battery_text", draw.battery.text);
+                            }, 10);
+                        }
+                        if ('Scale' in coords.Battery) {}
+                    }
+                    if ('Status' in coords) {
+                        if ('Alarm' in coords.Status) {
+                            this.makeImgStat(coords.Status.Alarm, "e_stat_alarm");
+                            setTimeout(function() {
+                                editor.initdrag('e_stat_alarm', coords.Status.Alarm.Coordinates, "c_stat_alarm", draw.status.alarm);
+                            }, 10);
+                        }
+                        if ('Bluetooth' in coords.Status) {
+                            this.makeImgStat(coords.Status.Bluetooth, "e_stat_bt");
+                            setTimeout(function() {
+                                editor.initdrag('e_stat_bt', coords.Status.Bluetooth.Coordinates, "c_stat_bt", draw.status.bt);
+                            }, 10);
+                        }
+                        if ('DoNotDisturb' in coords.Status) {
+                            this.makeImgStat(coords.Status.DoNotDisturb, "e_stat_dnd");
+                            setTimeout(function() {
+                                editor.initdrag('e_stat_dnd', coords.Status.DoNotDisturb.Coordinates, "c_stat_dnd", draw.status.dnd);
+                            }, 10);
+                        }
+                        if ('Lock' in coords.Status) {
+                            this.makeImgStat(coords.Status.Lock, "e_stat_lock");
+                            setTimeout(function() {
+                                editor.initdrag('e_stat_lock', coords.Status.Lock.Coordinates, "c_stat_lock", draw.status.lock);
+                            }, 10);
+                        }
+                    }
+                    if ('Weather' in coords) {
+                        if ('Icon' in coords.Weather) {
+                            $("editor").innerHTML +=
+                                '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                            setTimeout(function() {
+                                editor.initdrag('e_weather_icon', coords.Weather.Icon.Coordinates, "c_weather_icon", draw.weather.icon);
+                            }, 10);
+                        }
+                        if ('Temperature' in coords.Weather) {
+                            if ('Today' in coords.Weather.Temperature) {
+                                if ('OneLine' in coords.Weather.Temperature.Today) {
+                                    this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
+                                    setTimeout(function() {
+                                        editor.initdrag('e_weather_temp_today_oneline', coords.Weather.Temperature.Today.OneLine.Number, "c_temp_oneline", draw.weather.temp.oneline);
+                                    }, 10);
+                                }
+                                if ('Separate' in coords.Weather.Temperature.Today) {
+                                    if ('Day' in coords.Weather.Temperature.Today.Separate) {
+                                        this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
+                                        setTimeout(function() {
+                                            editor.initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep_day", draw.weather.temp.sep.day);
+                                        }, 10);
+                                    }
+                                    if ('Night' in coords.Weather.Temperature.Today.Separate) {
+                                        this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
+                                        setTimeout(function() {
+                                            editor.initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep_night", draw.weather.temp.sep.night);
+                                        }, 10);
+                                    }
+                                }
+                            }
+                            if ('Current' in coords.Weather.Temperature) {
+                                this.makeBlock(coords.Weather.Temperature.Current.Number, "e_weather_temp_current");
+                                setTimeout(function() {
+                                    editor.initdrag('e_weather_temp_current', coords.Weather.Temperature.Current.Number, "c_temp_cur", draw.weather.temp.current);
+                                }, 10);
+                            }
+                        }
+                        if ('AirPollution' in coords.Weather) {
+                            this.makeImg(coords.Weather.AirPollution.Icon, "e_weather_air");
+                            setTimeout(function() {
+                                editor.initdrag('e_weather_air', coords.Weather.AirPollution.Icon, "c_air", draw.weather.air);
+                            }, 10);
+                        }
+                    }
+                    /*
+                    if ('StepsProgress' in coords) {
+                        if ('Circle' in coords.StepsProgress)
+                            draw.stepsprogress.circle();
+                        if ('Linear' in coords.StepsProgress)
+                            draw.stepsprogress.linear();
+                    }
+                    if ('AnalogDialFace' in coords) {
+                        if ('Hours' in coords.AnalogDialFace)
+                            draw.analog.hours();
+                        if ('Minutes' in coords.AnalogDialFace)
+                            draw.analog.minutes();
+                        if ('Seconds' in coords.AnalogDialFace)
+                            draw.analog.seconds();
+                    }*/
+
+                },
+                initdrag: function(el, elcoords, cls, drawF) {
+                    //console.log(el);
+                    el = $(el);
+
+                    el.onmousedown = function(e) {
+
+                        var ed = editor.getOffsetRect($("editor"));
+                        var coords = getCoords(el);
+                        var shiftX = e.pageX - coords.left;
+                        var shiftY = e.pageY - coords.top;
+
+                        el.style.position = 'absolute';
+                        moveAt(e);
+
+                        el.style.zIndex = 1000;
+
+                        function moveAt(e) {
+                            el.style.left = e.pageX - ed.left - shiftX + 'px';
+                            el.style.top = e.pageY - ed.top - shiftY + 'px';
+                            $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
+                        }
+
+                        $("editor").onmousemove = function(e) {
+                            moveAt(e);
+                        };
+
+                        el.onmouseup = function() {
+                            $("editor").onmousemove = null;
+                            el.onmouseup = null;
+                            el.style.zIndex = 'auto';
+                            el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
+                            el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                            if ('X' in elcoords) {
+                                elcoords.X = styleToNum(el.style.left) / 3;
+                                elcoords.Y = styleToNum(el.style.top) / 3;
+                            } else {
+                                var t1 = elcoords.TopLeftX,
+                                    t2 = elcoords.TopLeftY;
+                                elcoords.TopLeftX = styleToNum(el.style.left) / 3;
+                                elcoords.TopLeftY = styleToNum(el.style.top) / 3;
+                                elcoords.BottomRightX += elcoords.TopLeftX - t1;
+                                elcoords.BottomRightY += elcoords.TopLeftY - t2;
+                            }
+                            removeByClass(cls);
+                            drawF();
+                            $("e_coords").innerHTML = "Coordinates";
+                        };
+
+                    }
+
+                    el.ondragstart = function() {
+                        return false;
+                    };
+
+                    function getCoords(elem) {
+                        var box = elem.getBoundingClientRect();
+                        return {
+                            top: box.top + pageYOffset,
+                            left: box.left + pageXOffset
+                        };
+                    }
+
+                },
+                getOffsetRect: function(elem) {
+                    var box = elem.getBoundingClientRect();
+
+                    var body = document.body;
+                    var docElem = document.documentElement;
+
+                    var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+                    var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+
+                    var clientTop = docElem.clientTop || body.clientTop || 0;
+                    var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+                    var top = box.top + scrollTop - clientTop;
+                    var left = box.left + scrollLeft - clientLeft;
+
+                    return {
+                        top: Math.round(top),
+                        left: Math.round(left)
+                    }
+                }
+            },
+            jsoneditor = {
+                updatecode: function() {
+                    $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
+                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|)":\s2\d\d/g))
+                        $("defaultimages").classList.add("uk-label-success");
+                    else
+                        $("defaultimages").classList.remove("uk-label-success");
+                    view.makeWf();
+                },
+                tgam: function() {
+                    if ('AmPm' in coords.Time) {
+                        delete coords.Time.AmPm;
+                    } else {
+                        coords.Time.AmPm = {
+                            X: 0,
+                            Y: 0,
+                            ImageIndexAm: 233,
+                            ImageIndexPm: 234
+                        }
+                    }
+                    this.updatecode();
+                    jsoneditor.select('"AmPm":');
+                },
+                tgsec: function() {
+                    if ('Seconds' in coords.Time) {
+                        delete coords.Time.Seconds;
+                    } else {
+                        coords.Time.Seconds = {
+                            Tens: {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            Ones: {
+                                X: 10,
+                                Y: 0,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        };
+                    }
+                    this.updatecode();
+                    jsoneditor.select('"Seconds":');
+                },
+                tgweekday: function() {
+                    if (!('Date' in coords))
+                        coords.Date = {};
+                    if ('WeekDay' in coords.Date)
+                        delete coords.Date.WeekDay;
+                    else {
+                        coords.Date.WeekDay = {
+                            X: 0,
+                            Y: 0,
+                            ImageIndex: 210,
+                            ImagesCount: 7
+                        }
+                    }
+                    if (Object.keys(coords.Date).length == 0)
+                        delete coords.Date;
+                    this.updatecode();
+                    jsoneditor.select('"WeekDay":');
+                },
+                tgdateoneline: function() {
+                    if (!('Date' in coords))
+                        coords.Date = {};
+                    if ('MonthAndDay' in coords.Date)
+                        delete coords.Date.MonthAndDay;
+                    else {
+                        coords.Date.MonthAndDay = {
+                            OneLine: {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 45,
+                                    BottomRightY: 10,
+                                    Alignment: 'TopLeft',
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                DelimiterImageIndex: 219
+                            },
+                            TwoDigitsMonth: true,
+                            TwoDigitsDay: true
+                        }
+                    }
+                    if (Object.keys(coords.Date).length == 0)
+                        delete coords.Date;
+                    this.updatecode();
+                    jsoneditor.select('"MonthAndDay":');
+                },
+                tgdateday: function() {
+                    if (!('Date' in coords))
+                        coords.Date = {};
+                    if ('MonthAndDay' in coords.Date) {
+                        if (!('Separate' in coords.Date.MonthAndDay))
+                            delete coords.Date.MonthAndDay;
+                        else if ('Day' in coords.Date.MonthAndDay.Separate) {
+                            delete coords.Date.MonthAndDay.Separate.Day;
+                            if (!('Month' in coords.Date.MonthAndDay.Separate))
+                                delete coords.Date.MonthAndDay;
+                        } else {
+                            coords.Date.MonthAndDay.Separate.Day = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        }
+                    } else {
+                        coords.Date.MonthAndDay = {
+                            Separate: {
+                                Day: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                }
+                            },
+                            TwoDigitsMonth: true,
+                            TwoDigitsDay: true
+                        }
+                    }
+                    if (Object.keys(coords.Date).length == 0)
+                        delete coords.Date;
+                    this.updatecode();
+                    jsoneditor.select('"MonthAndDay":');
+                },
+                tgdatemonth: function() {
+                    if (!('Date' in coords))
+                        coords.Date = {};
+                    if ('MonthAndDay' in coords.Date) {
+                        if (!('Separate' in coords.Date.MonthAndDay))
+                            delete coords.Date.MonthAndDay;
+                        else if ('Month' in coords.Date.MonthAndDay.Separate) {
+                            delete coords.Date.MonthAndDay.Separate.Month;
+                            if (!('Day' in coords.Date.MonthAndDay.Separate))
+                                delete coords.Date.MonthAndDay;
+                        } else {
+                            coords.Date.MonthAndDay.Separate.Month = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        }
+                    } else {
+                        coords.Date.MonthAndDay = {
+                            Separate: {
+                                Month: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                }
+                            },
+                            TwoDigitsMonth: true,
+                            TwoDigitsDay: true
+                        }
+                    }
+                    if (Object.keys(coords.Date).length == 0)
+                        delete coords.Date;
+                    this.updatecode();
+                    jsoneditor.select('"MonthAndDay":');
+                },
+                tgstatalarm: function() {
+                    if (!('Status' in coords))
+                        coords.Status = {};
+                    if ('Alarm' in coords.Status)
+                        delete coords.Status.Alarm;
+                    else
+                        coords.Status.Alarm = {
+                            Coordinates: {
+                                X: 0,
+                                Y: 0
+                            },
+                            ImageIndexOn: 224
+                        }
+                    if (Object.keys(coords.Status).length == 0)
+                        delete coords.Status;
+                    this.updatecode();
+                    jsoneditor.select('"Alarm":');
+                },
+                tgstatbt: function() {
+                    if (!('Status' in coords))
+                        coords.Status = {};
+                    if ('Bluetooth' in coords.Status)
+                        delete coords.Status.Bluetooth;
+                    else
+                        coords.Status.Bluetooth = {
+                            Coordinates: {
+                                X: 0,
+                                Y: 0
+                            },
+                            ImageIndexOn: 220,
+                            ImageIndexOff: 221
+                        }
+                    if (Object.keys(coords.Status).length == 0)
+                        delete coords.Status;
+                    this.updatecode();
+                    jsoneditor.select('"Bluetooth":');
+                },
+                tgstatlock: function() {
+                    if (!('Status' in coords))
+                        coords.Status = {};
+                    if ('Lock' in coords.Status)
+                        delete coords.Status.Lock;
+                    else
+                        coords.Status.Lock = {
+                            Coordinates: {
+                                X: 0,
+                                Y: 0
+                            },
+                            ImageIndexOn: 223
+                        }
+                    if (Object.keys(coords.Status).length == 0)
+                        delete coords.Status;
+                    this.updatecode();
+                    jsoneditor.select('"Lock":');
+                },
+                tgstatdnd: function() {
+                    if (!('Status' in coords))
+                        coords.Status = {};
+                    if ('DoNotDisturb' in coords.Status)
+                        delete coords.Status.DoNotDisturb;
+                    else
+                        coords.Status.DoNotDisturb = {
+                            Coordinates: {
+                                X: 0,
+                                Y: 0
+                            },
+                            ImageIndexOn: 222
+                        }
+                    if (Object.keys(coords.Status).length == 0)
+                        delete coords.Status;
+                    this.updatecode();
+                    jsoneditor.select('"DoNotDisturb":');
+                },
+                tgactsteps: function() {
+                    if (!('Activity' in coords))
+                        coords.Activity = {};
+                    if ('Steps' in coords.Activity)
+                        delete coords.Activity.Steps;
+                    else
+                        coords.Activity.Steps = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 45,
+                            BottomRightY: 10,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        }
+                    if (Object.keys(coords.Activity).length == 0)
+                        delete coords.Activity;
+                    this.updatecode();
+                    jsoneditor.select('"Steps":');
+                },
+                tgactcal: function() {
+                    if (!('Activity' in coords))
+                        coords.Activity = {};
+                    if ('Calories' in coords.Activity)
+                        delete coords.Activity.Calories;
+                    else
+                        coords.Activity.Calories = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 10,
+                            BottomRightY: 35,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        }
+                    if (Object.keys(coords.Activity).length == 0)
+                        delete coords.Activity;
+                    this.updatecode();
+                    jsoneditor.select('"Calories":');
+                },
+                tgactpulse: function() {
+                    if (!('Activity' in coords))
+                        coords.Activity = {};
+                    if ('Pulse' in coords.Activity)
+                        delete coords.Activity.Pulse;
+                    else
+                        coords.Activity.Pulse = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 10,
+                            BottomRightY: 35,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        }
+                    if (Object.keys(coords.Activity).length == 0)
+                        delete coords.Activity;
+                    this.updatecode();
+                    jsoneditor.select('"Pulse":');
+                },
+                tgactstepsgoal: function() {
+                    if (!('Activity' in coords))
+                        coords.Activity = {};
+                    if ('StepsGoal' in coords.Activity)
+                        delete coords.Activity.StepsGoal;
+                    else
+                        coords.Activity.StepsGoal = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 45,
+                            BottomRightY: 10,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        }
+                    if (Object.keys(coords.Activity).length == 0)
+                        delete coords.Activity;
+                    this.updatecode();
+                    jsoneditor.select('"StepsGoal":');
+                },
+                tgactdist: function() {
+                    if (!('Activity' in coords))
+                        coords.Activity = {};
+                    if ('Distance' in coords.Activity)
+                        delete coords.Activity.Distance;
+                    else
+                        coords.Activity.Distance = {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 45,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            SuffixImageIndex: 231,
+                            DecimalPointImageIndex: 232
+                        }
+                    if (Object.keys(coords.Activity).length == 0)
+                        delete coords.Activity;
+                    this.updatecode();
+                    jsoneditor.select('"Distance":');
+                },
+                tgbatteryicon: function() {
+                    if (!('Battery' in coords))
+                        coords.Battery = {};
+                    if ('Icon' in coords.Battery)
+                        delete coords.Battery.Icon;
+                    else
+                        coords.Battery.Icon = {
+                            X: 0,
+                            Y: 0,
+                            ImageIndex: 225,
+                            ImagesCount: 6
+                        }
+                    if (Object.keys(coords.Battery).length == 0)
+                        delete coords.Battery;
+                    this.updatecode();
+                    jsoneditor.select('"Battery":');
+                },
+                tgbatterytext: function() {
+                    if (!('Battery' in coords))
+                        coords.Battery = {};
+                    if ('Text' in coords.Battery)
+                        delete coords.Battery.Text;
+                    else
+                        coords.Battery.Text = {
+                            TopLeftX: 0,
+                            TopLeftY: 0,
+                            BottomRightX: 10,
+                            BottomRightY: 20,
+                            Alignment: "TopLeft",
+                            Spacing: 2,
+                            ImageIndex: 200,
+                            ImagesCount: 10
+                        }
+                    if (Object.keys(coords.Battery).length == 0)
+                        delete coords.Battery;
+                    this.updatecode();
+                    jsoneditor.select('"Battery":');
+                },
+                tgweathericon: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if ('Icon' in coords.Weather)
+                        delete coords.Weather.Icon;
+                    else
+                        coords.Weather.Icon = {
+                            Coordinates: {
+                                X: 0,
+                                Y: 0
+                            }
+                        }
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Weather":');
+                },
+                tgweatherair: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if ('AirPollution' in coords.Weather)
+                        delete coords.Weather.AirPollution;
+                    else
+                        coords.Weather.AirPollution = {
+                            Icon: {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 235,
+                                ImagesCount: 6
+                            }
+                        }
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Weather":');
+                },
+                tgweatheroneline: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if (!('Temperature' in coords.Weather))
+                        coords.Weather.Temperature = {};
+                    if ('Today' in coords.Weather.Temperature)
+                        delete coords.Weather.Temperature.Today;
+                    else {
+                        coords.Weather.Temperature.Today = {
+                            OneLine: {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 50,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DelimiterImageIndex: 219,
+                                AppendDegreesForBoth: false,
+                                DegreesImageIndex: 218
+                            }
+                        }
+                    }
+                    if (Object.keys(coords.Weather.Temperature).length == 0)
+                        delete coords.Weather.Temperature;
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Temperature":');
+                },
+                tgweathercur: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if (!('Temperature' in coords.Weather))
+                        coords.Weather.Temperature = {};
+                    if ('Current' in coords.Weather.Temperature)
+                        delete coords.Weather.Temperature.Current;
+                    else {
+                        coords.Weather.Temperature.Current = {
+                            Number: {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 20,
+                                BottomRightY: 10,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            },
+                            MinusSignImageIndex: 217,
+                            DegreesImageIndex: 218
+                        }
+                    }
+                    if (Object.keys(coords.Weather.Temperature).length == 0)
+                        delete coords.Weather.Temperature;
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Temperature":');
+                },
+                tgweathersepday: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if (!('Temperature' in coords.Weather))
+                        coords.Weather.Temperature = {};
+                    if ('Today' in coords.Weather.Temperature) {
+                        if (!('Separate' in coords.Weather.Temperature.Today))
+                            delete coords.Weather.Temperature.Today;
+                        else if ('Day' in coords.Weather.Temperature.Today.Separate) {
+                            delete coords.Weather.Temperature.Today.Separate.Day;
+                            if (!('Night' in coords.Weather.Temperature.Today.Separate))
+                                delete coords.Weather.Temperature.Today;
+                        } else {
+                            coords.Weather.Temperature.Today.Separate.Day = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        }
+                    } else {
+                        coords.Weather.Temperature.Today = {
+                            Separate: {
+                                Day: {
+                                    Number: {
+                                        TopLeftX: 0,
+                                        TopLeftY: 0,
+                                        BottomRightX: 20,
+                                        BottomRightY: 10,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusSignImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                            }
+                        }
+                    }
+                    if (Object.keys(coords.Weather.Temperature).length == 0)
+                        delete coords.Weather.Temperature;
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Temperature":');
+                },
+                tgweathersepnight: function() {
+                    if (!('Weather' in coords))
+                        coords.Weather = {};
+                    if (!('Temperature' in coords.Weather))
+                        coords.Weather.Temperature = {};
+                    if ('Today' in coords.Weather.Temperature) {
+                        if (!('Separate' in coords.Weather.Temperature.Today))
+                            delete coords.Weather.Temperature.Today;
+                        else if ('Night' in coords.Weather.Temperature.Today.Separate) {
+                            delete coords.Weather.Temperature.Today.Separate.Night;
+                            if (!('Day' in coords.Weather.Temperature.Today.Separate))
+                                delete coords.Weather.Temperature.Today;
+                        } else {
+                            coords.Weather.Temperature.Today.Separate.Night = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 20,
+                                    BottomRightY: 10,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        }
+                    } else {
+                        coords.Weather.Temperature.Today = {
+                            Separate: {
+                                Night: {
+                                    Number: {
+                                        TopLeftX: 0,
+                                        TopLeftY: 0,
+                                        BottomRightX: 20,
+                                        BottomRightY: 10,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusSignImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                            }
+                        }
+                    }
+                    if (Object.keys(coords.Weather.Temperature).length == 0)
+                        delete coords.Weather.Temperature;
+                    if (Object.keys(coords.Weather).length == 0)
+                        delete coords.Weather;
+                    this.updatecode();
+                    jsoneditor.select('"Temperature":');
+                },
+                select: function(s) {
+                    var target = this.findspan(s);
+                    if (!target) return 0;
+                    var rng, sel;
+                    rng = document.createRange();
+                    rng.selectNode(target.childNodes[0])
+                    sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(rng);
+                    $("codearea").scrollTop = target.offsetTop - 200;
+                },
+                findspan: function(s) {
+                    for (var i = 0; i < $("codearea").childNodes.length; i++)
+                        if ($("codearea").childNodes[i].tagName == 'SPAN')
+                            if ($("codearea").childNodes[i].childNodes[0].data == s)
+                                return $("codearea").childNodes[i];
+                },
+                fillarea: function() {
+                    $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
+                    if (data.firstopen_editor) {
+                        sessionStorage.firstopen_editor = false;
+                        UIkit.notification("To update preview just click out of JSON input", {
+                            status: 'primary',
+                            pos: 'top-left',
+                            timeout: 3000
+                        });
+                        data.firstopen_editor = false;
+                    }
+                },
+                syntaxHighlight: function(json) {
+                    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                        var cls = 'number';
+                        if (/^"/.test(match)) {
+                            if (/:$/.test(match)) {
+                                cls = 'key';
+                            } else {
+                                cls = 'string';
+                            }
+                        } else if (/true|false/.test(match)) {
+                            cls = 'boolean';
+                        } else if (/null/.test(match)) {
+                            cls = 'null';
+                        }
+                        return '<span class="' + cls + '">' + match + '</span>';
+                    });
+                },
+                exportjs: function() {
+                    if (edgeBrowser) {
+                        var blob = new Blob([JSON.stringify(coords, null, 4)], {
+                            type: "text/plain;charset=utf-8"
+                        });
+                        saveAs(blob, data.wfname + '.json');
+                    } else {
+                        var a = document.createElement('a');
+                        a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
+                        a.download = data.wfname + '.json';
+                        a.click();
+                    }
+                },
+                makepng: function() {
+                    var el = "watchfaceblock";
+                    if ($("makepngwithwatch").checked)
+                        el = "watchfaceimage";
+                    html2canvas($(el), {
+                        onrendered: function(canvas) {
+                            ctx = canvas.getContext("2d");
+                            if (edgeBrowser) {
+                                canvas.toBlob(function(blob) {
+                                    saveAs(blob, data.wfname + ".png");
+                                });
+                            } else {
+                                var a = document.createElement('a');
+                                a.href = canvas.toDataURL("image/png");
+                                a.download = data.wfname + '.png';
+                                a.click();
+                                delete a;
+                            }
+                        }
+                    });
+                },
+                codeareablur: function() {
+                    try {
+                        coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
+                        view.makeWf();
+                        $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
+                        if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|)":\s2\d\d/g))
+                            $("defaultimages").classList.add("uk-label-success");
+                        else
+                            $("defaultimages").classList.remove("uk-label-success");
+                    } catch (error) {
+                        $("jsonerrortext").innerHTML = error;
+
+                        function show() {
+                            UIkit.modal($("jsonerrormodal")).show()
+                        }
+                        setTimeout(show, 250);
+                        console.error(error);
+                    }
+                }
             };
 
         function div(a, b) {
@@ -1243,1042 +2270,6 @@
                 load.disableBtn(1);
             else
                 load.disableBtn(0);
-        }
-
-    </script>
-    <!--Constructor-->
-    <script type="text/javascript">
-        var editor = {
-            makeBlock: function(el, id) {
-                $("editor").innerHTML +=
-                    '<div id="' + id + '" style="height:' + ((el.BottomRightY - el.TopLeftY + 1) * 3) + 'px; width:' + ((el.BottomRightX - el.TopLeftX + 1) * 3) + 'px; top:' + (el.TopLeftY * 3) + 'px; left:' + (el.TopLeftX * 3) + 'px;" class="editor-elem"></div>';
-            },
-            makeImg: function(el, id) {
-                $("editor").innerHTML +=
-                    '<div id="' + id + '" style="height:' + ($(el.ImageIndex).height * 3) + 'px; width:' + ($(el.ImageIndex).width * 3) + 'px; top:' + (el.Y * 3) + 'px; left:' + (el.X * 3) + 'px;" class="editor-elem"></div>';
-            },
-            makeImgStat: function(el, id) {
-                $("editor").innerHTML +=
-                    '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
-            },
-            init: function() {
-                if (data.firstopen_constr && !data.local) {
-                    sessionStorage.firstopen_constr = false;
-                    UIkit.notification("This section is in development. Something may not work correctly", {
-                        status: 'primary',
-                        pos: 'top-left',
-                        timeout: 3000
-                    });
-                    data.firstopen_constr = false;
-                }
-                $("editor").innerHTML = '';
-                if ('Background' in coords) {
-                    var bg = $c(coords.Background.Image.ImageIndex);
-                    bg.style.left = Number(bg.style.left.replace("px", "")) * 3 + "px";
-                    bg.style.top = Number(bg.style.top.replace("px", "")) * 3 + "px";
-                    bg.height *= 3;
-                    bg.width *= 3;
-                    bg.removeAttribute("id");
-                    $("editor").appendChild(bg);
-                    setTimeout(function() {
-                        $("editor").childNodes[0].ondragstart = function() {
-                            return false;
-                        }
-                    }, 10);
-                }
-                if ('Time' in coords) {
-                    this.makeImg(coords.Time.Hours.Tens, "e_time_ht");
-                    this.makeImg(coords.Time.Hours.Ones, "e_time_ho");
-                    this.makeImg(coords.Time.Minutes.Tens, "e_time_mt");
-                    this.makeImg(coords.Time.Minutes.Ones, "e_time_mo");
-                    setTimeout(function() {
-                        initdrag('e_time_ht', coords.Time.Hours.Tens, "c_time", draw.time.time);
-                        initdrag('e_time_ho', coords.Time.Hours.Ones, "c_time", draw.time.time);
-                        initdrag('e_time_mt', coords.Time.Minutes.Tens, "c_time", draw.time.time);
-                        initdrag('e_time_mo', coords.Time.Minutes.Ones, "c_time", draw.time.time);
-                    }, 10);
-                    if ('Seconds' in coords.Time) {
-                        this.makeImg(coords.Time.Seconds.Tens, "e_time_st");
-                        this.makeImg(coords.Time.Seconds.Ones, "e_time_so");
-                        setTimeout(function() {
-                            initdrag('e_time_st', coords.Time.Seconds.Tens, "c_sec", draw.time.seconds);
-                            initdrag('e_time_so', coords.Time.Seconds.Ones, "c_sec", draw.time.seconds);
-                        }, 10);
-                    }
-                    if ('AmPm' in coords.Time) {
-                        $("editor").innerHTML +=
-                            '<div id="e_time_am" style="height:' + ($(coords.Time.AmPm.ImageIndexAm).height * 3) + 'px; width:' + ($(coords.Time.AmPm.ImageIndexAm).width * 3) + 'px; top:' + (coords.Time.AmPm.Y * 3) + 'px; left:' + (coords.Time.AmPm.X * 3) + 'px;" class="editor-elem"></div>';
-                        setTimeout(function() {
-                            initdrag('e_time_am', coords.Time.AmPm, "c_time_am", draw.time.time);
-                        }, 10);
-                    }
-                }
-                if ('Date' in coords) {
-                    if ('WeekDay' in coords.Date) {
-                        this.makeImg(coords.Date.WeekDay, "e_date_weekday");
-                        setTimeout(function() {
-                            initdrag('e_date_weekday', coords.Date.WeekDay, "c_date_weekday", draw.date.weekday);
-                        }, 10);
-                    }
-                    if ('MonthAndDay' in coords.Date) {
-                        if ('Separate' in coords.Date.MonthAndDay) {
-                            if ('Day' in coords.Date.MonthAndDay.Separate) {
-                                this.makeBlock(coords.Date.MonthAndDay.Separate.Day, "e_date_sep_day");
-                                setTimeout(function() {
-                                    initdrag('e_date_sep_day', coords.Date.MonthAndDay.Separate.Day, "c_date_sepday", draw.date.sepday);
-                                }, 10);
-                            }
-                            if ('Month' in coords.Date.MonthAndDay.Separate) {
-                                this.makeBlock(coords.Date.MonthAndDay.Separate.Month, "e_date_sep_month");
-                                setTimeout(function() {
-                                    initdrag('e_date_sep_month', coords.Date.MonthAndDay.Separate.Month, "c_date_sepmonth", draw.date.sepmonth);
-                                }, 10);
-                            }
-                        }
-                        if ('OneLine' in coords.Date.MonthAndDay) {
-                            this.makeBlock(coords.Date.MonthAndDay.OneLine.Number, "e_date_oneline");
-                            setTimeout(function() {
-                                initdrag('e_date_oneline', coords.Date.MonthAndDay.OneLine.Number, "c_date_oneline", draw.date.oneline);
-                            }, 10);
-                        }
-                    }
-                }
-                if ('Activity' in coords) {
-                    if ('Calories' in coords.Activity) {
-                        this.makeBlock(coords.Activity.Calories, "e_act_cal");
-                        setTimeout(function() {
-                            initdrag('e_act_cal', coords.Activity.Calories, "c_act_cal", draw.activity.cal);
-                        }, 10);
-                    }
-                    if ('Steps' in coords.Activity) {
-                        this.makeBlock(coords.Activity.Steps, "e_act_steps");
-                        setTimeout(function() {
-                            initdrag('e_act_steps', coords.Activity.Steps, "c_act_steps", draw.activity.steps);
-                        }, 10);
-                    }
-                    if ('StepsGoal' in coords.Activity) {
-                        this.makeBlock(coords.Activity.StepsGoal, "e_act_stepsgoal");
-                        setTimeout(function() {
-                            initdrag('e_act_stepsgoal', coords.Activity.StepsGoal, "c_act_stepsg", draw.activity.stepsgoal);
-                        }, 10);
-                    }
-                    if ('Pulse' in coords.Activity) {
-                        this.makeBlock(coords.Activity.Pulse, "e_act_pulse");
-                        setTimeout(function() {
-                            initdrag('e_act_pulse', coords.Activity.Pulse, "c_act_pulse", draw.activity.pulse);
-                        }, 10);
-                    }
-                    if ('Distance' in coords.Activity) {
-                        this.makeBlock(coords.Activity.Distance.Number, "e_act_distance");
-                        setTimeout(function() {
-                            initdrag('e_act_distance', coords.Activity.Distance.Number, "c_act_distance", draw.activity.distance);
-                        }, 10);
-                    }
-                }
-                if ('Battery' in coords) {
-                    if ('Icon' in coords.Battery) {
-                        this.makeImg(coords.Battery.Icon, "e_battery_icon");
-                        setTimeout(function() {
-                            initdrag('e_battery_icon', coords.Battery.Icon, "c_battery_icon", draw.battery.icon);
-                        }, 10);
-                    }
-                    if ('Text' in coords.Battery) {
-                        this.makeBlock(coords.Battery.Text, "e_battery_text");
-                        setTimeout(function() {
-                            initdrag('e_battery_text', coords.Battery.Text, "c_battery_text", draw.battery.text);
-                        }, 10);
-                    }
-                    if ('Scale' in coords.Battery) {}
-                }
-                if ('Status' in coords) {
-                    if ('Alarm' in coords.Status) {
-                        this.makeImgStat(coords.Status.Alarm, "e_stat_alarm");
-                        setTimeout(function() {
-                            initdrag('e_stat_alarm', coords.Status.Alarm.Coordinates, "c_stat_alarm", draw.status.alarm);
-                        }, 10);
-                    }
-                    if ('Bluetooth' in coords.Status) {
-                        this.makeImgStat(coords.Status.Bluetooth, "e_stat_bt");
-                        setTimeout(function() {
-                            initdrag('e_stat_bt', coords.Status.Bluetooth.Coordinates, "c_stat_bt", draw.status.bt);
-                        }, 10);
-                    }
-                    if ('DoNotDisturb' in coords.Status) {
-                        this.makeImgStat(coords.Status.DoNotDisturb, "e_stat_dnd");
-                        setTimeout(function() {
-                            initdrag('e_stat_dnd', coords.Status.DoNotDisturb.Coordinates, "c_stat_dnd", draw.status.dnd);
-                        }, 10);
-                    }
-                    if ('Lock' in coords.Status) {
-                        this.makeImgStat(coords.Status.Lock, "e_stat_lock");
-                        setTimeout(function() {
-                            initdrag('e_stat_lock', coords.Status.Lock.Coordinates, "c_stat_lock", draw.status.lock);
-                        }, 10);
-                    }
-                }
-                if ('Weather' in coords) {
-                    if ('Icon' in coords.Weather) {
-                        $("editor").innerHTML +=
-                            '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
-                        setTimeout(function() {
-                            initdrag('e_weather_icon', coords.Weather.Icon.Coordinates, "c_weather_icon", draw.weather.icon);
-                        }, 10);
-                    }
-                    if ('Temperature' in coords.Weather) {
-                        if ('Today' in coords.Weather.Temperature) {
-                            if ('OneLine' in coords.Weather.Temperature.Today) {
-                                this.makeBlock(coords.Weather.Temperature.Today.OneLine.Number, "e_weather_temp_today_oneline");
-                                setTimeout(function() {
-                                    initdrag('e_weather_temp_today_oneline', coords.Weather.Temperature.Today.OneLine.Number, "c_temp_oneline", draw.weather.temp.oneline);
-                                }, 10);
-                            }
-                            if ('Separate' in coords.Weather.Temperature.Today) {
-                                if ('Day' in coords.Weather.Temperature.Today.Separate) {
-                                    this.makeBlock(coords.Weather.Temperature.Today.Separate.Day.Number, "e_weather_temp_today_sep_day");
-                                    setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_day', coords.Weather.Temperature.Today.Separate.Day.Number, "c_temp_sep_day", draw.weather.temp.sep.day);
-                                    }, 10);
-                                }
-                                if ('Night' in coords.Weather.Temperature.Today.Separate) {
-                                    this.makeBlock(coords.Weather.Temperature.Today.Separate.Night.Number, "e_weather_temp_today_sep_night");
-                                    setTimeout(function() {
-                                        initdrag('e_weather_temp_today_sep_night', coords.Weather.Temperature.Today.Separate.Night.Number, "c_temp_sep_night", draw.weather.temp.sep.night);
-                                    }, 10);
-                                }
-                            }
-                        }
-                        if ('Current' in coords.Weather.Temperature) {
-                            this.makeBlock(coords.Weather.Temperature.Current.Number, "e_weather_temp_current");
-                            setTimeout(function() {
-                                initdrag('e_weather_temp_current', coords.Weather.Temperature.Current.Number, "c_temp_cur", draw.weather.temp.current);
-                            }, 10);
-                        }
-                    }
-                    if ('AirPollution' in coords.Weather) {
-                        this.makeImg(coords.Weather.AirPollution.Icon, "e_weather_air");
-                        setTimeout(function() {
-                            initdrag('e_weather_air', coords.Weather.AirPollution.Icon, "c_air", draw.weather.air);
-                        }, 10);
-                    }
-                }
-                /*
-                if ('StepsProgress' in coords) {
-                    if ('Circle' in coords.StepsProgress)
-                        draw.stepsprogress.circle();
-                    if ('Linear' in coords.StepsProgress)
-                        draw.stepsprogress.linear();
-                }
-                if ('AnalogDialFace' in coords) {
-                    if ('Hours' in coords.AnalogDialFace)
-                        draw.analog.hours();
-                    if ('Minutes' in coords.AnalogDialFace)
-                        draw.analog.minutes();
-                    if ('Seconds' in coords.AnalogDialFace)
-                        draw.analog.seconds();
-                }*/
-
-            }
-        }
-
-    </script>
-    <script type="text/javascript">
-        function getOffsetRect(elem) {
-            var box = elem.getBoundingClientRect();
-
-            var body = document.body;
-            var docElem = document.documentElement;
-
-            var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
-            var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
-
-            var clientTop = docElem.clientTop || body.clientTop || 0;
-            var clientLeft = docElem.clientLeft || body.clientLeft || 0;
-
-            var top = box.top + scrollTop - clientTop;
-            var left = box.left + scrollLeft - clientLeft;
-
-            return {
-                top: Math.round(top),
-                left: Math.round(left)
-            }
-        }
-
-        function initdrag(el, elcoords, cls, drawF) {
-            //console.log(el);
-            el = $(el);
-
-            el.onmousedown = function(e) {
-
-                var ed = getOffsetRect($("editor"));
-                var coords = getCoords(el);
-                var shiftX = e.pageX - coords.left;
-                var shiftY = e.pageY - coords.top;
-
-                el.style.position = 'absolute';
-                moveAt(e);
-
-                el.style.zIndex = 1000;
-
-                function moveAt(e) {
-                    el.style.left = e.pageX - ed.left - shiftX + 'px';
-                    el.style.top = e.pageY - ed.top - shiftY + 'px';
-                    $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
-                }
-
-                $("editor").onmousemove = function(e) {
-                    moveAt(e);
-                };
-
-                el.onmouseup = function() {
-                    $("editor").onmousemove = null;
-                    el.onmouseup = null;
-                    el.style.zIndex = 'auto';
-                    el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
-                    el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
-                    if ('X' in elcoords) {
-                        elcoords.X = styleToNum(el.style.left) / 3;
-                        elcoords.Y = styleToNum(el.style.top) / 3;
-                    } else {
-                        var t1 = elcoords.TopLeftX,
-                            t2 = elcoords.TopLeftY;
-                        elcoords.TopLeftX = styleToNum(el.style.left) / 3;
-                        elcoords.TopLeftY = styleToNum(el.style.top) / 3;
-                        elcoords.BottomRightX += elcoords.TopLeftX - t1;
-                        elcoords.BottomRightY += elcoords.TopLeftY - t2;
-                    }
-                    removeByClass(cls);
-                    drawF();
-                    $("e_coords").innerHTML = "Coordinates";
-                };
-
-            }
-
-            el.ondragstart = function() {
-                return false;
-            };
-
-            function getCoords(elem) {
-                var box = elem.getBoundingClientRect();
-                return {
-                    top: box.top + pageYOffset,
-                    left: box.left + pageXOffset
-                };
-            }
-
-        }
-
-        var jsoneditor = {
-            updatecode: function() {
-                $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|)":\s2\d\d/g))
-                    $("defaultimages").classList.add("uk-label-success");
-                else
-                    $("defaultimages").classList.remove("uk-label-success");
-                view.makeWf();
-            },
-            tgam: function() {
-                if ('AmPm' in coords.Time) {
-                    delete coords.Time.AmPm;
-                } else {
-                    coords.Time.AmPm = {
-                        X: 0,
-                        Y: 0,
-                        ImageIndexAm: 233,
-                        ImageIndexPm: 234
-                    }
-                }
-                this.updatecode();
-                jsoneditor.select('"AmPm":');
-            },
-            tgsec: function() {
-                if ('Seconds' in coords.Time) {
-                    delete coords.Time.Seconds;
-                } else {
-                    coords.Time.Seconds = {
-                        Tens: {
-                            X: 0,
-                            Y: 0,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        },
-                        Ones: {
-                            X: 10,
-                            Y: 0,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        }
-                    };
-                }
-                this.updatecode();
-                jsoneditor.select('"Seconds":');
-            },
-            tgweekday: function() {
-                if (!('Date' in coords))
-                    coords.Date = {};
-                if ('WeekDay' in coords.Date)
-                    delete coords.Date.WeekDay;
-                else {
-                    coords.Date.WeekDay = {
-                        X: 0,
-                        Y: 0,
-                        ImageIndex: 210,
-                        ImagesCount: 7
-                    }
-                }
-                if (Object.keys(coords.Date).length == 0)
-                    delete coords.Date;
-                this.updatecode();
-                jsoneditor.select('"WeekDay":');
-            },
-            tgdateoneline: function() {
-                if (!('Date' in coords))
-                    coords.Date = {};
-                if ('MonthAndDay' in coords.Date)
-                    delete coords.Date.MonthAndDay;
-                else {
-                    coords.Date.MonthAndDay = {
-                        OneLine: {
-                            Number: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 45,
-                                BottomRightY: 10,
-                                Alignment: 'TopLeft',
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            },
-                            DelimiterImageIndex: 219
-                        },
-                        TwoDigitsMonth: true,
-                        TwoDigitsDay: true
-                    }
-                }
-                if (Object.keys(coords.Date).length == 0)
-                    delete coords.Date;
-                this.updatecode();
-                jsoneditor.select('"MonthAndDay":');
-            },
-            tgdateday: function() {
-                if (!('Date' in coords))
-                    coords.Date = {};
-                if ('MonthAndDay' in coords.Date) {
-                    if (!('Separate' in coords.Date.MonthAndDay))
-                        delete coords.Date.MonthAndDay;
-                    else if ('Day' in coords.Date.MonthAndDay.Separate) {
-                        delete coords.Date.MonthAndDay.Separate.Day;
-                        if (!('Month' in coords.Date.MonthAndDay.Separate))
-                            delete coords.Date.MonthAndDay;
-                    } else {
-                        coords.Date.MonthAndDay.Separate.Day = {
-                            TopLeftX: 0,
-                            TopLeftY: 0,
-                            BottomRightX: 20,
-                            BottomRightY: 10,
-                            Alignment: "TopLeft",
-                            Spacing: 2,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        }
-                    }
-                } else {
-                    coords.Date.MonthAndDay = {
-                        Separate: {
-                            Day: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 20,
-                                BottomRightY: 10,
-                                Alignment: "TopLeft",
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            }
-                        },
-                        TwoDigitsMonth: true,
-                        TwoDigitsDay: true
-                    }
-                }
-                if (Object.keys(coords.Date).length == 0)
-                    delete coords.Date;
-                this.updatecode();
-                jsoneditor.select('"MonthAndDay":');
-            },
-            tgdatemonth: function() {
-                if (!('Date' in coords))
-                    coords.Date = {};
-                if ('MonthAndDay' in coords.Date) {
-                    if (!('Separate' in coords.Date.MonthAndDay))
-                        delete coords.Date.MonthAndDay;
-                    else if ('Month' in coords.Date.MonthAndDay.Separate) {
-                        delete coords.Date.MonthAndDay.Separate.Month;
-                        if (!('Day' in coords.Date.MonthAndDay.Separate))
-                            delete coords.Date.MonthAndDay;
-                    } else {
-                        coords.Date.MonthAndDay.Separate.Month = {
-                            TopLeftX: 0,
-                            TopLeftY: 0,
-                            BottomRightX: 20,
-                            BottomRightY: 10,
-                            Alignment: "TopLeft",
-                            Spacing: 2,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        }
-                    }
-                } else {
-                    coords.Date.MonthAndDay = {
-                        Separate: {
-                            Month: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 20,
-                                BottomRightY: 10,
-                                Alignment: "TopLeft",
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            }
-                        },
-                        TwoDigitsMonth: true,
-                        TwoDigitsDay: true
-                    }
-                }
-                if (Object.keys(coords.Date).length == 0)
-                    delete coords.Date;
-                this.updatecode();
-                jsoneditor.select('"MonthAndDay":');
-            },
-            tgstatalarm: function() {
-                if (!('Status' in coords))
-                    coords.Status = {};
-                if ('Alarm' in coords.Status)
-                    delete coords.Status.Alarm;
-                else
-                    coords.Status.Alarm = {
-                        Coordinates: {
-                            X: 0,
-                            Y: 0
-                        },
-                        ImageIndexOn: 224
-                    }
-                if (Object.keys(coords.Status).length == 0)
-                    delete coords.Status;
-                this.updatecode();
-                jsoneditor.select('"Alarm":');
-            },
-            tgstatbt: function() {
-                if (!('Status' in coords))
-                    coords.Status = {};
-                if ('Bluetooth' in coords.Status)
-                    delete coords.Status.Bluetooth;
-                else
-                    coords.Status.Bluetooth = {
-                        Coordinates: {
-                            X: 0,
-                            Y: 0
-                        },
-                        ImageIndexOn: 220,
-                        ImageIndexOff: 221
-                    }
-                if (Object.keys(coords.Status).length == 0)
-                    delete coords.Status;
-                this.updatecode();
-                jsoneditor.select('"Bluetooth":');
-            },
-            tgstatlock: function() {
-                if (!('Status' in coords))
-                    coords.Status = {};
-                if ('Lock' in coords.Status)
-                    delete coords.Status.Lock;
-                else
-                    coords.Status.Lock = {
-                        Coordinates: {
-                            X: 0,
-                            Y: 0
-                        },
-                        ImageIndexOn: 223
-                    }
-                if (Object.keys(coords.Status).length == 0)
-                    delete coords.Status;
-                this.updatecode();
-                jsoneditor.select('"Lock":');
-            },
-            tgstatdnd: function() {
-                if (!('Status' in coords))
-                    coords.Status = {};
-                if ('DoNotDisturb' in coords.Status)
-                    delete coords.Status.DoNotDisturb;
-                else
-                    coords.Status.DoNotDisturb = {
-                        Coordinates: {
-                            X: 0,
-                            Y: 0
-                        },
-                        ImageIndexOn: 222
-                    }
-                if (Object.keys(coords.Status).length == 0)
-                    delete coords.Status;
-                this.updatecode();
-                jsoneditor.select('"DoNotDisturb":');
-            },
-            tgactsteps: function() {
-                if (!('Activity' in coords))
-                    coords.Activity = {};
-                if ('Steps' in coords.Activity)
-                    delete coords.Activity.Steps;
-                else
-                    coords.Activity.Steps = {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 45,
-                        BottomRightY: 10,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    }
-                if (Object.keys(coords.Activity).length == 0)
-                    delete coords.Activity;
-                this.updatecode();
-                jsoneditor.select('"Steps":');
-            },
-            tgactcal: function() {
-                if (!('Activity' in coords))
-                    coords.Activity = {};
-                if ('Calories' in coords.Activity)
-                    delete coords.Activity.Calories;
-                else
-                    coords.Activity.Calories = {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 10,
-                        BottomRightY: 35,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    }
-                if (Object.keys(coords.Activity).length == 0)
-                    delete coords.Activity;
-                this.updatecode();
-                jsoneditor.select('"Calories":');
-            },
-            tgactpulse: function() {
-                if (!('Activity' in coords))
-                    coords.Activity = {};
-                if ('Pulse' in coords.Activity)
-                    delete coords.Activity.Pulse;
-                else
-                    coords.Activity.Pulse = {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 10,
-                        BottomRightY: 35,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    }
-                if (Object.keys(coords.Activity).length == 0)
-                    delete coords.Activity;
-                this.updatecode();
-                jsoneditor.select('"Pulse":');
-            },
-            tgactstepsgoal: function() {
-                if (!('Activity' in coords))
-                    coords.Activity = {};
-                if ('StepsGoal' in coords.Activity)
-                    delete coords.Activity.StepsGoal;
-                else
-                    coords.Activity.StepsGoal = {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 45,
-                        BottomRightY: 10,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    }
-                if (Object.keys(coords.Activity).length == 0)
-                    delete coords.Activity;
-                this.updatecode();
-                jsoneditor.select('"StepsGoal":');
-            },
-            tgactdist: function() {
-                if (!('Activity' in coords))
-                    coords.Activity = {};
-                if ('Distance' in coords.Activity)
-                    delete coords.Activity.Distance;
-                else
-                    coords.Activity.Distance = {
-                        Number: {
-                            TopLeftX: 0,
-                            TopLeftY: 0,
-                            BottomRightX: 45,
-                            BottomRightY: 10,
-                            Alignment: "TopLeft",
-                            Spacing: 2,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        },
-                        SuffixImageIndex: 231,
-                        DecimalPointImageIndex: 232
-                    }
-                if (Object.keys(coords.Activity).length == 0)
-                    delete coords.Activity;
-                this.updatecode();
-                jsoneditor.select('"Distance":');
-            },
-            tgbatteryicon: function() {
-                if (!('Battery' in coords))
-                    coords.Battery = {};
-                if ('Icon' in coords.Battery)
-                    delete coords.Battery.Icon;
-                else
-                    coords.Battery.Icon = {
-                        X: 0,
-                        Y: 0,
-                        ImageIndex: 225,
-                        ImagesCount: 6
-                    }
-                if (Object.keys(coords.Battery).length == 0)
-                    delete coords.Battery;
-                this.updatecode();
-                jsoneditor.select('"Battery":');
-            },
-            tgbatterytext: function() {
-                if (!('Battery' in coords))
-                    coords.Battery = {};
-                if ('Text' in coords.Battery)
-                    delete coords.Battery.Text;
-                else
-                    coords.Battery.Text = {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 10,
-                        BottomRightY: 20,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    }
-                if (Object.keys(coords.Battery).length == 0)
-                    delete coords.Battery;
-                this.updatecode();
-                jsoneditor.select('"Battery":');
-            },
-            tgweathericon: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if ('Icon' in coords.Weather)
-                    delete coords.Weather.Icon;
-                else
-                    coords.Weather.Icon = {
-                        Coordinates: {
-                            X: 0,
-                            Y: 0
-                        }
-                    }
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Weather":');
-            },
-            tgweatherair: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if ('AirPollution' in coords.Weather)
-                    delete coords.Weather.AirPollution;
-                else
-                    coords.Weather.AirPollution = {
-                        Icon: {
-                            X: 0,
-                            Y: 0,
-                            ImageIndex: 235,
-                            ImagesCount: 6
-                        }
-                    }
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Weather":');
-            },
-            tgweatheroneline: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if (!('Temperature' in coords.Weather))
-                    coords.Weather.Temperature = {};
-                if ('Today' in coords.Weather.Temperature)
-                    delete coords.Weather.Temperature.Today;
-                else {
-                    coords.Weather.Temperature.Today = {
-                        OneLine: {
-                            Number: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 50,
-                                BottomRightY: 10,
-                                Alignment: "TopLeft",
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            },
-                            MinusSignImageIndex: 217,
-                            DelimiterImageIndex: 219,
-                            AppendDegreesForBoth: false,
-                            DegreesImageIndex: 218
-                        }
-                    }
-                }
-                if (Object.keys(coords.Weather.Temperature).length == 0)
-                    delete coords.Weather.Temperature;
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Temperature":');
-            },
-            tgweathercur: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if (!('Temperature' in coords.Weather))
-                    coords.Weather.Temperature = {};
-                if ('Current' in coords.Weather.Temperature)
-                    delete coords.Weather.Temperature.Current;
-                else {
-                    coords.Weather.Temperature.Current = {
-                        Number: {
-                            TopLeftX: 0,
-                            TopLeftY: 0,
-                            BottomRightX: 20,
-                            BottomRightY: 10,
-                            Alignment: "TopLeft",
-                            Spacing: 2,
-                            ImageIndex: 200,
-                            ImagesCount: 10
-                        },
-                        MinusSignImageIndex: 217,
-                        DegreesImageIndex: 218
-                    }
-                }
-                if (Object.keys(coords.Weather.Temperature).length == 0)
-                    delete coords.Weather.Temperature;
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Temperature":');
-            },
-            tgweathersepday: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if (!('Temperature' in coords.Weather))
-                    coords.Weather.Temperature = {};
-                if ('Today' in coords.Weather.Temperature) {
-                    if (!('Separate' in coords.Weather.Temperature.Today))
-                        delete coords.Weather.Temperature.Today;
-                    else if ('Day' in coords.Weather.Temperature.Today.Separate) {
-                        delete coords.Weather.Temperature.Today.Separate.Day;
-                        if (!('Night' in coords.Weather.Temperature.Today.Separate))
-                            delete coords.Weather.Temperature.Today;
-                    } else {
-                        coords.Weather.Temperature.Today.Separate.Day = {
-                            Number: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 20,
-                                BottomRightY: 10,
-                                Alignment: "TopLeft",
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            },
-                            MinusSignImageIndex: 217,
-                            DegreesImageIndex: 218
-                        }
-                    }
-                } else {
-                    coords.Weather.Temperature.Today = {
-                        Separate: {
-                            Day: {
-                                Number: {
-                                    TopLeftX: 0,
-                                    TopLeftY: 0,
-                                    BottomRightX: 20,
-                                    BottomRightY: 10,
-                                    Alignment: "TopLeft",
-                                    Spacing: 2,
-                                    ImageIndex: 200,
-                                    ImagesCount: 10
-                                },
-                                MinusSignImageIndex: 217,
-                                DegreesImageIndex: 218
-                            }
-                        }
-                    }
-                }
-                if (Object.keys(coords.Weather.Temperature).length == 0)
-                    delete coords.Weather.Temperature;
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Temperature":');
-            },
-            tgweathersepnight: function() {
-                if (!('Weather' in coords))
-                    coords.Weather = {};
-                if (!('Temperature' in coords.Weather))
-                    coords.Weather.Temperature = {};
-                if ('Today' in coords.Weather.Temperature) {
-                    if (!('Separate' in coords.Weather.Temperature.Today))
-                        delete coords.Weather.Temperature.Today;
-                    else if ('Night' in coords.Weather.Temperature.Today.Separate) {
-                        delete coords.Weather.Temperature.Today.Separate.Night;
-                        if (!('Day' in coords.Weather.Temperature.Today.Separate))
-                            delete coords.Weather.Temperature.Today;
-                    } else {
-                        coords.Weather.Temperature.Today.Separate.Night = {
-                            Number: {
-                                TopLeftX: 0,
-                                TopLeftY: 0,
-                                BottomRightX: 20,
-                                BottomRightY: 10,
-                                Alignment: "TopLeft",
-                                Spacing: 2,
-                                ImageIndex: 200,
-                                ImagesCount: 10
-                            },
-                            MinusSignImageIndex: 217,
-                            DegreesImageIndex: 218
-                        }
-                    }
-                } else {
-                    coords.Weather.Temperature.Today = {
-                        Separate: {
-                            Night: {
-                                Number: {
-                                    TopLeftX: 0,
-                                    TopLeftY: 0,
-                                    BottomRightX: 20,
-                                    BottomRightY: 10,
-                                    Alignment: "TopLeft",
-                                    Spacing: 2,
-                                    ImageIndex: 200,
-                                    ImagesCount: 10
-                                },
-                                MinusSignImageIndex: 217,
-                                DegreesImageIndex: 218
-                            }
-                        }
-                    }
-                }
-                if (Object.keys(coords.Weather.Temperature).length == 0)
-                    delete coords.Weather.Temperature;
-                if (Object.keys(coords.Weather).length == 0)
-                    delete coords.Weather;
-                this.updatecode();
-                jsoneditor.select('"Temperature":');
-            },
-            select: function(s) {
-                var target = this.findspan(s);
-                if (!target) return 0;
-                var rng, sel;
-                rng = document.createRange();
-                rng.selectNode(target.childNodes[0])
-                sel = window.getSelection();
-                sel.removeAllRanges();
-                sel.addRange(rng);
-                $("codearea").scrollTop = target.offsetTop - 200;
-            },
-            findspan: function(s) {
-                for (var i = 0; i < $("codearea").childNodes.length; i++)
-                    if ($("codearea").childNodes[i].tagName == 'SPAN')
-                        if ($("codearea").childNodes[i].childNodes[0].data == s)
-                            return $("codearea").childNodes[i];
-            },
-            fillarea: function() {
-                $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                if (data.firstopen_editor) {
-                    sessionStorage.firstopen_editor = false;
-                    UIkit.notification("To update preview just click out of JSON input", {
-                        status: 'primary',
-                        pos: 'top-left',
-                        timeout: 3000
-                    });
-                    data.firstopen_editor = false;
-                }
-            },
-            syntaxHighlight: function(json) {
-                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                    var cls = 'number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'key';
-                        } else {
-                            cls = 'string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'null';
-                    }
-                    return '<span class="' + cls + '">' + match + '</span>';
-                });
-            },
-            exportjs: function() {
-                if (edgeBrowser) {
-                    var blob = new Blob([JSON.stringify(coords, null, 4)], {
-                        type: "text/plain;charset=utf-8"
-                    });
-                    saveAs(blob, data.wfname + '.json');
-                } else {
-                    var a = document.createElement('a');
-                    a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
-                    a.download = data.wfname + '.json';
-                    a.click();
-                }
-            },
-            makepng: function() {
-                var el = "watchfaceblock";
-                if ($("makepngwithwatch").checked)
-                    el = "watchfaceimage";
-                html2canvas($(el), {
-                    onrendered: function(canvas) {
-                        ctx = canvas.getContext("2d");
-                        if (edgeBrowser) {
-                            canvas.toBlob(function(blob) {
-                                saveAs(blob, data.wfname + ".png");
-                            });
-                        } else {
-                            var a = document.createElement('a');
-                            a.href = canvas.toDataURL("image/png");
-                            a.download = data.wfname + '.png';
-                            a.click();
-                            delete a;
-                        }
-                    }
-                });
-            },
-            codeareablur: function() {
-                try {
-                    coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
-                    view.makeWf();
-                    $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|)":\s2\d\d/g))
-                        $("defaultimages").classList.add("uk-label-success");
-                    else
-                        $("defaultimages").classList.remove("uk-label-success");
-                } catch (error) {
-                    $("jsonerrortext").innerHTML = error;
-
-                    function show() {
-                        UIkit.modal($("jsonerrormodal")).show()
-                    }
-                    setTimeout(show, 250);
-                    console.error(error);
-                }
-            }
         }
 
     </script>
