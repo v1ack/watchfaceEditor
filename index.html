@@ -1501,7 +1501,7 @@
             jsoneditor = {
                 updatecode: function() {
                     $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|)":\s2\d\d/g))
+                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
                         $("defaultimages").classList.add("uk-label-success");
                     else
                         $("defaultimages").classList.remove("uk-label-success");
