@@ -174,7 +174,7 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design <span class="uk-badge" id="indevbadge">Beta</span></a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#">Edit</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -356,7 +356,8 @@
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">How to use</h2>
                 <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/" target="_blank">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
-                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">here</a>
+                    <br><br>You can edit elements location on tab <b>Design</b>
+                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">here</a>
                     <br><br><a href="http://4pda.ru/forum/index.php?act=findpost&pid=68418440&anchor=Spoil-68418440-1" target="_blank">Инструкция на русском языке</a>
                 </p>
                 <p class="uk-text-right">
@@ -379,15 +380,6 @@
                 <pre id="jsonerrortext"></pre>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-primary uk-modal-close" type="button">Ok</button>
-                </p>
-            </div>
-        </div>
-        <div id="indevalert" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">Warning</h2>
-                <p>This section is in development. Something may not work correctly</p>
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
                 </p>
             </div>
         </div>
@@ -1199,15 +1191,6 @@
                         '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
                 },
                 init: function() {
-                    if (data.firstopen_constr && !data.local) {
-                        sessionStorage.firstopen_constr = false;
-                        UIkit.notification("This section is in development. Something may not work correctly", {
-                            status: 'primary',
-                            pos: 'top-left',
-                            timeout: 3000
-                        });
-                        data.firstopen_constr = false;
-                    }
                     $("editor").innerHTML = '';
                     if ('Background' in coords) {
                         var bg = $c(coords.Background.Image.ImageIndex);
