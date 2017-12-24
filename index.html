@@ -1381,21 +1381,16 @@
                             }, 10);
                         }
                     }
-                    /*
-                    if ('StepsProgress' in coords) {
-                        if ('Circle' in coords.StepsProgress)
-                            draw.stepsprogress.circle();
-                        if ('Linear' in coords.StepsProgress)
-                            draw.stepsprogress.linear();
-                    }
-                    if ('AnalogDialFace' in coords) {
-                        if ('Hours' in coords.AnalogDialFace)
-                            draw.analog.hours();
-                        if ('Minutes' in coords.AnalogDialFace)
-                            draw.analog.minutes();
-                        if ('Seconds' in coords.AnalogDialFace)
-                            draw.analog.seconds();
-                    }*/
+                    if ('StepsProgress' in coords)
+                        if ('Linear' in coords.StepsProgress) {
+                            for (var i = 0; i < coords.StepsProgress.Linear.Segments.length; i++) {
+                                $("editor").innerHTML +=
+                                    '<div id="e_steps_linar_' + i + '" style="height:' + ($(coords.StepsProgress.Linear.StartImageIndex + i).height * 3) + 'px; width:' + ($(coords.StepsProgress.Linear.StartImageIndex + i).width * 3) + 'px; top:' + (coords.StepsProgress.Linear.Segments[i].Y * 3) + 'px; left:' + (coords.StepsProgress.Linear.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                                setTimeout(function(i) {
+                                    editor.initdrag(('e_steps_linar_' + i), coords.StepsProgress.Linear.Segments[i], "c_steps_linear", draw.stepsprogress.linear);
+                                }, 10, i);
+                            }
+                        }
 
                 },
                 initdrag: function(el, elcoords, cls, drawF) {
