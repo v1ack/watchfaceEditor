@@ -13,9 +13,11 @@
 
         img {
             max-width: 300%;
-            position: absolute;
-            top: 180px;
             image-rendering: pixelated;
+        }
+        
+        .viewimage{
+            position: absolute;
         }
 
         #editor {
@@ -71,6 +73,19 @@
             top: -2px;
         }
 
+        #imagestab{
+            
+        }
+        .imagessection{
+            margin-bottom: 10px;
+        }
+        .imagessection div{
+            width: max-content;
+            background: #ecebeb;
+        }
+        .imagessection div img{
+            padding: 7px;
+        }
         .editor-button {
             margin: 1px 10px !important;
             width: 230px;
@@ -176,6 +191,7 @@
                     <li><a href="#">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#">Edit</a></li>
+                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#">Images</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -341,14 +357,17 @@
                                 </ul>
                             </div>
                             <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()">Export JSON</button>
-                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images here</a>
+                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images</a>
                         </div>
+                    </li>
+                    <li>
+                        <div id="imagestab" uk-flex></div>
                     </li>
                 </ul>
 
             </div>
         </div>
-        <div id="allimages" class="uk-invisible"></div>
+        <div id="allimages" class="uk-hidden"></div>
         <div id="defimages" class="uk-invisible">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
@@ -467,10 +486,10 @@
                 },
                 insert: function(t, name) {
                     t.removeAttribute('id');
-                    t.setAttribute("class", name)
+                    t.classList.add(name);
+                    t.classList.add("viewimage");
                     $("watchface").appendChild(t);
                 },
-
                 setPosN: function(el, value, cls) {
                     t = $c(el.ImageIndex + value);
                     t.style.left = el.X + "px";
@@ -882,12 +901,14 @@
                         $("makepng").removeAttribute("disabled");
                         $("viewsettings").removeAttribute("disabled");
                         $("codeopenbutton").classList.remove("uk-disabled");
+                        $("imagesbutton").classList.remove("uk-disabled");
                         setTimeout(view.makeWf, 200);
                     } else {
                         $("editbutton").classList.add("uk-disabled");
                         $("makepng").setAttribute("disabled", "");
                         $("viewsettings").setAttribute("disabled", "");
                         $("codeopenbutton").classList.add("uk-disabled");
+                        $("imagesbutton").classList.add("uk-disabled");
                     }
                 },
                 clearjs: function() {
@@ -2187,6 +2208,107 @@
                         }
                         setTimeout(show, 250);
                         console.error(error);
+                    }
+                }
+            },
+            imagestab = {
+                init: function() {
+                    $("imagestab").innerHTML = '';
+                    if ('Background' in coords) 
+                        this.insertimg("Background",coords.Background.Image.ImageIndex);
+                    if ('Time' in coords) {
+                        this.insertimg("Time hours tens",coords.Time.Hours.Tens.ImageIndex, coords.Time.Hours.Tens.ImagesCount);
+                        this.insertimg("Time hours ones",coords.Time.Hours.Ones.ImageIndex, coords.Time.Hours.Ones.ImagesCount);
+                        this.insertimg("Time minutes tens",coords.Time.Minutes.Tens.ImageIndex, coords.Time.Minutes.Tens.ImagesCount);
+                        this.insertimg("Time minutes ones",coords.Time.Minutes.Ones.ImageIndex, coords.Time.Minutes.Ones.ImagesCount);
+                        if ('Seconds' in coords.Time) {
+                            this.insertimg("Time seconds tens",coords.Time.Seconds.Tens.ImageIndex, coords.Time.Seconds.Tens.ImagesCount);
+                            this.insertimg("Time seconds ones",coords.Time.Seconds.Ones.ImageIndex, coords.Time.Seconds.Ones.ImagesCount);
+                        }
+                    }
+                    if ('Date' in coords) {
+                        if ('WeekDay' in coords.Date) {}
+                        if ('MonthAndDay' in coords.Date) {
+                            if ('Separate' in coords.Date.MonthAndDay) {
+                                if ('Day' in coords.Date.MonthAndDay.Separate) {}
+                                if ('Month' in coords.Date.MonthAndDay.Separate) {}
+                            }
+                            if ('OneLine' in coords.Date.MonthAndDay) {}
+                        }
+                    }
+                    /*if ('Battery' in coords) {
+                        if ('Icon' in coords.Battery)
+                            draw.battery.icon();
+                        if ('Text' in coords.Battery)
+                            draw.battery.text();
+                        if ('Scale' in coords.Battery)
+                            draw.battery.scale();
+                    }
+
+                    if ('Status' in coords) {
+                        if ('Alarm' in coords.Status && data.alarm)
+                            draw.status.alarm();
+                        if ('Bluetooth' in coords.Status)
+                            draw.status.bt();
+                        if ('DoNotDisturb' in coords.Status && data.dnd)
+                            draw.status.dnd();
+                        if ('Lock' in coords.Status && data.lock)
+                            draw.status.lock();
+                    }
+                    if ('Activity' in coords) {
+                        if ('Calories' in coords.Activity)
+                            draw.activity.cal();
+                        if ('Steps' in coords.Activity)
+                            draw.activity.steps();
+                        if ('StepsGoal' in coords.Activity)
+                            draw.activity.stepsgoal();
+                        if ('Pulse' in coords.Activity)
+                            draw.activity.pulse();
+                        if ('Distance' in coords.Activity)
+                            draw.activity.distance();
+                    }
+                    if ('Weather' in coords) {
+                        if ('Icon' in coords.Weather)
+                            draw.weather.icon();
+                        if ('Temperature' in coords.Weather) {
+                            if ('Today' in coords.Weather.Temperature) {
+                                if ('OneLine' in coords.Weather.Temperature.Today)
+                                    draw.weather.temp.oneline();
+                                if ('Separate' in coords.Weather.Temperature.Today) {
+                                    if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.day();
+                                    if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                        draw.weather.temp.sep.night();
+                                }
+                            }
+                            if ('Current' in coords.Weather.Temperature)
+                                draw.weather.temp.current();
+                        }
+                        if ('AirPollution' in coords.Weather)
+                            draw.weather.air();
+                    }
+                    if ('StepsProgress' in coords) {
+                        if ('Circle' in coords.StepsProgress)
+                            draw.stepsprogress.circle();
+                        if ('Linear' in coords.StepsProgress)
+                            draw.stepsprogress.linear();
+                    }
+                    if ('AnalogDialFace' in coords) {
+                        if ('Hours' in coords.AnalogDialFace)
+                            draw.analog.hours();
+                        if ('Minutes' in coords.AnalogDialFace)
+                            draw.analog.minutes();
+                        if ('Seconds' in coords.AnalogDialFace)
+                            draw.analog.seconds();
+                    }*/
+
+                },
+                insertimg: function(name, imageindex, imagescount) {
+                    if (imagescount == undefined) imagescount = 1;
+                    $("imagestab").innerHTML +='<div class="imagessection"><h3>' + name + '</h3><div></div></div>'
+                    for (var i = 0; i < imagescount; i++){
+                        $("imagestab").lastChild.lastChild.appendChild($c(imageindex + i));
+                        $("imagestab").lastChild.lastChild.lastChild.removeAttribute("id");
                     }
                 }
             };
