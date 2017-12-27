@@ -1571,7 +1571,7 @@
                         if ('Temperature' in coords.Weather) {
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
-                                    this.calc(coords.Weather.Temperature.Today.OneLine.Number, 2, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
+                                    this.calc(coords.Weather.Temperature.Today.OneLine.Number, 4, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
                                 if ('Separate' in coords.Weather.Temperature.Today) {
                                     if ('Day' in coords.Weather.Temperature.Today.Separate)
                                         this.calc(coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, 2, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
