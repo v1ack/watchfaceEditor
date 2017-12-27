@@ -36,7 +36,7 @@
         #e_coords {
             margin: 0 10px;
             height: 25px;
-/*            width: 100px;*/
+            /*            width: 100px;*/
         }
 
         #watchfaceimage {
@@ -1516,20 +1516,22 @@
                     }
                 },
                 calc: function(el, digitcount) {
-                    el.BottomRightY = el.TopLeftY + $(el.ImageIndex).height - 1;
                     var width = 0;
                     for (var i = 0; i < digitcount; i++)
                         width += $(el.ImageIndex).width + el.Spacing;
-                    if(arguments.length > 2)
+                    if (arguments.length > 2)
                         for (var i = 2; i < arguments.length; i++)
-                            width+=$(arguments[i]).width + el.Spacing;
-                    el.BottomRightX = el.TopLeftX + width - el.Spacing - 1;
+                            width += $(arguments[i]).width + el.Spacing;
+                    if (el.Alignment == "TopRight") {
+                        el.TopLeftY = el.BottomRightY - $(el.ImageIndex).height + 1;
+                        el.TopLeftX = el.BottomRightX - width + el.Spacing + 1;
+                    } else {
+                        el.BottomRightY = el.TopLeftY + $(el.ImageIndex).height - 1;
+                        el.BottomRightX = el.TopLeftX + width - el.Spacing - 1;
+                    }
                 },
                 makejsbetter: function() {
                     if ('Date' in coords) {
-                        if ('WeekDay' in coords.Date) {
-                            this.calc(coords.Date.WeekDay, 2);
-                        }
                         if ('MonthAndDay' in coords.Date) {
                             if ('Separate' in coords.Date.MonthAndDay) {
                                 if ('Day' in coords.Date.MonthAndDay.Separate) {
@@ -1540,7 +1542,7 @@
                                 }
                             }
                             if ('OneLine' in coords.Date.MonthAndDay) {
-                                this.calc(coords.Date.MonthAndDay.OneLine.Number, 4);
+                                this.calc(coords.Date.MonthAndDay.OneLine.Number, 4, coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
                             }
                         }
                     }
@@ -2324,7 +2326,7 @@
                                 }
                             }
                             if ('OneLine' in coords.Date.MonthAndDay) {
-                                this.insertimg("Date oneline", coords.Date.MonthAndDay.OneLine.Number.ImageIndex, coords.Date.MonthAndDay.OneLine.Number.ImagesCount);
+                                this.insertimg("Date oneline", coords.Date.MonthAndDay.OneLine.Number.ImageIndex, coords.Date.MonthAndDay.OneLine.Number.ImagesCount, coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
                             }
                         }
                     }
