@@ -2246,10 +2246,10 @@
                         if ('MonthAndDay' in coords.Date) {
                             if ('Separate' in coords.Date.MonthAndDay) {
                                 if ('Day' in coords.Date.MonthAndDay.Separate) {
-                                    this.insertimg("Date oneline", coords.Date.MonthAndDay.Separate.Day.ImageIndex, coords.Date.MonthAndDay.Separate.Day.ImagesCount);
+                                    this.insertimg("Date day", coords.Date.MonthAndDay.Separate.Day.ImageIndex, coords.Date.MonthAndDay.Separate.Day.ImagesCount);
                                 }
                                 if ('Month' in coords.Date.MonthAndDay.Separate) {
-                                    this.insertimg("Date oneline", coords.Date.MonthAndDay.Separate.Month.ImageIndex, coords.Date.MonthAndDay.Separate.Month.ImagesCount);
+                                    this.insertimg("Date month", coords.Date.MonthAndDay.Separate.Month.ImageIndex, coords.Date.MonthAndDay.Separate.Month.ImagesCount);
                                 }
                             }
                             if ('OneLine' in coords.Date.MonthAndDay) {
@@ -2300,7 +2300,7 @@
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
-                                draw.weather.temp.current();
+                                    this.insertimg("Weather current", coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
                         }
                         if ('AirPollution' in coords.Weather)
                             this.insertimg("Weather air pollution", coords.Weather.AirPollution.Icon.ImageIndex, coords.Weather.AirPollution.Icon.ImagesCount);
