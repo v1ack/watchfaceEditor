@@ -3,6 +3,7 @@
 
 <head>
     <title>Watchface edit</title>
+    <link href="uikit/uikit.min.css" rel="stylesheet">
     <style>
         html,
         body,
@@ -15,8 +16,8 @@
             max-width: 300%;
             image-rendering: pixelated;
         }
-        
-        .viewimage{
+
+        .viewimage {
             position: absolute;
         }
 
@@ -65,7 +66,7 @@
             width: 176px;
         }
 
-        #indevbadge {
+        .indevbadge {
             position: relative;
             height: auto;
             font-size: 10px;
@@ -73,21 +74,31 @@
             top: -2px;
         }
 
-        #imagestab{
-            
+        #imagestab {}
+
+        .imagessection {
+            margin-bottom: 15px;
         }
-        .imagessection{
-            margin-bottom: 10px;
-        }
-        .imagessection div{
+
+        .imagessection div {
             width: max-content;
             background: #ecebeb;
         }
-        .imagessection div img{
-            padding: 7px;
+
+        .imagessection-def div {
+            background: #32d296;
         }
+
+        .imagessection div img {
+            padding: 7px 0 7px 7px;
+        }
+
+        .imagessection div img:last-child {
+            padding: 7px 7px 7px 7px;
+        }
+
         .editor-button {
-            margin: 1px 10px !important;
+            margin: 1px 10px;
             width: 230px;
         }
 
@@ -98,7 +109,7 @@
 
         .codearearight {
             width: 250px;
-            margin-left: 15px!important;
+            margin-left: 15px;
             height: 390px;
         }
 
@@ -148,7 +159,6 @@
     </style>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="uikit/uikit.min.css" rel="stylesheet">
     <script src="uikit/uikit.min.js"></script>
 </head>
 
@@ -368,7 +378,7 @@
             </div>
         </div>
         <div id="allimages" hidden></div>
-        <div id="defimages" hidden >
+        <div id="defimages" hidden>
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeAQMAAAAB/jzhAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAA////pdmf3QAAAKFJREFUeAEBlgBp/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAH/gAAAA8PAAAAHAOAAAAYAYAAADgBwAAAMADAAADwAPwAA/Dw/wAHgfjHgAYDnQGADgMMAcAMAwwAwAwADADADAAcAMAOADgBwAYAcAGAB4BgB4ADgGAPAACAAAwAAABgAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLmFx2EXu51AAAAAElFTkSuQmCC" id="weather">
         </div>
         <div id="modal-howto" uk-modal>
@@ -464,6 +474,7 @@
                 jsset: false,
                 imagesset: false,
                 wfname: "wanchface",
+                imagestabversion: 1
             },
             view = {
                 drawAnalog: function(el, value) {
@@ -2214,104 +2225,112 @@
             imagestab = {
                 init: function() {
                     $("imagestab").innerHTML = '';
-                    if ('Background' in coords) 
-                        this.insertimg("Background",coords.Background.Image.ImageIndex);
+                    if ('Background' in coords)
+                        this.insertimg("Background", coords.Background.Image.ImageIndex);
                     if ('Time' in coords) {
-                        this.insertimg("Time hours tens",coords.Time.Hours.Tens.ImageIndex, coords.Time.Hours.Tens.ImagesCount);
-                        this.insertimg("Time hours ones",coords.Time.Hours.Ones.ImageIndex, coords.Time.Hours.Ones.ImagesCount);
-                        this.insertimg("Time minutes tens",coords.Time.Minutes.Tens.ImageIndex, coords.Time.Minutes.Tens.ImagesCount);
-                        this.insertimg("Time minutes ones",coords.Time.Minutes.Ones.ImageIndex, coords.Time.Minutes.Ones.ImagesCount);
+                        this.insertimg("Time hours tens", coords.Time.Hours.Tens.ImageIndex, coords.Time.Hours.Tens.ImagesCount);
+                        this.insertimg("Time hours ones", coords.Time.Hours.Ones.ImageIndex, coords.Time.Hours.Ones.ImagesCount);
+                        this.insertimg("Time minutes tens", coords.Time.Minutes.Tens.ImageIndex, coords.Time.Minutes.Tens.ImagesCount);
+                        this.insertimg("Time minutes ones", coords.Time.Minutes.Ones.ImageIndex, coords.Time.Minutes.Ones.ImagesCount);
                         if ('Seconds' in coords.Time) {
-                            this.insertimg("Time seconds tens",coords.Time.Seconds.Tens.ImageIndex, coords.Time.Seconds.Tens.ImagesCount);
-                            this.insertimg("Time seconds ones",coords.Time.Seconds.Ones.ImageIndex, coords.Time.Seconds.Ones.ImagesCount);
+                            this.insertimg("Time seconds tens", coords.Time.Seconds.Tens.ImageIndex, coords.Time.Seconds.Tens.ImagesCount);
+                            this.insertimg("Time seconds ones", coords.Time.Seconds.Ones.ImageIndex, coords.Time.Seconds.Ones.ImagesCount);
                         }
+                        if ('AmPm' in coords.Time)
+                            this.insertimg("Time am/pm", coords.Time.AmPm.ImageIndexAm, 1, coords.Time.AmPm.ImageIndexPm);
                     }
                     if ('Date' in coords) {
-                        if ('WeekDay' in coords.Date) {}
+                        if ('WeekDay' in coords.Date) {
+                            this.insertimg("Week day", coords.Date.WeekDay.ImageIndex, coords.Date.WeekDay.ImagesCount);
+                        }
                         if ('MonthAndDay' in coords.Date) {
                             if ('Separate' in coords.Date.MonthAndDay) {
-                                if ('Day' in coords.Date.MonthAndDay.Separate) {}
-                                if ('Month' in coords.Date.MonthAndDay.Separate) {}
+                                if ('Day' in coords.Date.MonthAndDay.Separate) {
+                                    this.insertimg("Date oneline", coords.Date.MonthAndDay.Separate.Day.ImageIndex, coords.Date.MonthAndDay.Separate.Day.ImagesCount);
+                                }
+                                if ('Month' in coords.Date.MonthAndDay.Separate) {
+                                    this.insertimg("Date oneline", coords.Date.MonthAndDay.Separate.Month.ImageIndex, coords.Date.MonthAndDay.Separate.Month.ImagesCount);
+                                }
                             }
-                            if ('OneLine' in coords.Date.MonthAndDay) {}
+                            if ('OneLine' in coords.Date.MonthAndDay) {
+                                this.insertimg("Date oneline", coords.Date.MonthAndDay.OneLine.Number.ImageIndex, coords.Date.MonthAndDay.OneLine.Number.ImagesCount);
+                            }
                         }
                     }
-                    /*if ('Battery' in coords) {
+                    if ('Battery' in coords) {
                         if ('Icon' in coords.Battery)
-                            draw.battery.icon();
+                            this.insertimg("Battery icon", coords.Battery.Icon.ImageIndex, coords.Battery.Icon.ImagesCount);
                         if ('Text' in coords.Battery)
-                            draw.battery.text();
+                            this.insertimg("Battery text", coords.Battery.Text.ImageIndex, coords.Battery.Text.ImagesCount);
                         if ('Scale' in coords.Battery)
-                            draw.battery.scale();
+                            this.insertimg("Battery scale", coords.Battery.Scale.StartImageIndex, coords.Battery.Scale.Segments.length);
                     }
-
                     if ('Status' in coords) {
-                        if ('Alarm' in coords.Status && data.alarm)
-                            draw.status.alarm();
+                        if ('Alarm' in coords.Status)
+                            this.insertimg("Status alarm", coords.Status.Alarm.ImageIndexOn, 1);
                         if ('Bluetooth' in coords.Status)
-                            draw.status.bt();
-                        if ('DoNotDisturb' in coords.Status && data.dnd)
-                            draw.status.dnd();
-                        if ('Lock' in coords.Status && data.lock)
-                            draw.status.lock();
+                            this.insertimg("Status bluetooth", coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
+                        if ('DoNotDisturb' in coords.Status)
+                            this.insertimg("Status no not disturb", coords.Status.DoNotDisturb.ImageIndexOn, 1);
+                        if ('Lock' in coords.Status)
+                            this.insertimg("Status lock", coords.Status.Lock.ImageIndexOn, 1);
                     }
                     if ('Activity' in coords) {
                         if ('Calories' in coords.Activity)
-                            draw.activity.cal();
+                            this.insertimg("Activity calories", coords.Activity.Calories.ImageIndex, coords.Activity.Calories.ImagesCount);
                         if ('Steps' in coords.Activity)
-                            draw.activity.steps();
+                            this.insertimg("Activity steps", coords.Activity.Steps.ImageIndex, coords.Activity.Steps.ImagesCount);
                         if ('StepsGoal' in coords.Activity)
-                            draw.activity.stepsgoal();
+                            this.insertimg("Activity steps goal", coords.Activity.StepsGoal.ImageIndex, coords.Activity.StepsGoal.ImagesCount);
                         if ('Pulse' in coords.Activity)
-                            draw.activity.pulse();
+                            this.insertimg("Activity pulse", coords.Activity.Pulse.ImageIndex, coords.Activity.Pulse.ImagesCount);
                         if ('Distance' in coords.Activity)
-                            draw.activity.distance();
+                            this.insertimg("Activity distance", coords.Activity.Distance.Number.ImageIndex, coords.Activity.Distance.Number.ImagesCount, coords.Activity.Distance.DecimalPointImageIndex, coords.Activity.Distance.SuffixImageIndex);
                     }
                     if ('Weather' in coords) {
-                        if ('Icon' in coords.Weather)
-                            draw.weather.icon();
                         if ('Temperature' in coords.Weather) {
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
-                                    draw.weather.temp.oneline();
+                                    this.insertimg("Weather oneline", coords.Weather.Temperature.Today.OneLine.Number.ImageIndex, coords.Weather.Temperature.Today.OneLine.Number.ImagesCount, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
                                 if ('Separate' in coords.Weather.Temperature.Today) {
                                     if ('Day' in coords.Weather.Temperature.Today.Separate)
-                                        draw.weather.temp.sep.day();
+                                        this.insertimg("Weather day", coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Day.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
                                     if ('Night' in coords.Weather.Temperature.Today.Separate)
-                                        draw.weather.temp.sep.night();
+                                        this.insertimg("Weather night", coords.Weather.Temperature.Today.Separate.Night.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Night.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
                                 draw.weather.temp.current();
                         }
                         if ('AirPollution' in coords.Weather)
-                            draw.weather.air();
+                            this.insertimg("Weather air pollution", coords.Weather.AirPollution.Icon.ImageIndex, coords.Weather.AirPollution.Icon.ImagesCount);
                     }
                     if ('StepsProgress' in coords) {
-                        if ('Circle' in coords.StepsProgress)
-                            draw.stepsprogress.circle();
                         if ('Linear' in coords.StepsProgress)
-                            draw.stepsprogress.linear();
+                            this.insertimg("Steps progress", coords.StepsProgress.Linear.StartImageIndex, coords.StepsProgress.Linear.Segments.length);
                     }
-                    if ('AnalogDialFace' in coords) {
-                        if ('Hours' in coords.AnalogDialFace)
-                            draw.analog.hours();
-                        if ('Minutes' in coords.AnalogDialFace)
-                            draw.analog.minutes();
-                        if ('Seconds' in coords.AnalogDialFace)
-                            draw.analog.seconds();
-                    }*/
-
                 },
                 insertimg: function(name, imageindex, imagescount) {
                     if (imagescount == undefined) imagescount = 1;
-                    $("imagestab").innerHTML +='<div class="imagessection"><h3>' + name + '</h3><div></div></div>'
-                    for (var i = 0; i < imagescount; i++){
+                    $("imagestab").innerHTML += '<div class="imagessection"><h3>' + name + '</h3><div></div></div>';
+                    if ((imageindex - imageindex % 100) / 100 == 2)
+                        $("imagestab").lastChild.classList.add("imagessection-def");
+                    for (var i = 0; i < imagescount; i++) {
                         $("imagestab").lastChild.lastChild.appendChild($c(imageindex + i));
                         $("imagestab").lastChild.lastChild.lastChild.removeAttribute("id");
                     }
+                    if (arguments.length > 3)
+                        for (var i = 3; i < arguments.length; i++) {
+                            $("imagestab").lastChild.lastChild.appendChild($c(arguments[i]));
+                            $("imagestab").lastChild.lastChild.lastChild.removeAttribute("id");
+                        }
                 }
             };
+
+        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < data.imagestabversion) {
+            $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+            localStorage.imagestabversion = data.imagestabversion;
+        }
 
         function div(a, b) {
             return (a - a % b) / b;
