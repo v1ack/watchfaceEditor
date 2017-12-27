@@ -304,7 +304,7 @@
                         </div>
                         <div>
                             <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
-                            <button class="uk-button uk-button-primary uk-button-small" onclick="editor.makejsbetter();" style="margin: 10px" title="It sets coordinates for bottom right based on first element height and width" uk-tooltip>Make Json better</button>
+                            <button class="uk-button uk-button-primary uk-button-small" onclick="editor.makejsbetter();" style="margin: 10px" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip>Make Json better</button>
                         </div>
                     </li>
                     <li>
@@ -1516,18 +1516,23 @@
                     }
                 },
                 calc: function(el, digitcount) {
-                    var width = 0;
-                    for (var i = 0; i < digitcount; i++)
-                        width += $(el.ImageIndex).width + el.Spacing;
+                    var width = 0, height = 0;
+                    for (var i = 0; i < el.ImagesCount; i++){
+                        if($(el.ImageIndex + i).width > width)
+                            width = $(el.ImageIndex + i).width;
+                        if($(el.ImageIndex + i).height > height)
+                            height = $(el.ImageIndex + i).height;
+                    }
+                    width = width * digitcount + el.Spacing * (digitcount - 1);
                     if (arguments.length > 2)
                         for (var i = 2; i < arguments.length; i++)
                             width += $(arguments[i]).width + el.Spacing;
                     if (el.Alignment == "TopRight") {
-                        el.TopLeftY = el.BottomRightY - $(el.ImageIndex).height + 1;
-                        el.TopLeftX = el.BottomRightX - width + el.Spacing + 1;
+                        el.BottomRightY = el.TopLeftY + height - 1;
+                        el.TopLeftX = el.BottomRightX - width + 1;
                     } else {
-                        el.BottomRightY = el.TopLeftY + $(el.ImageIndex).height - 1;
-                        el.BottomRightX = el.TopLeftX + width - el.Spacing - 1;
+                        el.BottomRightY = el.TopLeftY + height - 1;
+                        el.BottomRightX = el.TopLeftX + width - 1;
                     }
                 },
                 makejsbetter: function() {
