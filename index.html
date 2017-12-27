@@ -17,10 +17,6 @@
             image-rendering: pixelated;
         }
 
-        .viewimage {
-            position: absolute;
-        }
-
         #editor {
             position: relative;
             height: 528px;
@@ -40,7 +36,7 @@
         #e_coords {
             margin: 0 10px;
             height: 25px;
-            width: 100px;
+/*            width: 100px;*/
         }
 
         #watchfaceimage {
@@ -66,6 +62,10 @@
             width: 176px;
         }
 
+        #watchface img {
+            position: absolute;
+        }
+
         .indevbadge {
             position: relative;
             height: auto;
@@ -73,8 +73,6 @@
             line-height: initial;
             top: -2px;
         }
-
-        #imagestab {}
 
         .imagessection {
             margin-bottom: 15px;
@@ -304,7 +302,10 @@
                     <li class="uk-grid uk-grid-collapse">
                         <div id="editor" class="uk-card-default">
                         </div>
-                        <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
+                        <div>
+                            <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
+                            <button class="uk-button uk-button-primary uk-button-small" onclick="editor.makejsbetter();" style="margin: 10px" title="It sets coordinates for bottom right based on first element height and width" uk-tooltip>Make Json better</button>
+                        </div>
                     </li>
                     <li>
                         <div class="uk-margin">
@@ -414,7 +415,7 @@
         </div>
     </main>
     <script type="text/javascript">
-        for (var i = 200; i <= 240; i++)
+        for (var i = 200; i <= 247; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
         if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
@@ -446,16 +447,22 @@
             return document.getElementById(el).cloneNode(false);
         }
 
-        function styleToNum(el) {
-            return Number(el.replace('px', ''));
+        function div(a, b) {
+            return (a - a % b) / b;
         }
+
         var coords = 0,
             data = {
+                app: {
+                    imagestabversion: 1,
+                    editortabversion: 1,
+                    designtabversion: 1
+                },
                 timeOnClock: ["20", "38"],
                 seconds: [4, 3],
                 analog: [259, 228, 60],
                 weekDay: 2,
-                day: 20,
+                day: 6,
                 month: 12,
                 batteryT: 20,
                 calories: 860,
@@ -473,8 +480,7 @@
                 firstopen_constr: ('firstopen_constr' in sessionStorage ? false : true),
                 jsset: false,
                 imagesset: false,
-                wfname: "wanchface",
-                imagestabversion: 1
+                wfname: "watchface"
             },
             view = {
                 drawAnalog: function(el, value) {
@@ -498,7 +504,6 @@
                 insert: function(t, name) {
                     t.removeAttribute('id');
                     t.classList.add(name);
-                    t.classList.add("viewimage");
                     $("watchface").appendChild(t);
                 },
                 setPosN: function(el, value, cls) {
@@ -1222,6 +1227,9 @@
                     $("editor").innerHTML +=
                         '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
                 },
+                styleToNum: function(el) {
+                    return Number(el.replace('px', ''));
+                },
                 init: function() {
                     $("editor").innerHTML = '';
                     if ('Background' in coords) {
@@ -1426,7 +1434,6 @@
 
                 },
                 initdrag: function(el, elcoords, cls, drawF) {
-                    //console.log(el);
                     el = $(el);
 
                     el.onmousedown = function(e) {
@@ -1444,7 +1451,7 @@
                         function moveAt(e) {
                             el.style.left = e.pageX - ed.left - shiftX + 'px';
                             el.style.top = e.pageY - ed.top - shiftY + 'px';
-                            $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
+                            $("e_coords").innerHTML = "X: " + (editor.styleToNum(el.style.left) - editor.styleToNum(el.style.left) % 3) / 3 + ", Y: " + (editor.styleToNum(el.style.top) - editor.styleToNum(el.style.top) % 3) / 3;
                         }
 
                         $("editor").onmousemove = function(e) {
@@ -1455,16 +1462,16 @@
                             $("editor").onmousemove = null;
                             el.onmouseup = null;
                             el.style.zIndex = 'auto';
-                            el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
-                            el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                            el.style.top = editor.styleToNum(el.style.top) > 0 && editor.styleToNum(el.style.top) < 528 ? editor.styleToNum(el.style.top) - editor.styleToNum(el.style.top) % 3 + 'px' : "0px";
+                            el.style.left = editor.styleToNum(el.style.left) > 0 && editor.styleToNum(el.style.left) < 528 ? editor.styleToNum(el.style.left) - editor.styleToNum(el.style.left) % 3 + 'px' : "0px";
                             if ('X' in elcoords) {
-                                elcoords.X = styleToNum(el.style.left) / 3;
-                                elcoords.Y = styleToNum(el.style.top) / 3;
+                                elcoords.X = editor.styleToNum(el.style.left) / 3;
+                                elcoords.Y = editor.styleToNum(el.style.top) / 3;
                             } else {
                                 var t1 = elcoords.TopLeftX,
                                     t2 = elcoords.TopLeftY;
-                                elcoords.TopLeftX = styleToNum(el.style.left) / 3;
-                                elcoords.TopLeftY = styleToNum(el.style.top) / 3;
+                                elcoords.TopLeftX = editor.styleToNum(el.style.left) / 3;
+                                elcoords.TopLeftY = editor.styleToNum(el.style.top) / 3;
                                 elcoords.BottomRightX += elcoords.TopLeftX - t1;
                                 elcoords.BottomRightY += elcoords.TopLeftY - t2;
                             }
@@ -1507,6 +1514,70 @@
                         top: Math.round(top),
                         left: Math.round(left)
                     }
+                },
+                calc: function(el, digitcount) {
+                    el.BottomRightY = el.TopLeftY + $(el.ImageIndex).height - 1;
+                    var width = 0;
+                    for (var i = 0; i < digitcount; i++)
+                        width += $(el.ImageIndex).width + el.Spacing;
+                    if(arguments.length > 2)
+                        for (var i = 2; i < arguments.length; i++)
+                            width+=$(arguments[i]).width + el.Spacing;
+                    el.BottomRightX = el.TopLeftX + width - el.Spacing - 1;
+                },
+                makejsbetter: function() {
+                    if ('Date' in coords) {
+                        if ('WeekDay' in coords.Date) {
+                            this.calc(coords.Date.WeekDay, 2);
+                        }
+                        if ('MonthAndDay' in coords.Date) {
+                            if ('Separate' in coords.Date.MonthAndDay) {
+                                if ('Day' in coords.Date.MonthAndDay.Separate) {
+                                    this.calc(coords.Date.MonthAndDay.Separate.Day, 2);
+                                }
+                                if ('Month' in coords.Date.MonthAndDay.Separate) {
+                                    this.calc(coords.Date.MonthAndDay.Separate.Month, 2);
+                                }
+                            }
+                            if ('OneLine' in coords.Date.MonthAndDay) {
+                                this.calc(coords.Date.MonthAndDay.OneLine.Number, 4);
+                            }
+                        }
+                    }
+                    if ('Battery' in coords) {
+                        if ('Text' in coords.Battery)
+                            this.calc(coords.Battery.Text, 3);
+                    }
+                    if ('Activity' in coords) {
+                        if ('Calories' in coords.Activity)
+                            this.calc(coords.Activity.Calories, 4);
+                        if ('Steps' in coords.Activity)
+                            this.calc(coords.Activity.Steps, 5);
+                        if ('StepsGoal' in coords.Activity)
+                            this.calc(coords.Activity.StepsGoal, 5);
+                        if ('Pulse' in coords.Activity)
+                            this.calc(coords.Activity.Pulse, 3);
+                        if ('Distance' in coords.Activity)
+                            this.calc(coords.Activity.Distance.Number, 4, coords.Activity.Distance.DecimalPointImageIndex, coords.Activity.Distance.SuffixImageIndex);
+                    }
+                    if ('Weather' in coords) {
+                        if ('Temperature' in coords.Weather) {
+                            if ('Today' in coords.Weather.Temperature) {
+                                if ('OneLine' in coords.Weather.Temperature.Today)
+                                    this.calc(coords.Weather.Temperature.Today.OneLine.Number, 2, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
+                                if ('Separate' in coords.Weather.Temperature.Today) {
+                                    if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                        this.calc(coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, 2, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
+                                    if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                        this.calc(coords.Weather.Temperature.Today.Separate.Night.Number.ImageIndex, 2, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
+                                }
+                            }
+                            if ('Current' in coords.Weather.Temperature)
+                                this.calc(coords.Weather.Temperature.Current.Number.ImageIndex, 2, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
+                        }
+                    }
+                    this.init();
+                    view.makeWf();
                 }
             },
             jsoneditor = {
@@ -2300,7 +2371,7 @@
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
-                                    this.insertimg("Weather current", coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
+                                this.insertimg("Weather current", coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
                         }
                         if ('AirPollution' in coords.Weather)
                             this.insertimg("Weather air pollution", coords.Weather.AirPollution.Icon.ImageIndex, coords.Weather.AirPollution.Icon.ImagesCount);
@@ -2327,13 +2398,17 @@
                 }
             };
 
-        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < data.imagestabversion) {
+        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < data.app.imagestabversion) {
             $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
-            localStorage.imagestabversion = data.imagestabversion;
+            localStorage.imagestabversion = data.app.imagestabversion;
         }
-
-        function div(a, b) {
-            return (a - a % b) / b;
+        if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion) {
+            $("codeopenbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+            localStorage.editortabversion = data.app.editortabversion;
+        }
+        if (!('designtabversion' in localStorage) || localStorage.designtabversion < data.app.designtabversion) {
+            $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+            localStorage.designtabversion = data.app.designtabversion;
         }
 
         function removeByClass(cl) {
