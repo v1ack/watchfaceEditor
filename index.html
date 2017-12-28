@@ -2412,7 +2412,8 @@
                             }, coords.Status.Alarm.ImageIndexOn, 1);
                         if ('Bluetooth' in coords.Status)
                             this.insertimg({
-                                label: "Status bluetooth"
+                                label: "Status bluetooth",
+                                    addition: (", " + coords.Status.Bluetooth.ImageIndexOff)
                             }, coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
                         if ('DoNotDisturb' in coords.Status)
                             this.insertimg({
@@ -2469,7 +2470,8 @@
                             }
                             if ('Current' in coords.Weather.Temperature)
                                 this.insertimg({
-                                    label: "Weather current"
+                                    label: "Weather current",
+                                    addition: (", " + coords.Weather.Temperature.Current.MinusImageIndex + ", " + coords.Weather.Temperature.Current.DegreesImageIndex)
                                 }, coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
                         }
                         if ('AirPollution' in coords.Weather)
