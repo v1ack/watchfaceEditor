@@ -1218,7 +1218,7 @@
                             }
                         },
                         current: function() {
-                            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex) : 0;
+                            var minus = data.temp[0] < 0 ? $c(coords.Weather.Temperature.Current.MinusImageIndex) : 0;
                             t = view.makeBlock(coords.Weather.Temperature.Current.Number, Math.abs(data.temp[0]));
                             if ('DegreesImageIndex' in coords.Weather.Temperature.Current) {
                                 var deg = $c(coords.Weather.Temperature.Current.DegreesImageIndex);
@@ -1600,13 +1600,13 @@
                                     this.calc(coords.Weather.Temperature.Today.OneLine.Number, 4, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
                                 if ('Separate' in coords.Weather.Temperature.Today) {
                                     if ('Day' in coords.Weather.Temperature.Today.Separate)
-                                        this.calc(coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, 2, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
+                                        this.calc(coords.Weather.Temperature.Today.Separate.Day.Number, 2, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
                                     if ('Night' in coords.Weather.Temperature.Today.Separate)
-                                        this.calc(coords.Weather.Temperature.Today.Separate.Night.Number.ImageIndex, 2, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
+                                        this.calc(coords.Weather.Temperature.Today.Separate.Night.Number, 2, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
-                                this.calc(coords.Weather.Temperature.Current.Number.ImageIndex, 2, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
+                                this.calc(coords.Weather.Temperature.Current.Number, 2, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
                         }
                     }
                     this.init();
@@ -1616,7 +1616,7 @@
             jsoneditor = {
                 updatecode: function() {
                     $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
+                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
                         $("defaultimages").classList.add("uk-label-success");
                     else
                         $("defaultimages").classList.remove("uk-label-success");
@@ -1898,8 +1898,8 @@
                         coords.Activity.Calories = {
                             TopLeftX: 0,
                             TopLeftY: 0,
-                            BottomRightX: 10,
-                            BottomRightY: 35,
+                            BottomRightX: 35,
+                            BottomRightY: 10,
                             Alignment: "TopLeft",
                             Spacing: 2,
                             ImageIndex: 200,
@@ -1919,8 +1919,8 @@
                         coords.Activity.Pulse = {
                             TopLeftX: 0,
                             TopLeftY: 0,
-                            BottomRightX: 10,
-                            BottomRightY: 35,
+                            BottomRightX: 35,
+                            BottomRightY: 10,
                             Alignment: "TopLeft",
                             Spacing: 2,
                             ImageIndex: 200,
@@ -2104,7 +2104,7 @@
                                 ImageIndex: 200,
                                 ImagesCount: 10
                             },
-                            MinusSignImageIndex: 217,
+                            MinusImageIndex: 217,
                             DegreesImageIndex: 218
                         }
                     }
@@ -2313,7 +2313,7 @@
                         coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
                         view.makeWf();
                         $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                        if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
+                        if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
                             $("defaultimages").classList.add("uk-label-success");
                         else
                             $("defaultimages").classList.remove("uk-label-success");
