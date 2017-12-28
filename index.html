@@ -78,20 +78,29 @@
             margin-bottom: 15px;
         }
 
-        .imagessection div {
+        .imagessection .imagessection-images {
             width: max-content;
             background: #ecebeb;
         }
 
-        .imagessection-def div {
+        .imagessection-h {
+            font-size: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .imagessection-description {
+            margin-left: 25px;
+        }
+
+        #imagesinuse .imagessection-def .imagessection-images {
             background: #32d296;
         }
 
-        .imagessection div img {
+        .imagessection .imagessection-images img {
             padding: 7px 0 7px 7px;
         }
 
-        .imagessection div img:last-child {
+        .imagessection .imagessection-images img:last-child {
             padding: 7px 7px 7px 7px;
         }
 
@@ -372,7 +381,21 @@
                         </div>
                     </li>
                     <li>
-                        <div id="imagestab" uk-flex></div>
+                        <ul uk-accordion>
+                            <li class="uk-open">
+                                <h3 class="uk-accordion-title">Used</h3>
+                                <div class="uk-accordion-content">
+                                    <div id="imagesinuse"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 class="uk-accordion-title">Avalible</h3>
+                                <div class="uk-accordion-content">
+                                    <div id="imagesavalible"></div>
+                                </div>
+                            </li>
+
+                        </ul>
                     </li>
                 </ul>
 
@@ -454,7 +477,7 @@
         var coords = 0,
             data = {
                 app: {
-                    imagestabversion: 1,
+                    imagestabversion: 2,
                     editortabversion: 1,
                     designtabversion: 1
                 },
@@ -1516,11 +1539,12 @@
                     }
                 },
                 calc: function(el, digitcount) {
-                    var width = 0, height = 0;
-                    for (var i = 0; i < el.ImagesCount; i++){
-                        if($(el.ImageIndex + i).width > width)
+                    var width = 0,
+                        height = 0;
+                    for (var i = 0; i < el.ImagesCount; i++) {
+                        if ($(el.ImageIndex + i).width > width)
                             width = $(el.ImageIndex + i).width;
-                        if($(el.ImageIndex + i).height > height)
+                        if ($(el.ImageIndex + i).height > height)
                             height = $(el.ImageIndex + i).height;
                     }
                     width = width * digitcount + el.Spacing * (digitcount - 1);
@@ -2302,105 +2326,119 @@
             },
             imagestab = {
                 init: function() {
-                    $("imagestab").innerHTML = '';
+                    $("imagesinuse").innerHTML = '';
                     if ('Background' in coords)
-                        this.insertimg("Background", coords.Background.Image.ImageIndex);
+                        this.insertimg({label: "Background"}, coords.Background.Image.ImageIndex);
                     if ('Time' in coords) {
-                        this.insertimg("Time hours tens", coords.Time.Hours.Tens.ImageIndex, coords.Time.Hours.Tens.ImagesCount);
-                        this.insertimg("Time hours ones", coords.Time.Hours.Ones.ImageIndex, coords.Time.Hours.Ones.ImagesCount);
-                        this.insertimg("Time minutes tens", coords.Time.Minutes.Tens.ImageIndex, coords.Time.Minutes.Tens.ImagesCount);
-                        this.insertimg("Time minutes ones", coords.Time.Minutes.Ones.ImageIndex, coords.Time.Minutes.Ones.ImagesCount);
+                        this.insertimg({label: "Time hours tens"}, coords.Time.Hours.Tens.ImageIndex, coords.Time.Hours.Tens.ImagesCount);
+                        this.insertimg({label: "Time hours ones"}, coords.Time.Hours.Ones.ImageIndex, coords.Time.Hours.Ones.ImagesCount);
+                        this.insertimg({label: "Time minutes tens"}, coords.Time.Minutes.Tens.ImageIndex, coords.Time.Minutes.Tens.ImagesCount);
+                        this.insertimg({label: "Time minutes ones"}, coords.Time.Minutes.Ones.ImageIndex, coords.Time.Minutes.Ones.ImagesCount);
                         if ('Seconds' in coords.Time) {
-                            this.insertimg("Time seconds tens", coords.Time.Seconds.Tens.ImageIndex, coords.Time.Seconds.Tens.ImagesCount);
-                            this.insertimg("Time seconds ones", coords.Time.Seconds.Ones.ImageIndex, coords.Time.Seconds.Ones.ImagesCount);
+                            this.insertimg({label: "Time seconds tens"}, coords.Time.Seconds.Tens.ImageIndex, coords.Time.Seconds.Tens.ImagesCount);
+                            this.insertimg({label: "Time seconds ones"}, coords.Time.Seconds.Ones.ImageIndex, coords.Time.Seconds.Ones.ImagesCount);
                         }
                         if ('AmPm' in coords.Time)
-                            this.insertimg("Time am/pm", coords.Time.AmPm.ImageIndexAm, 1, coords.Time.AmPm.ImageIndexPm);
+                            this.insertimg({label: "Time am/pm"}, coords.Time.AmPm.ImageIndexAm, 1, coords.Time.AmPm.ImageIndexPm);
                     }
                     if ('Date' in coords) {
                         if ('WeekDay' in coords.Date) {
-                            this.insertimg("Week day", coords.Date.WeekDay.ImageIndex, coords.Date.WeekDay.ImagesCount);
+                            this.insertimg({label: "Week day"}, coords.Date.WeekDay.ImageIndex, coords.Date.WeekDay.ImagesCount);
                         }
                         if ('MonthAndDay' in coords.Date) {
                             if ('Separate' in coords.Date.MonthAndDay) {
                                 if ('Day' in coords.Date.MonthAndDay.Separate) {
-                                    this.insertimg("Date day", coords.Date.MonthAndDay.Separate.Day.ImageIndex, coords.Date.MonthAndDay.Separate.Day.ImagesCount);
+                                    this.insertimg({label: "Date day"}, coords.Date.MonthAndDay.Separate.Day.ImageIndex, coords.Date.MonthAndDay.Separate.Day.ImagesCount);
                                 }
                                 if ('Month' in coords.Date.MonthAndDay.Separate) {
-                                    this.insertimg("Date month", coords.Date.MonthAndDay.Separate.Month.ImageIndex, coords.Date.MonthAndDay.Separate.Month.ImagesCount);
+                                    this.insertimg({label: "Date month"}, coords.Date.MonthAndDay.Separate.Month.ImageIndex, coords.Date.MonthAndDay.Separate.Month.ImagesCount);
                                 }
                             }
                             if ('OneLine' in coords.Date.MonthAndDay) {
-                                this.insertimg("Date oneline", coords.Date.MonthAndDay.OneLine.Number.ImageIndex, coords.Date.MonthAndDay.OneLine.Number.ImagesCount, coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
+                                this.insertimg({label: "Date oneline", addition: (", " + coords.Date.MonthAndDay.OneLine.DelimiterImageIndex)}, coords.Date.MonthAndDay.OneLine.Number.ImageIndex, coords.Date.MonthAndDay.OneLine.Number.ImagesCount, coords.Date.MonthAndDay.OneLine.DelimiterImageIndex);
                             }
                         }
                     }
                     if ('Battery' in coords) {
                         if ('Icon' in coords.Battery)
-                            this.insertimg("Battery icon", coords.Battery.Icon.ImageIndex, coords.Battery.Icon.ImagesCount);
+                            this.insertimg({label: "Battery icon"}, coords.Battery.Icon.ImageIndex, coords.Battery.Icon.ImagesCount);
                         if ('Text' in coords.Battery)
-                            this.insertimg("Battery text", coords.Battery.Text.ImageIndex, coords.Battery.Text.ImagesCount);
+                            this.insertimg({label: "Battery text"}, coords.Battery.Text.ImageIndex, coords.Battery.Text.ImagesCount);
                         if ('Scale' in coords.Battery)
-                            this.insertimg("Battery scale", coords.Battery.Scale.StartImageIndex, coords.Battery.Scale.Segments.length);
+                            this.insertimg({label: "Battery scale"}, coords.Battery.Scale.StartImageIndex, coords.Battery.Scale.Segments.length);
                     }
                     if ('Status' in coords) {
                         if ('Alarm' in coords.Status)
-                            this.insertimg("Status alarm", coords.Status.Alarm.ImageIndexOn, 1);
+                            this.insertimg({label: "Status alarm"}, coords.Status.Alarm.ImageIndexOn, 1);
                         if ('Bluetooth' in coords.Status)
-                            this.insertimg("Status bluetooth", coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
+                            this.insertimg({label: "Status bluetooth"}, coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
                         if ('DoNotDisturb' in coords.Status)
-                            this.insertimg("Status no not disturb", coords.Status.DoNotDisturb.ImageIndexOn, 1);
+                            this.insertimg({label: "Status no not disturb"}, coords.Status.DoNotDisturb.ImageIndexOn, 1);
                         if ('Lock' in coords.Status)
-                            this.insertimg("Status lock", coords.Status.Lock.ImageIndexOn, 1);
+                            this.insertimg({label: "Status lock"}, coords.Status.Lock.ImageIndexOn, 1);
                     }
                     if ('Activity' in coords) {
                         if ('Calories' in coords.Activity)
-                            this.insertimg("Activity calories", coords.Activity.Calories.ImageIndex, coords.Activity.Calories.ImagesCount);
+                            this.insertimg({label: "Activity calories"}, coords.Activity.Calories.ImageIndex, coords.Activity.Calories.ImagesCount);
                         if ('Steps' in coords.Activity)
-                            this.insertimg("Activity steps", coords.Activity.Steps.ImageIndex, coords.Activity.Steps.ImagesCount);
+                            this.insertimg({label: "Activity steps"}, coords.Activity.Steps.ImageIndex, coords.Activity.Steps.ImagesCount);
                         if ('StepsGoal' in coords.Activity)
-                            this.insertimg("Activity steps goal", coords.Activity.StepsGoal.ImageIndex, coords.Activity.StepsGoal.ImagesCount);
+                            this.insertimg({label: "Activity steps goal"}, coords.Activity.StepsGoal.ImageIndex, coords.Activity.StepsGoal.ImagesCount);
                         if ('Pulse' in coords.Activity)
-                            this.insertimg("Activity pulse", coords.Activity.Pulse.ImageIndex, coords.Activity.Pulse.ImagesCount);
+                            this.insertimg({label: "Activity pulse"}, coords.Activity.Pulse.ImageIndex, coords.Activity.Pulse.ImagesCount);
                         if ('Distance' in coords.Activity)
-                            this.insertimg("Activity distance", coords.Activity.Distance.Number.ImageIndex, coords.Activity.Distance.Number.ImagesCount, coords.Activity.Distance.DecimalPointImageIndex, coords.Activity.Distance.SuffixImageIndex);
+                            this.insertimg({label: "Activity distance", addition: (", " + coords.Activity.Distance.DecimalPointImageIndex + ", " + coords.Activity.Distance.SuffixImageIndex)}, coords.Activity.Distance.Number.ImageIndex, coords.Activity.Distance.Number.ImagesCount, coords.Activity.Distance.DecimalPointImageIndex, coords.Activity.Distance.SuffixImageIndex);
                     }
                     if ('Weather' in coords) {
                         if ('Temperature' in coords.Weather) {
                             if ('Today' in coords.Weather.Temperature) {
                                 if ('OneLine' in coords.Weather.Temperature.Today)
-                                    this.insertimg("Weather oneline", coords.Weather.Temperature.Today.OneLine.Number.ImageIndex, coords.Weather.Temperature.Today.OneLine.Number.ImagesCount, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
+                                    this.insertimg({label: "Weather oneline", addition: (", " + coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex + ", " + coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex + ", " + coords.Weather.Temperature.Today.OneLine.DegreesImageIndex)}, coords.Weather.Temperature.Today.OneLine.Number.ImageIndex, coords.Weather.Temperature.Today.OneLine.Number.ImagesCount, coords.Weather.Temperature.Today.OneLine.MinusSignImageIndex, coords.Weather.Temperature.Today.OneLine.DelimiterImageIndex, coords.Weather.Temperature.Today.OneLine.DegreesImageIndex);
                                 if ('Separate' in coords.Weather.Temperature.Today) {
                                     if ('Day' in coords.Weather.Temperature.Today.Separate)
-                                        this.insertimg("Weather day", coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Day.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
+                                        this.insertimg({label: "Weather day", addition: (", " + coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex)}, coords.Weather.Temperature.Today.Separate.Day.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Day.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Day.MinusImageIndex);
                                     if ('Night' in coords.Weather.Temperature.Today.Separate)
-                                        this.insertimg("Weather night", coords.Weather.Temperature.Today.Separate.Night.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Night.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
+                                        this.insertimg({label: "Weather night", addition: (", " + coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex)}, coords.Weather.Temperature.Today.Separate.Night.Number.ImageIndex, coords.Weather.Temperature.Today.Separate.Night.Number.ImagesCount, coords.Weather.Temperature.Today.Separate.Night.MinusImageIndex);
                                 }
                             }
                             if ('Current' in coords.Weather.Temperature)
-                                this.insertimg("Weather current", coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
+                                this.insertimg({label: "Weather current"}, coords.Weather.Temperature.Current.Number.ImageIndex, coords.Weather.Temperature.Current.Number.ImagesCount, coords.Weather.Temperature.Current.MinusImageIndex, coords.Weather.Temperature.Current.DegreesImageIndex);
                         }
                         if ('AirPollution' in coords.Weather)
-                            this.insertimg("Weather air pollution", coords.Weather.AirPollution.Icon.ImageIndex, coords.Weather.AirPollution.Icon.ImagesCount);
+                            this.insertimg({label: "Weather air pollution"}, coords.Weather.AirPollution.Icon.ImageIndex, coords.Weather.AirPollution.Icon.ImagesCount);
                     }
                     if ('StepsProgress' in coords) {
                         if ('Linear' in coords.StepsProgress)
-                            this.insertimg("Steps progress", coords.StepsProgress.Linear.StartImageIndex, coords.StepsProgress.Linear.Segments.length);
+                            this.insertimg({label: "Steps progress"}, coords.StepsProgress.Linear.StartImageIndex, coords.StepsProgress.Linear.Segments.length);
                     }
+                    this.insertimg({label: "Digits", insertto: "imagesavalible"}, 200, 10);
+                    this.insertimg({label: "Week days", insertto: "imagesavalible"}, 210, 7);
+                    this.insertimg({label: "Week days russian", insertto: "imagesavalible"}, 241, 7);
+                    this.insertimg({label: "Battery icon", insertto: "imagesavalible"}, 225, 6);
+                    this.insertimg({label: "Air pollution", insertto: "imagesavalible"}, 235, 6);
+                    this.insertimg({label: "Weather symbols", insertto: "imagesavalible", addition: ", 218, 219"}, 217, 3);
+                    this.insertimg({label: "Bluetooth", insertto: "imagesavalible", addition: ", 221"}, 220, 2);
+                    this.insertimg({label: "Distance symbols", insertto: "imagesavalible", addition: ", 232"}, 231, 2);
+                    this.insertimg({label: "Am/Pm", insertto: "imagesavalible", addition: ", 234"}, 233, 2);
+                    this.insertimg({label: "Status images", insertto: "imagesavalible", addition: ", 223, 224"}, 222, 3);
                 },
                 insertimg: function(name, imageindex, imagescount) {
+                    if(!('insertto' in name))
+                        name.insertto="imagesinuse";
+                    if(!('addition' in name))
+                        name.addition = "";
                     if (imagescount == undefined) imagescount = 1;
-                    $("imagestab").innerHTML += '<div class="imagessection"><h3>' + name + '</h3><div></div></div>';
+                    $(name.insertto).innerHTML += '<div class="imagessection"><div><span class="imagessection-h">' + name.label + '</span><span class="imagessection-description">ImageIndex: ' + imageindex + name.addition + '</span></div><div class="imagessection-images"></div></div>';
                     if ((imageindex - imageindex % 100) / 100 == 2)
-                        $("imagestab").lastChild.classList.add("imagessection-def");
+                        $(name.insertto).lastChild.classList.add("imagessection-def");
                     for (var i = 0; i < imagescount; i++) {
-                        $("imagestab").lastChild.lastChild.appendChild($c(imageindex + i));
-                        $("imagestab").lastChild.lastChild.lastChild.removeAttribute("id");
+                        $(name.insertto).lastChild.lastChild.appendChild($c(imageindex + i));
+                        $(name.insertto).lastChild.lastChild.lastChild.removeAttribute("id");
                     }
                     if (arguments.length > 3)
                         for (var i = 3; i < arguments.length; i++) {
-                            $("imagestab").lastChild.lastChild.appendChild($c(arguments[i]));
-                            $("imagestab").lastChild.lastChild.lastChild.removeAttribute("id");
+                            $(name.insertto).lastChild.lastChild.appendChild($c(arguments[i]));
+                            $(name.insertto).lastChild.lastChild.lastChild.removeAttribute("id");
                         }
                 }
             };
