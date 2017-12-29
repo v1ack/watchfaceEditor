@@ -438,7 +438,7 @@
         </div>
     </main>
     <script type="text/javascript">
-        for (var i = 200; i <= 247; i++)
+        for (var i = 200; i <= 265; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
         if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
@@ -2413,7 +2413,7 @@
                         if ('Bluetooth' in coords.Status)
                             this.insertimg({
                                 label: "Status bluetooth",
-                                    addition: (", " + coords.Status.Bluetooth.ImageIndexOff)
+                                addition: (", " + coords.Status.Bluetooth.ImageIndexOff)
                             }, coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
                         if ('DoNotDisturb' in coords.Status)
                             this.insertimg({
@@ -2613,6 +2613,49 @@
                 load.disableBtn(1);
             else
                 load.disableBtn(0);
+        }
+        window.onload = function() {
+            coords = {
+                Background: {
+                    Image: {
+                        ImageIndex: 265,
+                        X: 0,
+                        Y: 0
+                    }
+                },
+                Time: {
+                    Hours: {
+                        Ones: {
+                            ImageIndex: 255,
+                            ImagesCount: 10,
+                            X: 51,
+                            Y: 31
+                        },
+                        Tens: {
+                            ImageIndex: 255,
+                            ImagesCount: 10,
+                            X: 7,
+                            Y: 31
+                        }
+                    },
+                    Minutes: {
+                        Ones: {
+                            ImageIndex: 255,
+                            ImagesCount: 10,
+                            X: 115,
+                            Y: 69
+                        },
+                        Tens: {
+                            ImageIndex: 255,
+                            ImagesCount: 10,
+                            X: 66,
+                            Y: 69
+                        }
+                    }
+                }
+            }
+            setTimeout(view.makeWf, 500);
+            load.disableBtn(1);
         }
 
     </script>
