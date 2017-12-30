@@ -119,8 +119,8 @@
             height: calc(100vh - 255px);
             min-height: 390px;
         }
-        
-        #codearea pre{
+
+        #codearea pre {
             width: auto!important;
             border: none!important;
             height: auto!important;
@@ -692,6 +692,8 @@
                                 draw.stepsprogress.circle();
                             if ('Linear' in coords.StepsProgress)
                                 draw.stepsprogress.linear();
+                            if ('GoalImage' in coords.StepsProgress && data.steps >= data.stepsgoal)
+                                draw.stepsprogress.goal();
                         }
                         if ('AnalogDialFace' in coords) {
                             if ('Hours' in coords.AnalogDialFace)
@@ -908,12 +910,15 @@
                         if ('Steps' in coords.Activity)
                             draw.activity.steps();
                     removeByClass("c_steps_linear");
+                    removeByClass("c_steps_goal");
                     $("svg-cont-steps").innerHTML = '';
                     if ('StepsProgress' in coords) {
                         if ('Circle' in coords.StepsProgress)
                             draw.stepsprogress.circle();
                         if ('Linear' in coords.StepsProgress)
                             draw.stepsprogress.linear();
+                        if ('GoalImage' in coords.StepsProgress && data.steps >= data.stepsgoal)
+                            draw.stepsprogress.goal();
                     }
                 },
                 distance_change: function() {
@@ -953,6 +958,16 @@
                     if ('Activity' in coords)
                         if ('StepsGoal' in coords.Activity)
                             draw.activity.stepsgoal();
+                    removeByClass("c_steps_linear");
+                    removeByClass("c_steps_goal");
+                    if ('StepsProgress' in coords) {
+                        if ('Circle' in coords.StepsProgress)
+                            draw.stepsprogress.circle();
+                        if ('Linear' in coords.StepsProgress)
+                            draw.stepsprogress.linear();
+                        if ('GoalImage' in coords.StepsProgress && data.steps >= data.stepsgoal)
+                            draw.stepsprogress.goal();
+                    }
                 },
                 weatherd_change: function() {
                     if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
@@ -1223,6 +1238,9 @@
                             view.setPos(t, coords.StepsProgress.Linear.Segments[i]);
                             view.insert(t, "c_steps_linear");
                         }
+                    },
+                    goal: function() {
+                        view.setPosN(coords.StepsProgress.GoalImage, 0, "c_steps_goal");
                     }
                 },
                 weather: {
@@ -1515,7 +1533,7 @@
                             }, 10);
                         }
                     }
-                    if ('StepsProgress' in coords)
+                    if ('StepsProgress' in coords) {
                         if ('Linear' in coords.StepsProgress) {
                             for (var i = 0; i < coords.StepsProgress.Linear.Segments.length; i++) {
                                 $("editor").innerHTML +=
@@ -1525,7 +1543,13 @@
                                 }, 10, i);
                             }
                         }
-
+                        if ('GoalImage' in coords.StepsProgress) {
+                            this.makeImg(coords.StepsProgress.GoalImage, "e_steps_goal");
+                            setTimeout(function() {
+                                editor.initdrag('e_steps_goal', coords.StepsProgress.GoalImage, "c_steps_goal", draw.stepsprogress.goal);
+                            }, 10);
+                        }
+                    }
                 },
                 initdrag: function(el, elcoords, cls, drawF) {
                     el = $(el);
