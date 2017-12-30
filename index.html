@@ -360,6 +360,7 @@
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactsteps();">Toggle steps</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactstepsgoal();">Toggle steps goal</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstepsgoal();">Toggle steps goal icon</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactpulse();">Toggle pulse</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactcal();">Toggle calories</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactdist();">Toggle distance</button>
@@ -390,6 +391,12 @@
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathercur();">Toggle current weather</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathersepday();">Toggle day weather</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathersepnight();">Toggle night weather</button>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h3 class="uk-accordion-title">Short actions</h3>
+                                        <div class="uk-accordion-content">
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.disablesec();">Disable seconds in analog</button>
                                         </div>
                                     </li>
                                 </ul>
@@ -507,7 +514,7 @@
             localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
             location.reload();
         }
-        for (var i = 200; i <= 265; i++)
+        for (var i = 200; i <= 266; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
         if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
@@ -2317,6 +2324,30 @@
                         delete coords.Weather;
                     this.updatecode();
                     jsoneditor.select('"Temperature":');
+                },
+                tgstepsgoal: function() {
+                    if (!('StepsProgress' in coords))
+                        coords.StepsProgress = {};
+                    if ('GoalImage' in coords.StepsProgress)
+                        delete coords.StepsProgress.GoalImage;
+                    else
+                        coords.StepsProgress.GoalImage = {
+                            X: 0,
+                            Y: 0,
+                            ImageIndex: 266
+                        }
+                    if (Object.keys(coords.StepsProgress).length == 0)
+                        delete coords.StepsProgress;
+                    this.updatecode();
+                    jsoneditor.select('"GoalImage":');
+                },
+                disablesec: function() {
+                    if ('AnalogDialFace' in coords)
+                        if ('Seconds' in coords.AnalogDialFace) {
+                            coords.AnalogDialFace.Minutes.CenterImage = coords.AnalogDialFace.Seconds.CenterImage;
+                            delete coords.AnalogDialFace.Seconds;
+                            this.updatecode();
+                        }
                 },
                 select: function(s) {
                     var target = this.findspan(s);
