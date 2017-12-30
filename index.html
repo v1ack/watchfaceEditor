@@ -36,7 +36,13 @@
         #e_coords {
             margin: 0 10px;
             height: 25px;
-            /*            width: 100px;*/
+            width: 98px;
+        }
+        
+        .editorbutton{
+            width: 160px;
+    margin-left: 10px;
+            margin-top: 10px;
         }
 
         #watchfaceimage {
@@ -314,7 +320,9 @@
                         </div>
                         <div>
                             <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
-                            <button class="uk-button uk-button-primary uk-button-small" onclick="editor.makejsbetter();" style="margin: 10px" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip>Make Json better</button>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip>Make Json better</button>
+                            <br>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="jsoneditor.exportjs()">Export JSON</button>
                         </div>
                     </li>
                     <li>
