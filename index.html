@@ -2610,6 +2610,10 @@
                             this.insertimg({
                                 label: "Steps progress"
                             }, coords.StepsProgress.Linear.StartImageIndex, coords.StepsProgress.Linear.Segments.length);
+                        if ('GoalImage' in coords.StepsProgress)
+                        this.insertimg({
+                                label: "Goal image"
+                            }, coords.StepsProgress.GoalImage.ImageIndex, 1);
                     }
                     this.insertimg({
                         label: "Big digits",
