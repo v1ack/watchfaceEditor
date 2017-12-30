@@ -208,11 +208,12 @@
                     <li><a href="#">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#">Edit</a></li>
-                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#">Images</a></li>
+                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
-                        <div class="js-upload" uk-form-custom>
+                        <div><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> Show demo</div>
+                        <div class="js-upload uk-margin-top" uk-form-custom>
                             <span>Images: </span>
                             <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
@@ -383,22 +384,21 @@
                     <li>
                         <ul uk-accordion>
                             <li class="uk-open">
-                                <h3 class="uk-accordion-title">Used</h3>
+                                <h3 class="uk-accordion-title">Loaded</h3>
                                 <div class="uk-accordion-content">
                                     <div id="imagesinuse"></div>
                                 </div>
                             </li>
                             <li>
-                                <h3 class="uk-accordion-title">Avalible</h3>
+                                <h3 class="uk-accordion-title">Default</h3>
                                 <div class="uk-accordion-content">
                                     <div id="imagesavalible"></div>
+                                    <p>You can <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">download default images</a> or just drag them from this site to your folder</p>
                                 </div>
                             </li>
-
                         </ul>
                     </li>
                 </ul>
-
             </div>
         </div>
         <div id="allimages" hidden></div>
@@ -438,6 +438,58 @@
         </div>
     </main>
     <script type="text/javascript">
+        if (localStorage.showdemo != 0) {
+            window.onload = function() {
+                coords = {
+                    Background: {
+                        Image: {
+                            ImageIndex: 265,
+                            X: 0,
+                            Y: 0
+                        }
+                    },
+                    Time: {
+                        Hours: {
+                            Ones: {
+                                ImageIndex: 255,
+                                ImagesCount: 10,
+                                X: 87,
+                                Y: 26
+                            },
+                            Tens: {
+                                ImageIndex: 255,
+                                ImagesCount: 10,
+                                X: 37,
+                                Y: 26
+                            }
+                        },
+                        Minutes: {
+                            Ones: {
+                                ImageIndex: 255,
+                                ImagesCount: 10,
+                                X: 112,
+                                Y: 77
+                            },
+                            Tens: {
+                                ImageIndex: 255,
+                                ImagesCount: 10,
+                                X: 62,
+                                Y: 77
+                            }
+                        }
+                    }
+                }
+                setTimeout(view.makeWf, 350);
+                load.disableBtn(1);
+            }
+            if (!('showdemo' in localStorage))
+                localStorage.showdemo = 1;
+        } else
+            $("showdemocheck").checked = false;
+        $("showdemocheck").onchange = function() {
+            localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
+            location.reload();
+        }
         for (var i = 200; i <= 265; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
         if (!('helpShown' in localStorage)) {
@@ -2621,49 +2673,6 @@
                 load.disableBtn(1);
             else
                 load.disableBtn(0);
-        }
-        window.onload = function() {
-            coords = {
-                Background: {
-                    Image: {
-                        ImageIndex: 265,
-                        X: 0,
-                        Y: 0
-                    }
-                },
-                Time: {
-                    Hours: {
-                        Ones: {
-                            ImageIndex: 255,
-                            ImagesCount: 10,
-                            X: 51,
-                            Y: 31
-                        },
-                        Tens: {
-                            ImageIndex: 255,
-                            ImagesCount: 10,
-                            X: 7,
-                            Y: 31
-                        }
-                    },
-                    Minutes: {
-                        Ones: {
-                            ImageIndex: 255,
-                            ImagesCount: 10,
-                            X: 115,
-                            Y: 69
-                        },
-                        Tens: {
-                            ImageIndex: 255,
-                            ImagesCount: 10,
-                            X: 66,
-                            Y: 69
-                        }
-                    }
-                }
-            }
-            setTimeout(view.makeWf, 500);
-            load.disableBtn(1);
         }
 
     </script>
