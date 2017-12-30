@@ -38,10 +38,10 @@
             height: 25px;
             width: 98px;
         }
-        
-        .editorbutton{
+
+        .editorbutton {
             width: 160px;
-    margin-left: 10px;
+            margin-left: 10px;
             margin-top: 10px;
         }
 
@@ -693,7 +693,7 @@
                                 draw.analog.seconds();
                         }
                     } catch (error) {
-                        console.error(error);
+                        console.warn(error);
                         if (error.name == "TypeError") {
                             UIkit.notification("Image for prorety not found", {
                                 status: 'danger',
@@ -1676,7 +1676,7 @@
             jsoneditor = {
                 updatecode: function() {
                     $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                    if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
+                    if ($("codearea").innerHTML.replace(/<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
                         $("defaultimages").classList.add("uk-label-success");
                     else
                         $("defaultimages").classList.remove("uk-label-success");
@@ -2370,10 +2370,10 @@
                 },
                 codeareablur: function() {
                     try {
-                        coords = jsonlint.parse($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, ''));
+                        coords = jsonlint.parse($("codearea").innerHTML.replace(/<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g, ''));
                         view.makeWf();
                         $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                        if ($("codearea").innerHTML.replace(/<[\w\s]*="\w*">|<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<[\w\s]*="[\s\w:(,);\-&.]*">/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
+                        if ($("codearea").innerHTML.replace(/<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g, '').match(/"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g))
                             $("defaultimages").classList.add("uk-label-success");
                         else
                             $("defaultimages").classList.remove("uk-label-success");
@@ -2384,7 +2384,7 @@
                             UIkit.modal($("jsonerrormodal")).show()
                         }
                         setTimeout(show, 250);
-                        console.error(error);
+                        console.warn(error);
                     }
                 }
             },
@@ -2667,7 +2667,7 @@
                             UIkit.modal($("jsonerrormodal")).show()
                         }
                         setTimeout(show, 200);
-                        console.error(error);
+                        console.warn(error);
                     }
                 }
                 reader.readAsText(this.files[0]);
