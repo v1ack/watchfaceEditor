@@ -15,6 +15,29 @@
             line-height: 1;
         }
 
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        ::-webkit-scrollbar-button:start:decrement,
+        ::-webkit-scrollbar-button:end:increment,
+        ::-webkit-scrollbar-button:vertical:start:increment,
+        ::-webkit-scrollbar-button:vertical:end:decrement {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+            background-color: rgba(51, 153, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:vertical {
+            height: 50px;
+            background-color: rgba(51, 153, 255, 0.75);
+            border-radius: 3px;
+        }
+
     </style>
     <style></style>
 </head>
@@ -27,6 +50,7 @@
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface edit</a>
                         <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/Bip-Watchface-View/">Home</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-feedback" uk-toggle>Send feedback</a>
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
@@ -42,7 +66,7 @@
             <div class="uk-form-width-medium">
                 <label class="uk-form-label">Font size</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" type="number" placeholder="font size" min="5" value="35" id="textsize">
+                    <input class="uk-input" type="number" placeholder="font size" min="5" value="35" id="textsize" onchange="creator.updatenum();">
                 </div>
             </div>
             <div class="uk-form-width-medium">
@@ -59,7 +83,7 @@
                 </div>
             </div>
             <div style="margin-top: 23px;">
-                <button onclick="save();" class="uk-button uk-button-primary">Download</button>
+                <button onclick="creator.save();" class="uk-button uk-button-primary">Download</button>
             </div>
         </div>
         <div class="uk-margin">
@@ -78,8 +102,8 @@
         <div class="uk-margin">
             <div class="uk-form-label">Background color</div>
             <div class="uk-grid-small uk-child-width-auto uk-grid">
-                <label><input class="uk-radio" type="radio" name="bgcolor" value="#000000" checked> Black</label>
-                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFFFF"> White</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#000000"> Black</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFFFF" checked> White</label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#00FF00"> Green</label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFF00"> Yellow</label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#0000FF"> Blue</label>
@@ -90,18 +114,18 @@
             </div>
         </div>
         <div id="images" class=" uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
+        <div id="modal-feedback" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Feedback</h2>
+                <p>You can send feedback by Telegram to <a href="https://t.me/vlack" target="_blank">@vlack</a></p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                </p>
+            </div>
+        </div>
     </main>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript">
-        //Черный 0x000000
-        //Синий 0x0000FF	
-        //Зеленый 0x00FF00	
-        //Красный 0xFF0000	
-        //Голубой 0x00FFFF	
-        //Пурпурный 0xFF00FF	
-        //Желтый 0xFFFF00	
-        //Белый 0xFFFFFF
-        //Прозрачный 0xFEFE00
         function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
@@ -114,9 +138,12 @@
             addScript("js/canvas-toBlob.js");
         }
 
+        function $(el) {
+            return document.getElementById(el);
+        }
+
         $('fontfile').onchange = function() {
             if (this.files.length) {
-                var type = this.files[0].name.split(".")[1];
                 var reader = new FileReader();
                 reader.onloadend = function() {
                     document.getElementsByTagName("style")[1].textContent = "@font-face{font-family: 'font';src: url('" + reader.result + "');}"
@@ -126,78 +153,70 @@
             }
         }
 
-        $("textsize").onchange = function() {
-            updatenum();
-        }
-
-        function $(el) {
-            return document.getElementById(el);
-        }
-
-        var color = "#000000",
-            bgcolor = "#FFFFFF",
-            rad = document.getElementsByName('color'),
-            radbg = document.getElementsByName('bgcolor');
-        for (var i = 0; i < radbg.length; i++)
-            radbg[i].onchange = function() {
-                for (var j = 0; j < radbg.length; j++)
-                    if (radbg[j].checked)
-                        bgcolor = radbg[j].value;
-                updatenum();
-            }
-        for (var i = 0; i < rad.length; i++)
-            rad[i].onchange = function() {
-                for (var j = 0; j < rad.length; j++)
-                    if (rad[j].checked)
-                        color = rad[j].value;
-                updatenum();
-            }
-
-        function updatenum() {
-            $("images").innerHTML = '';
-            for (var i = 0; i < 10; i++) {
-                $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + color + ';background:' + bgcolor + '" id="' + i + '">' + i + '</span>';
-            }
-            var width = 0;
-            for (var i = 0; i < 10; i++)
-                if ($(i).offsetWidth > width)
-                    width = $(i).offsetWidth;
-            for (var i = 0; i < 10; i++)
-                $(i).style.width = width + 'px';
-            var width = 0;
-            for (var i = 0; i < 10; i++)
-                if ($(i).offsetWidth > width)
-                    width = $(i).offsetWidth;
-            for (var i = 0; i < 10; i++)
-                $(i).style.width = width + 'px';
-        }
-
-        updatenum();
-        var number;
-
-        function save() {
-            number = $("imageindex").value;
-            for (var el = 0; el < 10; el++) {
-                html2canvas($(el), {
-                    onrendered: function(canvas) {
-                        ctx = canvas.getContext("2d");
-                        if (edgeBrowser) {
-                            canvas.toBlob(function(blob) {
-                                saveAs(blob, number + ".png");
-                                number++;
-                            });
-                        } else {
-                            var a = document.createElement('a');
-                            a.href = canvas.toDataURL("image/png");
-                            a.download = number + '.png';
-                            number++;
-                            a.click();
-                            delete a;
+        var creator = {
+            color: "#000000",
+            bgcolor: "#FFFFFF",
+            rad: document.getElementsByName('color'),
+            radbg: document.getElementsByName('bgcolor'),
+            updatenum: function() {
+                $("images").innerHTML = '';
+                for (var i = 0; i < 10; i++) {
+                    $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '">' + i + '</span>';
+                }
+                var width = 0;
+                for (var i = 0; i < 10; i++)
+                    if ($(i).offsetWidth > width)
+                        width = $(i).offsetWidth;
+                for (var i = 0; i < 10; i++)
+                    $(i).style.width = width + 'px';
+                var width = 0;
+                for (var i = 0; i < 10; i++)
+                    if ($(i).offsetWidth > width)
+                        width = $(i).offsetWidth;
+                for (var i = 0; i < 10; i++)
+                    $(i).style.width = width + 'px';
+            },
+            number: 0,
+            save: function() {
+                number = $("imageindex").value;
+                for (var el = 0; el < 10; el++) {
+                    html2canvas($(el), {
+                        onrendered: function(canvas) {
+                            ctx = canvas.getContext("2d");
+                            if (edgeBrowser) {
+                                canvas.toBlob(function(blob) {
+                                    saveAs(blob, creator.number + ".png");
+                                    creator.number++;
+                                });
+                            } else {
+                                var a = document.createElement('a');
+                                a.href = canvas.toDataURL("image/png");
+                                a.download = creator.number + '.png';
+                                creator.number++;
+                                a.click();
+                                delete a;
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
+        for (var i = 0; i < creator.radbg.length; i++)
+            creator.radbg[i].onchange = function() {
+                for (var j = 0; j < creator.radbg.length; j++)
+                    if (creator.radbg[j].checked)
+                        creator.bgcolor = creator.radbg[j].value;
+                creator.updatenum();
+            }
+        for (var i = 0; i < creator.rad.length; i++)
+            creator.rad[i].onchange = function() {
+                for (var j = 0; j < creator.rad.length; j++)
+                    if (creator.rad[j].checked)
+                        creator.color = creator.rad[j].value;
+                creator.updatenum();
+            }
+
+        creator.updatenum();
 
     </script>
     <!-- Yandex.Metrika counter -->
