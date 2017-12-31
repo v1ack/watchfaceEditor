@@ -93,6 +93,20 @@
                 <button onclick="creator.save();" class="uk-button uk-button-primary">Download</button>
             </div>
         </div>
+        <div class="uk-grid uk-grid-small">
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Height</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="Image height" id="imageheight" min="0" onchange="creator.heightChange();">
+                </div>
+            </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Width</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="Image width" id="imagewidth" min="0" onchange="creator.widthChange();">
+                </div>
+            </div>
+        </div>
         <div class="uk-margin">
             <div class="uk-form-label">Font color</div>
             <div class="uk-grid-small uk-child-width-auto uk-grid">
@@ -169,26 +183,56 @@
                 $("images").innerHTML = '';
                 creator.wordsArray = $("text").value.split(",");
                 console.log(creator.wordsArray);
-                if(creator.wordsArray!='')
-                    this.array=creator.wordsArray;
+                if (creator.wordsArray != '')
+                    this.array = creator.wordsArray;
                 else
-                    this.array=creator.numberArray;
+                    this.array = creator.numberArray;
                 for (var i = 0; i < this.array.length; i++) {
                     $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '">' + this.array[i] + '</span>';
                 }
-                var width = 0;
+                var width = 0,
+                    height = 0;
+                if (!this.heightChanged) {
+                    this.height = 0;
+                    for (var i = 0; i < this.array.length; i++)
+                        if ($(i).offsetHeight > this.height)
+                            this.height = $(i).offsetHeight;
+                    $("imageheight").value = this.height;
+                }
                 for (var i = 0; i < this.array.length; i++)
-                    if ($(i).offsetWidth > width)
-                        width = $(i).offsetWidth;
+                    $(i).style.height = this.height + 'px';
+                if (!this.widthChanged) {
+                    this.width = 0;
+                    for (var i = 0; i < this.array.length; i++)
+                        if ($(i).offsetWidth > this.width)
+                            this.width = $(i).offsetWidth;
+                    $("imagewidth").value = this.width;
+                }
                 for (var i = 0; i < this.array.length; i++)
-                    $(i).style.width = width + 'px';
-                var width = 0;
-                for (var i = 0; i < this.array.length; i++)
-                    if ($(i).offsetWidth > width)
-                        width = $(i).offsetWidth;
-                for (var i = 0; i < this.array.length; i++)
-                    $(i).style.width = width + 'px';
+                    $(i).style.width = this.width + 'px';
             },
+            heightChange: function() {
+                if ($("imageheight").value != '') {
+                    this.heightChanged = true;
+                    this.height = $("imageheight").value;
+                } else {
+                    this.heightChanged = false;
+                }
+                this.updatenum();
+            },
+            widthChange: function() {
+                if ($("imagewidth").value != '') {
+                    this.widthChanged = true;
+                    this.width = $("imagewidth").value;
+                } else {
+                    this.widthChanged = false;
+                }
+                this.updatenum();
+            },
+            heightChanged: false,
+            widthChanged: false,
+            width: 0,
+            height: 0,
             number: 0,
             save: function() {
                 creator.number = $("imageindex").value;
