@@ -13,6 +13,7 @@
             text-align: center;
             font-family: font, monospace;
             line-height: 1;
+            margin: 5px;
         }
 
         ::-webkit-scrollbar {
@@ -66,13 +67,13 @@
             <div class="uk-form-width-medium">
                 <label class="uk-form-label">Font size</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" type="number" placeholder="font size" min="5" value="35" id="textsize" onchange="creator.updatenum();">
+                    <input class="uk-input" type="number" placeholder="Font size" min="5" value="35" id="textsize" onchange="creator.updatenum();">
                 </div>
             </div>
             <div class="uk-form-width-medium">
                 <label class="uk-form-label">First image index</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" type="number" placeholder="font size" id="imageindex" min="0" value="0">
+                    <input class="uk-input" type="number" placeholder="First image index" id="imageindex" min="0" value="0">
                 </div>
             </div>
             <div class="uk-form-width-medium">
@@ -80,6 +81,12 @@
                 <div uk-form-custom="target: true">
                     <input type="file" id="fontfile">
                     <input class="uk-input" type="text" placeholder="Select font file">
+                </div>
+            </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Text</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="text" placeholder="Words separated by ','" id="text" onchange="creator.updatenum();">
                 </div>
             </div>
             <div style="margin-top: 23px;">
@@ -160,26 +167,32 @@
             radbg: document.getElementsByName('bgcolor'),
             updatenum: function() {
                 $("images").innerHTML = '';
-                for (var i = 0; i < 10; i++) {
-                    $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '">' + i + '</span>';
+                creator.wordsArray = $("text").value.split(",");
+                console.log(creator.wordsArray);
+                if(creator.wordsArray!='')
+                    this.array=creator.wordsArray;
+                else
+                    this.array=creator.numberArray;
+                for (var i = 0; i < this.array.length; i++) {
+                    $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '">' + this.array[i] + '</span>';
                 }
                 var width = 0;
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < this.array.length; i++)
                     if ($(i).offsetWidth > width)
                         width = $(i).offsetWidth;
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < this.array.length; i++)
                     $(i).style.width = width + 'px';
                 var width = 0;
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < this.array.length; i++)
                     if ($(i).offsetWidth > width)
                         width = $(i).offsetWidth;
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < this.array.length; i++)
                     $(i).style.width = width + 'px';
             },
             number: 0,
             save: function() {
-                number = $("imageindex").value;
-                for (var el = 0; el < 10; el++) {
+                creator.number = $("imageindex").value;
+                for (var el = 0; el < this.array.length; el++) {
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
@@ -199,7 +212,10 @@
                         }
                     });
                 }
-            }
+            },
+            numberArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            wordsArray: [],
+            array: []
         }
         for (var i = 0; i < creator.radbg.length; i++)
             creator.radbg[i].onchange = function() {
