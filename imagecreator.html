@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image maker</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .spanimage {
+            -webkit-font-smoothing: none;
+            text-align: center;
+            font-family: font, monospace;
+        }
+
+    </style>
+    <style></style>
+</head>
+
+<body>
+    <span>Font size: </span><input type="number" id="textsize" min="5" value="35"><button onclick="make();">MAKE IT!</button><button onclick="save();">Download</button><span> Font file: </span><input type="file" id="fontfile">
+    <div>
+        <p>Font color</p>
+        <input type="radio" id="color1" name="color" value="#000000" checked>
+        <label for="color1">Black</label>
+        <input type="radio" id="color2" name="color" value="#FFFFFF">
+        <label for="color2">White</label>
+        <input type="radio" id="color3" name="color" value="#00FF00">
+        <label for="color3">Green</label>
+        <input type="radio" id="color3" name="color" value="#FFFF00">
+        <label for="color3">Yellow</label>
+        <input type="radio" id="color3" name="color" value="#0000FF">
+        <label for="color3">Blue</label>
+        <input type="radio" id="color3" name="color" value="#00FFFF">
+        <label for="color3">Cyan</label>
+        <input type="radio" id="color3" name="color" value="#FF0000">
+        <label for="color3">Red</label>
+        <input type="radio" id="color3" name="color" value="#FF00FF">
+        <label for="color3">Purple</label>
+        <input type="radio" id="color3" name="color" value="rgba(0,0,0,0)">
+        <label for="color3">Transperent</label>
+    </div>
+    <div>
+        <p>Background color</p>
+        <input type="radio" id="color1" name="bgcolor" value="#000000">
+        <label for="color1">Black</label>
+        <input type="radio" id="color2" name="bgcolor" value="#FFFFFF" checked>
+        <label for="color2">White</label>
+        <input type="radio" id="color3" name="bgcolor" value="#00FF00">
+        <label for="color3">Green</label>
+        <input type="radio" id="color3" name="bgcolor" value="#FFFF00">
+        <label for="color3">Yellow</label>
+        <input type="radio" id="color3" name="bgcolor" value="#0000FF">
+        <label for="color3">Blue</label>
+        <input type="radio" id="color3" name="bgcolor" value="#00FFFF">
+        <label for="color3">Cyan</label>
+        <input type="radio" id="color3" name="bgcolor" value="#FF0000">
+        <label for="color3">Red</label>
+        <input type="radio" id="color3" name="bgcolor" value="#FF00FF">
+        <label for="color3">Purple</label>
+        <input type="radio" id="color3" name="bgcolor" value="rgba(0,0,0,0)">
+        <label for="color3">Transperent</label>
+    </div>
+    <div id="images"></div>
+    <script type="text/javascript" src="js/html2canvas.comp.js"></script>
+    <script type="text/javascript">
+        //Черный 0x000000
+        //Синий 0x0000FF	
+        //Зеленый 0x00FF00	
+        //Красный 0xFF0000	
+        //Голубой 0x00FFFF	
+        //Пурпурный 0xFF00FF	
+        //Желтый 0xFFFF00	
+        //Белый 0xFFFFFF
+        //Прозрачный 0xFEFE00
+        var edgeBrowser = 0;
+
+        $('fontfile').onchange = function() {
+            if (this.files.length) {
+                var type = this.files[0].name.split(".")[1];
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    document.getElementsByTagName("style")[1].textContent = "@font-face{font-family: 'font';src: url('" + reader.result + "');}"
+                }
+                reader.readAsDataURL(this.files[0]);
+                delete reader;
+            }
+        }
+
+
+        function $(el) {
+            return document.getElementById(el);
+        }
+
+        function make() {
+            var rad = document.getElementsByName('color'),
+                color;
+            for (var i = 0; i < rad.length; i++) {
+                if (rad[i].checked) {
+                    color = rad[i].value;
+                }
+            }
+            var rad = document.getElementsByName('bgcolor'),
+                bgcolor;
+            for (var i = 0; i < rad.length; i++) {
+                if (rad[i].checked) {
+                    bgcolor = rad[i].value;
+                }
+            }
+            $("images").innerHTML = '';
+            for (var i = 0; i < 10; i++) {
+                $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + color + ';background:' + bgcolor + '" id="' + i + '">' + i + '</span>';
+            }
+            var width = 0;
+            for (var i = 0; i < 10; i++) {
+                if ($(i).offsetWidth > width)
+                    width = $(i).offsetWidth;
+            }
+            for (var i = 0; i < 10; i++) {
+                $(i).style.width = width + 'px';
+            }
+        }
+        var number = 0;
+
+        function save() {
+            number = 0;
+            for (var el = 0; el < 10; el++) {
+                html2canvas($(el), {
+                    onrendered: function(canvas) {
+                        ctx = canvas.getContext("2d");
+                        if (edgeBrowser) {
+                            canvas.toBlob(function(blob) {
+                                saveAs(blob, el + ".png");
+                            });
+                        } else {
+                            var a = document.createElement('a');
+                            a.href = canvas.toDataURL("image/png");
+                            a.download = number + '.png';
+                            number++;
+                            a.click();
+                            delete a;
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+</body>
+
+</html>
