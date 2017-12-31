@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <span>Font size: </span><input type="number" id="textsize" min="5" value="35"><button onclick="make();">MAKE IT!</button><button onclick="save();">Download</button><span> Font file: </span><input type="file" id="fontfile">
+    <span>Font size: </span><input type="number" id="textsize" min="5" value="35"><button onclick="save();">Download</button><span> Font file: </span><input type="file" id="fontfile"><span>First image index: </span><input type="number" id="imageindex" min="0" value="0">
     <div>
         <p>Font color</p>
         <input type="radio" id="color1" name="color" value="#000000" checked>
@@ -36,8 +36,6 @@
         <label for="color3">Red</label>
         <input type="radio" id="color3" name="color" value="#FF00FF">
         <label for="color3">Purple</label>
-        <input type="radio" id="color3" name="color" value="rgba(0,0,0,0)">
-        <label for="color3">Transperent</label>
     </div>
     <div>
         <p>Background color</p>
@@ -72,7 +70,17 @@
         //Желтый 0xFFFF00	
         //Белый 0xFFFFFF
         //Прозрачный 0xFEFE00
+        function addScript(url) {
+            var e = document.createElement("script");
+            e.src = url;
+            e.type = "text/javascript";
+            document.getElementsByTagName("head")[0].appendChild(e);
+        }
         var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? true : false;
+        if (edgeBrowser) {
+            addScript("js/FileSaver.min.js");
+            addScript("js/canvas-toBlob.js");
+        }
 
         $('fontfile').onchange = function() {
             if (this.files.length) {
@@ -86,50 +94,65 @@
             }
         }
 
+        $("textsize").onchange = function() {
+            updatenum();
+        }
 
         function $(el) {
             return document.getElementById(el);
         }
 
-        function make() {
-            var rad = document.getElementsByName('color'),
-                color;
-            for (var i = 0; i < rad.length; i++) {
-                if (rad[i].checked) {
-                    color = rad[i].value;
-                }
+        var color = "#000000",
+            bgcolor = "#FFFFFF",
+            rad = document.getElementsByName('color'),
+            radbg = document.getElementsByName('bgcolor');
+        for (var i = 0; i < radbg.length; i++)
+            radbg[i].onchange = function() {
+                for (var j = 0; j < radbg.length; j++)
+                    if (radbg[j].checked)
+                        bgcolor = radbg[j].value;
+                updatenum();
             }
-            var rad = document.getElementsByName('bgcolor'),
-                bgcolor;
-            for (var i = 0; i < rad.length; i++) {
-                if (rad[i].checked) {
-                    bgcolor = rad[i].value;
-                }
+        for (var i = 0; i < rad.length; i++)
+            rad[i].onchange = function() {
+                for (var j = 0; j < rad.length; j++)
+                    if (rad[j].checked)
+                        color = rad[j].value;
+                updatenum();
             }
+
+        function updatenum() {
             $("images").innerHTML = '';
             for (var i = 0; i < 10; i++) {
                 $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + color + ';background:' + bgcolor + '" id="' + i + '">' + i + '</span>';
             }
             var width = 0;
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 10; i++)
                 if ($(i).offsetWidth > width)
                     width = $(i).offsetWidth;
-            }
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 10; i++)
                 $(i).style.width = width + 'px';
-            }
+            var width = 0;
+            for (var i = 0; i < 10; i++)
+                if ($(i).offsetWidth > width)
+                    width = $(i).offsetWidth;
+            for (var i = 0; i < 10; i++)
+                $(i).style.width = width + 'px';
         }
-        var number = 0;
+
+        updatenum();
+        var number;
 
         function save() {
-            number = 0;
+            number = $("imageindex").value;
             for (var el = 0; el < 10; el++) {
                 html2canvas($(el), {
                     onrendered: function(canvas) {
                         ctx = canvas.getContext("2d");
                         if (edgeBrowser) {
                             canvas.toBlob(function(blob) {
-                                saveAs(blob, el + ".png");
+                                saveAs(blob, number + ".png");
+                                number++;
                             });
                         } else {
                             var a = document.createElement('a');
@@ -175,6 +198,7 @@
                 }
             })(document, window, "yandex_metrika_callbacks");
         }
+
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/46845507" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
