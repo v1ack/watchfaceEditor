@@ -593,7 +593,7 @@
                         d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
                     }
                     d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
-                    $('svg-cont-clock').innerHTML += '<path d="' + d + '" transform="rotate(' + value + ' ' + el.Center.X + ' ' + el.Center.Y + ') translate(' + el.Center.X + " " + el.Center.Y + ') " fill="' + fill + '" stroke="' + col + '"></path>';
+                    $('svg-cont-clock').innerHTML += '<path d="' + d + '" transform="rotate(' + (value - 90) + ' ' + el.Center.X + ' ' + el.Center.Y + ') translate(' + el.Center.X + " " + el.Center.Y + ') " fill="' + fill + '" stroke="' + col + '"></path>';
                     if ('CenterImage' in el) {
                         view.setPosN(el.CenterImage, 0, "c_an_img");
                     }
