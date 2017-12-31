@@ -5,11 +5,14 @@
     <title>Image maker</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="uikit/uikit.min.css" rel="stylesheet">
+    <script src="uikit/uikit.min.js"></script>
     <style>
         .spanimage {
             -webkit-font-smoothing: none;
             text-align: center;
             font-family: font, monospace;
+            line-height: 1;
         }
 
     </style>
@@ -17,48 +20,77 @@
 </head>
 
 <body>
-    <span>Font size: </span><input type="number" id="textsize" min="5" value="35"><button onclick="save();">Download</button><span> Font file: </span><input type="file" id="fontfile"><span>First image index: </span><input type="number" id="imageindex" min="0" value="0">
-    <div>
-        <p>Font color</p>
-        <input type="radio" id="color1" name="color" value="#000000" checked>
-        <label for="color1">Black</label>
-        <input type="radio" id="color2" name="color" value="#FFFFFF">
-        <label for="color2">White</label>
-        <input type="radio" id="color3" name="color" value="#00FF00">
-        <label for="color3">Green</label>
-        <input type="radio" id="color3" name="color" value="#FFFF00">
-        <label for="color3">Yellow</label>
-        <input type="radio" id="color3" name="color" value="#0000FF">
-        <label for="color3">Blue</label>
-        <input type="radio" id="color3" name="color" value="#00FFFF">
-        <label for="color3">Cyan</label>
-        <input type="radio" id="color3" name="color" value="#FF0000">
-        <label for="color3">Red</label>
-        <input type="radio" id="color3" name="color" value="#FF00FF">
-        <label for="color3">Purple</label>
-    </div>
-    <div>
-        <p>Background color</p>
-        <input type="radio" id="color1" name="bgcolor" value="#000000">
-        <label for="color1">Black</label>
-        <input type="radio" id="color2" name="bgcolor" value="#FFFFFF" checked>
-        <label for="color2">White</label>
-        <input type="radio" id="color3" name="bgcolor" value="#00FF00">
-        <label for="color3">Green</label>
-        <input type="radio" id="color3" name="bgcolor" value="#FFFF00">
-        <label for="color3">Yellow</label>
-        <input type="radio" id="color3" name="bgcolor" value="#0000FF">
-        <label for="color3">Blue</label>
-        <input type="radio" id="color3" name="bgcolor" value="#00FFFF">
-        <label for="color3">Cyan</label>
-        <input type="radio" id="color3" name="bgcolor" value="#FF0000">
-        <label for="color3">Red</label>
-        <input type="radio" id="color3" name="bgcolor" value="#FF00FF">
-        <label for="color3">Purple</label>
-        <input type="radio" id="color3" name="bgcolor" value="rgba(0,0,0,0)">
-        <label for="color3">Transperent</label>
-    </div>
-    <div id="images"></div>
+    <header class="uk-section-primary uk-preserve-color">
+        <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
+            <div class="uk-container uk-container-expand">
+                <div uk-navbar>
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface edit</a>
+                        <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/Bip-Watchface-View/">Home</a>
+                    </div>
+                    <div class="uk-navbar-right">
+                        <ul class="uk-navbar-nav">
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white" target="_blank">amazfitwatchfaces.com</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="uk-container uk-margin-top">
+        <div class="uk-grid uk-grid-small">
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Font size</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="font size" min="5" value="35" id="textsize">
+                </div>
+            </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">First image index</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="font size" id="imageindex" min="0" value="0">
+                </div>
+            </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Font file</label>
+                <div uk-form-custom="target: true">
+                    <input type="file" id="fontfile">
+                    <input class="uk-input" type="text" placeholder="Select font file">
+                </div>
+            </div>
+            <div style="margin-top: 23px;">
+                <button onclick="save();" class="uk-button uk-button-primary">Download</button>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-form-label">Font color</div>
+            <div class="uk-grid-small uk-child-width-auto uk-grid">
+                <label><input class="uk-radio" type="radio" name="color" value="#000000" checked> Black</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#FFFFFF"> White</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#00FF00"> Green</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#FFFF00"> Yellow</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#0000FF"> Blue</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#00FFFF"> Cyan</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#FF0000"> Red</label>
+                <label><input class="uk-radio" type="radio" name="color" value="#FF00FF"> Purple</label>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-form-label">Background color</div>
+            <div class="uk-grid-small uk-child-width-auto uk-grid">
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#000000" checked> Black</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFFFF"> White</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#00FF00"> Green</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFF00"> Yellow</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#0000FF"> Blue</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#00FFFF"> Cyan</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FF0000"> Red</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FF00FF"> Purple</label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="rgba(0,0,0,0)"> Transperent</label>
+            </div>
+        </div>
+        <div id="images" class=" uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
+    </main>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript">
         //Черный 0x000000
