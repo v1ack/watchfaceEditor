@@ -529,7 +529,7 @@
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
-        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? true : false;
+        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
         if (edgeBrowser) {
             UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
                 status: 'warning',

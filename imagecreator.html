@@ -10,10 +10,17 @@
     <style>
         .spanimage {
             -webkit-font-smoothing: none;
-            text-align: center;
             font-family: font, monospace;
             line-height: 1;
+            vertical-align: middle;
+            display: inline-block;
+            position: relative
+        }
+        
+        .imagecover{
             margin: 5px;
+            line-height: 1;
+            text-align: center;
         }
 
         ::-webkit-scrollbar {
@@ -106,6 +113,12 @@
                     <input class="uk-input" type="number" placeholder="Image width" id="imagewidth" min="0" onchange="creator.widthChange();">
                 </div>
             </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label">Top offset</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="Top offset" id="imageoffset" onchange="creator.topOffsetChange();">
+                </div>
+            </div>
         </div>
         <div class="uk-margin">
             <div class="uk-form-label">Font color</div>
@@ -153,7 +166,7 @@
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
-        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 ? true : false;
+        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
         if (edgeBrowser) {
             addScript("js/FileSaver.min.js");
             addScript("js/canvas-toBlob.js");
@@ -182,13 +195,12 @@
             updatenum: function() {
                 $("images").innerHTML = '';
                 creator.wordsArray = $("text").value.split(",");
-                console.log(creator.wordsArray);
                 if (creator.wordsArray != '')
                     this.array = creator.wordsArray;
                 else
                     this.array = creator.numberArray;
                 for (var i = 0; i < this.array.length; i++) {
-                    $("images").innerHTML += '<span class="spanimage" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '">' + this.array[i] + '</span>';
+                    $("images").innerHTML += '<div class="imagecover" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '"><span class="spanimage" style="top:' + this.topOffset + 'px">' + this.array[i] + '</span></div>';
                 }
                 var width = 0,
                     height = 0;
@@ -220,6 +232,15 @@
                 }
                 this.updatenum();
             },
+            topOffsetChange: function() {
+                if ($("imageoffset").value != '') {
+                    this.topOffsetChanged = true;
+                    this.topOffset = $("imageoffset").value;
+                } else {
+                    this.topOffsetChanged = false;
+                }
+                this.updatenum();
+            },
             widthChange: function() {
                 if ($("imagewidth").value != '') {
                     this.widthChanged = true;
@@ -231,8 +252,10 @@
             },
             heightChanged: false,
             widthChanged: false,
+            topOffsetChanged: false,
             width: 0,
             height: 0,
+            topOffset: 0,
             number: 0,
             save: function() {
                 creator.number = $("imageindex").value;
