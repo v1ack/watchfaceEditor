@@ -660,13 +660,13 @@
                         }
 
                         if ('Status' in coords) {
-                            if ('Alarm' in coords.Status && data.alarm)
+                            if ('Alarm' in coords.Status)
                                 draw.status.alarm();
                             if ('Bluetooth' in coords.Status)
                                 draw.status.bt();
-                            if ('DoNotDisturb' in coords.Status && data.dnd)
+                            if ('DoNotDisturb' in coords.Status)
                                 draw.status.dnd();
-                            if ('Lock' in coords.Status && data.lock)
+                            if ('Lock' in coords.Status)
                                 draw.status.lock();
                         }
                         if ('Activity' in coords) {
@@ -1181,27 +1181,41 @@
                 },
                 status: {
                     alarm: function() {
-                        t = $c(coords.Status.Alarm.ImageIndexOn);
+                        if ('ImageIndexOff' in coords.Status.Alarm && !data.alarm)
+                            t = $c(coords.Status.Alarm.ImageIndexOff);
+                        else if (data.alarm)
+                            t = $c(coords.Status.Alarm.ImageIndexOn);
+                        else return;
                         t.style.left = coords.Status.Alarm.Coordinates.X + "px";
                         t.style.top = coords.Status.Alarm.Coordinates.Y + "px";
                         view.insert(t, "c_stat_alarm");
                     },
                     bt: function() {
-                        if (data.bluetooth)
-                            t = $c(coords.Status.Bluetooth.ImageIndexOn);
-                        else
+                        if ('ImageIndexOff' in coords.Status.Bluetooth && !data.bluetooth)
                             t = $c(coords.Status.Bluetooth.ImageIndexOff);
+                        else if ('ImageIndexOn' in coords.Status.Bluetooth && data.bluetooth)
+                            t = $c(coords.Status.Bluetooth.ImageIndexOn);
+                        else return;
                         t.style.left = coords.Status.Bluetooth.Coordinates.X + "px";
                         t.style.top = coords.Status.Bluetooth.Coordinates.Y + "px";
                         view.insert(t, "c_stat_bt");
                     },
                     dnd: function() {
-                        t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
+                        if ('ImageIndexOff' in coords.Status.DoNotDisturb && !data.dnd)
+                            t = $c(coords.Status.DoNotDisturb.ImageIndexOff);
+                        else if (data.dnd)
+                            t = $c(coords.Status.DoNotDisturb.ImageIndexOn);
+                        else return;
                         t.style.left = coords.Status.DoNotDisturb.Coordinates.X + "px";
                         t.style.top = coords.Status.DoNotDisturb.Coordinates.Y + "px";
                         view.insert(t, "c_stat_dnd");
                     },
                     lock: function() {
+                        if ('ImageIndexOff' in coords.Status.Lock && !data.lock)
+                            t = $c(coords.Status.Lock.ImageIndexOff);
+                        else if (data.lock)
+                            t = $c(coords.Status.Lock.ImageIndexOn);
+                        else return;
                         t = $c(coords.Status.Lock.ImageIndexOn);
                         t.style.left = coords.Status.Lock.Coordinates.X + "px";
                         t.style.top = coords.Status.Lock.Coordinates.Y + "px";
@@ -1349,7 +1363,7 @@
                 },
                 makeImgStat: function(el, id) {
                     $("editor").innerHTML +=
-                        '<div id="' + id + '" style="height:' + ($(el.ImageIndexOn).height * 3) + 'px; width:' + ($(el.ImageIndexOn).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                        '<div id="' + id + '" style="height:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * 3) + 'px; width:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
                 },
                 styleToNum: function(el) {
                     return Number(el.replace('px', ''));
@@ -2550,7 +2564,7 @@
                             }, coords.Status.Bluetooth.ImageIndexOn, 1, coords.Status.Bluetooth.ImageIndexOff);
                         if ('DoNotDisturb' in coords.Status)
                             this.insertimg({
-                                label: "Status no not disturb"
+                                label: "Status do not disturb"
                             }, coords.Status.DoNotDisturb.ImageIndexOn, 1);
                         if ('Lock' in coords.Status)
                             this.insertimg({
@@ -2686,6 +2700,11 @@
                     if (!('addition' in name))
                         name.addition = "";
                     if (imagescount == undefined) imagescount = 1;
+                    if (imageindex == undefined) {
+                        imagescount = 0;
+                        imageindex = '';
+                        name.addition = name.addition.slice(2);
+                    }
                     $(name.insertto).innerHTML += '<div class="imagessection"><div><span class="imagessection-h">' + name.label + '</span><span class="imagessection-description">ImageIndex: ' + imageindex + name.addition + '</span></div><div class="imagessection-images"></div></div>';
                     if ((imageindex - imageindex % 100) / 100 == 2)
                         $(name.insertto).lastChild.classList.add("imagessection-def");
