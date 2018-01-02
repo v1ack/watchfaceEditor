@@ -4,22 +4,22 @@
 <head>
     <title>Image creator</title>
     <meta charset="utf-8">
-    <meta name="description" content="Image creator from font file"> 
+    <meta name="description" content="Image creator from font file">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <link href="uikit/uikit.min.css" rel="stylesheet">
     <script src="uikit/uikit.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Share+Tech+Mono|Ubuntu+Mono" rel="stylesheet">
     <style>
         .spanimage {
             -webkit-font-smoothing: none;
-            font-family: font;
             line-height: 1;
             vertical-align: middle;
             display: inline-block;
             position: relative
         }
-        
-        .imagecover{
+
+        .imagecover {
             margin: 5px;
             line-height: 1;
             text-align: center;
@@ -49,12 +49,7 @@
         }
 
     </style>
-    <style>
-        @font-face{
-            font-family: 'font';
-            src: url(assets/ShareTechMono-Regular.ttf)
-        }
-    </style>
+    <style></style>
 </head>
 
 <body>
@@ -154,6 +149,16 @@
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="rgba(0,0,0,0)"> Transperent</label>
             </div>
         </div>
+        <div class="uk-margin">
+            <div class="uk-form-label">Font</div>
+            <div class="uk-grid-small uk-child-width-auto uk-grid">
+                <label style="font-family: 'Share Tech Mono'"><input class="uk-radio" type="radio" name="fontfamily" value="Share Tech Mono" checked> Share Tech Mono</label>
+                <label style="font-family: 'Roboto Mono'"><input class="uk-radio" type="radio" name="fontfamily" value="Roboto Mono" checked> Roboto Mono</label>
+                <label style="font-family: 'Ubuntu Mono'"><input class="uk-radio" type="radio" name="fontfamily" value="Ubuntu Mono" checked> Ubuntu Mono</label>
+                <label style="font-family: monospace"><input class="uk-radio" type="radio" name="fontfamily" value="monospace"> Monospace</label>
+                <label style="font-family: customfont"><input class="uk-radio" type="radio" name="fontfamily" value="customfont"> Custom font</label>
+            </div>
+        </div>
         <div id="images" class="uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
         <div id="modal-feedback" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
@@ -187,7 +192,7 @@
             if (this.files.length) {
                 var reader = new FileReader();
                 reader.onloadend = function() {
-                    document.getElementsByTagName("style")[1].textContent = "@font-face{font-family: 'font';src: url('" + reader.result + "');}"
+                    document.getElementsByTagName("style")[1].textContent = "@font-face{font-family: 'customfont';src: url('" + reader.result + "');}"
                 }
                 reader.readAsDataURL(this.files[0]);
                 delete reader;
@@ -197,8 +202,10 @@
         var creator = {
             color: "#000000",
             bgcolor: "#FFFFFF",
+            font: "Share Tech Mono",
             rad: document.getElementsByName('color'),
             radbg: document.getElementsByName('bgcolor'),
+            fonts: document.getElementsByName('fontfamily'),
             updatenum: function() {
                 $("images").innerHTML = '';
                 creator.wordsArray = $("text").value.split(",");
@@ -229,6 +236,7 @@
                 }
                 for (var i = 0; i < this.array.length; i++)
                     $(i).style.width = this.width + 'px';
+                $("images").style.fontFamily = creator.font;
             },
             heightChange: function() {
                 if ($("imageheight").value != '') {
@@ -303,6 +311,13 @@
                 for (var j = 0; j < creator.rad.length; j++)
                     if (creator.rad[j].checked)
                         creator.color = creator.rad[j].value;
+                creator.updatenum();
+            }
+        for (var i = 0; i < creator.fonts.length; i++)
+            creator.fonts[i].onchange = function() {
+                for (var j = 0; j < creator.fonts.length; j++)
+                    if (creator.fonts[j].checked)
+                        creator.font = creator.fonts[j].value;
                 creator.updatenum();
             }
 
