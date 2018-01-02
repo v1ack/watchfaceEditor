@@ -5,14 +5,14 @@
     <title>Image creator</title>
     <meta charset="utf-8">
     <meta name="description" content="Image creator from font file"> 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <link href="uikit/uikit.min.css" rel="stylesheet">
     <script src="uikit/uikit.min.js"></script>
     <style>
         .spanimage {
             -webkit-font-smoothing: none;
-            font-family: font, monospace;
+            font-family: font;
             line-height: 1;
             vertical-align: middle;
             display: inline-block;
@@ -49,7 +49,12 @@
         }
 
     </style>
-    <style></style>
+    <style>
+        @font-face{
+            font-family: 'font';
+            src: url(assets/ShareTechMono-Regular.ttf)
+        }
+    </style>
 </head>
 
 <body>
@@ -149,7 +154,7 @@
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="rgba(0,0,0,0)"> Transperent</label>
             </div>
         </div>
-        <div id="images" class=" uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
+        <div id="images" class="uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
         <div id="modal-feedback" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">Feedback</h2>
