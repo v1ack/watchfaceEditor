@@ -268,55 +268,55 @@
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Battery</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="view.battery_change();">
+                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="view.battery_change();" value="20">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Calories</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="view.calories_change();">
+                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="view.calories_change();" value="860">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Steps</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="view.steps_change();">
+                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="view.steps_change();" value="5687">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Steps goal</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="view.stepsgoal_change();">
+                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="view.stepsgoal_change();" value="12000">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Pulse</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="view.pulse_change();">
+                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="view.pulse_change();" value="72">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Distance</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="view.distance_change();">
+                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="view.distance_change();" value="5.67">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Weather day</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="view.weatherd_change();">
+                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="view.weatherd_change();" value="22">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Weather night</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="view.weathern_change();">
+                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="view.weathern_change();" value="24">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label">Seconds</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="view.sec_change();">
+                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="view.sec_change();" value="43">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
@@ -1257,7 +1257,7 @@
                         $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + coords.StepsProgress.Circle.StartAngle) + " " + coords.StepsProgress.Circle.CenterX + " " + coords.StepsProgress.Circle.CenterY + ")\" cx=\"" + coords.StepsProgress.Circle.CenterX + "\" cy=\"" + coords.StepsProgress.Circle.CenterY + "\" rx=\"" + coords.StepsProgress.Circle.RadiusX + "\" ry=\"" + coords.StepsProgress.Circle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + coords.StepsProgress.Circle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
                     },
                     linear: function() {
-                        var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length - 1))) - 1;
+                        var end = Math.round(data.steps / (data.stepsgoal / (coords.StepsProgress.Linear.Segments.length))) - 1;
                         if (end > coords.StepsProgress.Linear.Segments.length - 1)
                             end = coords.StepsProgress.Linear.Segments.length - 1;
                         for (var i = 0; i <= end; i++) {
