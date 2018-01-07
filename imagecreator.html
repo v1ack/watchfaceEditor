@@ -278,6 +278,7 @@
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
+                            canvas.transform(m.cb, factor);
                             if (edgeBrowser) {
                                 canvas.toBlob(function(blob) {
                                     saveAs(blob, creator.number + ".png");
@@ -322,6 +323,23 @@
             }
 
         creator.updatenum();
+        
+        CanvasImage.prototype.transform = function(fn, factor) {
+            var olddata = this.original;
+            var oldpx = olddata.data;
+            var newdata = this.context.createImageData(olddata);
+            var newpx = newdata.data
+            var res = [];
+            var len = newpx.length;
+            for (var i = 0; i < len; i += 4) {
+                res = fn.call(this, oldpx[i], oldpx[i + 1], oldpx[i + 2], oldpx[i + 3], factor, i);
+                newpx[i] = res[0]; // r
+                newpx[i + 1] = res[1]; // g
+                newpx[i + 2] = res[2]; // b
+                newpx[i + 3] = res[3]; // a
+            }
+            this.setData(newdata);
+        }
 
     </script>
     <!-- Yandex.Metrika counter -->

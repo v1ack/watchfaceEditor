@@ -469,80 +469,139 @@
         </div>
     </main>
     <script type="text/javascript">
-        if (localStorage.showdemo != 0) {
-            window.onload = function() {
-                coords = {
-                    Background: {
-                        Image: {
-                            ImageIndex: 265,
-                            X: 0,
-                            Y: 0
-                        }
-                    },
-                    Time: {
-                        Hours: {
-                            Ones: {
-                                ImageIndex: 255,
-                                ImagesCount: 10,
-                                X: 87,
-                                Y: 26
-                            },
-                            Tens: {
-                                ImageIndex: 255,
-                                ImagesCount: 10,
-                                X: 37,
-                                Y: 26
+        function init() {
+            if (localStorage.showdemo != 0) {
+                window.onload = function() {
+                    coords = {
+                        Background: {
+                            Image: {
+                                ImageIndex: 265,
+                                X: 0,
+                                Y: 0
                             }
                         },
-                        Minutes: {
-                            Ones: {
-                                ImageIndex: 255,
-                                ImagesCount: 10,
-                                X: 112,
-                                Y: 77
+                        Time: {
+                            Hours: {
+                                Ones: {
+                                    ImageIndex: 255,
+                                    ImagesCount: 10,
+                                    X: 87,
+                                    Y: 26
+                                },
+                                Tens: {
+                                    ImageIndex: 255,
+                                    ImagesCount: 10,
+                                    X: 37,
+                                    Y: 26
+                                }
                             },
-                            Tens: {
-                                ImageIndex: 255,
-                                ImagesCount: 10,
-                                X: 62,
-                                Y: 77
+                            Minutes: {
+                                Ones: {
+                                    ImageIndex: 255,
+                                    ImagesCount: 10,
+                                    X: 112,
+                                    Y: 77
+                                },
+                                Tens: {
+                                    ImageIndex: 255,
+                                    ImagesCount: 10,
+                                    X: 62,
+                                    Y: 77
+                                }
                             }
                         }
                     }
+                    setTimeout(view.makeWf, 350);
+                    load.disableBtn(1);
                 }
-                setTimeout(view.makeWf, 350);
-                load.disableBtn(1);
+                if (!('showdemo' in localStorage))
+                    localStorage.showdemo = 1;
+            } else
+                $("showdemocheck").checked = false;
+            $("showdemocheck").onchange = function() {
+                localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
+                location.reload();
             }
-            if (!('showdemo' in localStorage))
-                localStorage.showdemo = 1;
-        } else
-            $("showdemocheck").checked = false;
-        $("showdemocheck").onchange = function() {
-            localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
-            location.reload();
-        }
-        for (var i = 200; i <= 266; i++)
-            $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
-        if (!('helpShown' in localStorage)) {
-            UIkit.modal($("modal-howto")).show();
-            localStorage.helpShown = true;
-        }
+            for (var i = 200; i <= 266; i++)
+                $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
+            if (!('helpShown' in localStorage)) {
+                UIkit.modal($("modal-howto")).show();
+                localStorage.helpShown = true;
+            }
 
-        function addScript(url) {
-            var e = document.createElement("script");
-            e.src = url;
-            e.type = "text/javascript";
-            document.getElementsByTagName("head")[0].appendChild(e);
-        }
-        var edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
-        if (edgeBrowser) {
-            UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
-                status: 'warning',
-                pos: 'top-left',
-                timeout: 7500
-            });
-            addScript("js/FileSaver.min.js");
-            addScript("js/canvas-toBlob.js");
+            function addScript(url) {
+                var e = document.createElement("script");
+                e.src = url;
+                e.type = "text/javascript";
+                document.getElementsByTagName("head")[0].appendChild(e);
+            }
+            data.app.edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
+            if (data.app.edgeBrowser) {
+                UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
+                    status: 'warning',
+                    pos: 'top-left',
+                    timeout: 7500
+                });
+                addScript("js/FileSaver.min.js");
+                addScript("js/canvas-toBlob.js");
+            }
+            $('inputimages').onchange = function() {
+                if (this.files.length) {
+                    var i = 0;
+                    console.log("Images count: ", this.files.length);
+                    while (i < this.files.length) {
+                        load.renderImage(this.files[i]);
+                        i++;
+                    }
+                    data.imagesset = true;
+                    if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
+                        $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
+                    $('inputimages').nextElementSibling.classList.add("uk-label-success");
+                }
+                if (data.imagesset && data.jsset)
+                    load.disableBtn(1);
+                else
+                    load.disableBtn(0);
+            }
+            $('inputjs').onchange = function() {
+                if (this.files.length) {
+                    data.wfname = this.files[0].name.split(".")[0];
+                    console.log("Watchface name: ", data.wfname);
+                    document.title = "Watchface edit " + data.wfname;
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            coords = jsonlint.parse(e.target.result);
+                        } catch (error) {
+                            $("jsonerrortext").innerHTML = error;
+
+                            function show() {
+                                UIkit.modal($("jsonerrormodal")).show()
+                            }
+                            setTimeout(show, 200);
+                            console.warn(error);
+                        }
+                    }
+                    reader.readAsText(this.files[0]);
+                    delete reader;
+                    data.jsset = true;
+                    if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
+                        $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
+                    $('inputjs').nextElementSibling.classList.add("uk-label-success");
+                }
+                if (data.imagesset && data.jsset)
+                    load.disableBtn(1);
+                else
+                    load.disableBtn(0);
+            }
+
+            if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < data.app.imagestabversion)
+                $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+            if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion)
+                $("codeopenbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+            if (!('designtabversion' in localStorage) || localStorage.designtabversion < data.app.designtabversion)
+                $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+
         }
 
         function $(el) {
@@ -556,13 +615,20 @@
         function div(a, b) {
             return (a - a % b) / b;
         }
+        
+        function removeByClass(cl) {
+            var els = document.getElementsByClassName(cl);
+            for (var i = 0; els.length; i++)
+                $("watchface").removeChild(els[0]);
+        }
 
         var coords = 0,
             data = {
                 app: {
                     imagestabversion: 2,
                     editortabversion: 1,
-                    designtabversion: 1
+                    designtabversion: 1,
+                    edgeBrowser: undefined
                 },
                 timeOnClock: ["20", "38"],
                 seconds: [4, 3],
@@ -2259,7 +2325,7 @@
                                     ImageIndex: 200,
                                     ImagesCount: 10
                                 },
-                                MinusSignImageIndex: 217,
+                                MinusImageIndex: 217,
                                 DegreesImageIndex: 218
                             }
                         }
@@ -2277,7 +2343,7 @@
                                         ImageIndex: 200,
                                         ImagesCount: 10
                                     },
-                                    MinusSignImageIndex: 217,
+                                    MinusImageIndex: 217,
                                     DegreesImageIndex: 218
                                 }
                             }
@@ -2314,7 +2380,7 @@
                                     ImageIndex: 200,
                                     ImagesCount: 10
                                 },
-                                MinusSignImageIndex: 217,
+                                MinusImageIndex: 217,
                                 DegreesImageIndex: 218
                             }
                         }
@@ -2332,7 +2398,7 @@
                                         ImageIndex: 200,
                                         ImagesCount: 10
                                     },
-                                    MinusSignImageIndex: 217,
+                                    MinusImageIndex: 217,
                                     DegreesImageIndex: 218
                                 }
                             }
@@ -2419,7 +2485,7 @@
                     });
                 },
                 exportjs: function() {
-                    if (edgeBrowser) {
+                    if (data.app.edgeBrowser) {
                         var blob = new Blob([JSON.stringify(coords, null, 4)], {
                             type: "text/plain;charset=utf-8"
                         });
@@ -2438,7 +2504,7 @@
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
-                            if (edgeBrowser) {
+                            if (data.app.edgeBrowser) {
                                 canvas.toBlob(function(blob) {
                                     saveAs(blob, data.wfname + ".png");
                                 });
@@ -2719,73 +2785,11 @@
                 }
             };
 
-        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < data.app.imagestabversion)
-            $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
-        if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion)
-            $("codeopenbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
-        if (!('designtabversion' in localStorage) || localStorage.designtabversion < data.app.designtabversion)
-            $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
-
-        function removeByClass(cl) {
-            var els = document.getElementsByClassName(cl);
-            for (var i = 0; els.length; i++)
-                $("watchface").removeChild(els[0]);
-        }
-
-        $('inputimages').onchange = function() {
-            if (this.files.length) {
-                var i = 0;
-                console.log("Images count: ", this.files.length);
-                while (i < this.files.length) {
-                    load.renderImage(this.files[i]);
-                    i++;
-                }
-                data.imagesset = true;
-                if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
-                    $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
-                $('inputimages').nextElementSibling.classList.add("uk-label-success");
-            }
-            if (data.imagesset && data.jsset)
-                load.disableBtn(1);
-            else
-                load.disableBtn(0);
-        }
-        $('inputjs').onchange = function() {
-            if (this.files.length) {
-                data.wfname = this.files[0].name.split(".")[0];
-                console.log("Watchface name: ", data.wfname);
-                document.title = "Watchface edit " + data.wfname;
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        coords = jsonlint.parse(e.target.result);
-                    } catch (error) {
-                        $("jsonerrortext").innerHTML = error;
-
-                        function show() {
-                            UIkit.modal($("jsonerrormodal")).show()
-                        }
-                        setTimeout(show, 200);
-                        console.warn(error);
-                    }
-                }
-                reader.readAsText(this.files[0]);
-                delete reader;
-                data.jsset = true;
-                if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
-                    $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
-                $('inputjs').nextElementSibling.classList.add("uk-label-success");
-            }
-            if (data.imagesset && data.jsset)
-                load.disableBtn(1);
-            else
-                load.disableBtn(0);
-        }
+        init();
 
     </script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript" src="js/jsonlint.js"></script>
-    <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         if (!data.local) {
             (function(d, w, c) {
@@ -2818,7 +2822,6 @@
 
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/46845507" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
 </body>
 
 </html>
