@@ -172,6 +172,7 @@ var coords = 0,
         distance: [5, 67],
         pulse: 72,
         temp: [22, 24],
+        weathericon: 0,
         alarm: true,
         bluetooth: true,
         dnd: true,
@@ -624,6 +625,15 @@ var coords = 0,
                                 draw.weather.temp.sep.night();
                         }
                     }
+        },
+        weathericon_change: function () {
+            if ($("in-weatheri").value > 26) $("in-weatheri").value = 26;
+            if ($("in-weatheri").value < 1) $("in-weatheri").value = 1;
+            data.weathericon = $("in-weatheri").value - 1;
+            removeByClass("c_weather_icon");
+            if ('Weather' in coords)
+                if ('Icon' in coords.Weather)
+                    draw.weather.icon();
         }
     },
     load = {
@@ -867,10 +877,17 @@ var coords = 0,
         },
         weather: {
             icon: function () {
-                t = $c("weather");
-                t.style.left = coords.Weather.Icon.Coordinates.X + "px";
-                t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
-                view.insert(t, "c_weather_icon");
+                if ('CustomIcon' in coords.Weather.Icon) {
+                    t = $c(coords.Weather.Icon.CustomIcon.ImageIndex + data.weathericon);
+                    t.style.left = coords.Weather.Icon.CustomIcon.X + "px";
+                    t.style.top = coords.Weather.Icon.CustomIcon.Y + "px";
+                    view.insert(t, "c_weather_icon");
+                } else {
+                    t = $c("weather");
+                    t.style.left = coords.Weather.Icon.Coordinates.X + "px";
+                    t.style.top = coords.Weather.Icon.Coordinates.Y + "px";
+                    view.insert(t, "c_weather_icon");
+                }
             },
             temp: {
                 oneline: function () {
@@ -1112,11 +1129,19 @@ var coords = 0,
             }
             if ('Weather' in coords) {
                 if ('Icon' in coords.Weather) {
-                    $("editor").innerHTML +=
-                        '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
-                    setTimeout(function () {
-                        editor.initdrag('e_weather_icon', coords.Weather.Icon.Coordinates, "c_weather_icon", draw.weather.icon);
-                    }, 10);
+                    if ('CustomIcon' in coords.Weather.Icon) {
+                        $("editor").innerHTML +=
+                            '<div id="e_weather_icon" style="height:' + ($(coords.Weather.Icon.CustomIcon.ImageIndex).height * 3) + 'px; width:' + ($(coords.Weather.Icon.CustomIcon.ImageIndex).width * 3) + 'px; top:' + (coords.Weather.Icon.CustomIcon.Y * 3) + 'px; left:' + (coords.Weather.Icon.CustomIcon.X * 3) + 'px;" class="editor-elem"></div>';
+                        setTimeout(function () {
+                            editor.initdrag('e_weather_icon', coords.Weather.Icon.CustomIcon, "c_weather_icon", draw.weather.icon);
+                        }, 10);
+                    } else {
+                        $("editor").innerHTML +=
+                            '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (coords.Weather.Icon.Coordinates.Y * 3) + 'px; left:' + (coords.Weather.Icon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                        setTimeout(function () {
+                            editor.initdrag('e_weather_icon', coords.Weather.Icon.Coordinates, "c_weather_icon", draw.weather.icon);
+                        }, 10);
+                    }
                 }
                 if ('Temperature' in coords.Weather) {
                     if ('Today' in coords.Weather.Temperature) {
@@ -2189,6 +2214,12 @@ var coords = 0,
                     }, coords.Activity.Distance.Number.ImageIndex, coords.Activity.Distance.Number.ImagesCount, coords.Activity.Distance.DecimalPointImageIndex, coords.Activity.Distance.SuffixImageIndex);
             }
             if ('Weather' in coords) {
+                if ('Icon' in coords.Weather)
+                    if ('CustomIcon' in coords.Weather.Icon) {
+                        this.insertimg({
+                            label: "Weather icons"
+                        }, coords.Weather.Icon.CustomIcon.ImageIndex, coords.Weather.Icon.CustomIcon.ImagesCount);
+                    }
                 if ('Temperature' in coords.Weather) {
                     if ('Today' in coords.Weather.Temperature) {
                         if ('OneLine' in coords.Weather.Temperature.Today)
