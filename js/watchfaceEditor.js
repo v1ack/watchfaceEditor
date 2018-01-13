@@ -51,7 +51,7 @@ function init() {
         localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
         location.reload();
     }
-    for (var i = 200; i <= 266; i++)
+    for (var i = 200; i <= 292; i++)
         $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
     if (!('helpShown' in localStorage)) {
         UIkit.modal($("modal-howto")).show();
@@ -1772,6 +1772,25 @@ var coords = 0,
             this.updatecode();
             jsoneditor.select('"Weather":');
         },
+        tgweathericoncustom: function () {
+            if (!('Weather' in coords))
+                coords.Weather = {};
+            if ('Icon' in coords.Weather)
+                delete coords.Weather.Icon;
+            else
+                coords.Weather.Icon = {
+                    CustomIcon: {
+                        X: 0,
+                        Y: 0,
+                        ImageIndex: 267,
+                        ImagesCount: 26
+                    }
+                }
+            if (Object.keys(coords.Weather).length == 0)
+                delete coords.Weather;
+            this.updatecode();
+            jsoneditor.select('"Weather":');
+        },
         tgweatherair: function () {
             if (!('Weather' in coords))
                 coords.Weather = {};
@@ -2318,6 +2337,10 @@ var coords = 0,
                 label: "Steps goal image",
                 insertto: "imagesavalible"
             }, 266, 1);
+            this.insertimg({
+                label: "Weather icons",
+                insertto: "imagesavalible"
+            }, 267, 26);
         },
         insertimg: function (name, imageindex, imagescount) {
             if (!('insertto' in name))
