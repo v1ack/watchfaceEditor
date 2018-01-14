@@ -486,7 +486,7 @@ var coords = 0,
             data.alarm = $("in-alarm").checked;
             removeByClass("c_stat_alarm");
             if ('Status' in coords)
-                if ('Alarm' in coords.Status && data.alarm)
+                if ('Alarm' in coords.Status)
                     draw.status.alarm();
         },
         bt_change: function () {
@@ -501,14 +501,14 @@ var coords = 0,
             data.dnd = $("in-dnd").checked;
             removeByClass("c_stat_dnd");
             if ('Status' in coords)
-                if ('DoNotDisturb' in coords.Status && data.dnd)
+                if ('DoNotDisturb' in coords.Status)
                     draw.status.dnd();
         },
         lock_change: function () {
             data.lock = $("in-lock").checked;
             removeByClass("c_stat_lock");
             if ('Status' in coords)
-                if ('Lock' in coords.Status && data.lock)
+                if ('Lock' in coords.Status)
                     draw.status.lock();
         },
         steps_change: function () {
