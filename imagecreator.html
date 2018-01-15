@@ -48,6 +48,16 @@
             border-radius: 3px;
         }
 
+        canvas {
+            -webkit-font-smoothing: none;
+            image-rendering: pixelated; // Older versions of FF
+            image-rendering: -moz-crisp-edges; // FF 6.0+
+            image-rendering: -webkit-optimize-contrast; // Webkit (non standard naming)
+            image-rendering: -o-crisp-edges; // OS X & Windows Opera (12.02+)
+            image-rendering: crisp-edges; // Possible future browsers.
+            -ms-interpolation-mode: nearest-neighbor; // IE (non standard naming)
+        }
+
     </style>
     <style></style>
 </head>
@@ -99,7 +109,7 @@
                 </div>
             </div>
             <div style="margin-top: 23px;">
-                <button onclick="creator.save();" class="uk-button uk-button-primary">Download</button>
+                <button onclick="creator.save2();" class="uk-button uk-button-primary">Download</button>
             </div>
         </div>
         <div class="uk-grid uk-grid-small">
@@ -173,7 +183,7 @@
             </p>
         </div>
     </div>
-    <script type="text/javascript" src="js/html2canvas.comp.js"></script>
+<!--    <script type="text/javascript" src="js/html2canvas.comp.js"></script>-->
     <script type="text/javascript">
         function addScript(url) {
             var e = document.createElement("script");
@@ -208,9 +218,10 @@
                 var r = pixels[i];
                 var g = pixels[i + 1];
                 var b = pixels[i + 2];
-                pixels[i] = (r > 100 ? 255 : 0); // red
-                pixels[i + 1] = (g > 100 ? 255 : 0); // green
-                pixels[i + 2] = (b > 100 ? 255 : 0); // blue
+                pixels[i] = (r > 127 ? 255 : 0);
+                pixels[i + 1] = (g > 127 ? 255 : 0);
+                pixels[i + 2] = (b > 127 ? 255 : 0);
+                //pixels[i + 3] = (pixels[i + 3] > 127 ? 255 : 0);
             }
             return imageData;
         };
@@ -231,6 +242,11 @@
                     this.array = creator.numberArray;
                 for (var i = 0; i < this.array.length; i++) {
                     $("images").innerHTML += '<div class="imagecover" style="font-size:' + $("textsize").value + 'px; color:' + creator.color + ';background:' + creator.bgcolor + '" id="' + i + '"><span class="spanimage" style="top:' + this.topOffset + 'px">' + this.array[i] + '</span></div>';
+                    /*$("images").innerHTML += '<canvas id="' + i + '"></canvas>';
+                    var canvas = $(i);
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = creator.bgcolor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);*/
                 }
                 var width = 0,
                     height = 0;
@@ -294,9 +310,9 @@
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
-                            var imageData = ctx.getImageData(0, 0, 300, 300);
-                            imageDataFiltered = cleaner(imageData);
-                            ctx.putImageData(imageDataFiltered, 0, 0);
+//                            var imageData = ctx.getImageData(0, 0, 300, 300);
+//                            imageDataFiltered = cleaner(imageData);
+//                            ctx.putImageData(imageDataFiltered, 0, 0);
                             if (edgeBrowser) {
                                 canvas.toBlob(function(blob) {
                                     saveAs(blob, creator.number + ".png");
@@ -312,6 +328,42 @@
                             }
                         }
                     });
+                }
+            },
+            save2: function() {
+                creator.number = $("imageindex").value;
+                for (var el = 0; el < this.array.length; el++) {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = creator.width;
+                    canvas.height = creator.height;
+                    ctx = canvas.getContext("2d");
+                    ctx.mozImageSmoothingEnabled = false;
+                    ctx.webkitImageSmoothingEnabled = false;
+                    ctx.msImageSmoothingEnabled = false;
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.fillStyle = creator.bgcolor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.font = $("textsize").value + "px " + creator.font;
+                    ctx.textBaseline = "middle";
+                    ctx.textAlign = "center";
+                    ctx.fillStyle = creator.color;
+                    ctx.fillText($(el).innerText, canvas.width / 2, canvas.height / 2);
+                    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                            imageDataFiltered = cleaner(imageData);
+                            ctx.putImageData(imageDataFiltered, 0, 0);
+                    if (edgeBrowser) {
+                        canvas.toBlob(function(blob) {
+                            saveAs(blob, creator.number + ".png");
+                            creator.number++;
+                        });
+                    } else {
+                        var a = document.createElement('a');
+                        a.href = canvas.toDataURL("image/png");
+                        a.download = creator.number + '.png';
+                        creator.number++;
+                        a.click();
+                        delete a;
+                    }
                 }
             },
             numberArray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
