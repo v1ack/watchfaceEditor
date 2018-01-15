@@ -60,7 +60,7 @@
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface edit</a>
                         <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/Bip-Watchface-View/">Home</a>
-                        <a class="uk-navbar-item" style="color: white" href="#modal-feedback" uk-toggle>Send feedback</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-donate" uk-toggle>Donate</a>
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
@@ -160,16 +160,19 @@
             </div>
         </div>
         <div id="images" class="uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
-        <div id="modal-feedback" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">Feedback</h2>
-                <p>You can send feedback by Telegram to <a href="https://t.me/vlack" target="_blank">@vlack</a></p>
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-                </p>
-            </div>
-        </div>
     </main>
+    <footer>
+        <p class="uk-text-center uk-text-meta" style="margin-top: 15px">designed by vlack <span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC">donate</a></p>
+    </footer>
+    <div id="modal-donate" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Donate</h2>
+            <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no" class="uk-container"></iframe>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+            </p>
+        </div>
+    </div>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript">
         function addScript(url) {
@@ -198,6 +201,19 @@
                 delete reader;
             }
         }
+
+        var cleaner = function(imageData) {
+            var pixels = imageData.data;
+            for (var i = 0; i < pixels.length; i += 4) {
+                var r = pixels[i];
+                var g = pixels[i + 1];
+                var b = pixels[i + 2];
+                pixels[i] = (r > 100 ? 255 : 0); // red
+                pixels[i + 1] = (g > 100 ? 255 : 0); // green
+                pixels[i + 2] = (b > 100 ? 255 : 0); // blue
+            }
+            return imageData;
+        };
 
         var creator = {
             color: "#000000",
@@ -278,7 +294,9 @@
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
-//                            canvas.transform(m.cb, factor);
+                            var imageData = ctx.getImageData(0, 0, 300, 300);
+                            imageDataFiltered = cleaner(imageData);
+                            ctx.putImageData(imageDataFiltered, 0, 0);
                             if (edgeBrowser) {
                                 canvas.toBlob(function(blob) {
                                     saveAs(blob, creator.number + ".png");
@@ -323,23 +341,6 @@
             }
 
         creator.updatenum();
-        
-        /*CanvasImage.prototype.transform = function(fn, factor) {
-            var olddata = this.original;
-            var oldpx = olddata.data;
-            var newdata = this.context.createImageData(olddata);
-            var newpx = newdata.data
-            var res = [];
-            var len = newpx.length;
-            for (var i = 0; i < len; i += 4) {
-                res = fn.call(this, oldpx[i], oldpx[i + 1], oldpx[i + 2], oldpx[i + 3], factor, i);
-                newpx[i] = res[0]; // r
-                newpx[i + 1] = res[1]; // g
-                newpx[i + 2] = res[2]; // b
-                newpx[i + 3] = res[3]; // a
-            }
-            this.setData(newdata);
-        }*/
 
     </script>
     <!-- Yandex.Metrika counter -->
