@@ -131,6 +131,18 @@ function init() {
     if (!('designtabversion' in localStorage) || localStorage.designtabversion < data.app.designtabversion)
         $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
 
+    if (!('showcount' in localStorage)) {
+        localStorage.showcount = 1;
+    } else {
+        localStorage.showcount++;
+        if (localStorage.showcount == 10) {
+            function show() {
+                UIkit.modal($("modal-donate")).show()
+            }
+            setTimeout(show, 250);
+        }
+    }
+
 }
 
 function $(el) {
