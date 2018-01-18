@@ -1,4 +1,17 @@
 function init() {
+    function addScript(url) {
+        var e = document.createElement("script");
+        e.src = url;
+        e.type = "text/javascript";
+        document.getElementsByTagName("head")[0].appendChild(e);
+    }
+    if (!('lang' in localStorage))
+        localStorage.lang = navigator.language || navigator.userLanguage;
+    if (localStorage.lang == "ru") {
+        //addScript("assets/russian.json");
+        var lang = JSON.parse(russian);
+        changeLang(lang);
+    }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
             coords = {
@@ -58,12 +71,6 @@ function init() {
         localStorage.helpShown = true;
     }
 
-    function addScript(url) {
-        var e = document.createElement("script");
-        e.src = url;
-        e.type = "text/javascript";
-        document.getElementsByTagName("head")[0].appendChild(e);
-    }
     data.app.edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
     if (data.app.edgeBrowser) {
         UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
@@ -145,6 +152,15 @@ function init() {
 
 }
 
+function changeLang(lang) {
+    var strings = document.querySelectorAll('[data-translate-id]');
+    for (var i = 0; i < strings.length; i++) {
+        //console.log(strings[i].dataset.translateId);
+        if (strings[i].dataset.translateId in lang)
+            strings[i].innerHTML = lang[strings[i].dataset.translateId];
+    }
+}
+
 function $(el) {
     return document.getElementById(el);
 }
@@ -174,7 +190,8 @@ var coords = 0,
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
-            edgeBrowser: undefined
+            edgeBrowser: undefined,
+            biptools: 0
         },
         timeOnClock: ["20", "38"],
         seconds: [4, 3],

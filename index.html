@@ -228,106 +228,106 @@
             </div>
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0; padding-bottom: 10px;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
-                    <li><a href="#">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#">Design</a></li>
-                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#">Edit</a></li>
-                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#">Resources</a></li>
+                    <li><a href="#" data-translate-id="view">View</a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#" data-translate-id="design">Design</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#" data-translate-id="edit">Edit</a></li>
+                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#" data-translate-id="resources">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
-                        <div><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> Show demo</div>
+                        <div><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
                         <div class="js-upload uk-margin-top" uk-form-custom>
-                            <span>Images: </span>
+                            <span data-translate-id="images">Images: </span>
                             <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
-                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
                         </div>
                         <br>
                         <div class="js-upload uk-margin" uk-form-custom>
                             <span>JSON: </span>
                             <input id="inputjs" type="file" accept=".json" onclick="load.clearjs()">
-                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1">Select</button>
+                            <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
                         </div>
                         <br>
-                        <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled>Settings</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="jsoneditor.makepng();" disabled>Make PNG</button>
-                        <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> With watch</label>
+                        <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled data-translate-id="settings">Settings</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="jsoneditor.makepng();" disabled data-translate-id="makepng">Make PNG</button>
+                        <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> <span data-translate-id="withwatch">With watch</span></label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
-                            <h3 class="uk-card-title">Settings</h3>
+                            <h3 class="uk-card-title" data-translate-id="settings">Settings</h3>
                             <form class="uk-grid-small" uk-grid>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Time</label>
+                                    <label class="uk-form-label" data-translate-id="time">Time</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-time" type="time" value="20:38" onchange="view.time_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Date</label>
+                                    <label class="uk-form-label" data-translate-id="date">Date</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-date" type="date" value="2017-12-06" onchange="view.date_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Battery</label>
+                                    <label class="uk-form-label" data-translate-id="battery">Battery</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="view.battery_change();" value="20">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Calories</label>
+                                    <label class="uk-form-label" data-translate-id="calories">Calories</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="view.calories_change();" value="860">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Steps</label>
+                                    <label class="uk-form-label" data-translate-id="steps">Steps</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="view.steps_change();" value="5687">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Steps goal</label>
+                                    <label class="uk-form-label" data-translate-id="stepsgoal">Steps goal</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="view.stepsgoal_change();" value="12000">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Pulse</label>
+                                    <label class="uk-form-label" data-translate-id="pulse">Pulse</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="view.pulse_change();" value="72">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Distance</label>
+                                    <label class="uk-form-label" data-translate-id="distance">Distance</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="view.distance_change();" value="5.67">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Weather day</label>
+                                    <label class="uk-form-label" data-translate-id="weatherD">Weather day</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="view.weatherd_change();" value="22">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Weather night</label>
+                                    <label class="uk-form-label" data-translate-id="weatherN">Weather night</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="view.weathern_change();" value="24">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Weather icon number</label>
+                                    <label class="uk-form-label" data-translate-id="weatherIconNumber">Weather icon number</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-weatheri" type="number" placeholder="Weather icon" min="1" max="26" onchange="view.weathericon_change();" value="1">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Seconds</label>
+                                    <label class="uk-form-label" data-translate-id="seconds">Seconds</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="view.sec_change();" value="43">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Status</label>
+                                    <label class="uk-form-label" data-translate-id="status">Status</label>
                                     <div class="uk-form-controls uk-child-width-auto uk-grid">
                                         <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="view.alarm_change();"> Alarm</label>
                                         <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="view.bt_change();"> Bluetooth</label>
@@ -342,10 +342,10 @@
                         <div id="editor" class="uk-card-default">
                         </div>
                         <div>
-                            <p id="e_coords" class="uk-placeholder uk-text-center">Coordinates</p>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip>Fix coordinates</button>
+                            <p id="e_coords" class="uk-placeholder uk-text-center" data-translate-id="coordinates">Coordinates</p>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip data-translate-id="fixcoords">Fix coordinates</button>
                             <br>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="jsoneditor.exportjs()">Export JSON</button>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                         </div>
                     </li>
                     <li>
@@ -354,14 +354,14 @@
                                 <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="jsoneditor.codeareablur();"></pre>
                                 <ul uk-accordion class="codearearight">
                                     <li class="uk-open">
-                                        <h3 class="uk-accordion-title">Time</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="time">Time</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgam();">Toggle 12/24h</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgsec();">Toggle seconds</button>
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Date</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="date">Date</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweekday();">Toggle week day</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgdateoneline();">Toggle date oneline</button>
@@ -370,7 +370,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Activity</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="activity">Activity</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactsteps();">Toggle steps</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgactstepsgoal();">Toggle steps goal</button>
@@ -381,7 +381,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Status</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="status">Status</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatalarm();">Toggle alarm</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgstatbt();">Toggle bluetooth</button>
@@ -390,14 +390,14 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Battery</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="battery">Battery</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatteryicon();">Toggle icon</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatterytext();">Toggle number</button>
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Weather</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="weather">Weather</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathericon();">Toggle icon</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgweathericoncustom();">Toggle custom icon</button>
@@ -409,14 +409,14 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <h3 class="uk-accordion-title">Short actions</h3>
+                                        <h3 class="uk-accordion-title" data-translate-id="shortact">Short actions</h3>
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.disablesec();">Disable seconds in analog</button>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
-                            <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()">Export JSON</button>
+                            <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                             <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images</a>
                         </div>
                     </li>
@@ -498,6 +498,7 @@
     <footer>
         <p class="uk-text-center uk-text-meta">designed by vlack <span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC">donate</a></p>
     </footer>
+    <script type="text/javascript" src="assets/russian.json"></script>
     <script type="text/javascript" src="js/watchfaceEditor.js"></script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript" src="js/jsonlint.js"></script>
