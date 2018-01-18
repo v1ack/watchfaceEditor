@@ -178,8 +178,7 @@
             border-radius: 3px;
         }
 
-        ::-webkit-scrollbar-thumb:vertical {
-            height: 50px;
+        ::-webkit-scrollbar-thumb {
             background-color: rgba(51, 153, 255, 0.75);
             border-radius: 3px;
         }
@@ -197,9 +196,9 @@
                 <div uk-navbar>
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/Bip-Watchface-View/" style="color: white">Bip watchface edit</a>
-                        <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle>How to use</a>
-                        <a class="uk-navbar-item" style="color: white" href="#modal-donate" uk-toggle>Donate</a>
-                        <a class="uk-navbar-item" style="color: white" href="#modal-about" uk-toggle>About</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle data-translate-id="howtouse">How to use</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                         <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/Bip-Watchface-View/imagecreator.html" target="_blank">Image creator</a>
                     </div>
                     <div class="uk-navbar-right">
@@ -329,10 +328,10 @@
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="status">Status</label>
                                     <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="view.alarm_change();"> Alarm</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="view.bt_change();"> Bluetooth</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd" onchange="view.dnd_change();"> Do not disturb</label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="view.lock_change();"> Lock</label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="view.alarm_change();"> <span data-translate-id="alarm">Alarm</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="view.bt_change();"> <span data-translate-id="bluetooth">Bluetooth</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd" onchange="view.dnd_change();"> <span data-translate-id="dnd">Do not disturb</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="view.lock_change();"> <span data-translate-id="lock">Lock</span></label>
                                     </div>
                                 </div>
                             </form>
@@ -417,22 +416,22 @@
                                 </ul>
                             </div>
                             <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
-                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages">Default images</a>
+                            <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages" data-translate-id="defaultimages">Default images</a>
                         </div>
                     </li>
                     <li>
                         <ul uk-accordion>
                             <li class="uk-open">
-                                <h3 class="uk-accordion-title">Loaded</h3>
+                                <h3 class="uk-accordion-title" data-translate-id="loaded">Loaded</h3>
                                 <div class="uk-accordion-content">
                                     <div id="imagesinuse"></div>
                                 </div>
                             </li>
                             <li>
-                                <h3 class="uk-accordion-title">Default</h3>
+                                <h3 class="uk-accordion-title" data-translate-id="defaultimages">Default</h3>
                                 <div class="uk-accordion-content">
                                     <div id="imagesavalible"></div>
-                                    <p>You can <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">download default images</a> or just drag them from this site to your folder</p>
+                                    <p data-translate-id="defaultimagesTip">You can <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">download default images</a> or just drag them from this site to your folder</p>
                                 </div>
                             </li>
                         </ul>
@@ -446,20 +445,20 @@
         </div>
         <div id="modal-howto" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">How to use</h2>
+                <h2 class="uk-modal-title" data-translate-id="howtouse">How to use</h2>
                 <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/" target="_blank">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
                     <br><br>You can edit elements location on tab <b>Design</b>
                     <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">here</a>
                     <br><br><a href="http://4pda.ru/forum/index.php?act=findpost&pid=68418440&anchor=Spoil-68418440-1" target="_blank">Инструкция на русском языке</a>
                 </p>
                 <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                    <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>
             </div>
         </div>
         <div id="modal-about" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">About</h2>
+                <h2 class="uk-modal-title" data-translate-id="about">About</h2>
                 <p>Watchface editor designed by vlack</p>
                     <h3>Thanks to</h3>
                 <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/"target="_blank">AmazfitBipTools</a><br>
@@ -472,16 +471,16 @@
                         <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a><br>
                         <a href="https://jsonlint.com/" target="_blank">JSONLint</a></p>
                     <p class="uk-text-right">
-                        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                        <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                     </p>
             </div>
         </div>
         <div id="modal-donate" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">Donate</h2>
+                <h2 class="uk-modal-title" data-translate-id="donate">Donate</h2>
                 <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no" class="uk-container"></iframe>
                 <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                    <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>
             </div>
         </div>
