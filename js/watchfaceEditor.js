@@ -53,7 +53,8 @@ function init() {
                     }
                 }
             }
-            setTimeout(view.makeWf, 350);
+            //setTimeout(view.makeWf, 350);
+            view.makeWf();
             load.disableBtn(1);
             UIkit.modal($("modal-loading")).hide();
         }
