@@ -7,10 +7,10 @@ function init() {
     }
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
-    if (localStorage.lang == "ru") {
+    if (localStorage.lang.indexOf("ru") >= 0) {
         //addScript("assets/russian.json");
-        var lang = JSON.parse(russian);
-        changeLang(lang);
+        data.app.lang = JSON.parse(russian);
+        changeLang();
     }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
@@ -152,12 +152,12 @@ function init() {
 
 }
 
-function changeLang(lang) {
+function changeLang() {
     var strings = document.querySelectorAll('[data-translate-id]');
     for (var i = 0; i < strings.length; i++) {
         //console.log(strings[i].dataset.translateId);
-        if (strings[i].dataset.translateId in lang)
-            strings[i].innerHTML = lang[strings[i].dataset.translateId];
+        if (strings[i].dataset.translateId in data.app.lang)
+            strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
     }
 }
 

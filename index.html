@@ -91,7 +91,7 @@
         }
 
         .imagessection .imagessection-images {
-            width: max-content;
+            width: fit-content;
             background: #ecebeb;
         }
 
@@ -350,7 +350,7 @@
                     <li>
                         <div class="uk-margin">
                             <div class="uk-grid uk-grid-collapse">
-                                <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="jsoneditor.codeareablur();"></pre>
+                                <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="jsoneditor.codeareablur();" spellcheck="false"></pre>
                                 <ul uk-accordion class="codearearight">
                                     <li class="uk-open">
                                         <h3 class="uk-accordion-title" data-translate-id="time">Time</h3>
@@ -460,19 +460,16 @@
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="about">About</h2>
                 <p>Watchface editor designed by vlack</p>
-                    <h3>Thanks to</h3>
-                <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/"target="_blank">AmazfitBipTools</a><br>
-                MaxL for <a href="http://4pda.ru/forum/index.php?s=&showtopic=845160&view=findpost&p=68065502"target="_blank">weather icons</a><br>
-                Osmat for <a href="http://amazfitwatchfaces.com"target="_blank">amazfitwatchfaces.com</a><br>
-                Showman for advices
+                <h3>Thanks to</h3>
+                <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/" target="_blank">AmazfitBipTools</a><br> MaxL for <a href="http://4pda.ru/forum/index.php?s=&showtopic=845160&view=findpost&p=68065502" target="_blank">weather icons</a><br> Osmat for <a href="http://amazfitwatchfaces.com" target="_blank">amazfitwatchfaces.com</a><br> Showman for advices
                 </p>
-                    <h3>Used libraries</h3>
-                    <p><a href="https://getuikit.com/" target="_blank">UI kit</a><br>
-                        <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a><br>
-                        <a href="https://jsonlint.com/" target="_blank">JSONLint</a></p>
-                    <p class="uk-text-right">
-                        <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
-                    </p>
+                <h3>Used libraries</h3>
+                <p><a href="https://getuikit.com/" target="_blank">UI kit</a><br>
+                    <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a><br>
+                    <a href="https://jsonlint.com/" target="_blank">JSONLint</a></p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
+                </p>
             </div>
         </div>
         <div id="modal-donate" uk-modal>
