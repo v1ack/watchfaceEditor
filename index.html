@@ -190,6 +190,16 @@
 </head>
 
 <body>
+    <div id="modal-loading" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog" uk-height-viewport>
+            <h1 class="uk-padding-large uk-text-center">Bip watchface editor</h1>
+            <div uk-spinner class="uk-transform-center uk-position-absolute" style="left: 50%; top: 50%"></div>
+        </div>
+    </div>
+    <script>
+        UIkit.modal(document.getElementById("modal-loading")).show();
+
+    </script>
     <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">

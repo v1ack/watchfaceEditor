@@ -55,6 +55,7 @@ function init() {
             }
             setTimeout(view.makeWf, 350);
             load.disableBtn(1);
+            UIkit.modal($("modal-loading")).hide();
         }
         if (!('showdemo' in localStorage))
             localStorage.showdemo = 1;
@@ -64,6 +65,7 @@ function init() {
         localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
         location.reload();
     }
+    localStorage.biptools = 0;
     for (var i = 200; i <= 292; i++)
         $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
     if (!('helpShown' in localStorage)) {
@@ -149,6 +151,10 @@ function init() {
             setTimeout(show, 250);
         }
     }
+    if (localStorage.showdemo == 0)
+        window.onload = function () {
+            UIkit.modal($("modal-loading")).hide();
+        }
 
 }
 
@@ -190,8 +196,7 @@ var coords = 0,
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
-            edgeBrowser: undefined,
-            biptools: 0
+            edgeBrowser: undefined
         },
         timeOnClock: ["20", "38"],
         seconds: [4, 3],
