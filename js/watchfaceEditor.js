@@ -1406,6 +1406,15 @@ var coords = 0,
         }
     },
     jsoneditor = {
+        togglebutton: function (bt, state) {
+            if (state == 1) {
+                $(bt).classList.add("uk-button-primary");
+                $(bt).classList.remove("uk-button-default");
+            } else {
+                $(bt).classList.remove("uk-button-primary");
+                $(bt).classList.add("uk-button-default");
+            }
+        },
         updatecode: function () {
             $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
             if ($("codearea").innerHTML.replace(this.regexr, '').match(this.regexrimg))
@@ -1413,6 +1422,183 @@ var coords = 0,
             else
                 $("defaultimages").classList.remove("uk-label-success");
             view.makeWf();
+            if ('Time' in coords) {
+                if ('Seconds' in coords.Time)
+                    this.togglebutton("tgsec", 1);
+                else
+                    this.togglebutton("tgsec", 0);
+                if ('AmPm' in coords.Time)
+                    this.togglebutton("tg12/24", 1);
+                else
+                    this.togglebutton("tg12/24", 0);
+            }
+            if ('Date' in coords) {
+                if ('WeekDay' in coords.Date)
+                    this.togglebutton("tgweekday", 1);
+                else
+                    this.togglebutton("tgweekday", 0);
+                if ('MonthAndDay' in coords.Date) {
+                    if ('Separate' in coords.Date.MonthAndDay) {
+                        if ('Day' in coords.Date.MonthAndDay.Separate)
+                            this.togglebutton("tgdateday", 1);
+                        else
+                            this.togglebutton("tgdateday", 0);
+                        if ('Month' in coords.Date.MonthAndDay.Separate)
+                            this.togglebutton("tgdatemonth", 1);
+                        else
+                            this.togglebutton("tgdatemonth", 0);
+                    } else {
+                        this.togglebutton("tgdateday", 0);
+                        this.togglebutton("tgdatemonth", 0);
+                    }
+                    if ('OneLine' in coords.Date.MonthAndDay)
+                        this.togglebutton("tgdateoneline", 1);
+                    else
+                        this.togglebutton("tgdateoneline", 0);
+                } else {
+                    this.togglebutton("tgdateday", 0);
+                    this.togglebutton("tgdatemonth", 0);
+                    this.togglebutton("tgdateoneline", 0);
+                }
+            } else {
+                this.togglebutton("tgweekday", 0);
+                this.togglebutton("tgdateday", 0);
+                this.togglebutton("tgdatemonth", 0);
+                this.togglebutton("tgdateoneline", 0);
+            }
+            if ('Battery' in coords) {
+                if ('Icon' in coords.Battery)
+                    this.togglebutton("tgbaticon", 1);
+                else
+                    this.togglebutton("tgbaticon", 0);
+                if ('Text' in coords.Battery)
+                    this.togglebutton("tgbatnum", 1);
+                else
+                    this.togglebutton("tgbatnum", 0);
+            } else {
+                this.togglebutton("tgbaticon", 0);
+                this.togglebutton("tgbatnum", 0);
+            }
+            if ('Status' in coords) {
+                if ('Alarm' in coords.Status)
+                    this.togglebutton("tgstatalarm", 1);
+                else
+                    this.togglebutton("tgstatalarm", 0);
+                if ('Bluetooth' in coords.Status)
+                    this.togglebutton("tgstatbt", 1);
+                else
+                    this.togglebutton("tgstatbt", 0);
+                if ('DoNotDisturb' in coords.Status)
+                    this.togglebutton("tgstatdnd", 1);
+                else
+                    this.togglebutton("tgstatdnd", 0);
+                if ('Lock' in coords.Status)
+                    this.togglebutton("tgstatlock", 1);
+                else
+                    this.togglebutton("tgstatlock", 0);
+            } else {
+                this.togglebutton("tgstatalarm", 0);
+                this.togglebutton("tgstatbt", 0);
+                this.togglebutton("tgstatdnd", 0);
+                this.togglebutton("tgstatlock", 0);
+            }
+            if ('Activity' in coords) {
+                if ('Calories' in coords.Activity)
+                    this.togglebutton("tgactcalories", 1);
+                else
+                    this.togglebutton("tgactcalories", 0);
+                if ('Steps' in coords.Activity)
+                    this.togglebutton("tgactsteps", 1);
+                else
+                    this.togglebutton("tgactsteps", 0);
+                if ('StepsGoal' in coords.Activity)
+                    this.togglebutton("tgactstepsgoal", 1);
+                else
+                    this.togglebutton("tgactstepsgoal", 0);
+                if ('Pulse' in coords.Activity)
+                    this.togglebutton("tgactpulse", 1);
+                else
+                    this.togglebutton("tgactpulse", 0);
+                if ('Distance' in coords.Activity)
+                    this.togglebutton("tgactdist", 1);
+                else
+                    this.togglebutton("tgactdist", 0);
+            } else {
+                this.togglebutton("tgactcalories", 0);
+                this.togglebutton("tgactsteps", 0);
+                this.togglebutton("tgactstepsgoal", 0);
+                this.togglebutton("tgactpulse", 0);
+                this.togglebutton("tgactdist", 0);
+            }
+            if ('Weather' in coords) {
+                if ('Icon' in coords.Weather)
+                    if ('CustomIcon' in coords.Weather.Icon) {
+                        this.togglebutton("tgweathercusticon", 1);
+                        this.togglebutton("tgweathericon", 0);
+                    } else {
+                        this.togglebutton("tgweathericon", 1);
+                        this.togglebutton("tgweathercusticon", 0);
+                    }
+                else {
+                    this.togglebutton("tgweathericon", 0);
+                    this.togglebutton("tgweathercusticon", 0);
+                }
+                if ('Temperature' in coords.Weather) {
+                    if ('Today' in coords.Weather.Temperature) {
+                        if ('OneLine' in coords.Weather.Temperature.Today)
+                            this.togglebutton("tgweatheroneline", 1);
+                        else
+                            this.togglebutton("tgweatheroneline", 0);
+                        if ('Separate' in coords.Weather.Temperature.Today) {
+                            if ('Day' in coords.Weather.Temperature.Today.Separate)
+                                this.togglebutton("tgweatherday", 1);
+                            else
+                                this.togglebutton("tgweatherday", 0);
+                            if ('Night' in coords.Weather.Temperature.Today.Separate)
+                                this.togglebutton("tgweathernight", 1);
+                            else
+                                this.togglebutton("tgweathernight", 0);
+                        } else {
+                            this.togglebutton("tgweatherday", 0);
+                            this.togglebutton("tgweathernight", 0);
+                        }
+                    }
+                    if ('Current' in coords.Weather.Temperature)
+                        this.togglebutton("tgweathercur", 1);
+                    else
+                        this.togglebutton("tgweathercur", 0);
+                } else {
+                    this.togglebutton("tgweatheroneline", 0);
+                    this.togglebutton("tgweatherday", 0);
+                    this.togglebutton("tgweathernight", 0);
+                    this.togglebutton("tgweathercur", 0);
+                }
+                if ('AirPollution' in coords.Weather)
+                    this.togglebutton("tgweatherair", 1);
+                else
+                    this.togglebutton("tgweatherair", 0);
+            } else {
+                this.togglebutton("tgweathericon", 0);
+                this.togglebutton("tgweathercusticon", 0);
+                this.togglebutton("tgweatheroneline", 0);
+                this.togglebutton("tgweatherday", 0);
+                this.togglebutton("tgweathernight", 0);
+                this.togglebutton("tgweathercur", 0);
+                this.togglebutton("tgweatherair", 0);
+            }
+            if ('StepsProgress' in coords) {
+                if ('Linear' in coords.StepsProgress)
+                    this.togglebutton("tgstepslinear", 1);
+                else
+                    this.togglebutton("tgstepslinear", 0);
+                if ('GoalImage' in coords.StepsProgress)
+                    this.togglebutton("tgactgoalicon", 1);
+                else
+                    this.togglebutton("tgactgoalicon", 0);
+            } else {
+                this.togglebutton("tgstepslinear", 0);
+                this.togglebutton("tgactgoalicon", 0);
+            }
         },
         tgam: function () {
             if ('AmPm' in coords.Time) {
@@ -2051,6 +2237,54 @@ var coords = 0,
                 delete coords.StepsProgress;
             this.updatecode();
             jsoneditor.select('"GoalImage":');
+        },
+        tgstepslinear: function () {
+            if (!('StepsProgress' in coords))
+                coords.StepsProgress = {};
+            if ('Linear' in coords.StepsProgress)
+                delete coords.StepsProgress.Linear;
+            else
+                coords.StepsProgress.Linear = {
+                    StartImageIndex: 200,
+                    Segments: [
+                        {
+                            X: 40,
+                            Y: 121
+                        },
+                        {
+                            X: 55,
+                            Y: 121
+                        },
+                        {
+                            X: 67,
+                            Y: 121
+                        },
+                        {
+                            X: 79,
+                            Y: 121
+                        },
+                        {
+                            X: 91,
+                            Y: 121
+                        },
+                        {
+                            X: 104,
+                            Y: 121
+                        },
+                        {
+                            X: 117,
+                            Y: 121
+                        },
+                        {
+                            X: 130,
+                            Y: 121
+                        }
+                    ]
+                }
+            if (Object.keys(coords.StepsProgress).length == 0)
+                delete coords.StepsProgress;
+            this.updatecode();
+            jsoneditor.select('"Linear":');
         },
         disablesec: function () {
             if ('AnalogDialFace' in coords)
