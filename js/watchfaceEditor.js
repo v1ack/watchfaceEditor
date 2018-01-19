@@ -76,7 +76,7 @@ function init() {
 
     data.app.edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
     if (data.app.edgeBrowser) {
-        UIkit.notification("Something may not work in your browser. WebKit-based browser recommended", {
+        UIkit.notification(('browserwarn' in data.app.lang ? data.app.lang.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
             status: 'warning',
             pos: 'top-left',
             timeout: 7500
@@ -197,7 +197,8 @@ var coords = 0,
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
-            edgeBrowser: undefined
+            edgeBrowser: undefined,
+            lang: {}
         },
         timeOnClock: ["20", "38"],
         seconds: [4, 3],
@@ -356,7 +357,7 @@ var coords = 0,
             } catch (error) {
                 console.warn(error);
                 if (error.name == "ImageError") {
-                    UIkit.notification(("Image with index <b>" + error.imageIndex + "</b> not found"), {
+                    UIkit.notification(('imagenotfound' in data.app.lang ? data.app.lang.imagenotfound : "Image with index $index not found").replace("$index", "<b>" + error.imageIndex + "</b>"), {
                         status: 'danger',
                         pos: 'top-left',
                         timeout: 7500
@@ -2082,7 +2083,7 @@ var coords = 0,
             this.updatecode();
             if (data.firstopen_editor) {
                 sessionStorage.firstopen_editor = false;
-                UIkit.notification("To update preview just click out of JSON input", {
+                UIkit.notification(('jsonupdate' in data.app.lang ? data.app.lang.jsonupdate : "To update preview just click out of JSON input"), {
                     status: 'primary',
                     pos: 'top-left',
                     timeout: 3000
