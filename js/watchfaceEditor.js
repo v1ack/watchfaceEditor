@@ -8,9 +8,11 @@ function init() {
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
-        //addScript("assets/russian.json");
-        data.app.lang = JSON.parse(russian);
-        changeLang();
+        addScript("assets/russian.json");
+        setTimeout(function () {
+            data.app.lang = JSON.parse(russian);
+            changeLang();
+        }, 500);
     }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
@@ -1417,7 +1419,7 @@ var coords = 0,
         },
         updatecode: function () {
             $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-            if ($("codearea").innerHTML.replace(this.regexr, '').match(this.regexrimg))
+            if ($("codearea").innerText.match(this.regexrimg))
                 $("defaultimages").classList.add("uk-label-success");
             else
                 $("defaultimages").classList.remove("uk-label-success");
@@ -2351,7 +2353,7 @@ var coords = 0,
                 saveAs(blob, data.wfname + '.json');
             } else {
                 var a = document.createElement('a');
-                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 2));
+                a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(coords, null, 4));
                 a.download = data.wfname + '.json';
                 a.click();
             }
@@ -2379,13 +2381,8 @@ var coords = 0,
         },
         codeareablur: function () {
             try {
-                coords = jsonlint.parse($("codearea").innerHTML.replace(this.regexr, ''));
-                view.makeWf();
-                $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(coords, null, 4));
-                if ($("codearea").innerHTML.replace(this.regexr, '').match(this.regexrimg))
-                    $("defaultimages").classList.add("uk-label-success");
-                else
-                    $("defaultimages").classList.remove("uk-label-success");
+                coords = jsonlint.parse($("codearea").innerText);
+                this.updatecode();
             } catch (error) {
                 $("jsonerrortext").innerHTML = error;
 
@@ -2397,7 +2394,7 @@ var coords = 0,
             }
         },
         regexr: /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
-        regexrimg: /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s2\d\d/g
+        regexrimg: /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g
     },
     imagestab = {
         init: function () {
@@ -2640,7 +2637,7 @@ var coords = 0,
                 name.addition = name.addition.slice(2);
             }
             $(name.insertto).innerHTML += '<div class="imagessection"><div><span class="imagessection-h">' + name.label + '</span><span class="imagessection-description">ImageIndex: ' + imageindex + name.addition + '</span></div><div class="imagessection-images"></div></div>';
-            if ((imageindex - imageindex % 100) / 100 == 2)
+            if (((imageindex - imageindex % 100) / 100 == 2) || ((imageindex - imageindex % 100) / 100 == 3))
                 $(name.insertto).lastChild.classList.add("imagessection-def");
             for (var i = 0; i < imagescount; i++) {
                 $(name.insertto).lastChild.lastChild.appendChild($c(imageindex + i));
