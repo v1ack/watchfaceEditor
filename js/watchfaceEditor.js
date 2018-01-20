@@ -8,11 +8,9 @@ function init() {
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
-        addScript("assets/russian.json");
-        setTimeout(function () {
-            data.app.lang = JSON.parse(russian);
-            changeLang();
-        }, 500);
+        //addScript("assets/russian.json");
+        data.app.lang = JSON.parse(russian);
+        changeLang();
     }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
