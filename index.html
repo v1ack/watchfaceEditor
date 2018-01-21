@@ -492,7 +492,7 @@
         <div id="modal-donate" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="donate">Donate</h2>
-                <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no" class="uk-container"></iframe>
+                <div id="donateframe" class="uk-container"></div>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>
@@ -516,7 +516,7 @@
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript" src="js/jsonlint.js"></script>
     <script type="text/javascript">
-        if (!data.local) {
+        if (!data.app.local) {
             (function(d, w, c) {
                 (w[c] = w[c] || []).push(function() {
                     try {
