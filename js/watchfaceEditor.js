@@ -8,9 +8,15 @@ function init() {
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
-        //addScript("assets/russian.json");
-        data.app.lang = JSON.parse(russian);
-        changeLang();
+        changeLang(russian);
+    } else
+    if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp != 1) {
+        UIkit.notification("Please contact me if you can help me to translate this app to your language", {
+            status: 'primary',
+            pos: 'top-left',
+            timeout: 7500
+        });
+        localStorage.translatehelp = 1;
     }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
@@ -124,13 +130,28 @@ function init() {
         }
 }
 
-function changeLang() {
+function changeLang(lang) {
+    data.app.lang = JSON.parse(lang);
     var strings = document.querySelectorAll('[data-translate-id]');
     for (var i = 0; i < strings.length; i++) {
-        //console.log(strings[i].dataset.translateId);
         if (strings[i].dataset.translateId in data.app.lang)
-            strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
+            if (strings[i].dataset.link == undefined)
+                strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
+            else
+                strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId].replace('$link', strings[i].dataset.link);
     }
+}
+
+function makeJsonForTranslate() {
+    var json = {};
+    var strings = document.querySelectorAll('[data-translate-id]');
+    for (var i = 0; i < strings.length; i++) {
+        json[strings[i].dataset.translateId] = strings[i].innerHTML;
+        //        console.log(strings[i].dataset.translateId, strings[i]);
+        //        if (strings[i].dataset.translateId in data.app.lang)
+        //            strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
+    }
+    return JSON.stringify(json);
 }
 
 function $(el) {
@@ -446,7 +467,7 @@ var coords = {},
                 $("watchface").innerHTML = '';
                 $("svg-cont-clock").innerHTML = '';
                 $("svg-cont-steps").innerHTML = '';
-                UIkit.notification.closeAll()
+                //UIkit.notification.closeAll()
                 var t = 0;
                 if ('bg' in coords)
                     view.setPosN(coords.bg.Image, 0, "c_bg");
@@ -1296,7 +1317,15 @@ var coords = {},
                         editor.initdrag('e_battery_text', coords.batterytext, "c_battery_text", draw.battery.text);
                     }, 10);
                 }
-                if ('batteryscale' in coords) {}
+                if ('batteryscale' in coords) {
+                    for (var i = 0; i < coords.batteryscale.Segments.length; i++) {
+                        $("editor").innerHTML +=
+                            '<div id="e_battery_linar_' + i + '" style="height:' + ($(coords.batteryscale.StartImageIndex + i).height * 3) + 'px; width:' + ($(coords.batteryscale.StartImageIndex + i).width * 3) + 'px; top:' + (coords.batteryscale.Segments[i].Y * 3) + 'px; left:' + (coords.batteryscale.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                        setTimeout(function (i) {
+                            editor.initdrag(('e_battery_linar_' + i), coords.batteryscale.Segments[i], "c_battery_scale", draw.battery.scale);
+                        }, 10, i);
+                    }
+                }
             }
             if (coords.status) {
                 if ('statalarm' in coords) {
@@ -1580,6 +1609,10 @@ var coords = {},
                 this.togglebutton("tgbatnum", 1);
             else
                 this.togglebutton("tgbatnum", 0);
+            if ('batteryscale' in coords)
+                this.togglebutton("tgbatscale", 1);
+            else
+                this.togglebutton("tgbatscale", 0);
             if ('statalarm' in coords)
                 this.togglebutton("tgstatalarm", 1);
             else
@@ -1999,7 +2032,7 @@ var coords = {},
                 coords.battery = true;
             if ('batteryicon' in coords) {
                 delete coords.batteryicon;
-                if (!('batterytext' in coords))
+                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
                     coords.battery = false;
             } else
                 coords.batteryicon = {
@@ -2016,7 +2049,7 @@ var coords = {},
                 coords.battery = true;
             if ('batterytext' in coords) {
                 delete coords.batterytext;
-                if (!('batteryicon' in coords))
+                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
                     coords.battery = false;
             } else
                 coords.batterytext = {
@@ -2028,6 +2061,42 @@ var coords = {},
                     Spacing: 2,
                     ImageIndex: 200,
                     ImagesCount: 10
+                }
+            this.updatecode();
+            jsoneditor.select('"Battery":');
+        },
+        tgbatteryscale: function () {
+            if (!(coords.battery))
+                coords.battery = true;
+            if ('batteryscale' in coords) {
+                delete coords.batteryscale;
+                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
+                    coords.battery = false;
+            } else
+                coords.batteryscale = {
+                    StartImageIndex: 200,
+                    Segments: [{
+                        X: 40,
+                        Y: 42
+                    }, {
+                        X: 55,
+                        Y: 42
+                    }, {
+                        X: 70,
+                        Y: 42
+                    }, {
+                        X: 86,
+                        Y: 42
+                    }, {
+                        X: 101,
+                        Y: 42
+                    }, {
+                        X: 115,
+                        Y: 42
+                    }, {
+                        X: 129,
+                        Y: 42
+                    }]
                 }
             this.updatecode();
             jsoneditor.select('"Battery":');
@@ -2278,7 +2347,7 @@ var coords = {},
                     if ($("codearea").childNodes[i].childNodes[0].data == s)
                         return $("codearea").childNodes[i];
         },
-        fillarea: function () {
+        init: function () {
             if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion)
                 localStorage.editortabversion = data.app.editortabversion;
             this.updatecode();

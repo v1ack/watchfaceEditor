@@ -240,7 +240,7 @@
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container">
                     <li><a href="#" data-translate-id="view">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#" data-translate-id="design">Design</a></li>
-                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.fillarea();"><a href="#" data-translate-id="edit">Edit</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.init();"><a href="#" data-translate-id="edit">Edit</a></li>
                     <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#" data-translate-id="resources">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -405,6 +405,7 @@
                                         <div class="uk-accordion-content">
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatteryicon();" data-translate-id="tgbaticon" id="tgbaticon">Toggle icon</button>
                                             <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatterytext();" data-translate-id="tgbatnum" id="tgbatnum">Toggle number</button>
+                                            <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.tgbatteryscale();" data-translate-id="tgbatscale" id="tgbatscale">Toggle battery bar</button>
                                         </div>
                                     </li>
                                     <li>
@@ -443,7 +444,7 @@
                                 <h3 class="uk-accordion-title" data-translate-id="defaultimages">Default</h3>
                                 <div class="uk-accordion-content">
                                     <div id="imagesavalible"></div>
-                                    <p data-translate-id="defaultimagesTip">You can <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">download default images</a> or just drag them from this site to your folder</p>
+                                    <p data-translate-id="defaultimagesTip" data-link="href='https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages' target='_blank'">You can <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">download default images</a> or just drag them from this site to your folder</p>
                                 </div>
                             </li>
                         </ul>
@@ -458,11 +459,12 @@
         <div id="modal-howto" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="howtouse">How to use</h2>
-                <p>Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/" target="_blank">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
+                <p data-link="href='https://bitbucket.org/valeronm/amazfitbiptools/downloads/' target='_blank'" data-translate-id="howtouseDescr">Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/" target="_blank">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
                     <br><br>You can edit elements location on tab <b>Design</b>
-                    <br><br>Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">here</a>
                 </p>
-                <h3>Avalible colors on bip</h3>
+                <p data-link="href='https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages' target='_blank'" data-translate-id="howtouseDescr2">Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/Bip-Watchface-View/tree/master/defaultimages" target="_blank">here</a>
+                </p>
+                <h3 data-translate-id="avaliblecolors">Avalible colors on bip</h3>
                 <p>
                     #000000 #0000FF #00FF00 #FF0000 #00FFFF #FF00FF #FFFF00 #FFFFFF
                 </p>
@@ -493,6 +495,7 @@
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="donate">Donate</h2>
                 <div id="donateframe" class="uk-container"></div>
+                <p class="uk-text-center">WebMoney: <b>Z953359359232</b> <b style="margin-left: 15px">E189009230578</b></p>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>
@@ -509,7 +512,7 @@
         </div>
     </main>
     <footer>
-        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC">donate</a></p>
+        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate">donate</a></p>
     </footer>
     <script type="text/javascript" src="assets/russian.json"></script>
     <script type="text/javascript" src="js/watchfaceEditor.js"></script>
