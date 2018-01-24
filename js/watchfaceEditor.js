@@ -51,6 +51,7 @@ function init() {
         });
         addScript("js/FileSaver.min.js");
         addScript("js/canvas-toBlob.js");
+        $("inputblock").childNodes[3].childNodes[1].style.overflowX = "hidden";
     }
     $('inputimages').onchange = function () {
         if (this.files.length) {
@@ -469,6 +470,11 @@ var coords = {},
                 $("svg-cont-steps").innerHTML = '';
                 //UIkit.notification.closeAll()
                 var t = 0;
+                view.setPosN({
+                    ImageIndex: 265,
+                    X: 0,
+                    Y: 0
+                }, 0, "wf_bg")
                 if ('bg' in coords)
                     view.setPosN(coords.bg.Image, 0, "c_bg");
                 if ('time' in coords)
@@ -1207,8 +1213,9 @@ var coords = {},
             $("editor").innerHTML = '';
             if ('bg' in coords) {
                 var bg = $c(coords.bg.Image.ImageIndex);
-                bg.style.left = Number(bg.style.left.replace("px", "")) * 3 + "px";
-                bg.style.top = Number(bg.style.top.replace("px", "")) * 3 + "px";
+                bg.style.left = coords.bg.Image.X * 3 + "px";
+                bg.style.top = coords.bg.Image.Y * 3 + "px";
+                bg.style.position = "absolute";
                 bg.height *= 3;
                 bg.width *= 3;
                 bg.removeAttribute("id");
@@ -1462,7 +1469,7 @@ var coords = {},
                     }
                     removeByClass(cls);
                     drawF();
-                    $("e_coords").innerHTML = "Coordinates";
+                    $("e_coords").innerHTML = ('coordinates' in data.app.lang ? data.app.lang.coordinates : "Coordinates");
                 };
 
             }
@@ -2351,7 +2358,7 @@ var coords = {},
             if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion)
                 localStorage.editortabversion = data.app.editortabversion;
             this.updatecode();
-            if (data.app.firstopen_editor) {
+            if (data.app.firstopen_editor && localStorage.showcount < 8) {
                 sessionStorage.firstopen_editor = false;
                 UIkit.notification(('jsonupdate' in data.app.lang ? data.app.lang.jsonupdate : "To update preview just click out of JSON input"), {
                     status: 'primary',
