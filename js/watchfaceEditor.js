@@ -134,9 +134,11 @@ function init() {
         }
 }
 
-if (location.ancestorOrigins.length > 0)
-    if (location.ancestorOrigins[0] == "https://amazfitwatchfaces.com/view/" || location.ancestorOrigins[0] == "http://amazfitwatchfaces.com/view/")
-        window.parent.location.href = "v1ack.github.io/Bip-Watchface-View/";
+if (location.ancestorOrigins.length > 0){
+    console.log(location);
+    if (location.ancestorOrigins[0].match(/amazfit/g))
+        window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
+}
 
 function changeLang(lang) {
     data.app.lang = JSON.parse(lang);
