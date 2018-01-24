@@ -114,6 +114,9 @@ function init() {
         $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
         $("donateframe").classList.remove('uk-modal');
     };
+    UIkit.modal("#modal-about")._events[0] = function () {
+        $("siteopened").innerHTML = $("siteopened").innerHTML.replace("$times", localStorage.showcount);
+    }
     if (!('showcount' in localStorage)) {
         localStorage.showcount = 1;
     } else {
@@ -130,6 +133,10 @@ function init() {
             UIkit.modal($("modal-loading")).hide();
         }
 }
+
+if (location.ancestorOrigins.length > 0)
+    if (location.ancestorOrigins[0] == "https://amazfitwatchfaces.com/view/" || location.ancestorOrigins[0] == "http://amazfitwatchfaces.com/view/")
+        window.parent.location.href = "v1ack.github.io/Bip-Watchface-View/";
 
 function changeLang(lang) {
     data.app.lang = JSON.parse(lang);
@@ -933,7 +940,7 @@ var coords = {},
                 view.setPosN(coords.time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
                 view.setPosN(coords.time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
                 view.setPosN(coords.time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
-                if('DrawingOrder' in coords.time){
+                if ('DrawingOrder' in coords.time) {
                     var time = document.getElementsByClassName("c_time");
                     time[0].style.zIndex = Number(coords.time.DrawingOrder[0]);
                     time[1].style.zIndex = Number(coords.time.DrawingOrder[1]);
