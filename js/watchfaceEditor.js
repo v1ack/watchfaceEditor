@@ -933,6 +933,13 @@ var coords = {},
                 view.setPosN(coords.time.Hours.Ones, Number(ntimeOnClock[1]), "c_time");
                 view.setPosN(coords.time.Minutes.Tens, Number(data.timeOnClock[1][0]), "c_time");
                 view.setPosN(coords.time.Minutes.Ones, Number(data.timeOnClock[1][1]), "c_time");
+                if('DrawingOrder' in coords.time){
+                    var time = document.getElementsByClassName("c_time");
+                    time[0].style.zIndex = Number(coords.time.DrawingOrder[0]);
+                    time[1].style.zIndex = Number(coords.time.DrawingOrder[1]);
+                    time[2].style.zIndex = Number(coords.time.DrawingOrder[2]);
+                    time[3].style.zIndex = Number(coords.time.DrawingOrder[3]);
+                }
             },
             seconds: function () {
                 view.setPosN(coords.seconds.Tens, data.seconds[0], "c_sec");
