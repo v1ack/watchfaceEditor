@@ -201,6 +201,13 @@
             </div>
         </div>
     </div>
+    <script>
+        console.log(location);
+        if (location.ancestorOrigins.length > 0)
+            if (location.ancestorOrigins[0].match(/amazfit/g))
+                window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
+
+    </script>
     <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">

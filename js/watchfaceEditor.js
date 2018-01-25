@@ -134,12 +134,6 @@ function init() {
         }
 }
 
-if (location.ancestorOrigins.length > 0){
-    console.log(location);
-    if (location.ancestorOrigins[0].match(/amazfit/g))
-        window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
-}
-
 function changeLang(lang) {
     data.app.lang = JSON.parse(lang);
     var strings = document.querySelectorAll('[data-translate-id]');
