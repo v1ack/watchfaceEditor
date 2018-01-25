@@ -203,8 +203,8 @@
     </div>
     <script>
         console.log(location);
-        if (location.ancestorOrigins.length > 0)
-            if (location.ancestorOrigins[0].match(/amazfit/g))
+        if (window.parent.location.href != location.href)
+            if (!(window.parent.location.href.match(/webvisor/g)))
                 window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
 
     </script>
