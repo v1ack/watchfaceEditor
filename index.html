@@ -25,12 +25,20 @@
 
         #editor {
             position: relative;
-            height: 528px;
-            width: 528px;
             background: black;
             -moz-user-select: none;
             -khtml-user-select: none;
             user-select: none;
+        }
+
+        .bip #editor {
+            height: 528px;
+            width: 528px;
+        }
+
+        .cor #editor {
+            height: 480px;
+            width: 240px;
         }
 
         .editor-elem {
@@ -52,26 +60,47 @@
         }
 
         #watchfaceimage {
-            background: url(assets/b.png);
-            padding-left: 43px;
-            padding-top: 163px;
-            height: 353px;
             position: relative;
-            width: 233px;
         }
 
         #watchfaceblock {
             position: relative;
-            height: 176px;
-            width: 176px;
         }
 
         #watchface,
         .watchface-cover {
             position: absolute;
             top: 0;
+        }
+
+        .bip #watchfaceimage {
+            background: url(assets/b.png);
+            padding-left: 43px;
+            padding-top: 163px;
+            height: 353px;
+            width: 233px;
+        }
+
+        .bip #watchfaceblock,
+        .bip #watchface,
+        .bip .watchface-cover {
             height: 176px;
             width: 176px;
+        }
+
+        .cor #watchfaceimage {
+            background: url(assets/c.png);
+            padding-left: 24px;
+            padding-top: 88px;
+            height: 264px;
+            width: 105px;
+        }
+
+        .cor #watchfaceblock,
+        .cor #watchface,
+        .cor .watchface-cover {
+            height: 160px;
+            width: 80px;
         }
 
         #watchface img {
@@ -200,14 +229,13 @@
                 <div uk-spinner class="uk-position-bottom-center"></div>
             </div>
         </div>
-    </div>
-    <script>
-        console.log(location);
-        if (location.ancestorOrigins.length > 0)
-            if (!(location.ancestorOrigins[0].match(/webvisor/g)))
-                window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
+        <script>
+            if (location.ancestorOrigins.length > 0)
+                if (!(location.ancestorOrigins[0].match(/webvisor/g)))
+                    window.parent.location.href = "https://v1ack.github.io/Bip-Watchface-View/";
 
-    </script>
+        </script>
+    </div>
     <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
@@ -228,9 +256,9 @@
             </div>
         </nav>
     </header>
-    <main class="uk-container uk-position-relative uk-margin-top">
+    <main class="uk-container uk-position-relative uk-margin-top bip">
         <div class="uk-grid">
-            <div class="uk-width-auto">
+            <div class="uk-width-auto uk-flex uk-flex-center">
                 <div id="watchfaceimage">
                     <div id="watchfaceblock">
                         <div id="watchface"></div>
@@ -253,6 +281,13 @@
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
                         <div><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
+                        <div class="uk-margin-top" hidden>
+                            <span>Device</span>
+                            <div class="uk-grid-small uk-child-width-auto uk-grid">
+                                <label><input class="uk-radio" type="radio" name="device" value="bip"> Bip</label>
+                                <label><input class="uk-radio" type="radio" name="device" value="cor"> Cor</label>
+                            </div>
+                        </div>
                         <div class="js-upload uk-margin-top" uk-form-custom>
                             <span data-translate-id="images">Images: </span>
                             <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
@@ -494,6 +529,7 @@
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="about">About</h2>
                 <p id="siteopened">You opened this site $times times</p>
+                <a href="https://metrika.yandex.ru/dashboard?id=46845507" target="_blank">Site statistic</a>
                 <h3>Thanks to</h3>
                 <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/" target="_blank">AmazfitBipTools</a><br> MaxL for <a href="http://4pda.ru/forum/index.php?s=&showtopic=845160&view=findpost&p=68065502" target="_blank">weather icons</a><br> Osmat for <a href="http://amazfitwatchfaces.com" target="_blank">amazfitwatchfaces.com</a><br> Showman for advices
                 </p>

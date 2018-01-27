@@ -1,4 +1,27 @@
 function init() {
+    if (localStorage.device == undefined)
+        localStorage.device = "bip";
+    var device = document.getElementsByName('device');
+    for (var i = 0; i < device.length; i++) {
+        if (device[i].value == localStorage.device)
+            device[i].checked = true;
+        device[i].onchange = function () {
+            for (var i = 0; i < device.length; i++)
+                if (device[i].checked) {
+                    localStorage.device = device[i].value;
+                    location.reload();
+                }
+        }
+    }
+    if (localStorage.device == "cor") {
+        document.getElementsByTagName("main")[0].classList.remove('bip');
+        document.getElementsByTagName("main")[0].classList.add('cor');
+        $("svg-cont-steps").attributes.width.value = 80;
+        $("svg-cont-steps").attributes.height.value = 160;
+        $("svg-cont-clock").attributes.width.value = 80;
+        $("svg-cont-clock").attributes.height.value = 160;
+    }
+
     function addScript(url) {
         var e = document.createElement("script");
         e.src = url;
@@ -20,7 +43,10 @@ function init() {
     }
     if (localStorage.showdemo != 0) {
         window.onload = function () {
-            coords = JSON.parse('{"bg":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":87,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":37,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":112,"Y":77},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":62,"Y":77}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
+            if (localStorage.device == "cor") {
+                coords = JSON.parse('{"bg":{"Image":{"ImageIndex":293,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":9},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":9}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":84},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":83}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
+            } else
+                coords = JSON.parse('{"bg":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":87,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":37,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":112,"Y":77},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":62,"Y":77}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
             //setTimeout(view.makeWf, 350);
             view.makeWf();
             load.disableBtn(1);
@@ -33,9 +59,9 @@ function init() {
     $("showdemocheck").onchange = function () {
         localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
         location.reload();
-    }
+    };
     localStorage.biptools = 0;
-    for (var i = 200; i <= 292; i++)
+    for (var i = 200; i <= data.app.lastimage; i++)
         $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
     if (!('helpShown' in localStorage)) {
         UIkit.modal($("modal-howto")).show();
@@ -402,6 +428,7 @@ var coords = {},
             return packed;
         },
         app: {
+            lastimage: 293,
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
@@ -473,11 +500,18 @@ var coords = {},
                 $("svg-cont-steps").innerHTML = '';
                 //UIkit.notification.closeAll()
                 var t = 0;
-                view.setPosN({
-                    ImageIndex: 265,
-                    X: 0,
-                    Y: 0
-                }, 0, "wf_bg")
+                if (localStorage.device == 'cor') {
+                    view.setPosN({
+                        ImageIndex: 293,
+                        X: 0,
+                        Y: 0
+                    }, 0, "wf_bg")
+                } else
+                    view.setPosN({
+                        ImageIndex: 265,
+                        X: 0,
+                        Y: 0
+                    }, 0, "wf_bg")
                 if ('bg' in coords)
                     view.setPosN(coords.bg.Image, 0, "c_bg");
                 if ('time' in coords)
