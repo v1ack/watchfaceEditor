@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="author" content="vlack">
-    <meta name="keywords" content="Amazfit, watchface, editor, edit, view" />
+    <meta name="keywords" content="Amazfit, watchface, editor, edit, view, design" />
     <meta name="google-site-verification" content="W4c-hsgt3HM66ctqziX6qHUekvLMIE8hyRgj1QrKMEk" />
     <link href="assets/uikit/uikit.min.css" rel="stylesheet">
     <style>
@@ -242,7 +242,7 @@
                 <div uk-navbar>
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="https://v1ack.github.io/watchfaceEditor/" style="color: white">Bip watchface edit</a>
-                        <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle data-translate-id="howtouse">How to use</a>
+                        <a class="uk-navbar-item" style="color: white" href="#modal-howto" uk-toggle data-translate-id="help">Help</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                         <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank">Image creator</a>
@@ -500,13 +500,17 @@
         </div>
         <div id="modal-howto" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title" data-translate-id="howtouse">How to use</h2>
+                <h2 class="uk-modal-title" data-translate-id="help">Help</h2>
+                <h3 data-translate-id="howtouse">How to use</h3>
                 <p data-link="href='https://bitbucket.org/valeronm/amazfitbiptools/downloads/' target='_blank'" data-translate-id="howtouseDescr">Disassemble <b>.bin</b> file with <a href="https://bitbucket.org/valeronm/amazfitbiptools/downloads/" target="_blank">AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface
                     <br><br>You can edit elements location on tab <b>Design</b>
                 </p>
                 <p data-link="href='https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages' target='_blank'" data-translate-id="howtouseDescr2">Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages" target="_blank">here</a>
                 </p>
-                <h3 data-translate-id="avaliblecolors">Avalible colors on bip</h3>
+                <p>
+                    <a href="http://4pda.ru/forum/index.php?act=findpost&pid=68418440&anchor=Spoil-68418440-1" target="_blank">Инструкция на русском языке</a>
+                </p>
+                <h3 data-translate-id="avaliblecolors">Available colors on bip</h3>
                 <p>
                     <span class="uk-badge" style="background: #000000">#000000</span>
                     <span class="uk-badge" style="background: #0000FF">#0000FF</span>
@@ -517,9 +521,121 @@
                     <span class="uk-badge" style="background: #FFFF00; color: #000000">#FFFF00</span>
                     <span class="uk-badge" style="background: #FFFFFF; color: #000000">#FFFFFF</span>
                 </p>
-                <p>
-                    <a href="http://4pda.ru/forum/index.php?act=findpost&pid=68418440&anchor=Spoil-68418440-1" target="_blank">Инструкция на русском языке</a>
-                </p>
+                <h3 data-translate-id="weathericons">Weather icons</h3>
+                <table class="uk-table uk-table-small">
+                    <thead>
+                        <tr>
+                            <th class="uk-table-shrink">Icon</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="defaultimages/267.png"></td>
+                            <td data-translate-id="weather_error">Error</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/268.png"></td>
+                            <td data-translate-id="weather_cloudy">Cloudy</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/269.png"></td>
+                            <td data-translate-id="weather_cloudy">Cloudy</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/270.png"></td>
+                            <td data-translate-id="weather_cloudy">Cloudy</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/271.png"></td>
+                            <td data-translate-id="weather_sun">Sun</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/272.png"></td>
+                            <td data-translate-id="weather_cloudy">Cloudy</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/273.png"></td>
+                            <td data-translate-id="weather_lrain">Light rain</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/274.png"></td>
+                            <td data-translate-id="weather_lsnow">Light snow</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/275.png"></td>
+                            <td data-translate-id="weather_rain">Rain</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/276.png"></td>
+                            <td data-translate-id="weather_snow">Snow</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/277.png"></td>
+                            <td data-translate-id="weather_hsnow">Heavy snow</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/278.png"></td>
+                            <td data-translate-id="weather_hrain">Heavy rain</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/279.png"></td>
+                            <td data-translate-id="weather_blizzard">Blizzard</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/280.png"></td>
+                            <td data-translate-id="weather_snowandrain">Snow and rain</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/281.png"></td>
+                            <td data-translate-id="weather_fog">Fog</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/282.png"></td>
+                            <td data-translate-id="weather_haze">Haze</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/283.png"></td>
+                            <td data-translate-id="weather_storm">Storm</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/284.png"></td>
+                            <td data-translate-id="weather_vhsnow">Very heavy snow</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/285.png"></td>
+                            <td data-translate-id="weather_dew">Dew</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/286.png"></td>
+                            <td data-translate-id="weather_downpour">Downpour</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/287.png"></td>
+                            <td data-translate-id="weather_hail">Hail</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/288.png"></td>
+                            <td data-translate-id="weather_hailstorm">Hail storm</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/289.png"></td>
+                            <td data-translate-id="weather_hdownpour">Heavy downpour</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/290.png"></td>
+                            <td data-translate-id="weather_sandstorm">Sandstorm</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/291.png"></td>
+                            <td data-translate-id="weather_tornado">Tornado</td>
+                        </tr>
+                        <tr>
+                            <td><img src="defaultimages/292.png"></td>
+                            <td data-translate-id="weather_vhdownpour">Very heavy downpour</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>
@@ -574,7 +690,7 @@
             (function(d, w, c) {
                 (w[c] = w[c] || []).push(function() {
                     try {
-                        w.yaCounter46845507 = new Ya.Metrika({
+                        w.yaCounter46845507 = new Ya.Metrika2({
                             id: 46845507,
                             clickmap: true,
                             trackLinks: true,
@@ -583,6 +699,7 @@
                         });
                     } catch (e) {}
                 });
+
                 var n = d.getElementsByTagName("script")[0],
                     s = d.createElement("script"),
                     f = function() {
@@ -590,13 +707,14 @@
                     };
                 s.type = "text/javascript";
                 s.async = true;
-                s.src = "https://mc.yandex.ru/metrika/watch.js";
+                s.src = "https://mc.yandex.ru/metrika/tag.js";
+
                 if (w.opera == "[object Opera]") {
                     d.addEventListener("DOMContentLoaded", f, false);
                 } else {
                     f();
                 }
-            })(document, window, "yandex_metrika_callbacks");
+            })(document, window, "yandex_metrika_callbacks2");
         }
 
     </script>
