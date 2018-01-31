@@ -17,6 +17,15 @@
             padding: 0;
         }
 
+        #modal-loading .uk-modal-dialog {
+            image-rendering: -webkit-optimize-contrast;
+            background: url(assets/wf-editor.png), linear-gradient(to left, #28a5f5, #1e87f0);
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 2px 2px 6px black;
+        }
+
         img {
             max-width: 300%;
             image-rendering: pixelated;
@@ -216,8 +225,8 @@
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="assets/uikit/uikit.min.js"></script>
     <meta property="og:image" content="https://v1ack.github.io/watchfaceEditor/assets/og-img.png">
-    <meta property="og:image:width" content="2400">
-    <meta property="og:image:height" content="1257">
+    <meta property="og:image:width" content="1700">
+    <meta property="og:image:height" content="1275">
     <meta property="og:title" content="Watchface editor">
     <meta property="og:description" content="Watchface editor for Amazfit Bip">
     <meta property="og:url" content="https://v1ack.github.io/watchfaceEditor/">
@@ -225,8 +234,9 @@
 </head>
 
 <body>
+    <img src="assets/wf-editor.png" hidden>
     <div id="modal-loading" class="uk-modal-full uk-open" uk-modal style="display: block">
-        <div class="uk-modal-dialog" uk-height-viewport style="background: linear-gradient(to left, #28a5f5, #1e87f0); color: white">
+        <div class="uk-modal-dialog" uk-height-viewport style="">
             <div class="uk-transform-center uk-position-absolute" style="left: 50%; top: 50%">
                 <div class="uk-padding-large">
                     <h1 class="uk-text-center" style="color: white">Bip watchface editor</h1>
@@ -404,6 +414,8 @@
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip data-translate-id="fixcoords">Fix coordinates</button>
                             <br>
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
+                            <br>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.undo()" data-translate-id="undo">Undo</button>
                         </div>
                     </li>
                     <li>
@@ -476,6 +488,7 @@
                                     </li>
                                 </ul>
                             </div>
+                            <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.undo()" data-translate-id="undo">Undo</button>
                             <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                             <a href="https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages" data-translate-id="defaultimages">Default images</a>
                         </div>

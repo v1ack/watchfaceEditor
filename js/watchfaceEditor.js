@@ -428,7 +428,7 @@ var coords = {},
             return packed;
         },
         app: {
-            lastimage: 293,
+            lastimage: 300,
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
@@ -457,7 +457,8 @@ var coords = {},
         lock: true,
         jsset: false,
         imagesset: false,
-        wfname: "watchface"
+        wfname: "watchface",
+        coordsHistory: []
     },
     view = {
         drawAnalog: function (el, value) {
@@ -1473,11 +1474,12 @@ var coords = {},
             el = $(el);
 
             el.onmousedown = function (e) {
+                data.coordsHistory.push(JSON.stringify(coords));
 
                 var ed = editor.getOffsetRect($("editor"));
-                var coords = getCoords(el);
-                var shiftX = e.pageX - coords.left;
-                var shiftY = e.pageY - coords.top;
+                var curcoords = getCoords(el);
+                var shiftX = e.pageX - curcoords.left;
+                var shiftY = e.pageY - curcoords.top;
 
                 el.style.position = 'absolute';
                 moveAt(e);
@@ -1607,6 +1609,13 @@ var coords = {},
             }
             this.init();
             view.makeWf();
+        },
+        undo: function () {
+            if (data.coordsHistory.length) {
+                coords = JSON.parse(data.coordsHistory.pop());
+                this.init();
+                view.makeWf();
+            }
         }
     },
     jsoneditor = {
@@ -2466,6 +2475,8 @@ var coords = {},
         },
         codeareablur: function () {
             try {
+                data.coordsHistory.push(JSON.stringify(coords));
+                console.log(jsonlint.parse($("codearea").innerText));
                 data.import(jsonlint.parse($("codearea").innerText));
                 this.updatecode();
             } catch (error) {
@@ -2476,6 +2487,12 @@ var coords = {},
                 }
                 setTimeout(show, 250);
                 console.warn(error);
+            }
+        },
+        undo: function () {
+            if (data.coordsHistory.length) {
+                coords = JSON.parse(data.coordsHistory.pop());
+                this.updatecode();
             }
         },
         regexr: /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
@@ -2659,6 +2676,10 @@ var coords = {},
                 label: "Week days russian inverted",
                 insertto: "imagesavalible"
             }, 248, 7);
+            this.insertimg({
+                label: "Week days finnish",
+                insertto: "imagesavalible"
+            }, 294, 7);
             this.insertimg({
                 label: "Battery icon",
                 insertto: "imagesavalible"
