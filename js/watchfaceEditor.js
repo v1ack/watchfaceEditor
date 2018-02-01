@@ -32,7 +32,9 @@ function init() {
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
         changeLang(russian);
-    } else
+    } else if (localStorage.lang.indexOf("zh") >= 0) {
+        changeLang(chinese);
+    }
     if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp != 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',
