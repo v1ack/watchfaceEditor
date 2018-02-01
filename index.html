@@ -16,9 +16,9 @@
             margin: 0;
             padding: 0;
         }
-        
-        #modal-loading{
-                transition: opacity 1s linear;
+
+        #modal-loading {
+            transition: opacity 1s linear;
         }
 
         #modal-loading .uk-modal-dialog {
@@ -226,8 +226,14 @@
         }
 
     </style>
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
+    <link rel="manifest" href="assets/icon/manifest.json">
+    <link rel="mask-icon" href="assets/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="assets/icon/favicon.ico">
+    <meta name="msapplication-config" content="assets/icon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
     <script src="assets/uikit/uikit.min.js"></script>
     <meta property="og:image" content="https://v1ack.github.io/watchfaceEditor/assets/og-img.png">
     <meta property="og:image:width" content="1700">
@@ -270,7 +276,7 @@
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white" target="_blank">amazfitwatchfaces.com</a>
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white" target="_blank" hidden>amazfitwatchfaces.com</a>
                         </ul>
                     </div>
                 </div>
@@ -549,8 +555,8 @@
                 <table class="uk-table uk-table-small">
                     <thead>
                         <tr>
-                            <th class="uk-table-shrink">Icon</th>
-                            <th>Description</th>
+                            <th class="uk-table-shrink" data-translate-id="icon">Icon</th>
+                            <th data-translate-id="description">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -564,11 +570,11 @@
                         </tr>
                         <tr>
                             <td><img src="defaultimages/269.png"></td>
-                            <td data-translate-id="weather_cloudy">Cloudy and Chance of Rain</td>
+                            <td data-translate-id="weather_cloudy_rain">Cloudy and Chance of Rain</td>
                         </tr>
                         <tr>
                             <td><img src="defaultimages/270.png"></td>
-                            <td data-translate-id="weather_cloudy">Cloudy and Chance of Snow</td>
+                            <td data-translate-id="weather_cloudy_snow">Cloudy and Chance of Snow</td>
                         </tr>
                         <tr>
                             <td><img src="defaultimages/271.png"></td>

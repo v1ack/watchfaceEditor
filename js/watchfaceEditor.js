@@ -160,6 +160,9 @@ function init() {
         window.onload = function () {
             UIkit.modal($("modal-loading")).hide();
         }
+        
+    if(navigator.userAgent.indexOf("Electron")>=0)
+        addScript('js/electronApp.js');
 }
 
 function changeLang(lang) {
