@@ -164,6 +164,8 @@ function init() {
 
     if (navigator.userAgent.indexOf("Electron") >= 0)
         addScript('js/electronApp.js');
+    if (!data.app.local)
+        setTimeout(addScript, 2000, 'js/metrika.js');
 }
 
 function changeLang(lang) {
