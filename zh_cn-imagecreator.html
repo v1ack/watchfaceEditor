@@ -5,8 +5,14 @@
     <title>【表盘元素】创建工具</title>
     <meta charset="utf-8">
     <meta name="description" content="Image creator from font file">
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
+    <link rel="manifest" href="assets/icon/manifest.json">
+    <link rel="mask-icon" href="assets/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="assets/icon/favicon.ico">
+    <meta name="msapplication-config" content="assets/icon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
     <link href="assets/uikit/uikit.min.css" rel="stylesheet">
     <script src="assets/uikit/uikit.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Share+Tech+Mono|Ubuntu+Mono&amp;subset=cyrillic" rel="stylesheet">
@@ -74,7 +80,7 @@
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white" target="_blank">华米表盘分享网站：amazfitwatchfaces.com</a>
+                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/" style="color: white" target="_blank" hidden>华米表盘分享网站：amazfitwatchfaces.com</a>
                         </ul>
                     </div>
                 </div>
@@ -174,19 +180,19 @@
     <footer>
         <p class="uk-text-center uk-text-meta" style="margin-top: 15px">程序设计:vlack&nbsp;&nbsp;&nbsp;&nbsp;翻译:TXK <span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC">支持vlack</a>
 
-</p>
+        </p>
     </footer>
     <div id="modal-donate" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
-       <h2 class="uk-modal-title">支持vlack
-</h2>
-                 <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no" class="uk-container"></iframe>
+            <h2 class="uk-modal-title">支持vlack
+            </h2>
+            <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no" class="uk-container"></iframe>
             <p class="uk-text-right">
                 <button class="uk-button uk-button-default uk-modal-close" type="button">关闭</button>
             </p>
         </div>
     </div>
-<!--    <script type="text/javascript" src="js/html2canvas.comp.js"></script>-->
+    <!--    <script type="text/javascript" src="js/html2canvas.comp.js"></script>-->
     <script type="text/javascript">
         function addScript(url) {
             var e = document.createElement("script");
@@ -313,9 +319,9 @@
                     html2canvas($(el), {
                         onrendered: function(canvas) {
                             ctx = canvas.getContext("2d");
-//                            var imageData = ctx.getImageData(0, 0, 300, 300);
-//                            imageDataFiltered = cleaner(imageData);
-//                            ctx.putImageData(imageDataFiltered, 0, 0);
+                            //                            var imageData = ctx.getImageData(0, 0, 300, 300);
+                            //                            imageDataFiltered = cleaner(imageData);
+                            //                            ctx.putImageData(imageDataFiltered, 0, 0);
                             if (edgeBrowser) {
                                 canvas.toBlob(function(blob) {
                                     saveAs(blob, creator.number + ".png");
@@ -352,8 +358,8 @@
                     ctx.fillStyle = creator.color;
                     ctx.fillText($(el).innerText, canvas.width / 2, canvas.height / 2);
                     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                            imageDataFiltered = cleaner(imageData);
-                            ctx.putImageData(imageDataFiltered, 0, 0);
+                    imageDataFiltered = cleaner(imageData);
+                    ctx.putImageData(imageDataFiltered, 0, 0);
                     if (edgeBrowser) {
                         canvas.toBlob(function(blob) {
                             saveAs(blob, creator.number + ".png");

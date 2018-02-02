@@ -273,7 +273,7 @@
                         <a class="uk-navbar-item" style="color: white" href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a>
                         <a class="uk-navbar-item" style="color: white" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                         <span class="uk-navbar-item" data-translate-id="imagecreator"><a style="color: white" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank">Image creator</a></span>
-<!--                        <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank" data-translate-id="imagecreator"><a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/watchfaceEditor/zh_cn-imagecreator.html" target="_blank">Image creator</a></a>-->
+                        <!--                        <a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank" data-translate-id="imagecreator"><a class="uk-navbar-item" style="color: white" href="https://v1ack.github.io/watchfaceEditor/zh_cn-imagecreator.html" target="_blank">Image creator</a></a>-->
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
@@ -712,7 +712,6 @@
     <footer>
         <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px" data-translate-id="translatedby"></span><span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/watchfaceEditor" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate">donate</a></p>
     </footer>
-    <script type="text/javascript" src="assets/translate.json"></script>
     <script type="text/javascript" src="js/watchfaceEditor.js"></script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>
     <script type="text/javascript" src="js/jsonlint.js"></script>
@@ -746,6 +745,40 @@
                     f();
                 }
             })(document, window, "yandex_metrika_callbacks2");
+
+            function altMetrika() {
+                if (Ya == undefined) {
+                    (function(d, w, c) {
+                        (w[c] = w[c] || []).push(function() {
+                            try {
+                                w.yaCounter46845507 = new Ya.Metrika2({
+                                    id: 46845507,
+                                    clickmap: true,
+                                    trackLinks: true,
+                                    accurateTrackBounce: true,
+                                    webvisor: true
+                                });
+                            } catch (e) {}
+                        });
+
+                        var n = d.getElementsByTagName("script")[0],
+                            s = d.createElement("script"),
+                            f = function() {
+                                n.parentNode.insertBefore(s, n);
+                            };
+                        s.type = "text/javascript";
+                        s.async = true;
+                        s.src = "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js";
+
+                        if (w.opera == "[object Opera]") {
+                            d.addEventListener("DOMContentLoaded", f, false);
+                        } else {
+                            f();
+                        }
+                    })(document, window, "yandex_metrika_callbacks2");
+                }
+            }
+            setTimeout(altMetrika, 10000);
         }
 
     </script>

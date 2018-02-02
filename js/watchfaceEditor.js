@@ -31,10 +31,11 @@ function init() {
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
-        changeLang(russian);
-    } else if (localStorage.lang.indexOf("zh") >= 0) {
-        changeLang(chinese);
-    }
+        changeLang('russian');
+    } else
+    if (localStorage.lang.indexOf("zh") >= 0) {
+        changeLang('chinese');
+    } else
     if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp != 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',
@@ -160,20 +161,30 @@ function init() {
         window.onload = function () {
             UIkit.modal($("modal-loading")).hide();
         }
-        
-    if(navigator.userAgent.indexOf("Electron")>=0)
+
+    if (navigator.userAgent.indexOf("Electron") >= 0)
         addScript('js/electronApp.js');
 }
 
 function changeLang(lang) {
-    data.app.lang = JSON.parse(lang);
-    var strings = document.querySelectorAll('[data-translate-id]');
-    for (var i = 0; i < strings.length; i++) {
-        if (strings[i].dataset.translateId in data.app.lang)
-            if (strings[i].dataset.link == undefined)
-                strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
-            else
-                strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId].replace('$link', strings[i].dataset.link);
+    try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'assets/translation/' + lang + '.json', false);
+        xhr.send();
+        if (xhr.status == 200) {
+            data.app.lang = JSON.parse(xhr.responseText);
+            var strings = document.querySelectorAll('[data-translate-id]');
+            for (var i = 0; i < strings.length; i++) {
+                if (strings[i].dataset.translateId in data.app.lang)
+                    if (strings[i].dataset.link == undefined)
+                        strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
+                    else
+                        strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId].replace('$link', strings[i].dataset.link);
+            }
+        } else
+            throw ("Respanse status: " + xhr.status);
+    } catch (error) {
+        console.error("Loading translation error", error);
     }
 }
 
