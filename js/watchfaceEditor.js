@@ -228,6 +228,7 @@ function removeByClass(cl) {
 var coords = {},
     data = {
         import: function (json) {
+            coords = {};
             if ('Background' in json)
                 coords.bg = json.Background;
             if ('Time' in json) {
@@ -1715,7 +1716,7 @@ var coords = {},
                 this.togglebutton("tgactsteps", 1);
             else
                 this.togglebutton("tgactsteps", 0);
-            if ('statstepsgoal' in coords)
+            if ('actstepsgoal' in coords)
                 this.togglebutton("tgactstepsgoal", 1);
             else
                 this.togglebutton("tgactstepsgoal", 0);
@@ -1854,8 +1855,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 45,
-                        BottomRightY: 10,
+                        BottomRightX: 42,
+                        BottomRightY: 9,
                         Alignment: 'TopLeft',
                         Spacing: 2,
                         ImageIndex: 200,
@@ -1884,8 +1885,8 @@ var coords = {},
                 coords.dateday = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 20,
-                    BottomRightY: 10,
+                    BottomRightX: 15,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -1912,8 +1913,8 @@ var coords = {},
                 coords.datemonth = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 20,
-                    BottomRightY: 10,
+                    BottomRightX: 15,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2007,8 +2008,8 @@ var coords = {},
                 coords.actsteps = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 45,
-                    BottomRightY: 10,
+                    BottomRightX: 42,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2028,8 +2029,8 @@ var coords = {},
                 coords.actcal = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 35,
-                    BottomRightY: 10,
+                    BottomRightX: 33,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2049,8 +2050,8 @@ var coords = {},
                 coords.actpulse = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 35,
-                    BottomRightY: 10,
+                    BottomRightX: 24,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2070,8 +2071,8 @@ var coords = {},
                 coords.actstepsgoal = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 45,
-                    BottomRightY: 10,
+                    BottomRightX: 42,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2092,8 +2093,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 45,
-                        BottomRightY: 10,
+                        BottomRightX: 58,
+                        BottomRightY: 9,
                         Alignment: "TopLeft",
                         Spacing: 2,
                         ImageIndex: 200,
@@ -2133,8 +2134,8 @@ var coords = {},
                 coords.batterytext = {
                     TopLeftX: 0,
                     TopLeftY: 0,
-                    BottomRightX: 10,
-                    BottomRightY: 20,
+                    BottomRightX: 24,
+                    BottomRightY: 9,
                     Alignment: "TopLeft",
                     Spacing: 2,
                     ImageIndex: 200,
@@ -2246,8 +2247,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 50,
-                        BottomRightY: 10,
+                        BottomRightX: 66,
+                        BottomRightY: 9,
                         Alignment: "TopLeft",
                         Spacing: 2,
                         ImageIndex: 200,
@@ -2273,8 +2274,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 10,
+                        BottomRightX: 33,
+                        BottomRightY: 9,
                         Alignment: "TopLeft",
                         Spacing: 2,
                         ImageIndex: 200,
@@ -2298,8 +2299,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 10,
+                        BottomRightX: 33,
+                        BottomRightY: 9,
                         Alignment: "TopLeft",
                         Spacing: 2,
                         ImageIndex: 200,
@@ -2323,8 +2324,8 @@ var coords = {},
                     Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
-                        BottomRightX: 20,
-                        BottomRightY: 10,
+                        BottomRightX: 33,
+                        BottomRightY: 9,
                         Alignment: "TopLeft",
                         Spacing: 2,
                         ImageIndex: 200,
@@ -2494,7 +2495,6 @@ var coords = {},
         codeareablur: function () {
             try {
                 data.coordsHistory.push(JSON.stringify(coords));
-                console.log(jsonlint.parse($("codearea").innerText));
                 data.import(jsonlint.parse($("codearea").innerText));
                 this.updatecode();
             } catch (error) {
@@ -2558,12 +2558,12 @@ var coords = {},
                         label: "Week day"
                     }, coords.weekday.ImageIndex, coords.weekday.ImagesCount);
                 }
-                if ('datesepday' in coords) {
+                if ('dateday' in coords) {
                     this.insertimg({
                         label: "Date day"
                     }, coords.dateday.ImageIndex, coords.dateday.ImagesCount);
                 }
-                if ('datesepmonth' in coords) {
+                if ('datemonth' in coords) {
                     this.insertimg({
                         label: "Date month"
                     }, coords.datemonth.ImageIndex, coords.datemonth.ImagesCount);
