@@ -628,61 +628,115 @@ var coords = {},
         },
         renderBlock: function (block, width, el, cls) {
             var t, offset = 0;
-            if (el.Alignment == 18 || el.Alignment == "TopLeft") {
-                block.reverse();
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.TopLeftX + offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    view.insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 20 || el.Alignment == "TopRight") {
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    view.insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 34 || el.Alignment == "BottomLeft") {
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
-                    t.style.top = el.BottomRightY - t.height + 1 + "px";
-                    view.insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 24 || el.Alignment == "TopCenter") {
-                block.reverse();
-                offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
-                //console.log(offset);
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.TopLeftX + offset + "px";
-                    t.style.top = el.TopLeftY + "px";
-                    view.insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else if (el.Alignment == 72 || el.Alignment == "Center") {
-                block.reverse();
-                offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
-                //console.log(offset, width, el.BottomRightX, el.TopLeftX, el);
-                var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
-                //console.log(topoffset, block[0].height, el.BottomRightY, el.TopLeftY);
-                while (block.length) {
-                    t = block.pop();
-                    t.style.left = el.TopLeftX + offset + "px";
-                    t.style.top = el.TopLeftY + topoffset + "px";
-                    view.insert(t, cls);
-                    offset += t.width + el.Spacing;
-                }
-            } else {
-                UIkit.notification("Site author is too lazy to do this <b>(" + el.Alignment + ")</b> type of alignment... But you can send him your watchface and he will do it for you", {
-                    status: 'warning',
-                    pos: 'top-left',
-                    timeout: 7500
-                });
+            switch (el.Alignment) {
+                case 18:
+                case "TopLeft":
+                    block.reverse();
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.TopLeftY + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 24:
+                case "TopCenter":
+                    block.reverse();
+                    offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.TopLeftY + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 20:
+                case "TopRight":
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                        t.style.top = el.TopLeftY + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 66:
+                case "CenterLeft":
+                    block.reverse();
+                    var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.TopLeftY + topoffset + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 72:
+                case "Center":
+                    block.reverse();
+                    offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                    var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.TopLeftY + topoffset + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 68:
+                case "CenterRight":
+                    var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                        t.style.top = el.TopLeftY + topoffset + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 34:
+                case "BottomLeft":
+                    block.reverse();
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.BottomRightY - t.height + 1 + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 40:
+                case "BottomCenter":
+                    block.reverse();
+                    offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.TopLeftX + offset + "px";
+                        t.style.top = el.BottomRightY - t.height + 1 + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                case 36:
+                case "BottomRight":
+                    while (block.length) {
+                        t = block.pop();
+                        t.style.left = el.BottomRightX - t.width + 1 - offset + "px";
+                        t.style.top = el.BottomRightY - t.height + 1 + "px";
+                        view.insert(t, cls);
+                        offset += t.width + el.Spacing;
+                    }
+                    break;
+                default:
+                    UIkit.notification("Alignment <b>(" + el.Alignment + ")</b> is incorrect. You made a mistake", {
+                        status: 'danger',
+                        pos: 'top-left',
+                        timeout: 7500
+                    });
             }
         },
         makeBlock: function (el, value) {
@@ -2499,11 +2553,9 @@ var coords = {},
                 this.updatecode();
             } catch (error) {
                 $("jsonerrortext").innerHTML = error;
-
-                function show() {
-                    UIkit.modal($("jsonerrormodal")).show()
-                }
-                setTimeout(show, 250);
+                setTimeout(function () {
+                    UIkit.modal($("jsonerrormodal")).show();
+                }, 250);
                 console.warn(error);
             }
         },
