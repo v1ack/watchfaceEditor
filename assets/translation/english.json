@@ -102,5 +102,9 @@
 	"description": "Description",
 	"icon": "Icon",
 	"weather_cloudy_rain": "Cloudy and Chance of Rain",
-	"weather_cloudy_snow": "Cloudy and Chance of Snow"
+	"weather_cloudy_snow": "Cloudy and Chance of Snow",
+	"hours":"Hours",
+	"minutes":"Minutes",
+	"analog":"Analog",
+	"toggle":"Toggle"
 }

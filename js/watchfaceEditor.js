@@ -70,7 +70,6 @@ function init() {
         UIkit.modal($("modal-howto")).show();
         localStorage.helpShown = true;
     }
-
     data.app.edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
     if (data.app.edgeBrowser) {
         UIkit.notification(('browserwarn' in data.app.lang ? data.app.lang.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
@@ -138,6 +137,8 @@ function init() {
         $("codeopenbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
     if (!('designtabversion' in localStorage) || localStorage.designtabversion < data.app.designtabversion)
         $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+    if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < data.app.analogtabversion)
+        $("analogbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
 
     UIkit.modal("#donateframe")._events[0] = function () {
         $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
@@ -162,10 +163,14 @@ function init() {
             UIkit.modal($("modal-loading")).hide();
         }
 
-    if (navigator.userAgent.indexOf("Electron") >= 0)
+    if (navigator.userAgent.indexOf("Electron") >= 0) {
         addScript('js/electronApp.js');
+        data.app.local = false;
+    }
     if (!data.app.local)
         setTimeout(addScript, 2000, 'js/metrika.js');
+    else
+        addScript('js/utilit.js');
 }
 
 function changeLang(lang) {
@@ -186,20 +191,13 @@ function changeLang(lang) {
         } else
             throw ("Respanse status: " + xhr.status);
     } catch (error) {
-        console.error("Loading translation error", error);
+        console.warn("Loading translation error", error);
+        UIkit.notification('<b>Loading translation error: </b>' + error, {
+            status: 'danger',
+            pos: 'top-left',
+            timeout: 5000
+        });
     }
-}
-
-function makeJsonForTranslate() {
-    var json = {};
-    var strings = document.querySelectorAll('[data-translate-id]');
-    for (var i = 0; i < strings.length; i++) {
-        json[strings[i].dataset.translateId] = strings[i].innerHTML;
-        //        console.log(strings[i].dataset.translateId, strings[i]);
-        //        if (strings[i].dataset.translateId in data.app.lang)
-        //            strings[i].innerHTML = data.app.lang[strings[i].dataset.translateId];
-    }
-    return JSON.stringify(json);
 }
 
 function $(el) {
@@ -451,6 +449,7 @@ var coords = {},
             imagestabversion: 2,
             editortabversion: 1,
             designtabversion: 1,
+            analogtabversion: 1,
             edgeBrowser: undefined,
             lang: {},
             local: (location.protocol != "file:" ? false : true),
@@ -752,8 +751,8 @@ var coords = {},
             }
             width = width - el.Spacing;
             return {
-                block,
-                width
+                block: block,
+                width: width
             }
         },
         time_change: function () {
@@ -982,6 +981,7 @@ var coords = {},
                 $("viewsettings").removeAttribute("disabled");
                 $("codeopenbutton").classList.remove("uk-disabled");
                 $("imagesbutton").classList.remove("uk-disabled");
+                $("analogbutton").classList.remove("uk-disabled");
                 setTimeout(view.makeWf, 300);
             } else {
                 $("editbutton").classList.add("uk-disabled");
@@ -989,6 +989,7 @@ var coords = {},
                 $("viewsettings").setAttribute("disabled", "");
                 $("codeopenbutton").classList.add("uk-disabled");
                 $("imagesbutton").classList.add("uk-disabled");
+                $("analogbutton").classList.add("uk-disabled");
             }
         },
         clearjs: function () {
@@ -1545,10 +1546,8 @@ var coords = {},
         },
         initdrag: function (el, elcoords, cls, drawF) {
             el = $(el);
-
             el.onmousedown = function (e) {
                 data.coordsHistory.push(JSON.stringify(coords));
-
                 var ed = editor.getOffsetRect($("editor"));
                 var curcoords = getCoords(el);
                 var shiftX = e.pageX - curcoords.left;
@@ -2567,6 +2566,262 @@ var coords = {},
         },
         regexr: /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
         regexrimg: /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g
+    },
+    analog = {
+        init: function (arrow) {
+            switch (arrow) {
+                case 'hours':
+                    this.currentElement = coords.analoghours;
+                    break;
+                case 'minutes':
+                    this.currentElement = coords.analogminutes;
+                    break;
+                case 'seconds':
+                    this.currentElement = coords.analogseconds;
+                    break;
+            }
+            this.currentElementName = arrow;
+            if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < data.app.analogtabversion)
+                localStorage.analogtabversion = data.app.analogtabversion;
+            this.dotCount = 0;
+            view.makeWf();
+            $("analog").innerHTML = '';
+            if ('bg' in coords) {
+                var bg = $c(coords.bg.Image.ImageIndex);
+                bg.style.left = coords.bg.Image.X * 3 + "px";
+                bg.style.top = coords.bg.Image.Y * 3 + "px";
+                bg.style.position = "absolute";
+                bg.style.zIndex = -1;
+                bg.height *= 3;
+                bg.width *= 3;
+                bg.removeAttribute("id");
+                bg.ondragstart = function () {
+                    return false;
+                };
+                $("analog").appendChild(bg);
+            }
+            if (('analog' + analog.currentElementName) in coords) {
+                $("analog").innerHTML += '<div class="analog-center" style="left: ' + (this.currentElement.Center.X * 3 - 11) + 'px;top:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
+                $("analog").innerHTML += '<div class="analog-line" style="left: ' + (this.currentElement.Center.X * 3 - 3) + 'px;height:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
+                $("analog").innerHTML += '<svg id="analogsvg" width="528" height="528"></svg>';
+                for (var i in $("analog").childNodes)
+                    $("analog").childNodes[i].oncontextmenu = function (e) {
+                        e.preventDefault();
+                    }
+                this.drawAnalog(this.currentElement, 0);
+                $('analog').onclick = function (e) {
+                    analog.addDot(e);
+                }
+            } else $('analog').onclick = function (e) {
+                return false;
+            }
+        },
+        addDot: function (e) {
+            var ed = editor.getOffsetRect($("analog"));
+            var d = document.createElement('div');
+            d.classList.add('analog-dot');
+            d.id = 'dot' + this.dotCount++;
+            d.style.left = e.pageX - ed.left - (e.pageX - ed.left) % 3 + 'px';
+            d.style.top = e.pageY - ed.top - (e.pageY - ed.top) % 3 + 'px';
+            d.oncontextmenu = function (e) {
+                e.preventDefault();
+                analog.removeDot(e);
+            };
+            var c = {
+                X: (Number(d.style.top.replace('px', '')) + 3 - this.currentElement.Center.X * 3) / -3,
+                Y: (Number(d.style.left.replace('px', '')) + 3 - this.currentElement.Center.X * 3) / 3
+            }
+            this.currentElement.Shape.push(c);
+            this.init(analog.currentElementName);
+        },
+        moveDot: function (e) {},
+        removeDot: function (e) {
+            if (this.dotCount > 1) {
+                this.currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
+                this.dotCount--;
+                this.init(analog.currentElementName);
+            }
+        },
+        drawAnalog: function (el, value) {
+            var col = el.Color.replace("0x", "#"),
+                d = "M " + el.Shape[0].X * 3 + " " + el.Shape[0].Y * 3,
+                iters = el.Shape.length,
+                fill = el.OnlyBorder ? "none" : col;
+            for (var i = 0; i < iters; i++) {
+                d += "L " + el.Shape[i].X * 3 + " " + el.Shape[i].Y * 3 + " ";
+                var dot = document.createElement('div');
+                dot.classList.add('analog-dot');
+                dot.id = 'dot' + this.dotCount++;
+                dot.style.left = el.Shape[i].Y * 3 + el.Center.X * 3 - 4 + 'px';
+                dot.style.top = el.Shape[i].X * 3 * (-1) + el.Center.Y * 3 - 4 + 'px';
+                dot.oncontextmenu = function (e) {
+                    e.preventDefault();
+                    analog.removeDot(e);
+                };
+                this.initdrag(dot, this.currentElement.Shape[i]);
+                //                dot.style.left = el.Shape[i].X * 3 + 'px';
+                //                dot.style.top = el.Shape[i].Y * 3 + 'px';
+                $('analog').appendChild(dot);
+            }
+            d += "L " + el.Shape[0].X * 3 + " " + el.Shape[0].Y * 3 + " ";
+            $('analogsvg').innerHTML += '<path d="' + d + '" transform="rotate(' + (value - 90) + ' ' + el.Center.X * 3 + ' ' + el.Center.Y * 3 + ') translate(' + el.Center.X * 3 + " " + el.Center.Y * 3 + ') " fill="' + fill + '" stroke="' + col + '"></path>';
+            if ('CenterImage' in el) {
+                view.setPosN(el.CenterImage, 0, "c_an_img");
+            }
+        },
+        currentElement: {},
+        currentElementName: 'hours',
+        dotCount: 0,
+        toggle: function (elem) {
+            switch (elem) {
+                case 'hours':
+                    if ('analoghours' in coords) {
+                        delete coords.analoghours;
+                        if (!('analoghours' in coords || 'analogseconds' in coords || 'analogminutes' in coords))
+                            coords.analog = false;
+                    } else {
+                        coords.analog = true;
+                        coords.analoghours = {
+                            Center: {
+                                X: 88,
+                                Y: 88
+                            },
+                            Color: "0xFFFFFF",
+                            OnlyBorder: false,
+                            Shape: [{
+                                X: -17,
+                                Y: -2
+                            }, {
+                                X: 54,
+                                Y: -2
+                            }, {
+                                X: 54,
+                                Y: 1
+                            }, {
+                                X: -17,
+                                Y: 1
+                            }]
+                        }
+                    }
+                    break;
+                case 'minutes':
+                    if ('analogminutes' in coords) {
+                        delete coords.analogminutes;
+                        if (!('analoghours' in coords || 'analogseconds' in coords || 'analogminutes' in coords))
+                            coords.analog = false;
+                    } else {
+                        coords.analog = true;
+                        coords.analogminutes = {
+                            Center: {
+                                X: 88,
+                                Y: 88
+                            },
+                            Color: "0xFFFFFF",
+                            OnlyBorder: false,
+                            Shape: [{
+                                    X: -17,
+                                    Y: -2
+                                },
+                                {
+                                    X: 68,
+                                    Y: -2
+                                },
+                                {
+                                    X: 68,
+                                    Y: 1
+                                },
+                                {
+                                    X: -17,
+                                    Y: 1
+                            }]
+                        }
+                    }
+                    break;
+                case 'seconds':
+                    if ('analogseconds' in coords) {
+                        delete coords.analogseconds;
+                        if (!('analoghours' in coords || 'analogseconds' in coords || 'analogminutes' in coords))
+                            coords.analog = false;
+                    } else {
+                        coords.analog = true;
+                        coords.analogseconds = {
+                            Center: {
+                                X: 88,
+                                Y: 88
+                            },
+                            Color: "0xFF0000",
+                            OnlyBorder: false,
+                            Shape: [{
+                                    X: -21,
+                                    Y: -1
+                                },
+                                {
+                                    X: 82,
+                                    Y: -1
+                                },
+                                {
+                                    X: 82,
+                                    Y: 0
+                                },
+                                {
+                                    X: -21,
+                                    Y: 0
+                            }]
+                        }
+                    }
+                    break;
+            }
+            this.init(elem);
+        },
+        initdrag: function (el, elcoords) {
+            el.onmousedown = function (e) {
+                if (e.which != 1) return;
+                var ed = editor.getOffsetRect($("analog"));
+                var curcoords = getCoords(el);
+                var shiftX = e.pageX - curcoords.left;
+                var shiftY = e.pageY - curcoords.top;
+
+                el.style.position = 'absolute';
+                moveAt(e);
+
+                el.style.zIndex = 1000;
+
+                function moveAt(e) {
+                    el.style.left = e.pageX - ed.left - shiftX + 'px';
+                    el.style.top = e.pageY - ed.top - shiftY + 'px';
+                }
+
+                $("analog").onmousemove = function (e) {
+                    moveAt(e);
+                };
+
+                el.onmouseup = function () {
+                    $("analog").onmousemove = null;
+                    el.onmouseup = null;
+                    el.style.zIndex = 'auto';
+                    el.style.top = editor.styleToNum(el.style.top) > 0 && editor.styleToNum(el.style.top) < 528 ? editor.styleToNum(el.style.top) - editor.styleToNum(el.style.top) % 3 + 'px' : "0px";
+                    el.style.left = editor.styleToNum(el.style.left) > 0 && editor.styleToNum(el.style.left) < 528 ? editor.styleToNum(el.style.left) - editor.styleToNum(el.style.left) % 3 + 'px' : "0px";
+
+                    elcoords.X = (Number(el.style.top.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / -3;
+                    elcoords.Y = (Number(el.style.left.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / 3;
+                    analog.init(analog.currentElementName);
+                };
+
+            }
+
+            el.ondragstart = function () {
+                return false;
+            };
+
+            function getCoords(elem) {
+                var box = elem.getBoundingClientRect();
+                return {
+                    top: box.top + pageYOffset,
+                    left: box.left + pageXOffset
+                };
+            }
+
+        }
     },
     imagestab = {
         init: function () {

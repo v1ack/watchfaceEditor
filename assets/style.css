@@ -1,0 +1,243 @@
+#modal-loading {
+    transition: opacity 1s linear;
+}
+
+#modal-loading .uk-modal-dialog {
+    transition: 1s linear;
+    image-rendering: -webkit-optimize-contrast;
+    background: url(wf-editor.png), linear-gradient(to left, #28a5f5, #1e87f0);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 2px 2px 6px black;
+}
+
+img {
+    max-width: 300%;
+    image-rendering: pixelated;
+}
+
+#editor,
+#analog {
+    position: relative;
+    background: black;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.bip #editor,
+.bip #analog {
+    height: 528px;
+    width: 528px;
+}
+
+.cor #editor {
+    height: 480px;
+    width: 240px;
+}
+
+.analog-dot {
+    position: absolute;
+    background: white;
+    height: 5px;
+    width: 5px;
+    border: #1e87f0 solid 1px;
+    border-radius: 5px
+}
+
+.analog-center {
+    opacity: .6;
+    position: absolute;
+    background: #1e87f0;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px
+}
+
+.analog-line {
+    opacity: .6;
+    position: absolute;
+    background: #1e87f0;
+    width: 4px;
+}
+
+.editor-elem {
+    position: absolute;
+    outline: dotted 3px #1e87f0;
+    outline-offset: -3px;
+}
+
+#e_coords {
+    margin: 0 10px;
+    height: 25px;
+    width: 98px;
+}
+
+.editorbutton {
+    width: 160px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.analog-editor-button {
+    width: calc(100% - 20px);
+    margin: 1px 10px;
+}
+
+#watchfaceimage {
+    position: relative;
+}
+
+#watchfaceblock {
+    position: relative;
+}
+
+#watchface,
+.watchface-cover {
+    position: absolute;
+    top: 0;
+}
+
+.bip #watchfaceimage {
+    background: url(b.png);
+    padding-left: 43px;
+    padding-top: 163px;
+    height: 353px;
+    width: 233px;
+}
+
+.bip #watchfaceblock,
+.bip #watchface,
+.bip .watchface-cover {
+    height: 176px;
+    width: 176px;
+}
+
+.cor #watchfaceimage {
+    background: url(c.png);
+    padding-left: 24px;
+    padding-top: 88px;
+    height: 264px;
+    width: 105px;
+}
+
+.cor #watchfaceblock,
+.cor #watchface,
+.cor .watchface-cover {
+    height: 160px;
+    width: 80px;
+}
+
+#watchface img {
+    position: absolute;
+}
+
+.indevbadge {
+    position: relative;
+    height: auto;
+    font-size: 10px;
+    line-height: initial;
+    top: -2px;
+}
+
+.imagessection {
+    margin-bottom: 15px;
+}
+
+.imagessection .imagessection-images {
+    width: fit-content;
+    background: #ecebeb;
+}
+
+.imagessection-h {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+.imagessection-description {
+    margin-left: 25px;
+}
+
+#imagesinuse .imagessection-def .imagessection-images {
+    background: #32d296;
+}
+
+.imagessection .imagessection-images img {
+    padding: 7px 0 7px 7px;
+}
+
+.imagessection .imagessection-images img:last-child {
+    padding: 7px 7px 7px 7px;
+}
+
+.editor-button {
+    margin: 1px 10px;
+    width: 230px;
+}
+
+#codearea {
+    height: calc(100vh - 250px);
+    min-height: 390px;
+}
+
+#codearea pre {
+    width: auto!important;
+    border: none!important;
+    height: auto!important;
+    padding: 0!important;
+    margin: 0!important;
+    min-height: 0!important;
+}
+
+.codearearight {
+    width: 250px;
+    margin-left: 15px;
+    height: 390px;
+}
+
+.string {
+    color: #C431D8;
+}
+
+.number {
+    color: #2CB3FC;
+}
+
+.boolean {
+    color: #2A4FF4;
+}
+
+.null {
+    color: #D22830;
+}
+
+.key {
+    color: #0234D9;
+}
+
+.uk-notification {
+    word-wrap: break-word
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment,
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: rgba(51, 153, 255, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(51, 153, 255, 0.75);
+    border-radius: 3px;
+}

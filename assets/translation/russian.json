@@ -102,5 +102,9 @@
 	"description": "Описание",
 	"icon": "Иконка",
 	"weather_cloudy_rain": "Облачно, возможен дождь",
-	"weather_cloudy_snow": "Облачно, возможен снег"
+	"weather_cloudy_snow": "Облачно, возможен снег",
+	"hours":"Часы",
+	"minutes":"Минуты",
+	"analog":"Стрелки",
+	"toggle":"Переключить"
 }
