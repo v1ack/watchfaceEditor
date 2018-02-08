@@ -292,26 +292,51 @@
                         <div id="analog" class="uk-card-default uk-box-shadow-large">
                             <svg id="analogsvg" width="528" height="528"></svg>
                         </div>
-                        <ul uk-accordion="collapsible: false" class="uk-width-expand" style="margin-left: 15px">
-                            <li class="uk-open">
-                                <a class="uk-accordion-title" href="#" onclick="analog.init('hours');" data-translate-id="hours">Hours</a>
-                                <div class="uk-accordion-content">
-                                    <button class="uk-button uk-button-primary uk-button-small analog-editor-button" onclick="analog.toggle('hours');" data-translate-id="tg" id="tgAnalogHours">Toggle</button>
+                        <div class="uk-width-expand" style="margin-left: 15px">
+                            <ul class="uk-child-width-expand" uk-tab>
+                                <li class="uk-active"><a href="#" onclick="analog.update('hours');" data-translate-id="hours">Hours</a></li>
+                                <li><a href="#" onclick="analog.update('minutes');" data-translate-id="minutes">Minutes</a></li>
+                                <li><a href="#" onclick="analog.update('seconds');" data-translate-id="seconds">Seconds</a></li>
+                            </ul>
+                            <button class="uk-button uk-button-primary uk-button-small" onclick="analog.toggle(analog.currentElementName);" data-translate-id="tg" id="analog-toggle" style="width: 100%">Toggle</button>
+                            <form class="uk-form-stacked uk-margin-top">
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label">Center</label>
+                                    <div class="uk-form-controls uk-grid-small" uk-grid>
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" type="number" placeholder="X" id="analog-center-x">
+                                        </div>
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" type="number" placeholder="Y" id="analog-center-y">
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
-                            <li>
-                                <a class="uk-accordion-title" href="#" onclick="analog.init('minutes');" data-translate-id="minutes">Minutes</a>
-                                <div class="uk-accordion-content">
-                                    <button class="uk-button uk-button-primary uk-button-small analog-editor-button" onclick="analog.toggle('minutes');" data-translate-id="tg" id="tgAnalogHours">Toggle</button>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="analog-color">Color</label>
+                                    <div class="uk-form-controls">
+                                        <select class="uk-select" id="analog-color">
+                                            <option style="background: #000000" value="#000000">Black</option>
+                                            <option style="background: #0000FF" value="#0000FF">Blue</option>
+                                            <option style="background: #00FF00" value="#00FF00">Green</option>
+                                            <option style="background: #FF0000" value="#FF0000">Red</option>
+                                            <option style="background: #00FFFF" value="#00FFFF">Cyan</option>
+                                            <option style="background: #FF00FF" value="#FF00FF">Purple</option>
+                                            <option style="background: #FFFF00" value="#FFFF00">Yellow</option>
+                                            <option style="background: #FFFFFF" value="#FFFFFF">White</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </li>
-                            <li>
-                                <a class="uk-accordion-title" href="#" onclick="analog.init('seconds');" data-translate-id="seconds">Seconds</a>
-                                <div class="uk-accordion-content">
-                                    <button class="uk-button uk-button-primary uk-button-small analog-editor-button" onclick="analog.toggle('seconds');" data-translate-id="tg" id="tgAnalogSeconds">Toggle</button>
+
+                                <div class="uk-margin">
+                                    <div class="uk-form-controls">
+                                        <label><input class="uk-checkbox" type="checkbox" id="analog-fill"> Fill</label>
+                                    </div>
                                 </div>
-                            </li>
-                        </ul>
+
+                            </form>
+                        </div>
                     </li>
                     <li>
                         <ul uk-accordion>

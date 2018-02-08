@@ -2568,24 +2568,9 @@ var coords = {},
         regexrimg: /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g
     },
     analog = {
-        init: function (arrow) {
-            switch (arrow) {
-                case 'hours':
-                    this.currentElement = coords.analoghours;
-                    break;
-                case 'minutes':
-                    this.currentElement = coords.analogminutes;
-                    break;
-                case 'seconds':
-                    this.currentElement = coords.analogseconds;
-                    break;
-            }
-            this.currentElementName = arrow;
+        init: function () {
             if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < data.app.analogtabversion)
                 localStorage.analogtabversion = data.app.analogtabversion;
-            this.dotCount = 0;
-            view.makeWf();
-            $("analog").innerHTML = '';
             if ('bg' in coords) {
                 var bg = $c(coords.bg.Image.ImageIndex);
                 bg.style.left = coords.bg.Image.X * 3 + "px";
@@ -2600,6 +2585,44 @@ var coords = {},
                 };
                 $("analog").appendChild(bg);
             }
+            $('analog-color').onchange = function () {
+                analog.currentElement.Color = $('analog-color').value;
+                analog.update();
+            }
+            $('analog-center-x').onchange = function () {
+                analog.currentElement.Center.X = $('analog-center-x').value;
+                analog.update();
+            }
+            $('analog-center-y').onchange = function () {
+                analog.currentElement.Center.Y = $('analog-center-y').value;
+                analog.update();
+            }
+            $('analog-fill').onchange = function () {
+                if ($('analog-fill').checked)
+                    analog.currentElement.OnlyBorder = false;
+                else
+                    analog.currentElement.OnlyBorder = true;
+                analog.update();
+            }
+            analog.update('hours');
+        },
+        update: function (arrow) {
+            if(arrow != undefined){
+            switch (arrow) {
+                case 'hours':
+                    this.currentElement = coords.analoghours;
+                    break;
+                case 'minutes':
+                    this.currentElement = coords.analogminutes;
+                    break;
+                case 'seconds':
+                    this.currentElement = coords.analogseconds;
+                    break;
+            }
+            this.currentElementName = arrow;}
+            this.dotCount = 0;
+            view.makeWf();
+            $("analog").innerHTML = '';
             if (('analog' + analog.currentElementName) in coords) {
                 $("analog").innerHTML += '<div class="analog-center" style="left: ' + (this.currentElement.Center.X * 3 - 11) + 'px;top:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
                 $("analog").innerHTML += '<div class="analog-line" style="left: ' + (this.currentElement.Center.X * 3 - 3) + 'px;height:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
@@ -2612,6 +2635,11 @@ var coords = {},
                 $('analog').onclick = function (e) {
                     analog.addDot(e);
                 }
+                $('analog-center-x').value = analog.currentElement.Center.X;
+                $('analog-center-y').value = analog.currentElement.Center.Y;
+                $('analog-fill').checked = !analog.currentElement.OnlyBorder;
+                $('analog-color').style.backgroundColor = analog.currentElement.Color;
+                $('analog-color').value='';
             } else $('analog').onclick = function (e) {
                 return false;
             }
@@ -2632,14 +2660,14 @@ var coords = {},
                 Y: (Number(d.style.left.replace('px', '')) + 3 - this.currentElement.Center.X * 3) / 3
             }
             this.currentElement.Shape.push(c);
-            this.init(analog.currentElementName);
+            this.update(analog.currentElementName);
         },
         moveDot: function (e) {},
         removeDot: function (e) {
-            if (this.dotCount > 1) {
+            if (this.dotCount > 2) {
                 this.currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
                 this.dotCount--;
-                this.init(analog.currentElementName);
+                this.update(analog.currentElementName);
             }
         },
         drawAnalog: function (el, value) {
