@@ -99,6 +99,18 @@ img {
     top: 0;
 }
 
+#analog{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.analog-block{
+    position: relative;
+    width: 528px;
+    height: 528px;
+}
+
 .bip #watchfaceimage {
     background: url(b.png);
     padding-left: 43px;

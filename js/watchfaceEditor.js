@@ -2583,7 +2583,7 @@ var coords = {},
                 bg.ondragstart = function () {
                     return false;
                 };
-                $("analog").appendChild(bg);
+                $("analog-bg").appendChild(bg);
             }
             $('analog-color').onchange = function () {
                 analog.currentElement.Color = $('analog-color').value;
