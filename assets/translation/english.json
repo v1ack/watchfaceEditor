@@ -106,5 +106,9 @@
 	"hours":"Hours",
 	"minutes":"Minutes",
 	"analog":"Analog",
-	"tg":"Toggle"
+	"tg":"Toggle",
+	"analogFill":" Fill",
+	"color":"Color",
+	"analogCenter":"Center",
+	"realsizePreview":"Real-size preview"
 }

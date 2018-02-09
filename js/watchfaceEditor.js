@@ -967,6 +967,35 @@ var coords = {},
             if (coords.weather)
                 if (coords.weathericon)
                     draw.weather.icon();
+        },
+        makepng: function () {
+            var el = 'watchfaceblock';
+            if ($('makepngwithwatch').checked)
+                el = 'watchfaceimage';
+            html2canvas($(el), {
+                onrendered: function (canvas) {
+                    ctx = canvas.getContext('2d');
+                    if (data.app.edgeBrowser) {
+                        canvas.toBlob(function (blob) {
+                            saveAs(blob, data.wfname + '.png');
+                        });
+                    } else {
+                        var a = document.createElement('a');
+                        a.href = canvas.toDataURL('image/png');
+                        a.download = data.wfname + '.png';
+                        a.click();
+                        delete a;
+                    }
+                }
+            });
+        },
+        makePreview: function () {
+            html2canvas($('watchfaceimage'), {
+                onrendered: function (canvas) {
+                    $('realsizePreview').innerHTML = '';
+                    $('realsizePreview').appendChild(canvas);
+                }
+            });
         }
     },
     load = {
@@ -2486,7 +2515,7 @@ var coords = {},
                         break;
                     }
                 default:
-                    console.error('Error in toggle: ',el);
+                    console.error('Error in toggle: ', el);
             }
             jsoneditor.updatecode();
             jsoneditor.select(jsoneditor.toggleElements[el]);
@@ -2552,27 +2581,6 @@ var coords = {},
                 a.download = data.wfname + '.json';
                 a.click();
             }
-        },
-        makepng: function () {
-            var el = "watchfaceblock";
-            if ($("makepngwithwatch").checked)
-                el = "watchfaceimage";
-            html2canvas($(el), {
-                onrendered: function (canvas) {
-                    ctx = canvas.getContext("2d");
-                    if (data.app.edgeBrowser) {
-                        canvas.toBlob(function (blob) {
-                            saveAs(blob, data.wfname + ".png");
-                        });
-                    } else {
-                        var a = document.createElement('a');
-                        a.href = canvas.toDataURL("image/png");
-                        a.download = data.wfname + '.png';
-                        a.click();
-                        delete a;
-                    }
-                }
-            });
         },
         codeareablur: function () {
             try {

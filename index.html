@@ -115,7 +115,8 @@
                         </div>
                         <br>
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled data-translate-id="settings">Settings</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="jsoneditor.makepng();" disabled data-translate-id="makepng">Make PNG</button>
+                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-preview" onclick="view.makePreview();" data-translate-id="realsizePreview">Real-size preview</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="view.makepng();" disabled data-translate-id="makepng">Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> <span data-translate-id="withwatch">With watch</span></label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <h3 class="uk-card-title" data-translate-id="settings">Settings</h3>
@@ -287,7 +288,7 @@
                             <div id="analog-bg"></div>
                             <div id="analog" class="uk-card-default uk-box-shadow-large"></div>
                         </div>
-                        <div class="uk-width-expand" style="margin-left: 15px">
+                        <div class="uk-width-expand" style="margin-left: 15px; min-width: 200px;">
                             <ul class="uk-child-width-expand" uk-tab>
                                 <li class="uk-active"><a href="#" onclick="analog.update('hours');" data-translate-id="hours">Hours</a></li>
                                 <li><a href="#" onclick="analog.update('minutes');" data-translate-id="minutes">Minutes</a></li>
@@ -297,7 +298,7 @@
                             <form class="uk-form-stacked uk-margin-top">
 
                                 <div class="uk-margin">
-                                    <label class="uk-form-label" translate-id="analogCenter">Center</label>
+                                    <label class="uk-form-label" data-translate-id="analogCenter">Center</label>
                                     <div class="uk-form-controls uk-grid-small" uk-grid>
                                         <div class="uk-width-1-2@s">
                                             <input class="uk-input" type="number" placeholder="X" id="analog-center-x">
@@ -309,7 +310,7 @@
                                 </div>
 
                                 <div class="uk-margin">
-                                    <label class="uk-form-label" for="analog-color" translate-id="color">Color</label>
+                                    <label class="uk-form-label" for="analog-color" data-translate-id="color">Color</label>
                                     <div class="uk-form-controls">
                                         <select class="uk-select" id="analog-color">
                                             <option style="background: #000000" value="#000000">Black</option>
@@ -326,7 +327,7 @@
 
                                 <div class="uk-margin">
                                     <div class="uk-form-controls">
-                                        <label><input class="uk-checkbox" type="checkbox" id="analog-fill" translate-id="analogFill"> Fill</label>
+                                        <label><input class="uk-checkbox" type="checkbox" id="analog-fill" data-translate-id="analogFill"> Fill</label>
                                     </div>
                                 </div>
 
@@ -367,7 +368,7 @@
                 <p data-link="href='https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages' target='_blank'" data-translate-id="howtouseDescr2">Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a href="https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages" target="_blank">here</a>
                 </p>
                 <p>
-                    <a href="http://4pda.ru/forum/index.php?s=&showtopic=876302&view=findpost&p=68418440" target="_blank">Инструкция на русском языке</a>
+                    <a href="https://4pda.ru/forum/index.php?s=&showtopic=876302&view=findpost&p=68418440" target="_blank">Инструкция на русском языке</a>
                 </p>
                 <h3 data-translate-id="avaliblecolors">Available colors on bip</h3>
                 <p>
@@ -506,7 +507,7 @@
                 <p id="siteopened">You opened this site $times times</p>
                 <a href="https://metrika.yandex.ru/dashboard?id=46845507" target="_blank">Site statistic</a>
                 <h3>Thanks to</h3>
-                <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/" target="_blank">AmazfitBipTools</a><br> MaxL for <a href="http://4pda.ru/forum/index.php?s=&showtopic=845160&view=findpost&p=68065502" target="_blank">weather icons</a><br> Osmat for <a href="http://amazfitwatchfaces.com" target="_blank">amazfitwatchfaces.com</a><br> Showman for advices
+                <p>Valeriy Mironov for <a href="https://bitbucket.org/valeronm/amazfitbiptools/" target="_blank">AmazfitBipTools</a><br> MaxL for <a href="https://4pda.ru/forum/index.php?s=&showtopic=845160&view=findpost&p=68065502" target="_blank">weather icons</a><br> Osmat for <a href="https://amazfitwatchfaces.com" target="_blank">amazfitwatchfaces.com</a><br> Showman for advices
                 </p>
                 <h3>Used libraries</h3>
                 <p><a href="https://getuikit.com/" target="_blank">UI kit</a><br>
@@ -536,9 +537,18 @@
                 </p>
             </div>
         </div>
+        <div id="modal-preview" uk-modal class="uk-flex-top">
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="width: auto">
+                <h2 class="uk-modal-title" data-translate-id="realsizePreview">Real-size preview</h2>
+                <div id="realsizePreview" class="uk-container"></div>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-primary uk-modal-close" type="button" data-translate-id="close">Close</button>
+                </p>
+            </div>
+        </div>
     </main>
     <footer>
-        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px" data-translate-id="translatedby"></span><span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/watchfaceEditor" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="http://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate">donate</a></p>
+        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px" data-translate-id="translatedby"></span><span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/watchfaceEditor" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span>4pda: <a href="https://4pda.ru/forum/index.php?showuser=2045173" target="_blank">kirilkin12</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate">donate</a></p>
     </footer>
     <script type="text/javascript" src="js/watchfaceEditor.js"></script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>

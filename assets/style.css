@@ -111,6 +111,10 @@ img {
     height: 528px;
 }
 
+#realsizePreview>canvas{
+    height: 72.91mm;
+}
+
 .bip #watchfaceimage {
     background: url(b.png);
     padding-left: 43px;
