@@ -1838,629 +1838,658 @@ var coords = {},
                 this.togglebutton("tgactgoalicon", 0);
             }
         },
-        tgam: function () {
-            if ('ampm' in coords) {
-                delete coords.ampm;
-            } else {
-                coords.ampm = {
-                    X: 0,
-                    Y: 0,
-                    ImageIndexAm: 233,
-                    ImageIndexPm: 234
-                }
-            }
-            this.updatecode();
-            jsoneditor.select('"AmPm":');
+        toggleElements: {
+            amPm: '"AmPm":',
+            seconds: '"Seconds":',
+            weekDay: '"WeekDay":',
+            dateOneLine: '"MonthAndDay":',
+            dateDay: '"MonthAndDay":',
+            dateMonth: '"Month":',
+            statAlarm: '"Alarm":',
+            statBt: '"Bluetooth":',
+            statLock: '"Lock":',
+            statDnd: '"DoNotDisturb":',
+            actSteps: '"Steps":',
+            actStepsGoal: '"StepsGoal":',
+            actCal: '"Calories":',
+            actDistance: '"Distance":',
+            actPulse: '"Pulse":',
+            batteryIcon: '"Battery":',
+            batteryText: '"Battery":',
+            batteryScale: '"Battery":',
+            weatherIcon: '"Weather":',
+            weatherIconCustom: '"CustomIcon":',
+            weatherAir: '"AirPollution":',
+            weatherOneLine: '"Temperature":',
+            weatherCurrent: '"Current":',
+            weatherDay: '"Temperature":',
+            weatherNight: '"Night":',
+            stepsGoal: '"GoalImage":',
+            stepsLinear: '"Linear":'
         },
-        tgsec: function () {
-            if ('seconds' in coords) {
-                delete coords.seconds;
-            } else {
-                coords.seconds = {
-                    Tens: {
-                        X: 0,
-                        Y: 0,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    Ones: {
-                        X: 10,
-                        Y: 0,
-                        ImageIndex: 200,
-                        ImagesCount: 10
+        toggle: function (el) {
+            switch (el) {
+                case 'amPm':
+                    {
+                        if ('ampm' in coords) {
+                            delete coords.ampm;
+                        } else {
+                            coords.ampm = {
+                                X: 0,
+                                Y: 0,
+                                ImageIndexAm: 233,
+                                ImageIndexPm: 234
+                            }
+                        }
+                        break;
                     }
-                };
-            }
-            this.updatecode();
-            jsoneditor.select('"Seconds":');
-        },
-        tgweekday: function () {
-            if ('weekday' in coords) {
-                delete coords.weekday;
-                if (!('monthandday' in coords))
-                    coords.date = false;
-            } else {
-                coords.date = true;
-                coords.weekday = {
-                    X: 0,
-                    Y: 0,
-                    ImageIndex: 210,
-                    ImagesCount: 7
-                }
-            }
-            this.updatecode();
-            jsoneditor.select('"WeekDay":');
-        },
-        tgdateoneline: function () {
-            if ('dateoneline' in coords) {
-                delete coords.dateoneline;
-                if (!('weekday' in coords))
-                    coords.date = false;
-                if (!('dateday' in coords || 'datemonth' in coords))
-                    delete coords.monthandday;
-            } else {
-                coords.date = true;
-                coords.monthandday = {
-                    TwoDigitsMonth: true,
-                    TwoDigitsDay: true
-                }
-                coords.dateoneline = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 42,
-                        BottomRightY: 9,
-                        Alignment: 'TopLeft',
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    DelimiterImageIndex: 219
-                }
-            }
-            this.updatecode();
-            jsoneditor.select('"MonthAndDay":');
-        },
-        tgdateday: function () {
-            if ('dateday' in coords) {
-                delete coords.dateday;
-                if (!('datemonth' in coords || 'dateoneline' in coords)) {
-                    delete coords.monthandday;
-                    coords.date = false;
-                }
-            } else {
-                coords.date = true;
-                if (!('monthandday' in coords))
-                    coords.monthandday = {
-                        TwoDigitsMonth: true,
-                        TwoDigitsDay: true
+                case 'seconds':
+                    {
+                        if ('seconds' in coords) {
+                            delete coords.seconds;
+                        } else {
+                            coords.seconds = {
+                                Tens: {
+                                    X: 0,
+                                    Y: 0,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                Ones: {
+                                    X: 10,
+                                    Y: 0,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                }
+                            };
+                        }
+                        break;
                     }
-                coords.dateday = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 15,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            }
-            this.updatecode();
-            jsoneditor.select('"MonthAndDay":');
-        },
-        tgdatemonth: function () {
-            if ('datemonth' in coords) {
-                delete coords.datemonth;
-                if (!('dateday' in coords || 'dateoneline' in coords)) {
-                    delete coords.monthandday;
-                    coords.date = false;
-                }
-            } else {
-                coords.date = true;
-                if (!('monthandday' in coords))
-                    coords.monthandday = {
-                        TwoDigitsMonth: true,
-                        TwoDigitsDay: true
+                case 'weekDay':
+                    {
+                        if ('weekday' in coords) {
+                            delete coords.weekday;
+                            if (!('monthandday' in coords))
+                                coords.date = false;
+                        } else {
+                            coords.date = true;
+                            coords.weekday = {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 210,
+                                ImagesCount: 7
+                            }
+                        }
+                        break;
                     }
-                coords.datemonth = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 15,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            }
-            this.updatecode();
-            jsoneditor.select('"MonthAndDay":');
-        },
-        tgstatalarm: function () {
-            if (!(coords.status))
-                coords.status = true;
-            if ('statalarm' in coords) {
-                delete coords.statalarm;
-                if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
-                    coords.status = false;
-            } else
-                coords.statalarm = {
-                    Coordinates: {
-                        X: 0,
-                        Y: 0
-                    },
-                    ImageIndexOn: 224
-                }
-            this.updatecode();
-            jsoneditor.select('"Alarm":');
-        },
-        tgstatbt: function () {
-            if (!(coords.status))
-                coords.status = true;
-            if ('statbt' in coords) {
-                delete coords.statbt;
-                if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
-                    coords.status = false;
-            } else
-                coords.statbt = {
-                    Coordinates: {
-                        X: 0,
-                        Y: 0
-                    },
-                    ImageIndexOn: 220,
-                    ImageIndexOff: 221
-                }
-            this.updatecode();
-            jsoneditor.select('"Bluetooth":');
-        },
-        tgstatlock: function () {
-            if (!(coords.status))
-                coords.status = true;
-            if ('statlock' in coords) {
-                delete coords.statlock;
-                if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
-                    coords.status = false;
-            } else
-                coords.statlock = {
-                    Coordinates: {
-                        X: 0,
-                        Y: 0
-                    },
-                    ImageIndexOn: 223
-                }
-            this.updatecode();
-            jsoneditor.select('"Lock":');
-        },
-        tgstatdnd: function () {
-            if (!(coords.status))
-                coords.status = true;
-            if ('statdnd' in coords) {
-                delete coords.statdnd;
-                if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
-                    coords.status = false;
-            } else
-                coords.statdnd = {
-                    Coordinates: {
-                        X: 0,
-                        Y: 0
-                    },
-                    ImageIndexOn: 222
-                }
-            this.updatecode();
-            jsoneditor.select('"DoNotDisturb":');
-        },
-        tgactsteps: function () {
-            if (!(coords.activity))
-                coords.activity = true;
-            if ('actsteps' in coords) {
-                delete coords.actsteps;
-                if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
-                    coords.activity = false;
-            } else
-                coords.actsteps = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 42,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            this.updatecode();
-            jsoneditor.select('"Steps":');
-        },
-        tgactcal: function () {
-            if (!(coords.activity))
-                coords.activity = true;
-            if ('actcal' in coords) {
-                delete coords.actcal;
-                if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
-                    coords.activity = false;
-            } else
-                coords.actcal = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 33,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            this.updatecode();
-            jsoneditor.select('"Calories":');
-        },
-        tgactpulse: function () {
-            if (!(coords.activity))
-                coords.activity = true;
-            if ('actpulse' in coords) {
-                delete coords.actpulse;
-                if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
-                    coords.activity = false;
-            } else
-                coords.actpulse = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 24,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            this.updatecode();
-            jsoneditor.select('"Pulse":');
-        },
-        tgactstepsgoal: function () {
-            if (!(coords.activity))
-                coords.activity = true;
-            if ('actstepsgoal' in coords) {
-                delete coords.actstepsgoal;
-                if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
-                    coords.activity = false;
-            } else
-                coords.actstepsgoal = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 42,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            this.updatecode();
-            jsoneditor.select('"StepsGoal":');
-        },
-        tgactdist: function () {
-            if (!(coords.activity))
-                coords.activity = true;
-            if ('actdist' in coords) {
-                delete coords.actdist;
-                if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
-                    coords.activity = false;
-            } else
-                coords.actdist = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 58,
-                        BottomRightY: 9,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    SuffixImageIndex: 231,
-                    DecimalPointImageIndex: 232
-                }
-            this.updatecode();
-            jsoneditor.select('"Distance":');
-        },
-        tgbatteryicon: function () {
-            if (!(coords.battery))
-                coords.battery = true;
-            if ('batteryicon' in coords) {
-                delete coords.batteryicon;
-                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
-                    coords.battery = false;
-            } else
-                coords.batteryicon = {
-                    X: 0,
-                    Y: 0,
-                    ImageIndex: 225,
-                    ImagesCount: 6
-                }
-            this.updatecode();
-            jsoneditor.select('"Battery":');
-        },
-        tgbatterytext: function () {
-            if (!(coords.battery))
-                coords.battery = true;
-            if ('batterytext' in coords) {
-                delete coords.batterytext;
-                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
-                    coords.battery = false;
-            } else
-                coords.batterytext = {
-                    TopLeftX: 0,
-                    TopLeftY: 0,
-                    BottomRightX: 24,
-                    BottomRightY: 9,
-                    Alignment: "TopLeft",
-                    Spacing: 2,
-                    ImageIndex: 200,
-                    ImagesCount: 10
-                }
-            this.updatecode();
-            jsoneditor.select('"Battery":');
-        },
-        tgbatteryscale: function () {
-            if (!(coords.battery))
-                coords.battery = true;
-            if ('batteryscale' in coords) {
-                delete coords.batteryscale;
-                if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
-                    coords.battery = false;
-            } else
-                coords.batteryscale = {
-                    StartImageIndex: 200,
-                    Segments: [{
-                        X: 40,
-                        Y: 42
+                case 'dateOneLine':
+                    {
+                        if ('dateoneline' in coords) {
+                            delete coords.dateoneline;
+                            if (!('weekday' in coords))
+                                coords.date = false;
+                            if (!('dateday' in coords || 'datemonth' in coords))
+                                delete coords.monthandday;
+                        } else {
+                            coords.date = true;
+                            coords.monthandday = {
+                                TwoDigitsMonth: true,
+                                TwoDigitsDay: true
+                            }
+                            coords.dateoneline = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 42,
+                                    BottomRightY: 9,
+                                    Alignment: 'TopLeft',
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                DelimiterImageIndex: 219
+                            }
+                        }
+                        break;
+                    }
+                case 'dateDay':
+                    {
+                        if ('dateday' in coords) {
+                            delete coords.dateday;
+                            if (!('datemonth' in coords || 'dateoneline' in coords)) {
+                                delete coords.monthandday;
+                                coords.date = false;
+                            }
+                        } else {
+                            coords.date = true;
+                            if (!('monthandday' in coords))
+                                coords.monthandday = {
+                                    TwoDigitsMonth: true,
+                                    TwoDigitsDay: true
+                                }
+                            coords.dateday = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 15,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        }
+                        break;
+                    }
+                case 'dateMonth':
+                    {
+                        if ('datemonth' in coords) {
+                            delete coords.datemonth;
+                            if (!('dateday' in coords || 'dateoneline' in coords)) {
+                                delete coords.monthandday;
+                                coords.date = false;
+                            }
+                        } else {
+                            coords.date = true;
+                            if (!('monthandday' in coords))
+                                coords.monthandday = {
+                                    TwoDigitsMonth: true,
+                                    TwoDigitsDay: true
+                                }
+                            coords.datemonth = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 15,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        }
+                        break;
+                    }
+                case 'statAlarm':
+                    {
+                        if (!(coords.status))
+                            coords.status = true;
+                        if ('statalarm' in coords) {
+                            delete coords.statalarm;
+                            if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
+                                coords.status = false;
+                        } else
+                            coords.statalarm = {
+                                Coordinates: {
+                                    X: 0,
+                                    Y: 0
+                                },
+                                ImageIndexOn: 224
+                            }
+                        break;
+                    }
+                case 'statBt':
+                    {
+                        if (!(coords.status))
+                            coords.status = true;
+                        if ('statbt' in coords) {
+                            delete coords.statbt;
+                            if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
+                                coords.status = false;
+                        } else
+                            coords.statbt = {
+                                Coordinates: {
+                                    X: 0,
+                                    Y: 0
+                                },
+                                ImageIndexOn: 220,
+                                ImageIndexOff: 221
+                            }
+                        break;
+                    }
+                case 'statLock':
+                    {
+                        if (!(coords.status))
+                            coords.status = true;
+                        if ('statlock' in coords) {
+                            delete coords.statlock;
+                            if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
+                                coords.status = false;
+                        } else
+                            coords.statlock = {
+                                Coordinates: {
+                                    X: 0,
+                                    Y: 0
+                                },
+                                ImageIndexOn: 223
+                            }
+                        break;
+                    }
+                case 'statDnd':
+                    {
+                        if (!(coords.status))
+                            coords.status = true;
+                        if ('statdnd' in coords) {
+                            delete coords.statdnd;
+                            if (!('statalarm' in coords || 'statbt' in coords || 'statlock' in coords || 'statdnd' in coords))
+                                coords.status = false;
+                        } else
+                            coords.statdnd = {
+                                Coordinates: {
+                                    X: 0,
+                                    Y: 0
+                                },
+                                ImageIndexOn: 222
+                            }
+                        break;
+                    }
+                case 'actSteps':
+                    {
+                        if (!(coords.activity))
+                            coords.activity = true;
+                        if ('actsteps' in coords) {
+                            delete coords.actsteps;
+                            if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
+                                coords.activity = false;
+                        } else
+                            coords.actsteps = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 42,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        break;
+                    }
+                case 'actCal':
+                    {
+                        if (!(coords.activity))
+                            coords.activity = true;
+                        if ('actcal' in coords) {
+                            delete coords.actcal;
+                            if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
+                                coords.activity = false;
+                        } else
+                            coords.actcal = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 33,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        break;
+                    }
+                case 'actPulse':
+                    {
+                        if (!(coords.activity))
+                            coords.activity = true;
+                        if ('actpulse' in coords) {
+                            delete coords.actpulse;
+                            if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
+                                coords.activity = false;
+                        } else
+                            coords.actpulse = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 24,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        break;
+                    }
+                case 'actStepsGoal':
+                    {
+                        if (!(coords.activity))
+                            coords.activity = true;
+                        if ('actstepsgoal' in coords) {
+                            delete coords.actstepsgoal;
+                            if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
+                                coords.activity = false;
+                        } else
+                            coords.actstepsgoal = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 42,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        break;
+                    }
+                case 'actDistance':
+                    {
+                        if (!(coords.activity))
+                            coords.activity = true;
+                        if ('actdist' in coords) {
+                            delete coords.actdist;
+                            if (!('actsteps' in coords || 'actstepsgoal' in coords || 'actcal' in coords || 'actpulse' in coords || 'actdist' in coords))
+                                coords.activity = false;
+                        } else
+                            coords.actdist = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 58,
+                                    BottomRightY: 9,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                SuffixImageIndex: 231,
+                                DecimalPointImageIndex: 232
+                            }
+                        break;
+                    }
+                case 'batteryIcon':
+                    {
+                        if (!(coords.battery))
+                            coords.battery = true;
+                        if ('batteryicon' in coords) {
+                            delete coords.batteryicon;
+                            if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
+                                coords.battery = false;
+                        } else
+                            coords.batteryicon = {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 225,
+                                ImagesCount: 6
+                            }
+                        break;
+                    }
+                case 'batteryText':
+                    {
+                        if (!(coords.battery))
+                            coords.battery = true;
+                        if ('batterytext' in coords) {
+                            delete coords.batterytext;
+                            if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
+                                coords.battery = false;
+                        } else
+                            coords.batterytext = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 24,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
+                            }
+                        break;
+                    }
+                case 'batteryScale':
+                    {
+                        if (!(coords.battery))
+                            coords.battery = true;
+                        if ('batteryscale' in coords) {
+                            delete coords.batteryscale;
+                            if (!('batteryicon' in coords || 'batteryscale' in coords || 'batterytext' in coords))
+                                coords.battery = false;
+                        } else
+                            coords.batteryscale = {
+                                StartImageIndex: 200,
+                                Segments: [{
+                                    X: 40,
+                                    Y: 42
                     }, {
-                        X: 55,
-                        Y: 42
+                                    X: 55,
+                                    Y: 42
                     }, {
-                        X: 70,
-                        Y: 42
+                                    X: 70,
+                                    Y: 42
                     }, {
-                        X: 86,
-                        Y: 42
+                                    X: 86,
+                                    Y: 42
                     }, {
-                        X: 101,
-                        Y: 42
+                                    X: 101,
+                                    Y: 42
                     }, {
-                        X: 115,
-                        Y: 42
+                                    X: 115,
+                                    Y: 42
                     }, {
-                        X: 129,
-                        Y: 42
+                                    X: 129,
+                                    Y: 42
                     }]
-                }
-            this.updatecode();
-            jsoneditor.select('"Battery":');
-        },
-        tgweathericon: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if (coords.weathericon) {
-                delete coords.weathericon;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weathericon = {
-                    Coordinates: {
-                        X: 0,
-                        Y: 0
+                            }
+                        break;
                     }
-                }
-            this.updatecode();
-            jsoneditor.select('"Weather":');
-        },
-        tgweathericoncustom: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if (coords.weathericon) {
-                delete coords.weathericon;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weathericon = {
-                    CustomIcon: {
-                        X: 0,
-                        Y: 0,
-                        ImageIndex: 267,
-                        ImagesCount: 26
+                case 'weatherIcon':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if (coords.weathericon) {
+                            delete coords.weathericon;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weathericon = {
+                                Coordinates: {
+                                    X: 0,
+                                    Y: 0
+                                }
+                            }
+                        break;
                     }
-                }
-            this.updatecode();
-            jsoneditor.select('"Weather":');
-        },
-        tgweatherair: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if ('weatherair' in coords) {
-                delete coords.weatherair;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weatherair = {
-                    Icon: {
-                        X: 0,
-                        Y: 0,
-                        ImageIndex: 235,
-                        ImagesCount: 6
+                case 'weatherIconCustom':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if (coords.weathericon) {
+                            delete coords.weathericon;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weathericon = {
+                                CustomIcon: {
+                                    X: 0,
+                                    Y: 0,
+                                    ImageIndex: 267,
+                                    ImagesCount: 26
+                                }
+                            }
+                        break;
                     }
-                }
-            this.updatecode();
-            jsoneditor.select('"Weather":');
-        },
-        tgweatheroneline: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if ('weatheroneline' in coords) {
-                delete coords.weatheroneline;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weatheroneline = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 66,
-                        BottomRightY: 9,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    MinusSignImageIndex: 217,
-                    DelimiterImageIndex: 219,
-                    AppendDegreesForBoth: false,
-                    DegreesImageIndex: 218
-                }
-            this.updatecode();
-            jsoneditor.select('"Temperature":');
-        },
-        tgweathercur: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if ('weathercur' in coords) {
-                delete coords.weathercur;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weathercur = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 33,
-                        BottomRightY: 9,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    MinusImageIndex: 217,
-                    DegreesImageIndex: 218
-                }
-            this.updatecode();
-            jsoneditor.select('"Temperature":');
-        },
-        tgweatherday: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if ('weatherday' in coords) {
-                delete coords.weatherday;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weatherday = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 33,
-                        BottomRightY: 9,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    MinusImageIndex: 217,
-                    DegreesImageIndex: 218
-                }
-            this.updatecode();
-            jsoneditor.select('"Temperature":');
-        },
-        tgweathernight: function () {
-            if (!(coords.weather))
-                coords.weather = true;
-            if ('weathernight' in coords) {
-                delete coords.weathernight;
-                if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
-                    coords.weather = false;
-            } else
-                coords.weathernight = {
-                    Number: {
-                        TopLeftX: 0,
-                        TopLeftY: 0,
-                        BottomRightX: 33,
-                        BottomRightY: 9,
-                        Alignment: "TopLeft",
-                        Spacing: 2,
-                        ImageIndex: 200,
-                        ImagesCount: 10
-                    },
-                    MinusImageIndex: 217,
-                    DegreesImageIndex: 218
-                }
-            this.updatecode();
-            jsoneditor.select('"Temperature":');
-        },
-        tgstepsgoal: function () {
-            if (!(coords.stepsprogress))
-                coords.stepsprogress = true;
-            if ('stepsgoal' in coords) {
-                delete coords.stepsgoal;
-                if (!('stepslinear' in coords || 'stepsgoal' in coords || 'stepscircle' in coords))
-                    coords.stepsprogress = false;
-            } else
-                coords.stepsgoal = {
-                    X: 0,
-                    Y: 0,
-                    ImageIndex: 266
-                }
-            this.updatecode();
-            jsoneditor.select('"GoalImage":');
-        },
-        tgstepslinear: function () {
-            if (!(coords.stepsprogress))
-                coords.stepsprogress = true;
-            if ('stepslinear' in coords) {
-                delete coords.stepslinear;
-                if (!('stepslinear' in coords || 'stepsgoal' in coords || 'stepscircle' in coords))
-                    coords.stepsprogress = false;
-            } else
-                coords.stepslinear = {
-                    StartImageIndex: 200,
-                    Segments: [
-                        {
-                            X: 40,
-                            Y: 121
+                case 'weatherAir':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if ('weatherair' in coords) {
+                            delete coords.weatherair;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weatherair = {
+                                Icon: {
+                                    X: 0,
+                                    Y: 0,
+                                    ImageIndex: 235,
+                                    ImagesCount: 6
+                                }
+                            }
+                        break;
+                    }
+                case 'weatherOneLine':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if ('weatheroneline' in coords) {
+                            delete coords.weatheroneline;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weatheroneline = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 66,
+                                    BottomRightY: 9,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusSignImageIndex: 217,
+                                DelimiterImageIndex: 219,
+                                AppendDegreesForBoth: false,
+                                DegreesImageIndex: 218
+                            }
+                        break;
+                    }
+                case 'weatherCurrent':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if ('weathercur' in coords) {
+                            delete coords.weathercur;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weathercur = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 33,
+                                    BottomRightY: 9,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        break;
+                    }
+                case 'weatherDay':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if ('weatherday' in coords) {
+                            delete coords.weatherday;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weatherday = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 33,
+                                    BottomRightY: 9,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        break;
+                    }
+                case 'weatherNight':
+                    {
+                        if (!(coords.weather))
+                            coords.weather = true;
+                        if ('weathernight' in coords) {
+                            delete coords.weathernight;
+                            if (!('weathericon' in coords || 'weatherair' in coords || 'weatheroneline' in coords || 'weathercur' in coords || 'weatherday' in coords || 'weathernight' in coords))
+                                coords.weather = false;
+                        } else
+                            coords.weathernight = {
+                                Number: {
+                                    TopLeftX: 0,
+                                    TopLeftY: 0,
+                                    BottomRightX: 33,
+                                    BottomRightY: 9,
+                                    Alignment: "TopLeft",
+                                    Spacing: 2,
+                                    ImageIndex: 200,
+                                    ImagesCount: 10
+                                },
+                                MinusImageIndex: 217,
+                                DegreesImageIndex: 218
+                            }
+                        break;
+                    }
+                case 'stepsGoal':
+                    {
+                        if (!(coords.stepsprogress))
+                            coords.stepsprogress = true;
+                        if ('stepsgoal' in coords) {
+                            delete coords.stepsgoal;
+                            if (!('stepslinear' in coords || 'stepsgoal' in coords || 'stepscircle' in coords))
+                                coords.stepsprogress = false;
+                        } else
+                            coords.stepsgoal = {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 266
+                            }
+                        break;
+                    }
+                case 'stepsLinear':
+                    {
+                        if (!(coords.stepsprogress))
+                            coords.stepsprogress = true;
+                        if ('stepslinear' in coords) {
+                            delete coords.stepslinear;
+                            if (!('stepslinear' in coords || 'stepsgoal' in coords || 'stepscircle' in coords))
+                                coords.stepsprogress = false;
+                        } else
+                            coords.stepslinear = {
+                                StartImageIndex: 200,
+                                Segments: [
+                                    {
+                                        X: 40,
+                                        Y: 121
                         },
-                        {
-                            X: 55,
-                            Y: 121
+                                    {
+                                        X: 55,
+                                        Y: 121
                         },
-                        {
-                            X: 67,
-                            Y: 121
+                                    {
+                                        X: 67,
+                                        Y: 121
                         },
-                        {
-                            X: 79,
-                            Y: 121
+                                    {
+                                        X: 79,
+                                        Y: 121
                         },
-                        {
-                            X: 91,
-                            Y: 121
+                                    {
+                                        X: 91,
+                                        Y: 121
                         },
-                        {
-                            X: 104,
-                            Y: 121
+                                    {
+                                        X: 104,
+                                        Y: 121
                         },
-                        {
-                            X: 117,
-                            Y: 121
+                                    {
+                                        X: 117,
+                                        Y: 121
                         },
-                        {
-                            X: 130,
-                            Y: 121
+                                    {
+                                        X: 130,
+                                        Y: 121
                         }
                     ]
-                }
+                            }
+                        break;
+                    }
+                default:
+                    console.error('Error in toggle: ',el);
+            }
             this.updatecode();
-            jsoneditor.select('"Linear":');
-        },
-        disablesec: function () {
-            if (coords.analog)
-                if ('analogseconds' in coords) {
-                    coords.analogminutes.CenterImage = coords.analogseconds.CenterImage;
-                    delete coords.analogseconds;
-                    this.updatecode();
-                }
+            jsoneditor.select(jsoneditor.toggleElements[el]);
         },
         select: function (s) {
             var target = this.findspan(s);
@@ -2607,19 +2636,20 @@ var coords = {},
             analog.update('hours');
         },
         update: function (arrow) {
-            if(arrow != undefined){
-            switch (arrow) {
-                case 'hours':
-                    this.currentElement = coords.analoghours;
-                    break;
-                case 'minutes':
-                    this.currentElement = coords.analogminutes;
-                    break;
-                case 'seconds':
-                    this.currentElement = coords.analogseconds;
-                    break;
+            if (arrow != undefined) {
+                switch (arrow) {
+                    case 'hours':
+                        this.currentElement = coords.analoghours;
+                        break;
+                    case 'minutes':
+                        this.currentElement = coords.analogminutes;
+                        break;
+                    case 'seconds':
+                        this.currentElement = coords.analogseconds;
+                        break;
+                }
+                this.currentElementName = arrow;
             }
-            this.currentElementName = arrow;}
             this.dotCount = 0;
             view.makeWf();
             $("analog").innerHTML = '';
@@ -2639,7 +2669,7 @@ var coords = {},
                 $('analog-center-y').value = analog.currentElement.Center.Y;
                 $('analog-fill').checked = !analog.currentElement.OnlyBorder;
                 $('analog-color').style.backgroundColor = analog.currentElement.Color;
-                $('analog-color').value='';
+                $('analog-color').value = '';
             } else $('analog').onclick = function (e) {
                 return false;
             }
