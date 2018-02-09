@@ -1346,10 +1346,10 @@ var coords = {},
                 }, 10);
             }
             if ('time' in coords) {
-                this.makeImg(coords.time.Hours.Tens, "e_time_ht");
-                this.makeImg(coords.time.Hours.Ones, "e_time_ho");
-                this.makeImg(coords.time.Minutes.Tens, "e_time_mt");
-                this.makeImg(coords.time.Minutes.Ones, "e_time_mo");
+                editor.makeImg(coords.time.Hours.Tens, "e_time_ht");
+                editor.makeImg(coords.time.Hours.Ones, "e_time_ho");
+                editor.makeImg(coords.time.Minutes.Tens, "e_time_mt");
+                editor.makeImg(coords.time.Minutes.Ones, "e_time_mo");
                 setTimeout(function () {
                     editor.initdrag('e_time_ht', coords.time.Hours.Tens, "c_time", draw.time.time);
                     editor.initdrag('e_time_ho', coords.time.Hours.Ones, "c_time", draw.time.time);
@@ -1357,8 +1357,8 @@ var coords = {},
                     editor.initdrag('e_time_mo', coords.time.Minutes.Ones, "c_time", draw.time.time);
                 }, 10);
                 if ('seconds' in coords) {
-                    this.makeImg(coords.seconds.Tens, "e_time_st");
-                    this.makeImg(coords.seconds.Ones, "e_time_so");
+                    editor.makeImg(coords.seconds.Tens, "e_time_st");
+                    editor.makeImg(coords.seconds.Ones, "e_time_so");
                     setTimeout(function () {
                         editor.initdrag('e_time_st', coords.seconds.Tens, "c_sec", draw.time.seconds);
                         editor.initdrag('e_time_so', coords.seconds.Ones, "c_sec", draw.time.seconds);
@@ -1374,25 +1374,25 @@ var coords = {},
             }
             if (coords.date) {
                 if ('weekday' in coords) {
-                    this.makeImg(coords.weekday, "e_date_weekday");
+                    editor.makeImg(coords.weekday, "e_date_weekday");
                     setTimeout(function () {
                         editor.initdrag('e_date_weekday', coords.weekday, "c_date_weekday", draw.date.weekday);
                     }, 10);
                 }
                 if ('dateday' in coords) {
-                    this.makeBlock(coords.dateday, "e_date_sep_day");
+                    editor.makeBlock(coords.dateday, "e_date_sep_day");
                     setTimeout(function () {
                         editor.initdrag('e_date_sep_day', coords.dateday, "c_date_sepday", draw.date.sepday);
                     }, 10);
                 }
                 if ('datemonth' in coords) {
-                    this.makeBlock(coords.datemonth, "e_date_sep_month");
+                    editor.makeBlock(coords.datemonth, "e_date_sep_month");
                     setTimeout(function () {
                         editor.initdrag('e_date_sep_month', coords.datemonth, "c_date_sepmonth", draw.date.sepmonth);
                     }, 10);
                 }
                 if ('dateoneline' in coords) {
-                    this.makeBlock(coords.dateoneline.Number, "e_date_oneline");
+                    editor.makeBlock(coords.dateoneline.Number, "e_date_oneline");
                     setTimeout(function () {
                         editor.initdrag('e_date_oneline', coords.dateoneline.Number, "c_date_oneline", draw.date.oneline);
                     }, 10);
@@ -1400,31 +1400,31 @@ var coords = {},
             }
             if (coords.activity) {
                 if ('actcal' in coords) {
-                    this.makeBlock(coords.actcal, "e_act_cal");
+                    editor.makeBlock(coords.actcal, "e_act_cal");
                     setTimeout(function () {
                         editor.initdrag('e_act_cal', coords.actcal, "c_act_cal", draw.activity.cal);
                     }, 10);
                 }
                 if ('actsteps' in coords) {
-                    this.makeBlock(coords.actsteps, "e_act_steps");
+                    editor.makeBlock(coords.actsteps, "e_act_steps");
                     setTimeout(function () {
                         editor.initdrag('e_act_steps', coords.actsteps, "c_act_steps", draw.activity.steps);
                     }, 10);
                 }
                 if ('actstepsgoal' in coords) {
-                    this.makeBlock(coords.actstepsgoal, "e_act_stepsgoal");
+                    editor.makeBlock(coords.actstepsgoal, "e_act_stepsgoal");
                     setTimeout(function () {
                         editor.initdrag('e_act_stepsgoal', coords.actstepsgoal, "c_act_stepsg", draw.activity.stepsgoal);
                     }, 10);
                 }
                 if ('actpulse' in coords) {
-                    this.makeBlock(coords.actpulse, "e_act_pulse");
+                    editor.makeBlock(coords.actpulse, "e_act_pulse");
                     setTimeout(function () {
                         editor.initdrag('e_act_pulse', coords.actpulse, "c_act_pulse", draw.activity.pulse);
                     }, 10);
                 }
                 if ('actdist' in coords) {
-                    this.makeBlock(coords.actdist.Number, "e_act_distance");
+                    editor.makeBlock(coords.actdist.Number, "e_act_distance");
                     setTimeout(function () {
                         editor.initdrag('e_act_distance', coords.actdist.Number, "c_act_distance", draw.activity.distance);
                     }, 10);
@@ -1432,13 +1432,13 @@ var coords = {},
             }
             if (coords.battery) {
                 if ('batteryicon' in coords) {
-                    this.makeImg(coords.batteryicon, "e_battery_icon");
+                    editor.makeImg(coords.batteryicon, "e_battery_icon");
                     setTimeout(function () {
                         editor.initdrag('e_battery_icon', coords.batteryicon, "c_battery_icon", draw.battery.icon);
                     }, 10);
                 }
                 if ('batterytext' in coords) {
-                    this.makeBlock(coords.batterytext, "e_battery_text");
+                    editor.makeBlock(coords.batterytext, "e_battery_text");
                     setTimeout(function () {
                         editor.initdrag('e_battery_text', coords.batterytext, "c_battery_text", draw.battery.text);
                     }, 10);
@@ -1455,25 +1455,25 @@ var coords = {},
             }
             if (coords.status) {
                 if ('statalarm' in coords) {
-                    this.makeImgStat(coords.statalarm, "e_stat_alarm");
+                    editor.makeImgStat(coords.statalarm, "e_stat_alarm");
                     setTimeout(function () {
                         editor.initdrag('e_stat_alarm', coords.statalarm.Coordinates, "c_stat_alarm", draw.status.alarm);
                     }, 10);
                 }
                 if ('statbt' in coords) {
-                    this.makeImgStat(coords.statbt, "e_stat_bt");
+                    editor.makeImgStat(coords.statbt, "e_stat_bt");
                     setTimeout(function () {
                         editor.initdrag('e_stat_bt', coords.statbt.Coordinates, "c_stat_bt", draw.status.bt);
                     }, 10);
                 }
                 if ('statdnd' in coords) {
-                    this.makeImgStat(coords.statdnd, "e_stat_dnd");
+                    editor.makeImgStat(coords.statdnd, "e_stat_dnd");
                     setTimeout(function () {
                         editor.initdrag('e_stat_dnd', coords.statdnd.Coordinates, "c_stat_dnd", draw.status.dnd);
                     }, 10);
                 }
                 if ('statlock' in coords) {
-                    this.makeImgStat(coords.statlock, "e_stat_lock");
+                    editor.makeImgStat(coords.statlock, "e_stat_lock");
                     setTimeout(function () {
                         editor.initdrag('e_stat_lock', coords.statlock.Coordinates, "c_stat_lock", draw.status.lock);
                     }, 10);
@@ -1495,31 +1495,31 @@ var coords = {},
                         }, 10);
                     }
                 if ('weatheroneline' in coords) {
-                    this.makeBlock(coords.weatheroneline.Number, "e_weather_temp_today_oneline");
+                    editor.makeBlock(coords.weatheroneline.Number, "e_weather_temp_today_oneline");
                     setTimeout(function () {
                         editor.initdrag('e_weather_temp_today_oneline', coords.weatheroneline.Number, "c_temp_oneline", draw.weather.temp.oneline);
                     }, 10);
                 }
                 if ('weatherday' in coords) {
-                    this.makeBlock(coords.weatherday.Number, "e_weather_temp_today_sep_day");
+                    editor.makeBlock(coords.weatherday.Number, "e_weather_temp_today_sep_day");
                     setTimeout(function () {
                         editor.initdrag('e_weather_temp_today_sep_day', coords.weatherday.Number, "c_temp_sep_day", draw.weather.temp.sep.day);
                     }, 10);
                 }
                 if ('weathernight' in coords) {
-                    this.makeBlock(coords.weathernight.Number, "e_weather_temp_today_sep_night");
+                    editor.makeBlock(coords.weathernight.Number, "e_weather_temp_today_sep_night");
                     setTimeout(function () {
                         editor.initdrag('e_weather_temp_today_sep_night', coords.weathernight.Number, "c_temp_sep_night", draw.weather.temp.sep.night);
                     }, 10);
                 }
                 if ('weathercur' in coords) {
-                    this.makeBlock(coords.weathercur.Number, "e_weather_temp_current");
+                    editor.makeBlock(coords.weathercur.Number, "e_weather_temp_current");
                     setTimeout(function () {
                         editor.initdrag('e_weather_temp_current', coords.weathercur.Number, "c_temp_cur", draw.weather.temp.current);
                     }, 10);
                 }
                 if ('weatherair' in coords) {
-                    this.makeImg(coords.weatherair.Icon, "e_weather_air");
+                    editor.makeImg(coords.weatherair.Icon, "e_weather_air");
                     setTimeout(function () {
                         editor.initdrag('e_weather_air', coords.weatherair.Icon, "c_air", draw.weather.air);
                     }, 10);
@@ -1537,7 +1537,7 @@ var coords = {},
                     }
                 }
                 if ('stepsgoal' in coords) {
-                    this.makeImg(coords.stepsgoal, "e_steps_goal");
+                    editor.makeImg(coords.stepsgoal, "e_steps_goal");
                     setTimeout(function () {
                         editor.initdrag('e_steps_goal', coords.stepsgoal, "c_steps_goal", draw.stepsprogress.goal);
                     }, 10);
@@ -1649,43 +1649,43 @@ var coords = {},
         makejsbetter: function () {
             if (coords.date) {
                 if ('dateday' in coords)
-                    this.calc(coords.dateday, 2);
+                    editor.calc(coords.dateday, 2);
                 if ('datemonth' in coords)
-                    this.calc(coords.datemonth, 2);
+                    editor.calc(coords.datemonth, 2);
                 if ('dateoneline' in coords)
-                    this.calc(coords.dateoneline.Number, 4, coords.dateoneline.DelimiterImageIndex);
+                    editor.calc(coords.dateoneline.Number, 4, coords.dateoneline.DelimiterImageIndex);
             }
             if ('batterytext' in coords)
-                this.calc(coords.batterytext, 3);
+                editor.calc(coords.batterytext, 3);
             if (coords.activity) {
                 if ('actcal' in coords)
-                    this.calc(coords.actcal, 4);
+                    editor.calc(coords.actcal, 4);
                 if ('actsteps' in coords)
-                    this.calc(coords.actsteps, 5);
+                    editor.calc(coords.actsteps, 5);
                 if ('actstepsgoal' in coords)
-                    this.calc(coords.actstepsgoal, 5);
+                    editor.calc(coords.actstepsgoal, 5);
                 if ('actpulse' in coords)
-                    this.calc(coords.actpulse, 3);
+                    editor.calc(coords.actpulse, 3);
                 if ('actdist' in coords)
-                    this.calc(coords.actdist.Number, 4, coords.actdist.DecimalPointImageIndex, coords.actdist.SuffixImageIndex);
+                    editor.calc(coords.actdist.Number, 4, coords.actdist.DecimalPointImageIndex, coords.actdist.SuffixImageIndex);
             }
             if (coords.weather) {
                 if ('weatheroneline' in coords)
-                    this.calc(coords.weatheroneline.Number, 4, coords.weatheroneline.MinusSignImageIndex, coords.weatheroneline.MinusSignImageIndex, coords.weatheroneline.DelimiterImageIndex, coords.weatheroneline.DegreesImageIndex);
+                    editor.calc(coords.weatheroneline.Number, 4, coords.weatheroneline.MinusSignImageIndex, coords.weatheroneline.MinusSignImageIndex, coords.weatheroneline.DelimiterImageIndex, coords.weatheroneline.DegreesImageIndex);
                 if ('weatherday' in coords)
-                    this.calc(coords.weatherday.Number, 2, coords.weatherday.MinusImageIndex, coords.weatherday.DegreesImageIndex);
+                    editor.calc(coords.weatherday.Number, 2, coords.weatherday.MinusImageIndex, coords.weatherday.DegreesImageIndex);
                 if ('weathernight' in coords)
-                    this.calc(coords.weathernight.Number, 2, coords.weathernight.MinusImageIndex, coords.weathernight.DegreesImageIndex);
+                    editor.calc(coords.weathernight.Number, 2, coords.weathernight.MinusImageIndex, coords.weathernight.DegreesImageIndex);
                 if ('weathercur' in coords)
-                    this.calc(coords.weathercur.Number, 2, coords.weathercur.MinusImageIndex, coords.weathercur.DegreesImageIndex);
+                    editor.calc(coords.weathercur.Number, 2, coords.weathercur.MinusImageIndex, coords.weathercur.DegreesImageIndex);
             }
-            this.init();
+            editor.init();
             view.makeWf();
         },
         undo: function () {
             if (data.coordsHistory.length) {
                 coords = JSON.parse(data.coordsHistory.pop());
-                this.init();
+                editor.init();
                 view.makeWf();
             }
         }
@@ -1702,140 +1702,140 @@ var coords = {},
         },
         updatecode: function () {
             $("codearea").innerHTML = jsoneditor.syntaxHighlight(JSON.stringify(data.export(), null, 4));
-            if ($("codearea").innerText.match(this.regexrimg))
+            if ($("codearea").innerText.match(jsoneditor.regexrimg))
                 $("defaultimages").classList.add("uk-label-success");
             else
                 $("defaultimages").classList.remove("uk-label-success");
             view.makeWf();
             if ('time' in coords) {
                 if ('seconds' in coords)
-                    this.togglebutton("tgsec", 1);
+                    jsoneditor.togglebutton("tgsec", 1);
                 else
-                    this.togglebutton("tgsec", 0);
+                    jsoneditor.togglebutton("tgsec", 0);
                 if ('ampm' in coords)
-                    this.togglebutton("tg12/24", 1);
+                    jsoneditor.togglebutton("tg12/24", 1);
                 else
-                    this.togglebutton("tg12/24", 0);
+                    jsoneditor.togglebutton("tg12/24", 0);
             }
             if ('weekday' in coords)
-                this.togglebutton("tgweekday", 1);
+                jsoneditor.togglebutton("tgweekday", 1);
             else
-                this.togglebutton("tgweekday", 0);
+                jsoneditor.togglebutton("tgweekday", 0);
             if ('dateday' in coords)
-                this.togglebutton("tgdateday", 1);
+                jsoneditor.togglebutton("tgdateday", 1);
             else
-                this.togglebutton("tgdateday", 0);
+                jsoneditor.togglebutton("tgdateday", 0);
             if ('datemonth' in coords)
-                this.togglebutton("tgdatemonth", 1);
+                jsoneditor.togglebutton("tgdatemonth", 1);
             else
-                this.togglebutton("tgdatemonth", 0);
+                jsoneditor.togglebutton("tgdatemonth", 0);
             if ('dateoneline' in coords)
-                this.togglebutton("tgdateoneline", 1);
+                jsoneditor.togglebutton("tgdateoneline", 1);
             else
-                this.togglebutton("tgdateoneline", 0);
+                jsoneditor.togglebutton("tgdateoneline", 0);
             if ('batteryicon' in coords)
-                this.togglebutton("tgbaticon", 1);
+                jsoneditor.togglebutton("tgbaticon", 1);
             else
-                this.togglebutton("tgbaticon", 0);
+                jsoneditor.togglebutton("tgbaticon", 0);
             if ('batterytext' in coords)
-                this.togglebutton("tgbatnum", 1);
+                jsoneditor.togglebutton("tgbatnum", 1);
             else
-                this.togglebutton("tgbatnum", 0);
+                jsoneditor.togglebutton("tgbatnum", 0);
             if ('batteryscale' in coords)
-                this.togglebutton("tgbatscale", 1);
+                jsoneditor.togglebutton("tgbatscale", 1);
             else
-                this.togglebutton("tgbatscale", 0);
+                jsoneditor.togglebutton("tgbatscale", 0);
             if ('statalarm' in coords)
-                this.togglebutton("tgstatalarm", 1);
+                jsoneditor.togglebutton("tgstatalarm", 1);
             else
-                this.togglebutton("tgstatalarm", 0);
+                jsoneditor.togglebutton("tgstatalarm", 0);
             if ('statbt' in coords)
-                this.togglebutton("tgstatbt", 1);
+                jsoneditor.togglebutton("tgstatbt", 1);
             else
-                this.togglebutton("tgstatbt", 0);
+                jsoneditor.togglebutton("tgstatbt", 0);
             if ('statdnd' in coords)
-                this.togglebutton("tgstatdnd", 1);
+                jsoneditor.togglebutton("tgstatdnd", 1);
             else
-                this.togglebutton("tgstatdnd", 0);
+                jsoneditor.togglebutton("tgstatdnd", 0);
             if ('statlock' in coords)
-                this.togglebutton("tgstatlock", 1);
+                jsoneditor.togglebutton("tgstatlock", 1);
             else
-                this.togglebutton("tgstatlock", 0);
+                jsoneditor.togglebutton("tgstatlock", 0);
             if ('actcal' in coords)
-                this.togglebutton("tgactcalories", 1);
+                jsoneditor.togglebutton("tgactcalories", 1);
             else
-                this.togglebutton("tgactcalories", 0);
+                jsoneditor.togglebutton("tgactcalories", 0);
             if ('actsteps' in coords)
-                this.togglebutton("tgactsteps", 1);
+                jsoneditor.togglebutton("tgactsteps", 1);
             else
-                this.togglebutton("tgactsteps", 0);
+                jsoneditor.togglebutton("tgactsteps", 0);
             if ('actstepsgoal' in coords)
-                this.togglebutton("tgactstepsgoal", 1);
+                jsoneditor.togglebutton("tgactstepsgoal", 1);
             else
-                this.togglebutton("tgactstepsgoal", 0);
+                jsoneditor.togglebutton("tgactstepsgoal", 0);
             if ('actpulse' in coords)
-                this.togglebutton("tgactpulse", 1);
+                jsoneditor.togglebutton("tgactpulse", 1);
             else
-                this.togglebutton("tgactpulse", 0);
+                jsoneditor.togglebutton("tgactpulse", 0);
             if ('actdist' in coords)
-                this.togglebutton("tgactdist", 1);
+                jsoneditor.togglebutton("tgactdist", 1);
             else
-                this.togglebutton("tgactdist", 0);
+                jsoneditor.togglebutton("tgactdist", 0);
             if (coords.weather) {
                 if (coords.weathericon)
                     if ('CustomIcon' in coords.weathericon) {
-                        this.togglebutton("tgweathercusticon", 1);
-                        this.togglebutton("tgweathericon", 0);
+                        jsoneditor.togglebutton("tgweathercusticon", 1);
+                        jsoneditor.togglebutton("tgweathericon", 0);
                     } else {
-                        this.togglebutton("tgweathericon", 1);
-                        this.togglebutton("tgweathercusticon", 0);
+                        jsoneditor.togglebutton("tgweathericon", 1);
+                        jsoneditor.togglebutton("tgweathercusticon", 0);
                     }
                 else {
-                    this.togglebutton("tgweathericon", 0);
-                    this.togglebutton("tgweathercusticon", 0);
+                    jsoneditor.togglebutton("tgweathericon", 0);
+                    jsoneditor.togglebutton("tgweathercusticon", 0);
                 }
                 if ('weatheroneline' in coords)
-                    this.togglebutton("tgweatheroneline", 1);
+                    jsoneditor.togglebutton("tgweatheroneline", 1);
                 else
-                    this.togglebutton("tgweatheroneline", 0);
+                    jsoneditor.togglebutton("tgweatheroneline", 0);
                 if ('weatherday' in coords)
-                    this.togglebutton("tgweatherday", 1);
+                    jsoneditor.togglebutton("tgweatherday", 1);
                 else
-                    this.togglebutton("tgweatherday", 0);
+                    jsoneditor.togglebutton("tgweatherday", 0);
                 if ('weathernight' in coords)
-                    this.togglebutton("tgweathernight", 1);
+                    jsoneditor.togglebutton("tgweathernight", 1);
                 else
-                    this.togglebutton("tgweathernight", 0);
+                    jsoneditor.togglebutton("tgweathernight", 0);
 
                 if ('weathercur' in coords)
-                    this.togglebutton("tgweathercur", 1);
+                    jsoneditor.togglebutton("tgweathercur", 1);
                 else
-                    this.togglebutton("tgweathercur", 0);
+                    jsoneditor.togglebutton("tgweathercur", 0);
                 if ('weatherair' in coords)
-                    this.togglebutton("tgweatherair", 1);
+                    jsoneditor.togglebutton("tgweatherair", 1);
                 else
-                    this.togglebutton("tgweatherair", 0);
+                    jsoneditor.togglebutton("tgweatherair", 0);
             } else {
-                this.togglebutton("tgweathericon", 0);
-                this.togglebutton("tgweathercusticon", 0);
-                this.togglebutton("tgweatheroneline", 0);
-                this.togglebutton("tgweatherday", 0);
-                this.togglebutton("tgweathernight", 0);
-                this.togglebutton("tgweathercur", 0);
-                this.togglebutton("tgweatherair", 0);
+                jsoneditor.togglebutton("tgweathericon", 0);
+                jsoneditor.togglebutton("tgweathercusticon", 0);
+                jsoneditor.togglebutton("tgweatheroneline", 0);
+                jsoneditor.togglebutton("tgweatherday", 0);
+                jsoneditor.togglebutton("tgweathernight", 0);
+                jsoneditor.togglebutton("tgweathercur", 0);
+                jsoneditor.togglebutton("tgweatherair", 0);
             }
             if (coords.stepsprogress) {
                 if ('stepslinear' in coords)
-                    this.togglebutton("tgstepslinear", 1);
+                    jsoneditor.togglebutton("tgstepslinear", 1);
                 else
-                    this.togglebutton("tgstepslinear", 0);
+                    jsoneditor.togglebutton("tgstepslinear", 0);
                 if ('stepsgoal' in coords)
-                    this.togglebutton("tgactgoalicon", 1);
+                    jsoneditor.togglebutton("tgactgoalicon", 1);
                 else
-                    this.togglebutton("tgactgoalicon", 0);
+                    jsoneditor.togglebutton("tgactgoalicon", 0);
             } else {
-                this.togglebutton("tgstepslinear", 0);
-                this.togglebutton("tgactgoalicon", 0);
+                jsoneditor.togglebutton("tgstepslinear", 0);
+                jsoneditor.togglebutton("tgactgoalicon", 0);
             }
         },
         toggleElements: {
@@ -2488,11 +2488,11 @@ var coords = {},
                 default:
                     console.error('Error in toggle: ',el);
             }
-            this.updatecode();
+            jsoneditor.updatecode();
             jsoneditor.select(jsoneditor.toggleElements[el]);
         },
         select: function (s) {
-            var target = this.findspan(s);
+            var target = jsoneditor.findspan(s);
             if (!target) return 0;
             var rng, sel;
             rng = document.createRange();
@@ -2511,7 +2511,7 @@ var coords = {},
         init: function () {
             if (!('editortabversion' in localStorage) || localStorage.editortabversion < data.app.editortabversion)
                 localStorage.editortabversion = data.app.editortabversion;
-            this.updatecode();
+            jsoneditor.updatecode();
             if (data.app.firstopen_editor && localStorage.showcount < 8) {
                 sessionStorage.firstopen_editor = false;
                 UIkit.notification(('jsonupdate' in data.app.lang ? data.app.lang.jsonupdate : "To update preview just click out of JSON input"), {
@@ -2578,7 +2578,7 @@ var coords = {},
             try {
                 data.coordsHistory.push(JSON.stringify(coords));
                 data.import(jsonlint.parse($("codearea").innerText));
-                this.updatecode();
+                jsoneditor.updatecode();
             } catch (error) {
                 $("jsonerrortext").innerHTML = error;
                 setTimeout(function () {
@@ -2590,7 +2590,7 @@ var coords = {},
         undo: function () {
             if (data.coordsHistory.length) {
                 coords = JSON.parse(data.coordsHistory.pop());
-                this.updatecode();
+                jsoneditor.updatecode();
             }
         },
         regexr: /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
@@ -2639,29 +2639,29 @@ var coords = {},
             if (arrow != undefined) {
                 switch (arrow) {
                     case 'hours':
-                        this.currentElement = coords.analoghours;
+                        analog.currentElement = coords.analoghours;
                         break;
                     case 'minutes':
-                        this.currentElement = coords.analogminutes;
+                        analog.currentElement = coords.analogminutes;
                         break;
                     case 'seconds':
-                        this.currentElement = coords.analogseconds;
+                        analog.currentElement = coords.analogseconds;
                         break;
                 }
-                this.currentElementName = arrow;
+                analog.currentElementName = arrow;
             }
-            this.dotCount = 0;
+            analog.dotCount = 0;
             view.makeWf();
             $("analog").innerHTML = '';
             if (('analog' + analog.currentElementName) in coords) {
-                $("analog").innerHTML += '<div class="analog-center" style="left: ' + (this.currentElement.Center.X * 3 - 11) + 'px;top:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
-                $("analog").innerHTML += '<div class="analog-line" style="left: ' + (this.currentElement.Center.X * 3 - 3) + 'px;height:' + (this.currentElement.Center.Y * 3 - 11) + 'px"></div>';
+                $("analog").innerHTML += '<div class="analog-center" style="left: ' + (analog.currentElement.Center.X * 3 - 11) + 'px;top:' + (analog.currentElement.Center.Y * 3 - 11) + 'px"></div>';
+                $("analog").innerHTML += '<div class="analog-line" style="left: ' + (analog.currentElement.Center.X * 3 - 3) + 'px;height:' + (analog.currentElement.Center.Y * 3 - 11) + 'px"></div>';
                 $("analog").innerHTML += '<svg id="analogsvg" width="528" height="528"></svg>';
                 for (var i in $("analog").childNodes)
                     $("analog").childNodes[i].oncontextmenu = function (e) {
                         e.preventDefault();
                     }
-                this.drawAnalog(this.currentElement, 0);
+                analog.drawAnalog(analog.currentElement, 0);
                 $('analog').onclick = function (e) {
                     analog.addDot(e);
                 }
@@ -2678,7 +2678,7 @@ var coords = {},
             var ed = editor.getOffsetRect($("analog"));
             var d = document.createElement('div');
             d.classList.add('analog-dot');
-            d.id = 'dot' + this.dotCount++;
+            d.id = 'dot' + analog.dotCount++;
             d.style.left = e.pageX - ed.left - (e.pageX - ed.left) % 3 + 'px';
             d.style.top = e.pageY - ed.top - (e.pageY - ed.top) % 3 + 'px';
             d.oncontextmenu = function (e) {
@@ -2686,18 +2686,18 @@ var coords = {},
                 analog.removeDot(e);
             };
             var c = {
-                X: (Number(d.style.top.replace('px', '')) + 3 - this.currentElement.Center.X * 3) / -3,
-                Y: (Number(d.style.left.replace('px', '')) + 3 - this.currentElement.Center.X * 3) / 3
+                X: (Number(d.style.top.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / -3,
+                Y: (Number(d.style.left.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / 3
             }
-            this.currentElement.Shape.push(c);
-            this.update(analog.currentElementName);
+            analog.currentElement.Shape.push(c);
+            analog.update(analog.currentElementName);
         },
         moveDot: function (e) {},
         removeDot: function (e) {
-            if (this.dotCount > 2) {
-                this.currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
-                this.dotCount--;
-                this.update(analog.currentElementName);
+            if (analog.dotCount > 2) {
+                analog.currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
+                analog.dotCount--;
+                analog.update(analog.currentElementName);
             }
         },
         drawAnalog: function (el, value) {
@@ -2709,14 +2709,14 @@ var coords = {},
                 d += "L " + el.Shape[i].X * 3 + " " + el.Shape[i].Y * 3 + " ";
                 var dot = document.createElement('div');
                 dot.classList.add('analog-dot');
-                dot.id = 'dot' + this.dotCount++;
+                dot.id = 'dot' + analog.dotCount++;
                 dot.style.left = el.Shape[i].Y * 3 + el.Center.X * 3 - 4 + 'px';
                 dot.style.top = el.Shape[i].X * 3 * (-1) + el.Center.Y * 3 - 4 + 'px';
                 dot.oncontextmenu = function (e) {
                     e.preventDefault();
                     analog.removeDot(e);
                 };
-                this.initdrag(dot, this.currentElement.Shape[i]);
+                analog.initdrag(dot, analog.currentElement.Shape[i]);
                 //                dot.style.left = el.Shape[i].X * 3 + 'px';
                 //                dot.style.top = el.Shape[i].Y * 3 + 'px';
                 $('analog').appendChild(dot);
@@ -2829,7 +2829,7 @@ var coords = {},
                     }
                     break;
             }
-            this.init(elem);
+            analog.init(elem);
         },
         initdrag: function (el, elcoords) {
             el.onmousedown = function (e) {
@@ -2888,53 +2888,53 @@ var coords = {},
             $("imagesinuse").innerHTML = '';
             $("imagesavalible").innerHTML = '';
             if ('bg' in coords)
-                this.insertimg({
+                imagestab.insertimg({
                     label: "Background"
                 }, coords.bg.Image.ImageIndex);
             if ('time' in coords) {
-                this.insertimg({
+                imagestab.insertimg({
                     label: "Time hours tens"
                 }, coords.time.Hours.Tens.ImageIndex, coords.time.Hours.Tens.ImagesCount);
-                this.insertimg({
+                imagestab.insertimg({
                     label: "Time hours ones"
                 }, coords.time.Hours.Ones.ImageIndex, coords.time.Hours.Ones.ImagesCount);
-                this.insertimg({
+                imagestab.insertimg({
                     label: "Time minutes tens"
                 }, coords.time.Minutes.Tens.ImageIndex, coords.time.Minutes.Tens.ImagesCount);
-                this.insertimg({
+                imagestab.insertimg({
                     label: "Time minutes ones"
                 }, coords.time.Minutes.Ones.ImageIndex, coords.time.Minutes.Ones.ImagesCount);
                 if ('seconds' in coords) {
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Time seconds tens"
                     }, coords.seconds.Tens.ImageIndex, coords.seconds.Tens.ImagesCount);
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Time seconds ones"
                     }, coords.seconds.Ones.ImageIndex, coords.seconds.Ones.ImagesCount);
                 }
                 if ('ampm' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Time am/pm"
                     }, coords.ampm.ImageIndexAm, 1, coords.ampm.ImageIndexPm);
             }
             if (coords.date) {
                 if ('weekday' in coords) {
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Week day"
                     }, coords.weekday.ImageIndex, coords.weekday.ImagesCount);
                 }
                 if ('dateday' in coords) {
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Date day"
                     }, coords.dateday.ImageIndex, coords.dateday.ImagesCount);
                 }
                 if ('datemonth' in coords) {
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Date month"
                     }, coords.datemonth.ImageIndex, coords.datemonth.ImagesCount);
                 }
                 if ('dateoneline' in coords) {
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Date oneline",
                         addition: (", " + coords.dateoneline.DelimiterImageIndex)
                     }, coords.dateoneline.Number.ImageIndex, coords.dateoneline.Number.ImagesCount, coords.dateoneline.DelimiterImageIndex);
@@ -2942,56 +2942,56 @@ var coords = {},
             }
             if (coords.battery) {
                 if ('batteryicon' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Battery icon"
                     }, coords.batteryicon.ImageIndex, coords.batteryicon.ImagesCount);
                 if ('batterytext' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Battery text"
                     }, coords.batterytext.ImageIndex, coords.batterytext.ImagesCount);
                 if ('batteryscale' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Battery scale"
                     }, coords.batteryscale.StartImageIndex, coords.batteryscale.Segments.length);
             }
             if (coords.status) {
                 if ('statalarm' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Status alarm"
                     }, coords.statalarm.ImageIndexOn, 1);
                 if ('statbt' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Status bluetooth",
                         addition: (", " + coords.statbt.ImageIndexOff)
                     }, coords.statbt.ImageIndexOn, 1, coords.statbt.ImageIndexOff);
                 if ('statdnd' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Status do not disturb"
                     }, coords.statdnd.ImageIndexOn, 1);
                 if ('statlock' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Status lock"
                     }, coords.statlock.ImageIndexOn, 1);
             }
             if (coords.activity) {
                 if ('actcal' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Activity calories"
                     }, coords.actcal.ImageIndex, coords.actcal.ImagesCount);
                 if ('actsteps' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Activity steps"
                     }, coords.actsteps.ImageIndex, coords.actsteps.ImagesCount);
                 if ('statstepsgoal' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Activity steps goal"
                     }, coords.actstepsgoal.ImageIndex, coords.actstepsgoal.ImagesCount);
                 if ('actpulse' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Activity pulse"
                     }, coords.actpulse.ImageIndex, coords.actpulse.ImagesCount);
                 if ('actdist' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Activity distance",
                         addition: (", " + coords.actdist.DecimalPointImageIndex + ", " + coords.actdist.SuffixImageIndex)
                     }, coords.actdist.Number.ImageIndex, coords.actdist.Number.ImagesCount, coords.actdist.DecimalPointImageIndex, coords.actdist.SuffixImageIndex);
@@ -2999,108 +2999,108 @@ var coords = {},
             if (coords.weather) {
                 if (coords.weathericon)
                     if ('CustomIcon' in coords.weathericon) {
-                        this.insertimg({
+                        imagestab.insertimg({
                             label: "Weather icons"
                         }, coords.weathericon.CustomIcon.ImageIndex, coords.weathericon.CustomIcon.ImagesCount);
                     }
                 if ('weatheroneline' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Weather oneline",
                         addition: (", " + coords.weatheroneline.MinusSignImageIndex + ", " + coords.weatheroneline.DelimiterImageIndex + ", " + coords.weatheroneline.DegreesImageIndex)
                     }, coords.weatheroneline.Number.ImageIndex, coords.weatheroneline.Number.ImagesCount, coords.weatheroneline.MinusSignImageIndex, coords.weatheroneline.DelimiterImageIndex, coords.weatheroneline.DegreesImageIndex);
                 if ('weatherday' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Weather day",
                         addition: (", " + coords.weatherday.MinusImageIndex)
                     }, coords.weatherday.Number.ImageIndex, coords.weatherday.Number.ImagesCount, coords.weatherday.MinusImageIndex);
                 if ('weathernight' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Weather night",
                         addition: (", " + coords.weathernight.MinusImageIndex)
                     }, coords.weathernight.Number.ImageIndex, coords.weathernight.Number.ImagesCount, coords.weathernight.MinusImageIndex);
 
                 if ('weathercur' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Weather current",
                         addition: (", " + coords.weathercur.MinusImageIndex + ", " + coords.weathercur.DegreesImageIndex)
                     }, coords.weathercur.Number.ImageIndex, coords.weathercur.Number.ImagesCount, coords.weathercur.MinusImageIndex, coords.weathercur.DegreesImageIndex);
                 if ('weatherair' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Weather air pollution"
                     }, coords.weatherair.Icon.ImageIndex, coords.weatherair.Icon.ImagesCount);
             }
             if (coords.stepsprogress) {
                 if ('stepslinear' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Steps progress"
                     }, coords.stepslinear.StartImageIndex, coords.stepslinear.Segments.length);
                 if ('stepsgoal' in coords)
-                    this.insertimg({
+                    imagestab.insertimg({
                         label: "Goal image"
                     }, coords.stepsgoal.ImageIndex, 1);
             }
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Big digits",
                 insertto: "imagesavalible"
             }, 255, 10);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Digits",
                 insertto: "imagesavalible"
             }, 200, 10);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Week days",
                 insertto: "imagesavalible"
             }, 210, 7);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Week days russian",
                 insertto: "imagesavalible"
             }, 241, 7);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Week days russian inverted",
                 insertto: "imagesavalible"
             }, 248, 7);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Week days finnish",
                 insertto: "imagesavalible"
             }, 294, 7);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Battery icon",
                 insertto: "imagesavalible"
             }, 225, 6);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Air pollution",
                 insertto: "imagesavalible"
             }, 235, 6);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Weather symbols",
                 insertto: "imagesavalible",
                 addition: ", 218, 219"
             }, 217, 3);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Bluetooth",
                 insertto: "imagesavalible",
                 addition: ", 221"
             }, 220, 2);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Distance symbols",
                 insertto: "imagesavalible",
                 addition: ", 232"
             }, 231, 2);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Am/Pm",
                 insertto: "imagesavalible",
                 addition: ", 234"
             }, 233, 2);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Status images",
                 insertto: "imagesavalible",
                 addition: ", 223, 224"
             }, 222, 3);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Steps goal image",
                 insertto: "imagesavalible"
             }, 266, 1);
-            this.insertimg({
+            imagestab.insertimg({
                 label: "Weather icons",
                 insertto: "imagesavalible"
             }, 267, 26);
