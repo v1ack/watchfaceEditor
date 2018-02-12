@@ -383,7 +383,13 @@ var wfe = {
                 addScript("js/FileSaver.min.js");
                 addScript("js/canvas-toBlob.js");
                 $("inputblock").childNodes[3].childNodes[1].style.overflowX = "hidden";
-            }
+            } else 
+                if(navigator.userAgent.match(/Android|iPhone/i))
+                    UIkit.notification(("This site is not optimized for mobile devices, something may not work"), {
+                    status: 'warning',
+                    pos: 'top-left',
+                    timeout: 7500
+                });
             $('inputimages').onchange = function () {
                 if ($('inputimages').files.length) {
                     var i = 0;
