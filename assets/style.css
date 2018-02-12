@@ -192,6 +192,14 @@ img {
     width: 230px;
 }
 
+.we-white{
+    color: white;
+}
+
+.we-white:hover{
+    color: white;
+}
+
 #codearea {
     height: calc(100vh - 250px);
     min-height: 390px;
