@@ -193,11 +193,11 @@ img {
 }
 
 .we-white{
-    color: white;
+    color: white!important;
 }
 
 .we-white:hover{
-    color: white;
+    color: white!important;
 }
 
 #codearea {

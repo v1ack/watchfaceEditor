@@ -49,6 +49,29 @@ var wfe = {
                     });
                 }
             },
+            changeTheme: function () {
+                if (document.body.classList.contains('uk-light')) {
+                    localStorage.appTheme = 'light';
+                    document.body.classList.remove('uk-light');
+                    document.getElementsByTagName('html')[0].classList.remove('uk-background-secondary');
+                    $('vars').classList.remove('uk-card-secondary');
+                    $('modal-howto').childNodes[1].classList.remove('uk-background-secondary');
+                    $('modal-about').childNodes[1].classList.remove('uk-background-secondary');
+                    $('modal-donate').childNodes[1].classList.remove('uk-background-secondary');
+                    $('jsonerrormodal').childNodes[1].classList.remove('uk-background-secondary');
+                    $('modal-preview').childNodes[1].classList.remove('uk-background-secondary');
+                } else {
+                    localStorage.appTheme = 'dark';
+                    document.body.classList.add('uk-light');
+                    document.getElementsByTagName('html')[0].classList.add('uk-background-secondary');
+                    $('vars').classList.add('uk-card-secondary');
+                    $('modal-howto').childNodes[1].classList.add('uk-background-secondary');
+                    $('modal-about').childNodes[1].classList.add('uk-background-secondary');
+                    $('modal-donate').childNodes[1].classList.add('uk-background-secondary');
+                    $('jsonerrormodal').childNodes[1].classList.add('uk-background-secondary');
+                    $('modal-preview').childNodes[1].classList.add('uk-background-secondary');
+                }
+            },
             lastimage: 300,
             imagestabversion: 2,
             editortabversion: 1,
@@ -331,6 +354,8 @@ var wfe = {
                 e.type = "text/javascript";
                 document.getElementsByTagName("head")[0].appendChild(e);
             }
+            if(localStorage.appTheme == 'dark')
+                wfe.app.changeTheme();
             if (!('lang' in localStorage))
                 localStorage.lang = navigator.language || navigator.userLanguage;
             if (localStorage.lang.indexOf("ru") >= 0) {
@@ -383,9 +408,9 @@ var wfe = {
                 addScript("js/FileSaver.min.js");
                 addScript("js/canvas-toBlob.js");
                 $("inputblock").childNodes[3].childNodes[1].style.overflowX = "hidden";
-            } else 
-                if(navigator.userAgent.match(/Android|iPhone/i))
-                    UIkit.notification(("This site is not optimized for mobile devices, something may not work"), {
+            } else
+            if (navigator.userAgent.match(/Android|iPhone/i))
+                UIkit.notification(("This site is not optimized for mobile devices, something may not work"), {
                     status: 'warning',
                     pos: 'top-left',
                     timeout: 7500
