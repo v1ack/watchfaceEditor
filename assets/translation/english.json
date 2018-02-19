@@ -110,5 +110,6 @@
 	"analogFill":" Fill",
 	"color":"Color",
 	"analogCenter":"Center",
-	"realsizePreview":"Real-size preview"
+	"realsizePreview":"Real-size preview",
+	"changeTheme":"Change theme"
 }

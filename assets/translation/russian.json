@@ -110,5 +110,6 @@
 	"analogFill":" Заполнить цветом",
 	"color":"Цвет",
 	"analogCenter":"Центр",
-	"realsizePreview":"Настоящий масштаб"
+	"realsizePreview":"Настоящий масштаб",
+	"changeTheme":"Изменить оформление"
 }
