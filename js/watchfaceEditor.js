@@ -424,8 +424,10 @@ var wfe = {
                         i++;
                     }
                     wfe.data.imagesset = true;
-                    if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger"))
+                    if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger")){
                         $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
+                        $('inputimages').nextElementSibling.classList.add("uk-button-default");
+                    }
                     $('inputimages').nextElementSibling.classList.add("uk-label-success");
                 }
                 if (wfe.data.imagesset && wfe.data.jsset)
@@ -455,8 +457,10 @@ var wfe = {
                     reader.readAsText($('inputjs').files[0]);
                     delete reader;
                     wfe.data.jsset = true;
-                    if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger"))
+                    if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger")){
                         $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
+                        $('inputjs').nextElementSibling.classList.add("uk-button-default");
+                    }
                     $('inputjs').nextElementSibling.classList.add("uk-label-success");
                 }
                 if (wfe.data.imagesset && wfe.data.jsset)
@@ -1061,6 +1065,7 @@ var wfe = {
             if ($('inputjs').nextElementSibling.classList.contains("uk-label-success"))
                 $('inputjs').nextElementSibling.classList.remove("uk-label-success");
             $('inputjs').nextElementSibling.classList.add("uk-button-danger");
+            $('inputjs').nextElementSibling.classList.remove("uk-button-default");
             load.disableBtn(0);
         },
         clearimg: function () {
@@ -1069,6 +1074,7 @@ var wfe = {
             wfe.data.imagesset = false;
             if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
             $('inputimages').nextElementSibling.classList.add("uk-button-danger");
+            $('inputimages').nextElementSibling.classList.remove("uk-button-default");
             load.disableBtn(0);
         },
         renderImage: function (file) {
