@@ -2666,11 +2666,11 @@ var wfe = {
                 analog.update();
             }
             $('analog-center-x').onchange = function () {
-                analog.currentElement.Center.X = $('analog-center-x').value;
+                analog.currentElement.Center.X = Number($('analog-center-x').value);
                 analog.update();
             }
             $('analog-center-y').onchange = function () {
-                analog.currentElement.Center.Y = $('analog-center-y').value;
+                analog.currentElement.Center.Y = Number($('analog-center-y').value);
                 analog.update();
             }
             $('analog-fill').onchange = function () {
