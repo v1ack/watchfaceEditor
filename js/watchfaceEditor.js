@@ -60,6 +60,7 @@ var wfe = {
                     $('modal-donate').childNodes[1].classList.remove('uk-background-secondary');
                     $('jsonerrormodal').childNodes[1].classList.remove('uk-background-secondary');
                     $('modal-preview').childNodes[1].classList.remove('uk-background-secondary');
+                    $('modal-settings').childNodes[1].classList.remove('uk-background-secondary');
                 } else {
                     localStorage.appTheme = 'dark';
                     document.body.classList.add('uk-light');
@@ -70,6 +71,7 @@ var wfe = {
                     $('modal-donate').childNodes[1].classList.add('uk-background-secondary');
                     $('jsonerrormodal').childNodes[1].classList.add('uk-background-secondary');
                     $('modal-preview').childNodes[1].classList.add('uk-background-secondary');
+                    $('modal-settings').childNodes[1].classList.add('uk-background-secondary');
                 }
             },
             lastimage: 300,

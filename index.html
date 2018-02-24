@@ -57,9 +57,9 @@
                         <a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>
                         <a class="uk-navbar-item we-white" href="#modal-howto" uk-toggle data-translate-id="help">Help</a>
                         <a class="uk-navbar-item we-white" href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a>
+                        <a class="uk-navbar-item we-white" href="#modal-settings" uk-toggle data-translate-id="settings">Settings</a>
                         <a class="uk-navbar-item we-white" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                         <span class="uk-navbar-item" data-translate-id="imagecreator"><a style="color: white" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank">Image creator</a></span>
-                        <a class="uk-navbar-item we-white" data-translate-id="changeTheme" href="javascript:wfe.app.changeTheme();">Change theme</a>
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
@@ -95,15 +95,7 @@
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
-                        <div><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
-                        <div class="uk-margin-top" hidden>
-                            <span>Device</span>
-                            <div class="uk-grid-small uk-child-width-auto uk-grid">
-                                <label><input class="uk-radio" type="radio" name="device" value="bip"> Bip</label>
-                                <label><input class="uk-radio" type="radio" name="device" value="cor"> Cor</label>
-                            </div>
-                        </div>
-                        <div class="js-upload uk-margin-top" uk-form-custom>
+                        <div class="js-upload" uk-form-custom>
                             <span data-translate-id="images">Images: </span>
                             <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
@@ -514,6 +506,23 @@
                 <p><a href="https://getuikit.com/" target="_blank">UI kit</a><br>
                     <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a><br>
                     <a href="https://jsonlint.com/" target="_blank">JSONLint</a></p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
+                </p>
+            </div>
+        </div>
+        <div id="modal-settings" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title" data-translate-id="settings">Settings</h2>
+                <a data-translate-id="changeTheme" href="javascript:wfe.app.changeTheme();">Change theme</a>
+                <div class="uk-margin-top"><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
+                <div class="uk-margin-top" hidden>
+                    <span data-translate-id="device">Device</span>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid">
+                        <label><input class="uk-radio" type="radio" name="device" value="bip"> Bip</label>
+                        <label><input class="uk-radio" type="radio" name="device" value="cor"> Cor</label>
+                    </div>
+                </div>
                 <p class="uk-text-right">
                     <button class="uk-button uk-button-default uk-modal-close" type="button" data-translate-id="close">Close</button>
                 </p>

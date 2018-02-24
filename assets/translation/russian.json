@@ -111,5 +111,7 @@
 	"color":"Цвет",
 	"analogCenter":"Центр",
 	"realsizePreview":"Настоящий масштаб",
-	"changeTheme":"Изменить оформление"
+	"changeTheme":"Изменить оформление",
+	"settings":"Настройки",
+	"device":"Устройство"
 }

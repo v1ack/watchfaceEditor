@@ -111,5 +111,7 @@
 	"color":"Color",
 	"analogCenter":"Center",
 	"realsizePreview":"Real-size preview",
-	"changeTheme":"Change theme"
+	"changeTheme":"Change theme",
+	"settings":"Settings",
+	"device":"Device"
 }
