@@ -90,7 +90,7 @@
                     <li><a href="#" data-translate-id="view">View</a></li>
                     <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#" data-translate-id="design">Design</a></li>
                     <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.init();"><a href="#" data-translate-id="edit">Edit</a></li>
-                    <li id="analogbutton" class="uk-disabled" onclick="analog.init('hours');"><a href="#" data-translate-id="analog">Analog</a></li>
+                    <li id="analogbutton" class="uk-disabled" onclick="analog.init('hours');UIkit.tab($('analog-tab')).show(0);"><a href="#" data-translate-id="analog">Analog</a></li>
                     <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#" data-translate-id="resources">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
@@ -282,7 +282,11 @@
                             <div id="analog" class="uk-card-default uk-box-shadow-large"></div>
                         </div>
                         <div class="uk-width-expand" style="margin-left: 15px; min-width: 200px;">
-                            <ul class="uk-child-width-expand" uk-tab>
+                            <div class="uk-alert-primary" uk-alert id="analogDescription">
+                                <a class="uk-alert-close" uk-close></a>
+                                <p data-translate-id="analogDescription">Click to add a dot, right click to remove, drag to move. Max 12 dots for each arrow</p>
+                            </div>
+                            <ul class="uk-child-width-expand" uk-tab id="analog-tab">
                                 <li class="uk-active"><a href="#" onclick="analog.update('hours');" data-translate-id="hours">Hours</a></li>
                                 <li><a href="#" onclick="analog.update('minutes');" data-translate-id="minutes">Minutes</a></li>
                                 <li><a href="#" onclick="analog.update('seconds');" data-translate-id="seconds">Seconds</a></li>

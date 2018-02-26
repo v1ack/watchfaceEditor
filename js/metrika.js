@@ -27,7 +27,7 @@
     }
 })(document, window, "yandex_metrika_callbacks2");
 
-function altMetrika() {
+setTimeout(function() {
     if (typeof Ya == 'undefined') {
         (function (d, w, c) {
             (w[c] = w[c] || []).push(function () {
@@ -58,5 +58,4 @@ function altMetrika() {
             }
         })(document, window, "yandex_metrika_callbacks2");
     }
-}
-setTimeout(altMetrika, 10000);
+}, 10000);

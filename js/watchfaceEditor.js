@@ -356,7 +356,7 @@ var wfe = {
                 e.type = "text/javascript";
                 document.getElementsByTagName("head")[0].appendChild(e);
             }
-            if(localStorage.appTheme == 'dark')
+            if (localStorage.appTheme == 'dark')
                 wfe.app.changeTheme();
             if (!('lang' in localStorage))
                 localStorage.lang = navigator.language || navigator.userLanguage;
@@ -394,6 +394,12 @@ var wfe = {
                 location.reload();
             };
             localStorage.biptools = 0;
+            if (localStorage.analogDescription)
+                UIkit.alert($("analogDescription")).close();
+            else
+            UIkit.alert($("analogDescription"))._events[0] = function () {
+                localStorage.analogDescription = true
+            };
             for (var i = 200; i <= wfe.app.lastimage; i++)
                 $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
             if (!('helpShown' in localStorage)) {
@@ -426,7 +432,7 @@ var wfe = {
                         i++;
                     }
                     wfe.data.imagesset = true;
-                    if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger")){
+                    if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger")) {
                         $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
                         $('inputimages').nextElementSibling.classList.add("uk-button-default");
                     }
@@ -459,7 +465,7 @@ var wfe = {
                     reader.readAsText($('inputjs').files[0]);
                     delete reader;
                     wfe.data.jsset = true;
-                    if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger")){
+                    if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger")) {
                         $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
                         $('inputjs').nextElementSibling.classList.add("uk-button-default");
                     }
@@ -2724,6 +2730,8 @@ var wfe = {
             }
         },
         addDot: function (e) {
+            if (analog.dotCount >= 12)
+                return;
             var ed = editor.getOffsetRect($("analog"));
             var d = document.createElement('div');
             d.classList.add('analog-dot');
@@ -2741,7 +2749,6 @@ var wfe = {
             analog.currentElement.Shape.push(c);
             analog.update(analog.currentElementName);
         },
-        moveDot: function (e) {},
         removeDot: function (e) {
             if (analog.dotCount > 2) {
                 analog.currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
@@ -2765,9 +2772,7 @@ var wfe = {
                     e.preventDefault();
                     analog.removeDot(e);
                 };
-                analog.initdrag(dot, analog.currentElement.Shape[i]);
-                //                dot.style.left = el.Shape[i].X * 3 + 'px';
-                //                dot.style.top = el.Shape[i].Y * 3 + 'px';
+                analog.moveDot(dot, analog.currentElement.Shape[i]);
                 $('analog').appendChild(dot);
             }
             d += "L " + el.Shape[0].X * 3 + " " + el.Shape[0].Y * 3 + " ";
@@ -2880,7 +2885,7 @@ var wfe = {
             }
             analog.init(elem);
         },
-        initdrag: function (el, elcoords) {
+        moveDot: function (el, elcoords) {
             el.onmousedown = function (e) {
                 if (e.which != 1) return;
                 var ed = editor.getOffsetRect($("analog"));
@@ -2911,7 +2916,7 @@ var wfe = {
 
                     elcoords.X = (Number(el.style.top.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / -3;
                     elcoords.Y = (Number(el.style.left.replace('px', '')) + 3 - analog.currentElement.Center.X * 3) / 3;
-                    analog.init(analog.currentElementName);
+                    analog.update(analog.currentElementName);
                 };
 
             }
