@@ -4,9 +4,9 @@
 	"edit": "编辑",
 	"resources": "素材",
 	"select": "选择",
-	"images": "图像元素:",
+	"images": "图像:",
 	"showdemo": "显示样本",
-	"settings": "模拟设置",
+	"settings": "设置",
 	"makepng": "创建PNG预览图像",
 	"withwatch": "包含外观",
 	"coordinates": "坐标",
@@ -113,5 +113,6 @@
 	"color":"表针颜色",
 	"analogCenter":"旋转中心坐标",
 	"realsizePreview":"实际尺寸预览",
-	"changeTheme":"更换配色主题"
+	"changeTheme":"更换配色主题",
+	"analogDescription":"单击以添加一个点，右击可删除点，拖放可移动点。每根表针最多支持12个点。"
 }
