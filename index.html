@@ -88,28 +88,28 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0; padding-bottom: 10px;">
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container; swiping: false; animation: uk-animation-fade">
                     <li><a href="#" data-translate-id="view">View</a></li>
-                    <li id="editbutton" class="uk-disabled" onclick="editor.init();"><a href="#" data-translate-id="design">Design</a></li>
-                    <li id="codeopenbutton" class="uk-disabled" onclick="jsoneditor.init();"><a href="#" data-translate-id="edit">Edit</a></li>
-                    <li id="analogbutton" class="uk-disabled" onclick="analog.init('hours');UIkit.tab($('analog-tab')).show(0);"><a href="#" data-translate-id="analog">Analog</a></li>
-                    <li id="imagesbutton" class="uk-disabled" onclick="imagestab.init();"><a href="#" data-translate-id="resources">Resources</a></li>
+                    <li id="editbutton" class="uk-disabled" onclick="wfe.editor.init();"><a href="#" data-translate-id="design">Design</a></li>
+                    <li id="codeopenbutton" class="uk-disabled" onclick="wfe.jsoneditor.init();"><a href="#" data-translate-id="edit">Edit</a></li>
+                    <li id="analogbutton" class="uk-disabled" onclick="wfe.analog.init('hours');UIkit.tab($('analog-tab')).show(0);"><a href="#" data-translate-id="analog">Analog</a></li>
+                    <li id="imagesbutton" class="uk-disabled" onclick="wfe.imagestab.init();"><a href="#" data-translate-id="resources">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
                         <div class="js-upload" uk-form-custom>
                             <span data-translate-id="images">Images: </span>
-                            <input id="inputimages" type="file" multiple accept=".png" onclick="load.clearimg()">
+                            <input id="inputimages" type="file" multiple accept=".png" onclick="wfe.load.clearimg()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
                         </div>
                         <br>
                         <div class="js-upload uk-margin" uk-form-custom>
                             <span>JSON: </span>
-                            <input id="inputjs" type="file" accept=".json" onclick="load.clearjs()">
+                            <input id="inputjs" type="file" accept=".json" onclick="wfe.load.clearjs()">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
                         </div>
                         <br>
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled data-translate-id="settings">Settings</button>
-                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-preview" onclick="view.makePreview();" data-translate-id="realsizePreview">Real-size preview</button>
-                        <button id="makepng" class="uk-button uk-button-default" onclick="view.makepng();" disabled data-translate-id="makepng">Make PNG</button>
+                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-preview" onclick="wfe.view.makePreview();" data-translate-id="realsizePreview">Real-size preview</button>
+                        <button id="makepng" class="uk-button uk-button-default" onclick="wfe.view.makepng();" disabled data-translate-id="makepng">Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> <span data-translate-id="withwatch">With watch</span></label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <h3 class="uk-card-title" data-translate-id="settings">Settings</h3>
@@ -117,82 +117,82 @@
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="time">Time</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-time" type="time" value="20:38" onchange="view.time_change();">
+                                        <input class="uk-input" id="in-time" type="time" value="20:38" onchange="wfe.view.time_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="date">Date</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06" onchange="view.date_change();">
+                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06" onchange="wfe.view.date_change();">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="battery">Battery</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="view.battery_change();" value="20">
+                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" onchange="wfe.view.battery_change();" value="20">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="calories">Calories</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="view.calories_change();" value="860">
+                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" onchange="wfe.view.calories_change();" value="860">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="steps">Steps</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="view.steps_change();" value="5687">
+                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" onchange="wfe.view.steps_change();" value="5687">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="stepsgoal">Steps goal</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="view.stepsgoal_change();" value="12000">
+                                        <input class="uk-input" id="in-stepsgoal" type="number" placeholder="Steps goal" min="0" max="99999" onchange="wfe.view.stepsgoal_change();" value="12000">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="pulse">Pulse</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="view.pulse_change();" value="72">
+                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" onchange="wfe.view.pulse_change();" value="72">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="distance">Distance</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="view.distance_change();" value="5.67">
+                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" onchange="wfe.view.distance_change();" value="5.67">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="weatherD">Weather day</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="view.weatherd_change();" value="22">
+                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" onchange="wfe.view.weatherd_change();" value="22">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="weatherN">Weather night</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="view.weathern_change();" value="24">
+                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" onchange="wfe.view.weathern_change();" value="24">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="weatherIconNumber">Weather icon number</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weatheri" type="number" placeholder="Weather icon" min="1" max="26" onchange="view.weathericon_change();" value="1">
+                                        <input class="uk-input" id="in-weatheri" type="number" placeholder="Weather icon" min="1" max="26" onchange="wfe.view.weathericon_change();" value="1">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="seconds">Seconds</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="view.sec_change();" value="43">
+                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" onchange="wfe.view.sec_change();" value="43">
                                     </div>
                                 </div>
                                 <div class="uk-width-1-4@s">
                                     <label class="uk-form-label" data-translate-id="status">Status</label>
                                     <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="view.alarm_change();"> <span data-translate-id="alarm">Alarm</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="view.bt_change();"> <span data-translate-id="bluetooth">Bluetooth</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd" onchange="view.dnd_change();"> <span data-translate-id="dnd">Do not disturb</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="view.lock_change();"> <span data-translate-id="lock">Lock</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm" onchange="wfe.view.alarm_change();"> <span data-translate-id="alarm">Alarm</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt" onchange="wfe.view.bt_change();"> <span data-translate-id="bluetooth">Bluetooth</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd" onchange="wfe.view.dnd_change();"> <span data-translate-id="dnd">Do not disturb</span></label>
+                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="wfe.view.lock_change();"> <span data-translate-id="lock">Lock</span></label>
                                     </div>
                                 </div>
                             </form>
@@ -202,78 +202,78 @@
                         <div id="editor" class="uk-card-default uk-box-shadow-large"></div>
                         <div>
                             <p id="e_coords" class="uk-placeholder uk-text-center" data-translate-id="coordinates">Coordinates</p>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip data-translate-id="fixcoords">Fix coordinates</button>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip data-translate-id="fixcoords">Fix coordinates</button>
                             <br>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                             <br>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="editor.undo()" data-translate-id="undo">Undo</button>
+                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.undo()" data-translate-id="undo">Undo</button>
                         </div>
                     </li>
                     <li>
                         <div class="uk-grid uk-grid-collapse">
-                            <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="jsoneditor.codeareablur();" spellcheck="false"></pre>
+                            <pre contenteditable="true" id="codearea" class="uk-width-expand" onblur="wfe.jsoneditor.codeareablur();" spellcheck="false"></pre>
                             <ul uk-accordion class="codearearight">
                                 <li class="uk-open">
                                     <a href="#" class="uk-accordion-title" data-translate-id="time">Time</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('amPm');" data-translate-id="tg12/24" id="tg12/24">Toggle 12/24h</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('seconds');" data-translate-id="tgsec" id="tgsec">Toggle seconds</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('amPm');" data-translate-id="tg12/24" id="tg12/24">Toggle 12/24h</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('seconds');" data-translate-id="tgsec" id="tgsec">Toggle seconds</button>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="uk-accordion-title" data-translate-id="date">Date</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weekDay');" data-translate-id="tgweekday" id="tgweekday">Toggle week day</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('dateOneLine');" data-translate-id="tgdateoneline" id="tgdateoneline">Toggle date oneline</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('dateDay');" data-translate-id="tgdateday" id="tgdateday">Toggle day</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('dateMonth');" data-translate-id="tgdatemonth" id="tgdatemonth">Toggle month</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weekDay');" data-translate-id="tgweekday" id="tgweekday">Toggle week day</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('dateOneLine');" data-translate-id="tgdateoneline" id="tgdateoneline">Toggle date oneline</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('dateDay');" data-translate-id="tgdateday" id="tgdateday">Toggle day</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('dateMonth');" data-translate-id="tgdatemonth" id="tgdatemonth">Toggle month</button>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="uk-accordion-title" data-translate-id="activity">Activity</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('actSteps');" data-translate-id="tgactsteps" id="tgactsteps">Toggle steps</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('actStepsGoal');" data-translate-id="tgactstepsgoal" id="tgactstepsgoal">Toggle steps goal</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('stepsLinear');" data-translate-id="tgstepslinear" id="tgstepslinear">Toggle steps progress</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('stepsGoal');" data-translate-id="tgactgoalicon" id="tgactgoalicon">Toggle steps goal icon</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('actPulse');" data-translate-id="tgactpulse" id="tgactpulse">Toggle pulse</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('actCal');" data-translate-id="tgactcalories" id="tgactcalories">Toggle calories</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('actDistance');" data-translate-id="tgactdist" id="tgactdist">Toggle distance</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('actSteps');" data-translate-id="tgactsteps" id="tgactsteps">Toggle steps</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('actStepsGoal');" data-translate-id="tgactstepsgoal" id="tgactstepsgoal">Toggle steps goal</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('stepsLinear');" data-translate-id="tgstepslinear" id="tgstepslinear">Toggle steps progress</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('stepsGoal');" data-translate-id="tgactgoalicon" id="tgactgoalicon">Toggle steps goal icon</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('actPulse');" data-translate-id="tgactpulse" id="tgactpulse">Toggle pulse</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('actCal');" data-translate-id="tgactcalories" id="tgactcalories">Toggle calories</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('actDistance');" data-translate-id="tgactdist" id="tgactdist">Toggle distance</button>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="uk-accordion-title" data-translate-id="status">Status</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('statAlarm');" data-translate-id="tgstatalarm" id="tgstatalarm">Toggle alarm</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('statBt');" data-translate-id="tgstatbt" id="tgstatbt">Toggle bluetooth</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('statLock');" data-translate-id="tgstatlock" id="tgstatlock">Toggle lock</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('statDnd');" data-translate-id="tgstatdnd" id="tgstatdnd">Toggle do not disturb</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('statAlarm');" data-translate-id="tgstatalarm" id="tgstatalarm">Toggle alarm</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('statBt');" data-translate-id="tgstatbt" id="tgstatbt">Toggle bluetooth</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('statLock');" data-translate-id="tgstatlock" id="tgstatlock">Toggle lock</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('statDnd');" data-translate-id="tgstatdnd" id="tgstatdnd">Toggle do not disturb</button>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="uk-accordion-title" data-translate-id="battery">Battery</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('batteryIcon');" data-translate-id="tgbaticon" id="tgbaticon">Toggle icon</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('batteryText');" data-translate-id="tgbatnum" id="tgbatnum">Toggle number</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('batteryScale');" data-translate-id="tgbatscale" id="tgbatscale">Toggle battery bar</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('batteryIcon');" data-translate-id="tgbaticon" id="tgbaticon">Toggle icon</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('batteryText');" data-translate-id="tgbatnum" id="tgbatnum">Toggle number</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('batteryScale');" data-translate-id="tgbatscale" id="tgbatscale">Toggle battery bar</button>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="uk-accordion-title" data-translate-id="weather">Weather</a>
                                     <div class="uk-accordion-content">
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherIcon');" data-translate-id="tgweathericon" id="tgweathericon">Toggle icon</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherIconCustom');" data-translate-id="tgweathercusticon" id="tgweathercusticon">Toggle custom icon</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherAir');" data-translate-id="tgweatherair" id="tgweatherair">Toggle air polution</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherOneLine');" data-translate-id="tgweatheroneline" id="tgweatheroneline">Toggle weather oneline</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherCurrent');" data-translate-id="tgweathercur" id="tgweathercur">Toggle current weather</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherDay');" data-translate-id="tgweatherday" id="tgweatherday">Toggle day weather</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="jsoneditor.toggle('weatherNight');" data-translate-id="tgweathernight" id="tgweathernight">Toggle night weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherIcon');" data-translate-id="tgweathericon" id="tgweathericon">Toggle icon</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherIconCustom');" data-translate-id="tgweathercusticon" id="tgweathercusticon">Toggle custom icon</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherAir');" data-translate-id="tgweatherair" id="tgweatherair">Toggle air polution</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherOneLine');" data-translate-id="tgweatheroneline" id="tgweatheroneline">Toggle weather oneline</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherCurrent');" data-translate-id="tgweathercur" id="tgweathercur">Toggle current weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherDay');" data-translate-id="tgweatherday" id="tgweatherday">Toggle day weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherNight');" data-translate-id="tgweathernight" id="tgweathernight">Toggle night weather</button>
                                     </div>
                                 </li>
                             </ul>
                         </div>
-                        <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.undo()" data-translate-id="undo">Undo</button>
-                        <button class="uk-button uk-button-primary uk-margin-top" onclick="jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
+                        <button class="uk-button uk-button-primary uk-margin-top" onclick="wfe.jsoneditor.undo()" data-translate-id="undo">Undo</button>
+                        <button class="uk-button uk-button-primary uk-margin-top" onclick="wfe.jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                         <a href="https://github.com/v1ack/watchfaceEditor/tree/master/defaultimages" class="uk-button uk-button-default uk-margin-top" target="_blank" id="defaultimages" data-translate-id="defaultimages">Default images</a>
                     </li>
                     <li class="uk-grid uk-grid-collapse">
@@ -287,11 +287,11 @@
                                 <p data-translate-id="analogDescription">Click to add a dot, right click to remove, drag to move. Max 12 dots for each arrow</p>
                             </div>
                             <ul class="uk-child-width-expand" uk-tab id="analog-tab">
-                                <li class="uk-active"><a href="#" onclick="analog.update('hours');" data-translate-id="hours">Hours</a></li>
-                                <li><a href="#" onclick="analog.update('minutes');" data-translate-id="minutes">Minutes</a></li>
-                                <li><a href="#" onclick="analog.update('seconds');" data-translate-id="seconds">Seconds</a></li>
+                                <li class="uk-active"><a href="#" onclick="wfe.analog.update('hours');" data-translate-id="hours">Hours</a></li>
+                                <li><a href="#" onclick="wfe.analog.update('minutes');" data-translate-id="minutes">Minutes</a></li>
+                                <li><a href="#" onclick="wfe.analog.update('seconds');" data-translate-id="seconds">Seconds</a></li>
                             </ul>
-                            <button class="uk-button uk-button-primary uk-button-small" onclick="analog.toggle(analog.currentElementName);" data-translate-id="tg" id="analog-toggle" style="width: 100%">Toggle</button>
+                            <button class="uk-button uk-button-primary uk-button-small" onclick="wfe.analog.toggle(wfe.analog.currentElementName);" data-translate-id="tg" id="analog-toggle" style="width: 100%">Toggle</button>
                             <form class="uk-form-stacked uk-margin-top">
 
                                 <div class="uk-margin">
