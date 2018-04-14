@@ -111,7 +111,10 @@
 	"color":"Color",
 	"analogCenter":"Center",
 	"realsizePreview":"Real-size preview",
-	"changeTheme":"Change theme",
+	"theme":"Theme",
+	"themeDark":"Dark",
+	"themeLight":"Light",
+	"themeAmazfit":"Amazfit",
 	"device":"Device",
 	"analogDescription":"Click to add a dot, right click to remove, drag to move. Max 24 dots for all arrows if you use 2 arrows and 30 dots if you use 3 arrows"
 }

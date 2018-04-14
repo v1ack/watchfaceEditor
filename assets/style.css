@@ -99,19 +99,19 @@ img {
     top: 0;
 }
 
-#analog{
+#analog {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.analog-block{
+.analog-block {
     position: relative;
     width: 528px;
     height: 528px;
 }
 
-#realsizePreview>canvas{
+#realsizePreview > canvas {
     height: 72.91mm;
 }
 
@@ -192,11 +192,15 @@ img {
     width: 230px;
 }
 
-.we-white{
+.we-white a {
     color: white!important;
 }
 
-.we-white:hover{
+.amazfit a {
+    color: #9d9d9d!important;
+}
+
+.we-white:hover {
     color: white!important;
 }
 
