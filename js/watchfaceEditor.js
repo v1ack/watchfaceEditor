@@ -2936,7 +2936,9 @@ var wfe = {
                         if (ntimeOnClock.length == 1)
                             ntimeOnClock = "0" + ntimeOnClock;
                         am = 0;
-                    }
+                    } 
+                    else if(Number(ntimeOnClock) == 12)
+                        am = 0;
                     t = am ? $c(wfe.coords.ampm.ImageIndexAm) : $c(wfe.coords.ampm.ImageIndexPm);
                     wfe.view.setPos(t, wfe.coords.ampm);
                     wfe.view.insert(t, "c_time_am");
