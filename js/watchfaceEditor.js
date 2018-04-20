@@ -57,7 +57,9 @@ var wfe = {
                 document.getElementsByClassName('uk-navbar')[0].classList.add('we-white');
                 document.getElementsByClassName('uk-navbar')[0].classList.remove('amazfit');
                 document.getElementsByClassName('uk-navbar-container')[0].style.background = 'linear-gradient(to left, #28a5f5, #1e87f0)';
-                $('tablist').style.marginLeft = '15px';
+                $('menu-amazfit').setAttribute('hidden','');
+                $('tablist-amazfit').setAttribute('hidden','');
+                $('tablist').removeAttribute('hidden');
             }
             switch (theme) {
                 case 'light':
@@ -93,7 +95,9 @@ var wfe = {
                     document.getElementsByClassName('uk-navbar')[0].classList.remove('we-white');
                     document.getElementsByClassName('uk-navbar')[0].classList.add('amazfit');
                     document.getElementsByClassName('uk-navbar-container')[0].style.background = '#222';
-                    $('tablist').style.marginLeft = '';
+                    $('menu-amazfit').removeAttribute('hidden');
+                    $('tablist-amazfit').removeAttribute('hidden');
+                    $('tablist').setAttribute('hidden','');
                     break;
             }
         },
@@ -385,6 +389,8 @@ var wfe = {
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
+        if(location.host == 'amazfitwatchfaces.com' && localStorage.appTheme== undefined)
+            localStorage.appTheme='amazfit';
         wfe.app.changeTheme(localStorage.appTheme);
         if (!('lang' in localStorage))
             localStorage.lang = navigator.language || navigator.userLanguage;
