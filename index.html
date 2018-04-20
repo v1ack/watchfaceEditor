@@ -100,7 +100,6 @@
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0; padding-bottom: 10px;">
                 <ul class="uk-subnav uk-subnav-pill" uk-margin id="menu-amazfit" hidden>
                     <li><a href="#modal-howto" uk-toggle data-translate-id="help">Help</a></li>
-                    <li><a href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a></li>
                     <li><a href="#modal-settings" uk-toggle data-translate-id="settings">Settings</a></li>
                     <li><a href="#modal-about" uk-toggle data-translate-id="about">About</a></li>
                 </ul>
@@ -215,6 +214,7 @@
                                 </div>
                             </form>
                         </div>
+                        <!--          ads              -->
                     </li>
                     <li class="uk-grid uk-grid-collapse">
                         <div id="editor" class="uk-card-default uk-box-shadow-large"></div>
@@ -536,12 +536,12 @@
         <div id="modal-settings" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title" data-translate-id="settings">Settings</h2>
-                <div class="uk-margin-top">
+                <div class="uk-margin-top" id="theme-settings">
                     <span data-translate-id="theme">Theme</span>
                     <div class="uk-grid-small uk-child-width-auto uk-grid">
                         <label class="uk-link" onclick="wfe.app.changeTheme('light');" data-translate-id="themeLight">Light</label>
                         <label class="uk-link" onclick="wfe.app.changeTheme('dark');" data-translate-id="themeDark">Dark</label>
-                        <label class="uk-link" onclick="wfe.app.changeTheme('amazfit');" data-translate-id="themeAmazfit">Amazfit</label>
+                        <!--                        <label class="uk-link" onclick="wfe.app.changeTheme('amazfit');" data-translate-id="themeAmazfit">Amazfit</label>-->
                     </div>
                 </div>
                 <div class="uk-margin-top"><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
@@ -595,7 +595,7 @@
         </div>
     </main>
     <footer>
-        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px" data-translate-id="translatedby"></span><span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/watchfaceEditor" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate">donate</a></p>
+        <p class="uk-text-center uk-text-meta" style="margin-bottom: 0">designed by vlack <span style="margin-left: 10px" data-translate-id="translatedby"></span><span style="margin-left: 10px"></span>Github: <a href="https://github.com/v1ack/watchfaceEditor" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram: <a href="https://t.me/vlack" target="_blank">@vlack</a><span style="margin-left: 10px"></span><a href="#modal-donate" uk-toggle style="color: #2CB3FC" data-translate-id="donate" id="donate-link">donate</a></p>
     </footer>
     <script type="text/javascript" src="js/watchfaceEditor.js"></script>
     <script type="text/javascript" src="js/html2canvas.comp.js"></script>

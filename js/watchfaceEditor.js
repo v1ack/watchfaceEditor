@@ -60,6 +60,8 @@ var wfe = {
                 $('menu-amazfit').setAttribute('hidden','');
                 $('tablist-amazfit').setAttribute('hidden','');
                 $('tablist').removeAttribute('hidden');
+                $('donate-link').removeAttribute('hidden');
+                $('theme-settings').removeAttribute('hidden');
             }
             switch (theme) {
                 case 'light':
@@ -98,6 +100,8 @@ var wfe = {
                     $('menu-amazfit').removeAttribute('hidden');
                     $('tablist-amazfit').removeAttribute('hidden');
                     $('tablist').setAttribute('hidden','');
+                    $('donate-link').setAttribute('hidden','');
+                    $('theme-settings').setAttribute('hidden','');
                     break;
             }
         },
