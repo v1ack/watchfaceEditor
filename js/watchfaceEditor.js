@@ -57,8 +57,8 @@ var wfe = {
                 document.getElementsByClassName('uk-navbar')[0].classList.add('we-white');
                 document.getElementsByClassName('uk-navbar')[0].classList.remove('amazfit');
                 document.getElementsByClassName('uk-navbar-container')[0].style.background = 'linear-gradient(to left, #28a5f5, #1e87f0)';
-                $('menu-amazfit').setAttribute('hidden','');
-                $('tablist-amazfit').setAttribute('hidden','');
+                $('menu-amazfit').setAttribute('hidden', '');
+                $('tablist-amazfit').setAttribute('hidden', '');
                 $('tablist').removeAttribute('hidden');
                 $('donate-link').removeAttribute('hidden');
                 $('theme-settings').removeAttribute('hidden');
@@ -99,9 +99,9 @@ var wfe = {
                     document.getElementsByClassName('uk-navbar-container')[0].style.background = '#222';
                     $('menu-amazfit').removeAttribute('hidden');
                     $('tablist-amazfit').removeAttribute('hidden');
-                    $('tablist').setAttribute('hidden','');
-                    $('donate-link').setAttribute('hidden','');
-                    $('theme-settings').setAttribute('hidden','');
+                    $('tablist').setAttribute('hidden', '');
+                    $('donate-link').setAttribute('hidden', '');
+                    $('theme-settings').setAttribute('hidden', '');
                     break;
             }
         },
@@ -393,8 +393,8 @@ var wfe = {
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
-        if(location.host == 'amazfitwatchfaces.com' && localStorage.appTheme== undefined)
-            localStorage.appTheme='amazfit';
+        if (location.host == 'amazfitwatchfaces.com' && localStorage.appTheme == undefined)
+            localStorage.appTheme = 'amazfit';
         wfe.app.changeTheme(localStorage.appTheme);
         if (!('lang' in localStorage))
             localStorage.lang = navigator.language || navigator.userLanguage;
@@ -411,6 +411,13 @@ var wfe = {
                 timeout: 7500
             });
             localStorage.translatehelp = 1;
+        }
+        if ((localStorage.lang.indexOf("ru") >= 0 && !localStorage.forumLinkShown) && localStorage.showcount > 1) {
+            UIkit.notification('<a href="http://myamazfit.ru/" style="color: rgb(150, 150, 150)">myamazfit.ru</a> - русскоязычный форум по устройствам Amazfit', {
+                pos: 'top-left',
+                timeout: 7500
+            });
+            localStorage.forumLinkShown = true;
         }
         if (localStorage.showdemo != 0) {
             window.onload = function () {
@@ -439,7 +446,7 @@ var wfe = {
                 localStorage.analogDescription = true
             };
         for (var i = 200; i <= wfe.app.lastimage; i++)
-            $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '">';
+            $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '" class="default-image">';
         if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
             localStorage.helpShown = true;
@@ -819,7 +826,7 @@ var wfe = {
         },
         updatecode: function () {
             $("codearea").innerHTML = wfe.jsoneditor.syntaxHighlight(JSON.stringify(wfe.data.export(), null, 4));
-            if ($("codearea").innerText.match(wfe.jsoneditor.regexrimg))
+            if (wfe.jsoneditor.checkDef())
                 $("defaultimages").classList.add("uk-label-success");
             else
                 $("defaultimages").classList.remove("uk-label-success");
@@ -1657,7 +1664,24 @@ var wfe = {
                 return '<span class="' + cls + '">' + match + '</span>';
             });
         },
+        checkDef: function (show) {
+            var defImagesList = Array();
+            for (var i = 0; i < $('watchface').childNodes.length; i++)
+                if ($('watchface').childNodes[i].classList.contains('default-image'))
+                    defImagesList.push($('watchface').childNodes[i].src.slice(-7, -4));
+            defImagesList.sort();
+            for (var i = defImagesList.length - 1; i > 0; i--) {
+                if (defImagesList[i] == defImagesList[i - 1]) defImagesList.splice(i, 1);
+            }
+            if (show && defImagesList.length)
+                UIkit.notification(('checkImages' in wfe.app.lang ? wfe.app.lang.checkImages : "Check images in watchface folder. At least images with index(s): ") + defImagesList, {
+                    status: 'warning',
+                    pos: 'top-left'
+                })
+            return defImagesList.length;
+        },
         exportjs: function () {
+            wfe.jsoneditor.checkDef(1);
             if (wfe.app.notWebkitBased) {
                 var blob = new Blob([JSON.stringify(wfe.data.export(), null, 4)], {
                     type: "text/plain;charset=utf-8"
@@ -1745,6 +1769,7 @@ var wfe = {
                         X: 0,
                         Y: 0
                     }, 0, "wf_bg")
+                document.getElementsByClassName('wf_bg')[0].classList.remove('default-image');
                 if ('bg' in wfe.coords)
                     wfe.view.setPosN(wfe.coords.bg.Image, 0, "c_bg");
                 if ('time' in wfe.coords)
@@ -2946,8 +2971,7 @@ var wfe = {
                         if (ntimeOnClock.length == 1)
                             ntimeOnClock = "0" + ntimeOnClock;
                         am = 0;
-                    } 
-                    else if(Number(ntimeOnClock) == 12)
+                    } else if (Number(ntimeOnClock) == 12)
                         am = 0;
                     t = am ? $c(wfe.coords.ampm.ImageIndexAm) : $c(wfe.coords.ampm.ImageIndexPm);
                     wfe.view.setPos(t, wfe.coords.ampm);
