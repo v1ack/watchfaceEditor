@@ -162,7 +162,10 @@ var wfe = {
                 if ('Icon' in json.Battery)
                     wfe.coords.batteryicon = json.Battery.Icon;
                 if ('Text' in json.Battery)
-                    wfe.coords.batterytext = json.Battery.Text;
+                    if (localStorage.device == 'bip')
+                        wfe.coords.batterytext = json.Battery.Text;
+                    else
+                        wfe.coords.batterytext = json.Battery.Text.Number;
                 if ('Scale' in json.Battery)
                     wfe.coords.batteryscale = json.Battery.Scale;
             } else
@@ -182,13 +185,25 @@ var wfe = {
             if ('Activity' in json) {
                 wfe.coords.activity = true;
                 if ('Calories' in json.Activity)
-                    wfe.coords.actcal = json.Activity.Calories;
+                    if (localStorage.device == 'bip')
+                        wfe.coords.actcal = json.Activity.Calories;
+                    else
+                        wfe.coords.actcal = json.Activity.Calories.Number;
                 if ('Steps' in json.Activity)
-                    wfe.coords.actsteps = json.Activity.Steps;
+                    if (localStorage.device == 'bip')
+                        wfe.coords.actsteps = json.Activity.Steps;
+                    else
+                        wfe.coords.actsteps = json.Activity.Steps.Number;
                 if ('StepsGoal' in json.Activity)
-                    wfe.coords.actstepsgoal = json.Activity.StepsGoal;
+                    if (localStorage.device == 'bip')
+                        wfe.coords.actstepsgoal = json.Activity.StepsGoal;
+                    else
+                        wfe.coords.actstepsgoal = json.Activity.StepsGoal.Number;
                 if ('Pulse' in json.Activity)
-                    wfe.coords.actpulse = json.Activity.Pulse;
+                    if (localStorage.device == 'bip')
+                        wfe.coords.actpulse = json.Activity.Pulse;
+                    else
+                        wfe.coords.actpulse = json.Activity.Pulse.Number;
                 if ('Distance' in json.Activity)
                     wfe.coords.actdist = json.Activity.Distance;
             } else
@@ -280,20 +295,45 @@ var wfe = {
                 if ('batteryicon' in wfe.coords)
                     packed.Battery.Icon = wfe.coords.batteryicon;
                 if ('batterytext' in wfe.coords)
-                    packed.Battery.Text = wfe.coords.batterytext;
+                    if (localStorage.device == 'bip')
+                        packed.Battery.Text = wfe.coords.batterytext;
+                    else {
+                        packed.Battery.Text = {};
+                        packed.Battery.Text.Number = wfe.coords.batterytext;
+                    }
                 if ('batteryscale' in wfe.coords)
                     packed.Battery.Scale = wfe.coords.batteryscale;
             }
             if (wfe.coords.activity) {
                 packed.Activity = {};
                 if ('actcal' in wfe.coords)
-                    packed.Activity.Calories = wfe.coords.actcal;
+                    if (localStorage.device == 'bip')
+                        packed.Activity.Calories = wfe.coords.actcal;
+                    else {
+                        packed.Activity.Calories = {};
+                        packed.Activity.Calories.Number = wfe.coords.actcal;
+                    }
                 if ('actsteps' in wfe.coords)
-                    packed.Activity.Steps = wfe.coords.actsteps;
+                    if (localStorage.device == 'bip')
+                        packed.Activity.Steps = wfe.coords.actsteps;
+                    else {
+                        packed.Activity.Steps = {};
+                        packed.Activity.Steps.Number = wfe.coords.actsteps;
+                    }
                 if ('actstepsgoal' in wfe.coords)
-                    packed.Activity.StepsGoal = wfe.coords.actstepsgoal;
+                    if (localStorage.device == 'bip')
+                        packed.Activity.StepsGoal = wfe.coords.actstepsgoal;
+                    else {
+                        packed.Activity.StepsGoal = {};
+                        packed.Activity.StepsGoal.Number = wfe.coords.actstepsgoal;
+                    }
                 if ('actpulse' in wfe.coords)
-                    packed.Activity.Pulse = wfe.coords.actpulse;
+                    if (localStorage.device == 'bip')
+                        packed.Activity.Pulse = wfe.coords.actpulse;
+                    else {
+                        packed.Activity.Pulse = {};
+                        packed.Activity.Pulse.Number = wfe.coords.actpulse;
+                    }
                 if ('actdist' in wfe.coords)
                     packed.Activity.Distance = wfe.coords.actdist;
             }
@@ -1676,12 +1716,25 @@ var wfe = {
             if (show && defImagesList.length)
                 UIkit.notification(('checkImages' in wfe.app.lang ? wfe.app.lang.checkImages : "Check images in watchface folder. At least images with index(s): ") + defImagesList, {
                     status: 'warning',
-                    pos: 'top-left'
+                    pos: 'top-left',
+                    timeout: 5000
                 })
             return defImagesList.length;
         },
+        checkLimits: function () {
+            function notify(message) {
+                UIkit.notification(message, {
+                    status: 'warning',
+                    pos: 'top-left',
+                    timeout: 5000
+                })
+            }
+            if (wfe.coords.stepslinear.Segments.length > 20)
+                notify('imagesLimitSteps' in wfe.app.lang ? wfe.app.lang.imagesLimitSteps : "Image limit for steps progress is 20. If you use more, they won't be dispaly");
+        },
         exportjs: function () {
             wfe.jsoneditor.checkDef(1);
+            wfe.jsoneditor.checkLimits();
             if (wfe.app.notWebkitBased) {
                 var blob = new Blob([JSON.stringify(wfe.data.export(), null, 4)], {
                     type: "text/plain;charset=utf-8"
