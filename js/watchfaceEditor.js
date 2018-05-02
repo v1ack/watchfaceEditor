@@ -404,7 +404,13 @@ var wfe = {
         wfname: "watchface"
     },
     init: function () {
+        //Device
         if (localStorage.device == undefined)
+            localStorage.device = "bip";
+        if (location.search.slice(1) == 'cor')
+            localStorage.device = "cor";
+        else
+        if (location.search.slice(1) == 'bip')
             localStorage.device = "bip";
         var device = document.getElementsByName('device');
         for (var i = 0; i < device.length; i++) {
@@ -414,6 +420,7 @@ var wfe = {
                 for (var i = 0; i < device.length; i++)
                     if (device[i].checked) {
                         localStorage.device = device[i].value;
+                        location.search = '';
                         location.reload();
                     }
             }
@@ -426,16 +433,21 @@ var wfe = {
             $("svg-cont-clock").attributes.width.value = 80;
             $("svg-cont-clock").attributes.height.value = 160;
         }
-
+        
+        //Functions
         function addScript(url) {
             var e = document.createElement("script");
             e.src = url;
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
+        
+        //Theme
         if (location.host == 'amazfitwatchfaces.com' && localStorage.appTheme == undefined)
             localStorage.appTheme = 'amazfit';
         wfe.app.changeTheme(localStorage.appTheme);
+        
+        //Language
         if (!('lang' in localStorage))
             localStorage.lang = navigator.language || navigator.userLanguage;
         if (localStorage.lang.indexOf("ru") >= 0) {
@@ -459,6 +471,8 @@ var wfe = {
             });
             localStorage.forumLinkShown = true;
         }
+        
+        //Demo
         if (localStorage.showdemo != 0) {
             window.onload = function () {
                 if (localStorage.device == "cor") {
@@ -479,18 +493,24 @@ var wfe = {
             location.reload();
         };
         localStorage.biptools = 0;
+        
+        //Analog clock description
         if (localStorage.analogDescription)
             UIkit.alert($("analogDescription")).close();
         else
             UIkit.alert($("analogDescription"))._events[0] = function () {
                 localStorage.analogDescription = true
             };
+        
+        //Default images initialising
         for (var i = 200; i <= wfe.app.lastimage; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '" class="default-image">';
         if (!('helpShown' in localStorage)) {
             UIkit.modal($("modal-howto")).show();
             localStorage.helpShown = true;
         }
+        
+        //Browser support
         wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
         if (wfe.app.notWebkitBased) {
             UIkit.notification(('browserwarn' in wfe.app.lang ? wfe.app.lang.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
@@ -508,6 +528,8 @@ var wfe = {
                 pos: 'top-left',
                 timeout: 7500
             });
+        
+        //Buttons initialising
         $('inputimages').onchange = function () {
             if ($('inputimages').files.length) {
                 var i = 0;
@@ -561,7 +583,8 @@ var wfe = {
             else
                 wfe.load.disableBtn(0);
         }
-
+        
+        //Update bages
         if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
             $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
         if (!('editortabversion' in localStorage) || localStorage.editortabversion < wfe.app.editortabversion)
@@ -571,6 +594,7 @@ var wfe = {
         if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
             $("analogbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
 
+        //Donate window
         UIkit.modal("#donateframe")._events[0] = function () {
             $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
             $("donateframe").classList.remove('uk-modal');
@@ -578,6 +602,8 @@ var wfe = {
         UIkit.modal("#modal-about")._events[0] = function () {
             $("siteopened").innerHTML = $("siteopened").innerHTML.replace("$times", localStorage.showcount);
         }
+        
+        //Shows count
         if (!('showcount' in localStorage)) {
             localStorage.showcount = 1;
         } else {
