@@ -421,7 +421,6 @@ var wfe = {
                     if (device[i].checked) {
                         localStorage.device = device[i].value;
                         location.search = '';
-                        location.reload();
                     }
             }
         }
@@ -432,8 +431,11 @@ var wfe = {
             $("svg-cont-steps").attributes.height.value = 160;
             $("svg-cont-clock").attributes.width.value = 80;
             $("svg-cont-clock").attributes.height.value = 160;
+            $("amazfit-upload").href = "https://amazfitwatchfaces.com/cor/upload";
+            $("amazfit-editor-bip").removeAttribute('hidden');
+            $("amazfit-editor-cor").setAttribute('hidden', '');
         }
-        
+
         //Functions
         function addScript(url) {
             var e = document.createElement("script");
@@ -441,12 +443,12 @@ var wfe = {
             e.type = "text/javascript";
             document.getElementsByTagName("head")[0].appendChild(e);
         }
-        
+
         //Theme
         if (location.host == 'amazfitwatchfaces.com' && localStorage.appTheme == undefined)
             localStorage.appTheme = 'amazfit';
         wfe.app.changeTheme(localStorage.appTheme);
-        
+
         //Language
         if (!('lang' in localStorage))
             localStorage.lang = navigator.language || navigator.userLanguage;
@@ -471,7 +473,7 @@ var wfe = {
             });
             localStorage.forumLinkShown = true;
         }
-        
+
         //Demo
         if (localStorage.showdemo != 0) {
             window.onload = function () {
@@ -493,7 +495,7 @@ var wfe = {
             location.reload();
         };
         localStorage.biptools = 0;
-        
+
         //Analog clock description
         if (localStorage.analogDescription)
             UIkit.alert($("analogDescription")).close();
@@ -501,7 +503,7 @@ var wfe = {
             UIkit.alert($("analogDescription"))._events[0] = function () {
                 localStorage.analogDescription = true
             };
-        
+
         //Default images initialising
         for (var i = 200; i <= wfe.app.lastimage; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '" class="default-image">';
@@ -509,7 +511,7 @@ var wfe = {
             UIkit.modal($("modal-howto")).show();
             localStorage.helpShown = true;
         }
-        
+
         //Browser support
         wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
         if (wfe.app.notWebkitBased) {
@@ -528,7 +530,7 @@ var wfe = {
                 pos: 'top-left',
                 timeout: 7500
             });
-        
+
         //Buttons initialising
         $('inputimages').onchange = function () {
             if ($('inputimages').files.length) {
@@ -583,7 +585,7 @@ var wfe = {
             else
                 wfe.load.disableBtn(0);
         }
-        
+
         //Update bages
         if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
             $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
@@ -602,7 +604,7 @@ var wfe = {
         UIkit.modal("#modal-about")._events[0] = function () {
             $("siteopened").innerHTML = $("siteopened").innerHTML.replace("$times", localStorage.showcount);
         }
-        
+
         //Shows count
         if (!('showcount' in localStorage)) {
             localStorage.showcount = 1;
@@ -1755,8 +1757,9 @@ var wfe = {
                     timeout: 5000
                 })
             }
-            if (wfe.coords.stepslinear.Segments.length > 20)
-                notify('imagesLimitSteps' in wfe.app.lang ? wfe.app.lang.imagesLimitSteps : "Image limit for steps progress is 20. If you use more, they won't be dispaly");
+            if ('stepslinear' in wfe.coords)
+                if (wfe.coords.stepslinear.Segments.length > 20)
+                    notify('imagesLimitSteps' in wfe.app.lang ? wfe.app.lang.imagesLimitSteps : "Image limit for steps progress is 20. If you use more, they won't be dispaly");
         },
         exportjs: function () {
             wfe.jsoneditor.checkDef(1);
