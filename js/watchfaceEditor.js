@@ -36,7 +36,7 @@ var wfe = {
                             if (strings[i].dataset.link == undefined)
                                 strings[i].innerHTML = wfe.app.lang[strings[i].dataset.translateId];
                             else
-                                strings[i].innerHTML = wfe.app.lang[strings[i].dataset.translateId].replace('$link', strings[i].dataset.link);
+                                strings[i].innerHTML = wfe.app.lang[strings[i].dataset.translateId].replace(/$link/g, strings[i].dataset.link);
                     }
                 } else
                     throw ("Respanse status: " + xhr.status);
