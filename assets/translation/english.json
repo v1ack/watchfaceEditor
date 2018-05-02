@@ -66,7 +66,7 @@
     "defaultimages": "Default",
     "loaded": "Loaded",
     "defaultimagesTip": "You can <a $link>download default images</a> or just drag them from this site to your folder",
-    "howtouseDescr": "Disassemble <b>.bin</b> file with <a $link>AmazfitBipTools</a>, click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface<br><br>You can edit elements location on tab <b>Design</b>",
+    "howtouseDescr": "Disassemble <b>.bin</b> file with <a $link>AmazfitBipTools</a> (<a $link>AmazfitCorTools</a> for Cor), click on <b>Select images</b> and select them from watchface folder by <b>Ctrl+A</b>, then select JSON file by clicking on <b>JSON Select</b>. After that you can set numbers to display by clicking <b>Settings</b> or edit the watchface<br><br>You can edit elements location on tab <b>Design</b>",
     "howtouseDescr2": "Also you can edit JSON on tab <b>Edit</b>. To update preview just click out of JSON input. If you add smth by choosing it, it will use default image. You can change it to yours or download default images <a $link>here</a>",
     "avaliblecolors": "Avalible colors on bip",
     "close": "Close",
