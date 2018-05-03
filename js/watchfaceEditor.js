@@ -1984,6 +1984,7 @@ var wfe = {
                     break;
                 case 66:
                 case "CenterLeft":
+                case 'Left':
                     block.reverse();
                     var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
                     while (block.length) {
@@ -2009,6 +2010,7 @@ var wfe = {
                     break;
                 case 68:
                 case "CenterRight":
+                case "Right":
                     var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
                     while (block.length) {
                         t = block.pop();
@@ -3153,7 +3155,7 @@ var wfe = {
             alarm: function () {
                 if ('ImageIndexOff' in wfe.coords.statalarm && !wfe.data.alarm)
                     t = $c(wfe.coords.statalarm.ImageIndexOff);
-                else if (wfe.data.alarm)
+                else if ('ImageIndexOn' in wfe.coords.statalarm && wfe.data.alarm)
                     t = $c(wfe.coords.statalarm.ImageIndexOn);
                 else return;
                 t.style.left = wfe.coords.statalarm.Coordinates.X + "px";
@@ -3173,7 +3175,7 @@ var wfe = {
             dnd: function () {
                 if ('ImageIndexOff' in wfe.coords.statdnd && !wfe.data.dnd)
                     t = $c(wfe.coords.statdnd.ImageIndexOff);
-                else if (wfe.data.dnd)
+                else if ('ImageIndexOn' in wfe.coords.statdnd && wfe.data.dnd)
                     t = $c(wfe.coords.statdnd.ImageIndexOn);
                 else return;
                 t.style.left = wfe.coords.statdnd.Coordinates.X + "px";
@@ -3183,7 +3185,7 @@ var wfe = {
             lock: function () {
                 if ('ImageIndexOff' in wfe.coords.statlock && !wfe.data.lock)
                     t = $c(wfe.coords.statlock.ImageIndexOff);
-                else if (wfe.data.lock)
+                else if ('ImageIndexOn' in wfe.coords.statlock && wfe.data.lock)
                     t = $c(wfe.coords.statlock.ImageIndexOn);
                 else return;
                 t.style.left = wfe.coords.statlock.Coordinates.X + "px";
