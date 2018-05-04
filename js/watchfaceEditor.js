@@ -1962,6 +1962,7 @@ var wfe = {
                     break;
                 case 24:
                 case "TopCenter":
+                case "Top":
                     block.reverse();
                     offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
                     while (block.length) {
@@ -2035,6 +2036,7 @@ var wfe = {
                     break;
                 case 40:
                 case "BottomCenter":
+                case "Bottom":
                     block.reverse();
                     offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
                     while (block.length) {
