@@ -1997,6 +1997,8 @@ var wfe = {
                     break;
                 case 72:
                 case "Center":
+                case "VCenter":
+                case "HCenter":
                     block.reverse();
                     offset = div(((el.BottomRightX - el.TopLeftX + 1) - width), 2);
                     var topoffset = div(((el.BottomRightY - el.TopLeftY + 1) - block[0].height), 2);
