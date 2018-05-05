@@ -11,7 +11,7 @@ function showUntanslated() {
     }
     return JSON.stringify(json);
 }
-setTimeout(function () {
-    wfe.load.allinone();
-}, 300);
+//setTimeout(function () {
+//    wfe.load.allinone();
+//}, 300);
 

@@ -1298,7 +1298,7 @@ var wfe = {
                             delete wfe.coords.actsteps;
                             if (!('actsteps' in wfe.coords || 'actstepsgoal' in wfe.coords || 'actcal' in wfe.coords || 'actpulse' in wfe.coords || 'actdist' in wfe.coords))
                                 wfe.coords.activity = false;
-                        } else
+                        } else {
                             wfe.coords.actsteps = {
                                 TopLeftX: 0,
                                 TopLeftY: 0,
@@ -1309,6 +1309,9 @@ var wfe = {
                                 ImageIndex: 200,
                                 ImagesCount: 10
                             }
+                            if (localStorage.device == 'cor')
+                                wfe.coords.actsteps.cor = {};
+                        }
                         break;
                     }
                 case 'actCal':
@@ -1319,7 +1322,7 @@ var wfe = {
                             delete wfe.coords.actcal;
                             if (!('actsteps' in wfe.coords || 'actstepsgoal' in wfe.coords || 'actcal' in wfe.coords || 'actpulse' in wfe.coords || 'actdist' in wfe.coords))
                                 wfe.coords.activity = false;
-                        } else
+                        } else {
                             wfe.coords.actcal = {
                                 TopLeftX: 0,
                                 TopLeftY: 0,
@@ -1330,6 +1333,9 @@ var wfe = {
                                 ImageIndex: 200,
                                 ImagesCount: 10
                             }
+                            if (localStorage.device == 'cor')
+                                wfe.coords.actsteps.cor = {};
+                        }
                         break;
                     }
                 case 'actPulse':
@@ -1340,7 +1346,7 @@ var wfe = {
                             delete wfe.coords.actpulse;
                             if (!('actsteps' in wfe.coords || 'actstepsgoal' in wfe.coords || 'actcal' in wfe.coords || 'actpulse' in wfe.coords || 'actdist' in wfe.coords))
                                 wfe.coords.activity = false;
-                        } else
+                        } else {
                             wfe.coords.actpulse = {
                                 TopLeftX: 0,
                                 TopLeftY: 0,
@@ -1351,6 +1357,9 @@ var wfe = {
                                 ImageIndex: 200,
                                 ImagesCount: 10
                             }
+                            if (localStorage.device == 'cor')
+                                wfe.coords.actsteps.cor = {};
+                        }
                         break;
                     }
                 case 'actStepsGoal':
@@ -1361,7 +1370,7 @@ var wfe = {
                             delete wfe.coords.actstepsgoal;
                             if (!('actsteps' in wfe.coords || 'actstepsgoal' in wfe.coords || 'actcal' in wfe.coords || 'actpulse' in wfe.coords || 'actdist' in wfe.coords))
                                 wfe.coords.activity = false;
-                        } else
+                        } else {
                             wfe.coords.actstepsgoal = {
                                 TopLeftX: 0,
                                 TopLeftY: 0,
@@ -1372,6 +1381,9 @@ var wfe = {
                                 ImageIndex: 200,
                                 ImagesCount: 10
                             }
+                            if (localStorage.device == 'cor')
+                                wfe.coords.actsteps.cor = {};
+                        }
                         break;
                     }
                 case 'actDistance':
