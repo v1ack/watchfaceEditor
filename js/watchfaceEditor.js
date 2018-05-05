@@ -187,23 +187,35 @@ var wfe = {
                 if ('Calories' in json.Activity)
                     if (localStorage.device == 'bip')
                         wfe.coords.actcal = json.Activity.Calories;
-                    else
+                    else {
                         wfe.coords.actcal = json.Activity.Calories.Number;
+                        delete json.Activity.Calories.Number;
+                        wfe.coords.actcal.cor = json.Activity.Calories;
+                    }
                 if ('Steps' in json.Activity)
                     if (localStorage.device == 'bip')
                         wfe.coords.actsteps = json.Activity.Steps;
-                    else
+                    else {
                         wfe.coords.actsteps = json.Activity.Steps.Number;
+                        delete json.Activity.Steps.Number;
+                        wfe.coords.actsteps.cor = json.Activity.Steps;
+                    }
                 if ('StepsGoal' in json.Activity)
                     if (localStorage.device == 'bip')
                         wfe.coords.actstepsgoal = json.Activity.StepsGoal;
-                    else
+                    else {
                         wfe.coords.actstepsgoal = json.Activity.StepsGoal.Number;
+                        delete json.Activity.StepsGoal.Number;
+                        wfe.coords.actstepsgoal.cor = json.Activity.StepsGoal;
+                    }
                 if ('Pulse' in json.Activity)
                     if (localStorage.device == 'bip')
                         wfe.coords.actpulse = json.Activity.Pulse;
-                    else
+                    else {
                         wfe.coords.actpulse = json.Activity.Pulse.Number;
+                        delete json.Activity.Pulse.Number;
+                        wfe.coords.actpulse.cor = json.Activity.Pulse;
+                    }
                 if ('Distance' in json.Activity)
                     wfe.coords.actdist = json.Activity.Distance;
             } else
@@ -310,29 +322,33 @@ var wfe = {
                     if (localStorage.device == 'bip')
                         packed.Activity.Calories = wfe.coords.actcal;
                     else {
-                        packed.Activity.Calories = {};
+                        packed.Activity.Calories = wfe.coords.actcal.cor;
                         packed.Activity.Calories.Number = wfe.coords.actcal;
+                        delete packed.Activity.Calories.Number.cor;
                     }
                 if ('actsteps' in wfe.coords)
                     if (localStorage.device == 'bip')
                         packed.Activity.Steps = wfe.coords.actsteps;
                     else {
-                        packed.Activity.Steps = {};
-                        packed.Activity.Steps.Number = wfe.coords.actsteps;
+                        packed.Activity.Steps = wfe.coords.actsteps.cor;
+                        packed.Activity.Steps.Number = JSON.parse(JSON.stringify(wfe.coords.actsteps));
+                        delete packed.Activity.Steps.Number.cor;
                     }
                 if ('actstepsgoal' in wfe.coords)
                     if (localStorage.device == 'bip')
                         packed.Activity.StepsGoal = wfe.coords.actstepsgoal;
                     else {
-                        packed.Activity.StepsGoal = {};
+                        packed.Activity.StepsGoal = wfe.coords.actstepsgoal.cor;
                         packed.Activity.StepsGoal.Number = wfe.coords.actstepsgoal;
+                        delete packed.Activity.StepsGoal.Number.cor;
                     }
                 if ('actpulse' in wfe.coords)
                     if (localStorage.device == 'bip')
                         packed.Activity.Pulse = wfe.coords.actpulse;
                     else {
-                        packed.Activity.Pulse = {};
+                        packed.Activity.Pulse = wfe.coords.actpulse.cor;
                         packed.Activity.Pulse.Number = wfe.coords.actpulse;
+                        delete packed.Activity.Pulse.Number.cor;
                     }
                 if ('actdist' in wfe.coords)
                     packed.Activity.Distance = wfe.coords.actdist;
@@ -434,6 +450,7 @@ var wfe = {
             $("amazfit-upload").href = "https://amazfitwatchfaces.com/cor/upload";
             $("amazfit-editor-bip").removeAttribute('hidden');
             $("amazfit-editor-cor").setAttribute('hidden', '');
+            $("analogbutton").setAttribute('hidden', '');
         }
 
         //Functions
@@ -1813,8 +1830,25 @@ var wfe = {
                 wfe.view.setPosN(el.CenterImage, 0, "c_an_img");
             }
         },
-        setTextPos: function (el, value, cls) {
+        setTextPos: function (el, value, cls, cor) {
             var t = wfe.view.makeBlock(el, value);
+            if (cor) {
+                if ('PrefixImageIndex' in el.cor) {
+                    var image = $c(el.cor.PrefixImageIndex);
+                    t.block.splice(0, 0, image);
+                    t.width += image.width + el.Spacing;
+                }
+                if ('SuffixImageIndex' in el.cor) {
+                    var image = $c(el.cor.SuffixImageIndex);
+                    t.block.push(image);
+                    t.width += image.width + el.Spacing;
+                }
+                if ('EmptyImageIndex' in el.cor && value == 0) {
+                    var image = $c(el.cor.EmptyImageIndex);
+                    t.block = [image];
+                    t.width = image.width;
+                }
+            }
             wfe.view.renderBlock(t.block, t.width, el, cls);
         },
         insert: function (t, name) {
@@ -3199,16 +3233,16 @@ var wfe = {
         },
         activity: {
             cal: function () {
-                wfe.view.setTextPos(wfe.coords.actcal, wfe.data.calories, "c_act_cal");
+                wfe.view.setTextPos(wfe.coords.actcal, wfe.data.calories, "c_act_cal", localStorage.device == 'cor');
             },
             steps: function () {
-                wfe.view.setTextPos(wfe.coords.actsteps, wfe.data.steps, "c_act_steps");
+                wfe.view.setTextPos(wfe.coords.actsteps, wfe.data.steps, "c_act_steps", localStorage.device == 'cor');
             },
             stepsgoal: function () {
-                wfe.view.setTextPos(wfe.coords.actstepsgoal, wfe.data.stepsgoal, "c_act_stepsg");
+                wfe.view.setTextPos(wfe.coords.actstepsgoal, wfe.data.stepsgoal, "c_act_stepsg", localStorage.device == 'cor');
             },
             pulse: function () {
-                wfe.view.setTextPos(wfe.coords.actpulse, wfe.data.pulse, "c_act_pulse");
+                wfe.view.setTextPos(wfe.coords.actpulse, wfe.data.pulse, "c_act_pulse", localStorage.device == 'cor');
             },
             distance: function () {
                 var dot = $c(wfe.coords.actdist.DecimalPointImageIndex),
