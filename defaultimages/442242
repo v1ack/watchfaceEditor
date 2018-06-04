@@ -1,0 +1,46 @@
+{Background": {
+        "Ima": {
+  ImageIndex": 265,
+         "X": 0,
+            "Y": 0
+        }
+    },
+    "Time": {
+        "Hours": {
+            "Ones": {
+                "ImageIndex": 255,
+                "ImagesCount": 10,
+                "X": 87,
+                "Y": 26
+            },
+            "Tens": {
+                "ImageIndex": 255,
+                "ImagesCount": 10,
+                "X": 37,
+                "Y": 26
+            }
+        },
+        "Minutes": {
+            "Ones": {
+                "ImageIndex": 255,
+                "ImagesCount": 10,
+                "X": 112,
+                "Y": 77
+            },
+            "Tens": {
+                "ImageIndex": 255,
+                "ImagesCount": 10,
+                "X": 62,
+                "Y": 77
+            }
+        }
+    },
+    "Battery": {
+        "Icon": {
+            "X": 0,
+            "Y": 0,
+            "ImageIndex": 225,
+            "ImagesCount": 6
+        }
+    }
+}
