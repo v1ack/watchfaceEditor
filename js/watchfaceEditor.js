@@ -121,6 +121,327 @@ var wfe = {
         local: (location.protocol != "file:" ? false : true),
         firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true)
     },
+    elements: {
+        timeHoursTens: {
+            name: 'Time hours tens',
+            editorId: 'e_time_ht',
+            prewiewClass: 'c_time',
+            coords: function () {
+                return wfe.coords.time.Hours.Tens;
+            },
+            drawFunc: function () {
+                wfe.draw.time.time();
+            }
+        },
+        timeHoursOnes: {
+            name: 'Time hours ones',
+            editorId: 'e_time_ho',
+            prewiewClass: 'c_time',
+            coords: function () {
+                return wfe.coords.time.Hours.Ones;
+            },
+            drawFunc: function () {
+                wfe.draw.time.time();
+            }
+        },
+        timeMinutesTens: {
+            name: 'Time minutes tens',
+            editorId: 'e_time_mt',
+            prewiewClass: 'c_time',
+            coords: function () {
+                return wfe.coords.time.Minutes.Tens;
+            },
+            drawFunc: function () {
+                wfe.draw.time.time();
+            }
+        },
+        timeMinutesOnes: {
+            name: 'Time minutes ones',
+            editorId: 'e_time_mo',
+            prewiewClass: 'c_time',
+            coords: function () {
+                return wfe.coords.time.Minutes.Ones;
+            },
+            drawFunc: function () {
+                wfe.draw.time.time();
+            }
+        },
+        timeSecondsTens: {
+            name: 'Time seconds tens',
+            editorId: 'e_time_st',
+            prewiewClass: 'c_sec',
+            coords: function () {
+                return wfe.coords.seconds.Tens;
+            },
+            drawFunc: function () {
+                wfe.draw.time.seconds();
+            }
+        },
+        timeSecondsOnes: {
+            name: 'Time seconds ones',
+            editorId: 'e_time_so',
+            prewiewClass: 'c_sec',
+            coords: function () {
+                return wfe.coords.seconds.Ones;
+            },
+            drawFunc: function () {
+                wfe.draw.time.seconds();
+            }
+        },
+        timeM: {
+            name: 'AM/PM',
+            editorId: 'e_time_am',
+            prewiewClass: 'c_time_am',
+            coords: function () {
+                return wfe.coords.ampm;
+            },
+            drawFunc: function () {
+                wfe.draw.time.time();
+            }
+        },
+        dateWeekday: {
+            name: 'Weekday',
+            editorId: 'e_date_weekday',
+            prewiewClass: 'c_date_weekday',
+            coords: function () {
+                return wfe.coords.weekday;
+            },
+            drawFunc: function () {
+                wfe.draw.date.weekday();
+            }
+        },
+        dateDay: {
+            name: 'Day',
+            editorId: 'e_date_sep_day',
+            prewiewClass: 'c_date_sepday',
+            coords: function () {
+                return wfe.coords.dateday;
+            },
+            drawFunc: function () {
+                wfe.draw.date.sepday();
+            }
+        },
+        dateMonth: {
+            name: 'Month',
+            editorId: 'e_date_sep_month',
+            prewiewClass: 'c_date_sepmonth',
+            coords: function () {
+                return wfe.coords.datemonth;
+            },
+            drawFunc: function () {
+                wfe.draw.date.sepmonth();
+            }
+        },
+        dateOneLine: {
+            name: 'Date in one line',
+            editorId: 'e_date_oneline',
+            prewiewClass: 'c_date_oneline',
+            coords: function () {
+                return wfe.coords.dateoneline.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.date.oneline();
+            }
+        },
+        actCalories: {
+            name: 'Calories',
+            editorId: 'e_act_cal',
+            prewiewClass: 'c_act_cal',
+            coords: function () {
+                return wfe.coords.actcal;
+            },
+            drawFunc: function () {
+                wfe.draw.activity.cal();
+            }
+        },
+        actSteps: {
+            name: 'Steps',
+            editorId: 'e_act_steps',
+            prewiewClass: 'c_act_steps',
+            coords: function () {
+                return wfe.coords.actsteps;
+            },
+            drawFunc: function () {
+                wfe.draw.activity.steps();
+            }
+        },
+        actStepsGoal: {
+            name: 'Steps goal',
+            editorId: 'e_act_stepsgoal',
+            prewiewClass: 'c_act_stepsg',
+            coords: function () {
+                return wfe.coords.actstepsgoal;
+            },
+            drawFunc: function () {
+                wfe.draw.activity.stepsgoal();
+            }
+        },
+        actPulse: {
+            name: 'Pulse',
+            editorId: 'e_act_pulse',
+            prewiewClass: 'c_act_pulse',
+            coords: function () {
+                return wfe.coords.actpulse;
+            },
+            drawFunc: function () {
+                wfe.draw.activity.pulse();
+            }
+        },
+        actDistance: {
+            name: 'Distance',
+            editorId: 'e_act_distance',
+            prewiewClass: 'c_act_distance',
+            coords: function () {
+                return wfe.coords.actdist.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.activity.distance();
+            }
+        },
+        batteryIcon: {
+            name: 'Battery icon',
+            editorId: 'e_battery_icon',
+            prewiewClass: 'c_battery_icon',
+            coords: function () {
+                return wfe.coords.batteryicon;
+            },
+            drawFunc: function () {
+                wfe.draw.battery.icon();
+            }
+        },
+        batteryText: {
+            name: 'Battery text',
+            editorId: 'e_battery_text',
+            prewiewClass: 'c_battery_text',
+            coords: function () {
+                return wfe.coords.batterytext;
+            },
+            drawFunc: function () {
+                wfe.draw.battery.text();
+            }
+        },
+        statAlarm: {
+            name: 'Alarm',
+            editorId: 'e_stat_alarm',
+            prewiewClass: 'c_stat_alarm',
+            coords: function () {
+                return wfe.coords.statalarm.Coordinates;
+            },
+            drawFunc: function () {
+                wfe.draw.status.alarm();
+            }
+        },
+        statBluetooth: {
+            name: 'Bluetooth',
+            editorId: 'e_stat_bt',
+            prewiewClass: 'c_stat_bt',
+            coords: function () {
+                return wfe.coords.statbt.Coordinates;
+            },
+            drawFunc: function () {
+                wfe.draw.status.bt();
+            }
+        },
+        statDND: {
+            name: 'Do not distrurb',
+            editorId: 'e_stat_dnd',
+            prewiewClass: 'c_stat_dnd',
+            coords: function () {
+                return wfe.coords.statdnd.Coordinates;
+            },
+            drawFunc: function () {
+                wfe.draw.status.dnd();
+            }
+        },
+        statLock: {
+            name: 'Lock',
+            editorId: 'e_stat_lock',
+            prewiewClass: 'c_stat_lock',
+            coords: function () {
+                return wfe.coords.statlock.Coordinates;
+            },
+            drawFunc: function () {
+                wfe.draw.status.lock();
+            }
+        },
+        weatherIcon: {
+            name: 'Weather icon',
+            editorId: 'e_weather_icon',
+            prewiewClass: 'c_weather_icon',
+            coords: function () {
+                return wfe.coords.weathericon.CustomIcon;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.icon();
+            }
+        },
+        weatherOneLine: {
+            name: 'Weather in one line',
+            editorId: 'e_weather_temp_today_oneline',
+            prewiewClass: 'c_temp_oneline',
+            coords: function () {
+                return wfe.coords.weatheroneline.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.oneline();
+            }
+        },
+        weatherDay: {
+            name: 'Weather day',
+            editorId: 'e_weather_temp_today_sep_day',
+            prewiewClass: 'c_temp_sep_day',
+            coords: function () {
+                return wfe.coords.weatherday.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.sep.day();
+            }
+        },
+        weatherNight: {
+            name: 'Weather night',
+            editorId: 'e_weather_temp_today_sep_night',
+            prewiewClass: 'c_temp_sep_night',
+            coords: function () {
+                return wfe.coords.weathernight.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.sep.night();
+            }
+        },
+        weatherCurrent: {
+            name: 'Current weather',
+            editorId: 'e_weather_temp_current',
+            prewiewClass: 'c_temp_cur',
+            coords: function () {
+                return wfe.coords.weathercur.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.current();
+            }
+        },
+        weatherAir: {
+            name: 'Air quality',
+            editorId: 'e_weather_air',
+            prewiewClass: 'c_air',
+            coords: function () {
+                return wfe.coords.weatherair.Icon;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.air();
+            }
+        },
+        stepsGoal: {
+            name: 'Steps goal',
+            editorId: 'e_steps_goal',
+            prewiewClass: 'c_steps_goal',
+            coords: function () {
+                return wfe.coords.stepsgoal;
+            },
+            drawFunc: function () {
+                wfe.draw.stepsprogress.goal();
+            }
+        }
+    },
     data: {
         import: function (json) {
             wfe.coords = {};
@@ -233,6 +554,10 @@ var wfe = {
                                 wfe.coords.weatherday = json.Weather.Temperature.Today.Separate.Day;
                             if ('Night' in json.Weather.Temperature.Today.Separate)
                                 wfe.coords.weathernight = json.Weather.Temperature.Today.Separate.Night;
+                            if ('AltDay' in json.Weather.Temperature.Today.Separate)
+                                wfe.coords.weatherAltDay = json.Weather.Temperature.Today.Separate.AltDay;
+                            if ('AltNight' in json.Weather.Temperature.Today.Separate)
+                                wfe.coords.weatherAltNight = json.Weather.Temperature.Today.Separate.AltNight;
                         }
                     }
                     if ('Current' in json.Weather.Temperature)
@@ -726,8 +1051,9 @@ var wfe = {
             if (wfe.coords.status) {
                 if ('statalarm' in wfe.coords)
                     wfe.imagestab.insertimg({
-                        label: "Status alarm"
-                    }, wfe.coords.statalarm.ImageIndexOn, 1);
+                        label: "Status alarm",
+                        addition: (", " + wfe.coords.statalarm.ImageIndexOff)
+                    }, wfe.coords.statalarm.ImageIndexOn, 1, wfe.coords.statalarm.ImageIndexOff);
                 if ('statbt' in wfe.coords)
                     wfe.imagestab.insertimg({
                         label: "Status bluetooth",
@@ -735,12 +1061,14 @@ var wfe = {
                     }, wfe.coords.statbt.ImageIndexOn, 1, wfe.coords.statbt.ImageIndexOff);
                 if ('statdnd' in wfe.coords)
                     wfe.imagestab.insertimg({
-                        label: "Status do not disturb"
-                    }, wfe.coords.statdnd.ImageIndexOn, 1);
+                        label: "Status do not disturb",
+                        addition: (", " + wfe.coords.statdnd.ImageIndexOff)
+                    }, wfe.coords.statdnd.ImageIndexOn, 1, wfe.coords.statdnd.ImageIndexOff);
                 if ('statlock' in wfe.coords)
                     wfe.imagestab.insertimg({
-                        label: "Status lock"
-                    }, wfe.coords.statlock.ImageIndexOn, 1);
+                        label: "Status lock",
+                        addition: (", " + wfe.coords.statlock.ImageIndexOff)
+                    }, wfe.coords.statlock.ImageIndexOn, 1, wfe.coords.statlock.ImageIndexOff);
             }
             if (wfe.coords.activity) {
                 if ('actcal' in wfe.coords)
@@ -2715,13 +3043,13 @@ var wfe = {
         }
     },
     editor: {
-        makeBlock: function (el, id) {
+        makeBlock: function (el) {
             $("editor").innerHTML +=
-                '<div id="' + id + '" style="height:' + ((el.BottomRightY - el.TopLeftY + 1) * 3) + 'px; width:' + ((el.BottomRightX - el.TopLeftX + 1) * 3) + 'px; top:' + (el.TopLeftY * 3) + 'px; left:' + (el.TopLeftX * 3) + 'px;" class="editor-elem"></div>';
+                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * 3) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * 3) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * 3) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * 3) + 'px;" class="editor-elem"></div>';
         },
-        makeImg: function (el, id) {
+        makeImg: function (el) {
             $("editor").innerHTML +=
-                '<div id="' + id + '" style="height:' + ($(el.ImageIndex).height * 3) + 'px; width:' + ($(el.ImageIndex).width * 3) + 'px; top:' + (el.Y * 3) + 'px; left:' + (el.X * 3) + 'px;" class="editor-elem"></div>';
+                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * 3) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * 3) + 'px; top:' + (wfe.elements[el].coords().Y * 3) + 'px; left:' + (wfe.elements[el].coords().X * 3) + 'px;" class="editor-elem"></div>';
         },
         makeImgStat: function (el, id) {
             $("editor").innerHTML +=
@@ -2750,103 +3078,47 @@ var wfe = {
                 }, 10);
             }
             if ('time' in wfe.coords) {
-                wfe.editor.makeImg(wfe.coords.time.Hours.Tens, "e_time_ht");
-                wfe.editor.makeImg(wfe.coords.time.Hours.Ones, "e_time_ho");
-                wfe.editor.makeImg(wfe.coords.time.Minutes.Tens, "e_time_mt");
-                wfe.editor.makeImg(wfe.coords.time.Minutes.Ones, "e_time_mo");
-                setTimeout(function () {
-                    wfe.editor.initdrag('e_time_ht', wfe.coords.time.Hours.Tens, "c_time", wfe.draw.time.time);
-                    wfe.editor.initdrag('e_time_ho', wfe.coords.time.Hours.Ones, "c_time", wfe.draw.time.time);
-                    wfe.editor.initdrag('e_time_mt', wfe.coords.time.Minutes.Tens, "c_time", wfe.draw.time.time);
-                    wfe.editor.initdrag('e_time_mo', wfe.coords.time.Minutes.Ones, "c_time", wfe.draw.time.time);
-                }, 10);
+                wfe.editor.makeImgAndInitDrag('timeHoursTens');
+                wfe.editor.makeImgAndInitDrag('timeHoursOnes');
+                wfe.editor.makeImgAndInitDrag('timeMinutesTens');
+                wfe.editor.makeImgAndInitDrag('timeMinutesOnes');
                 if ('seconds' in wfe.coords) {
-                    wfe.editor.makeImg(wfe.coords.seconds.Tens, "e_time_st");
-                    wfe.editor.makeImg(wfe.coords.seconds.Ones, "e_time_so");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_time_st', wfe.coords.seconds.Tens, "c_sec", wfe.draw.time.seconds);
-                        wfe.editor.initdrag('e_time_so', wfe.coords.seconds.Ones, "c_sec", wfe.draw.time.seconds);
-                    }, 10);
+                    wfe.editor.makeImgAndInitDrag('timeSecondsTens');
+                    wfe.editor.makeImgAndInitDrag('timeSecondsOnes');
                 }
                 if ('ampm' in wfe.coords) {
                     $("editor").innerHTML +=
                         '<div id="e_time_am" style="height:' + ($(wfe.coords.ampm.ImageIndexAm).height * 3) + 'px; width:' + ($(wfe.coords.ampm.ImageIndexAm).width * 3) + 'px; top:' + (wfe.coords.ampm.Y * 3) + 'px; left:' + (wfe.coords.ampm.X * 3) + 'px;" class="editor-elem"></div>';
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_time_am', wfe.coords.ampm, "c_time_am", wfe.draw.time.time);
-                    }, 10);
+                    wfe.editor.initdragN('timeM');
                 }
             }
             if (wfe.coords.date) {
-                if ('weekday' in wfe.coords) {
-                    wfe.editor.makeImg(wfe.coords.weekday, "e_date_weekday");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_date_weekday', wfe.coords.weekday, "c_date_weekday", wfe.draw.date.weekday);
-                    }, 10);
-                }
-                if ('dateday' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.dateday, "e_date_sep_day");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_date_sep_day', wfe.coords.dateday, "c_date_sepday", wfe.draw.date.sepday);
-                    }, 10);
-                }
-                if ('datemonth' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.datemonth, "e_date_sep_month");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_date_sep_month', wfe.coords.datemonth, "c_date_sepmonth", wfe.draw.date.sepmonth);
-                    }, 10);
-                }
-                if ('dateoneline' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.dateoneline.Number, "e_date_oneline");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_date_oneline', wfe.coords.dateoneline.Number, "c_date_oneline", wfe.draw.date.oneline);
-                    }, 10);
-                }
+                if ('weekday' in wfe.coords)
+                    wfe.editor.makeImgAndInitDrag('dateWeekday');
+                if ('dateday' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('dateDay');
+                if ('datemonth' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('dateMonth');
+                if ('dateoneline' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('dateOneLine');
             }
             if (wfe.coords.activity) {
-                if ('actcal' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.actcal, "e_act_cal");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_act_cal', wfe.coords.actcal, "c_act_cal", wfe.draw.activity.cal);
-                    }, 10);
-                }
-                if ('actsteps' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.actsteps, "e_act_steps");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_act_steps', wfe.coords.actsteps, "c_act_steps", wfe.draw.activity.steps);
-                    }, 10);
-                }
-                if ('actstepsgoal' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.actstepsgoal, "e_act_stepsgoal");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_act_stepsgoal', wfe.coords.actstepsgoal, "c_act_stepsg", wfe.draw.activity.stepsgoal);
-                    }, 10);
-                }
-                if ('actpulse' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.actpulse, "e_act_pulse");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_act_pulse', wfe.coords.actpulse, "c_act_pulse", wfe.draw.activity.pulse);
-                    }, 10);
-                }
-                if ('actdist' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.actdist.Number, "e_act_distance");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_act_distance', wfe.coords.actdist.Number, "c_act_distance", wfe.draw.activity.distance);
-                    }, 10);
-                }
+                if ('actcal' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('actCalories');
+                if ('actsteps' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('actSteps');
+                if ('actstepsgoal' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('actStepsGoal');
+                if ('actpulse' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('actPulse');
+                if ('actdist' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('actDistance');
             }
             if (wfe.coords.battery) {
-                if ('batteryicon' in wfe.coords) {
-                    wfe.editor.makeImg(wfe.coords.batteryicon, "e_battery_icon");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_battery_icon', wfe.coords.batteryicon, "c_battery_icon", wfe.draw.battery.icon);
-                    }, 10);
-                }
-                if ('batterytext' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.batterytext, "e_battery_text");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_battery_text', wfe.coords.batterytext, "c_battery_text", wfe.draw.battery.text);
-                    }, 10);
-                }
+                if ('batteryicon' in wfe.coords)
+                    wfe.editor.makeImgAndInitDrag('batteryIcon');
+                if ('batterytext' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('batteryText');
                 if ('batteryscale' in wfe.coords) {
                     for (var i = 0; i < wfe.coords.batteryscale.Segments.length; i++) {
                         $("editor").innerHTML +=
@@ -2860,27 +3132,19 @@ var wfe = {
             if (wfe.coords.status) {
                 if ('statalarm' in wfe.coords) {
                     wfe.editor.makeImgStat(wfe.coords.statalarm, "e_stat_alarm");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_stat_alarm', wfe.coords.statalarm.Coordinates, "c_stat_alarm", wfe.draw.status.alarm);
-                    }, 10);
+                    wfe.editor.initdragN('statAlarm');
                 }
                 if ('statbt' in wfe.coords) {
                     wfe.editor.makeImgStat(wfe.coords.statbt, "e_stat_bt");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_stat_bt', wfe.coords.statbt.Coordinates, "c_stat_bt", wfe.draw.status.bt);
-                    }, 10);
+                    wfe.editor.initdragN('statBluetooth');
                 }
                 if ('statdnd' in wfe.coords) {
                     wfe.editor.makeImgStat(wfe.coords.statdnd, "e_stat_dnd");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_stat_dnd', wfe.coords.statdnd.Coordinates, "c_stat_dnd", wfe.draw.status.dnd);
-                    }, 10);
+                    wfe.editor.initdragN('statDND');
                 }
                 if ('statlock' in wfe.coords) {
                     wfe.editor.makeImgStat(wfe.coords.statlock, "e_stat_lock");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_stat_lock', wfe.coords.statlock.Coordinates, "c_stat_lock", wfe.draw.status.lock);
-                    }, 10);
+                    wfe.editor.initdragN('statLock');
                 }
             }
             if (wfe.coords.weather) {
@@ -2898,36 +3162,16 @@ var wfe = {
                             wfe.editor.initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates, "c_weather_icon", wfe.draw.weather.icon);
                         }, 10);
                     }
-                if ('weatheroneline' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.weatheroneline.Number, "e_weather_temp_today_oneline");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_weather_temp_today_oneline', wfe.coords.weatheroneline.Number, "c_temp_oneline", wfe.draw.weather.temp.oneline);
-                    }, 10);
-                }
-                if ('weatherday' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.weatherday.Number, "e_weather_temp_today_sep_day");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_weather_temp_today_sep_day', wfe.coords.weatherday.Number, "c_temp_sep_day", wfe.draw.weather.temp.sep.day);
-                    }, 10);
-                }
-                if ('weathernight' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.weathernight.Number, "e_weather_temp_today_sep_night");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_weather_temp_today_sep_night', wfe.coords.weathernight.Number, "c_temp_sep_night", wfe.draw.weather.temp.sep.night);
-                    }, 10);
-                }
-                if ('weathercur' in wfe.coords) {
-                    wfe.editor.makeBlock(wfe.coords.weathercur.Number, "e_weather_temp_current");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_weather_temp_current', wfe.coords.weathercur.Number, "c_temp_cur", wfe.draw.weather.temp.current);
-                    }, 10);
-                }
-                if ('weatherair' in wfe.coords) {
-                    wfe.editor.makeImg(wfe.coords.weatherair.Icon, "e_weather_air");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_weather_air', wfe.coords.weatherair.Icon, "c_air", wfe.draw.weather.air);
-                    }, 10);
-                }
+                if ('weatheroneline' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherOneLine');
+                if ('weatherday' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherDay');
+                if ('weathernight' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherNight');
+                if ('weathercur' in wfe.coords) 
+                    wfe.editor.makeBlockAndInitDrag('weatherCurrent');
+                if ('weatherair' in wfe.coords)
+                    wfe.editor.makeImgAndInitDrag('weatherAir');
             }
             if (wfe.coords.stepsprogress) {
                 if ('stepscircle' in wfe.coords) {}
@@ -2940,12 +3184,8 @@ var wfe = {
                         }, 10, i);
                     }
                 }
-                if ('stepsgoal' in wfe.coords) {
-                    wfe.editor.makeImg(wfe.coords.stepsgoal, "e_steps_goal");
-                    setTimeout(function () {
-                        wfe.editor.initdrag('e_steps_goal', wfe.coords.stepsgoal, "c_steps_goal", wfe.draw.stepsprogress.goal);
-                    }, 10);
-                }
+                if ('stepsgoal' in wfe.coords)
+                    wfe.editor.makeImgAndInitDrag('stepsGoal');
             }
         },
         initdrag: function (el, elcoords, cls, drawF) {
@@ -2956,7 +3196,6 @@ var wfe = {
                 var curcoords = getCoords(el);
                 var shiftX = e.pageX - curcoords.left;
                 var shiftY = e.pageY - curcoords.top;
-
                 el.style.position = 'absolute';
                 moveAt(e);
 
@@ -3008,6 +3247,22 @@ var wfe = {
                 };
             }
 
+        },
+        initdragN: function (el) {
+            setTimeout(function () {
+            wfe.editor.initdrag(wfe.elements[el].editorId,
+                wfe.elements[el].coords(),
+                wfe.elements[el].prewiewClass,
+                wfe.elements[el].drawFunc);
+            },10);
+        },
+        makeImgAndInitDrag: function (el) {
+            wfe.editor.makeImg(el);
+            wfe.editor.initdragN(el);
+        },
+        makeBlockAndInitDrag: function (el) {
+            wfe.editor.makeBlock(el);
+            wfe.editor.initdragN(el);
         },
         getOffsetRect: function (elem) {
             var box = elem.getBoundingClientRect();

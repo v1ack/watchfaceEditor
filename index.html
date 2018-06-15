@@ -221,13 +221,24 @@
                     </li>
                     <li class="uk-grid uk-grid-collapse">
                         <div id="editor" class="uk-card-default uk-box-shadow-large"></div>
-                        <div>
+                        <div style="width: 250px">
                             <p id="e_coords" class="uk-placeholder uk-text-center" data-translate-id="coordinates">Coordinates</p>
-                            <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.makejsbetter();" title="It sets coordinates for bottom right based on height of highest element and width of widest" uk-tooltip data-translate-id="fixcoords">Fix coordinates</button>
-                            <br>
+                            <div class="uk-inline">
+                                <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.makejsbetter();" data-translate-id="fixcoords" type="button" style="width: 190px">Fix coordinates</button>
+                                <button class="uk-button uk-button-primary uk-button-small editorbutton" type="button" style="width: 40px; margin-left: -5px">&#63;</button>
+                                <div uk-drop="delay-show: 0; delay-hide:0; mode: click">
+                                    <div class="uk-card uk-card-body uk-card-default uk-card-small" data-translate-id="fixcoordsTip">It sets coordinates for bottom right based on height of highest element and width of widest</div>
+                                </div>
+                            </div>
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
-                            <br>
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.undo()" data-translate-id="undo">Undo</button>
+                            <div class="uk-inline">
+                                <button class="uk-button uk-button-default uk-button-small editorbutton" onclick="wfe.editor.покаНичего();" data-translate-id="altWeeather" type="button" style="width: 190px" disabled>Alt weather</button>
+                                <button class="uk-button uk-button-primary uk-button-small editorbutton" type="button" style="width: 40px; margin-left: -5px">&#63;</button>
+                                <div uk-drop="delay-show: 0; delay-hide:0; mode: click">
+                                    <div class="uk-card uk-card-body uk-card-default uk-card-small" data-translate-id="altWeeatherTip">Пока здесь пусто, но скоро тут появится очень нужная, позновательная, полезная и интересная информация</div>
+                                </div>
+                            </div>
                         </div>
                     </li>
                     <li>

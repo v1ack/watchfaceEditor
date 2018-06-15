@@ -1,3 +1,7 @@
+.uk-light button:disabled, .uk-light button:disabled:hover{
+    color: #999;
+}
+
 #modal-loading {
     transition: opacity 1s linear;
 }
@@ -71,11 +75,11 @@ img {
 #e_coords {
     margin: 0 10px;
     height: 25px;
-    width: 98px;
+    width: 168px;
 }
 
 .editorbutton {
-    width: 160px;
+    width: 230px;
     margin-left: 10px;
     margin-top: 10px;
 }
