@@ -67,7 +67,7 @@
     "tgweathernight": "启/禁用【夜间温度】",
     "disablesec": "禁用模拟表盘【秒针】",
     "browserwarn": "某些功能在您的浏览器中可能不起作用。推荐使用基于WebKit的浏览器",
-    "jsonupdate": "若要更新表盘预览，只需点击JSON输入即可。",
+    "jsonupdate": "若要更新表盘预览，只需在【JSON编辑区】外单击即可",
     "imagenotfound": "索引图像 $index 没有找到",
     "tgstepslinear": "启/禁用【运动目标进度条】",
     "howtouseDescr": "先使用<a $link>AmazfitBipTools</a>工具软件，拆解<b>.bin</b> 表盘文件, 然后点击 <b>图像 选择</b>，找到已拆解的表盘文件夹，按 <b>Ctrl+A</b> 全选所有图像，打开，接着点 <b>JSON文件 选择</b>，继续选择 JSON 文件。 之后，您可以通过点击  <b>设置</b>  选项来设置要显示的内容或者编辑表盘。<br><br>您可以在  <b>设计</b>  选项卡上，拖放、编辑表盘元素的位置。",
@@ -115,5 +115,9 @@
     "realsizePreview": "实际尺寸预览",
     "changeTheme": "更换配色主题",
     "analogDescription": "单击以添加一个点，右击可删除点，拖放可移动点。如果您使用2根表针设计表盘，最多12X2=24个坐标点。如果您使用3根表针设计表盘，最多12X2+6=30个坐标点",
-    "fixcoordsTip": "它根据最高元素的高度和最宽的宽度设置右下角的坐标。"
+    "fixcoordsTip": "它根据最高元素的高度和最宽的宽度设置右下角的坐标。",
+    "theme": "主题",
+    "themeDark": "暗色",
+    "themeLight": "亮色",
+    "device": "设备"
 }
