@@ -3045,11 +3045,11 @@ var wfe = {
     editor: {
         makeBlock: function (el) {
             $("editor").innerHTML +=
-                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * 3) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * 3) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * 3) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * 3) + 'px;" class="editor-elem"></div>';
+                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * 3) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * 3) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * 3) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
         },
         makeImg: function (el) {
             $("editor").innerHTML +=
-                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * 3) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * 3) + 'px; top:' + (wfe.elements[el].coords().Y * 3) + 'px; left:' + (wfe.elements[el].coords().X * 3) + 'px;" class="editor-elem"></div>';
+                '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * 3) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * 3) + 'px; top:' + (wfe.elements[el].coords().Y * 3) + 'px; left:' + (wfe.elements[el].coords().X * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
         },
         makeImgStat: function (el, id) {
             $("editor").innerHTML +=
