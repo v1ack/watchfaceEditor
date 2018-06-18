@@ -940,8 +940,10 @@ var wfe = {
 
         //Donate window
         UIkit.modal("#donateframe")._events[0] = function () {
-            $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=Watchface%20editor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=41001928688597" width="450" height="278" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
-            $("donateframe").classList.remove('uk-modal');
+            $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C%20watchfaceEditor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&hint=%D0%9E%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BE%D1%82%D0%B7%D1%8B%D0%B2&successURL=&quickpay=shop&account=41001928688597" width="460" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
+            setTimeout(function () {
+                $("donateframe").classList.remove('uk-modal');
+            }, 10);
         };
         UIkit.modal("#modal-about")._events[0] = function () {
             $("siteopened").innerHTML = $("siteopened").innerHTML.replace("$times", localStorage.showcount);
@@ -1228,8 +1230,15 @@ var wfe = {
         }
     },
     jsoneditor: {
-        togglebutton: function (bt, state) {
-            if (state == 1) {
+        elements: ['seconds', 'ampm', 'weekday', 'dateday', 'datemonth', 'dateoneline', 'batteryicon', 'batterytext', 'batteryscale', 'statalarm', 'statbt', 'statdnd', 'statlock', 'actcal', 'actsteps', 'actstepsgoal', 'actpulse', 'actdist', 'weatheroneline', 'weatherday', 'weathernight', 'weathercur', 'stepslinear', 'stepsgoal', 'weatherair'],
+        toggleButton: function(element){
+            if (element in wfe.coords)
+                    wfe.jsoneditor.togglebuttonOld('tg' + element, 1);
+                else
+                    wfe.jsoneditor.togglebuttonOld('tg' + element, 0);
+        },
+        togglebuttonOld: function (bt, state) {
+            if (state) {
                 $(bt).classList.add("uk-button-primary");
                 $(bt).classList.remove("uk-button-default");
             } else {
@@ -1244,135 +1253,24 @@ var wfe = {
             else
                 $("defaultimages").classList.remove("uk-label-success");
             wfe.view.makeWf();
-            if ('time' in wfe.coords) {
-                if ('seconds' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgsec", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgsec", 0);
-                if ('ampm' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tg12/24", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tg12/24", 0);
-            }
-            if ('weekday' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgweekday", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgweekday", 0);
-            if ('dateday' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgdateday", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgdateday", 0);
-            if ('datemonth' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgdatemonth", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgdatemonth", 0);
-            if ('dateoneline' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgdateoneline", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgdateoneline", 0);
-            if ('batteryicon' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgbaticon", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgbaticon", 0);
-            if ('batterytext' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgbatnum", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgbatnum", 0);
-            if ('batteryscale' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgbatscale", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgbatscale", 0);
-            if ('statalarm' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgstatalarm", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgstatalarm", 0);
-            if ('statbt' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgstatbt", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgstatbt", 0);
-            if ('statdnd' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgstatdnd", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgstatdnd", 0);
-            if ('statlock' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgstatlock", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgstatlock", 0);
-            if ('actcal' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgactcalories", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgactcalories", 0);
-            if ('actsteps' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgactsteps", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgactsteps", 0);
-            if ('actstepsgoal' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgactstepsgoal", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgactstepsgoal", 0);
-            if ('actpulse' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgactpulse", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgactpulse", 0);
-            if ('actdist' in wfe.coords)
-                wfe.jsoneditor.togglebutton("tgactdist", 1);
-            else
-                wfe.jsoneditor.togglebutton("tgactdist", 0);
+            for (var e in wfe.jsoneditor.elements)
+                wfe.jsoneditor.toggleButton(wfe.jsoneditor.elements[e]);
             if (wfe.coords.weather) {
                 if (wfe.coords.weathericon)
                     if ('CustomIcon' in wfe.coords.weathericon) {
-                        wfe.jsoneditor.togglebutton("tgweathercusticon", 1);
-                        wfe.jsoneditor.togglebutton("tgweathericon", 0);
+                        wfe.jsoneditor.togglebuttonOld("tgweathercusticon", 1);
+                        wfe.jsoneditor.togglebuttonOld("tgweathericon", 0);
                     } else {
-                        wfe.jsoneditor.togglebutton("tgweathericon", 1);
-                        wfe.jsoneditor.togglebutton("tgweathercusticon", 0);
+                        wfe.jsoneditor.togglebuttonOld("tgweathericon", 1);
+                        wfe.jsoneditor.togglebuttonOld("tgweathercusticon", 0);
                     }
                 else {
-                    wfe.jsoneditor.togglebutton("tgweathericon", 0);
-                    wfe.jsoneditor.togglebutton("tgweathercusticon", 0);
+                    wfe.jsoneditor.togglebuttonOld("tgweathericon", 0);
+                    wfe.jsoneditor.togglebuttonOld("tgweathercusticon", 0);
                 }
-                if ('weatheroneline' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgweatheroneline", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgweatheroneline", 0);
-                if ('weatherday' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgweatherday", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgweatherday", 0);
-                if ('weathernight' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgweathernight", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgweathernight", 0);
-
-                if ('weathercur' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgweathercur", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgweathercur", 0);
-                if ('weatherair' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgweatherair", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgweatherair", 0);
             } else {
-                wfe.jsoneditor.togglebutton("tgweathericon", 0);
-                wfe.jsoneditor.togglebutton("tgweathercusticon", 0);
-                wfe.jsoneditor.togglebutton("tgweatheroneline", 0);
-                wfe.jsoneditor.togglebutton("tgweatherday", 0);
-                wfe.jsoneditor.togglebutton("tgweathernight", 0);
-                wfe.jsoneditor.togglebutton("tgweathercur", 0);
-                wfe.jsoneditor.togglebutton("tgweatherair", 0);
-            }
-            if (wfe.coords.stepsprogress) {
-                if ('stepslinear' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgstepslinear", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgstepslinear", 0);
-                if ('stepsgoal' in wfe.coords)
-                    wfe.jsoneditor.togglebutton("tgactgoalicon", 1);
-                else
-                    wfe.jsoneditor.togglebutton("tgactgoalicon", 0);
-            } else {
-                wfe.jsoneditor.togglebutton("tgstepslinear", 0);
-                wfe.jsoneditor.togglebutton("tgactgoalicon", 0);
+                wfe.jsoneditor.togglebuttonOld("tgweathericon", 0);
+                wfe.jsoneditor.togglebuttonOld("tgweathercusticon", 0);
             }
         },
         toggleElements: {
@@ -1497,6 +1395,9 @@ var wfe = {
                                 delete wfe.coords.monthandday;
                                 wfe.coords.date = false;
                             }
+                            if ('weekday' in wfe.coords) {
+                                wfe.coords.date = true;
+                            }
                         } else {
                             wfe.coords.date = true;
                             if (!('monthandday' in wfe.coords))
@@ -1524,6 +1425,9 @@ var wfe = {
                             if (!('dateday' in wfe.coords || 'dateoneline' in wfe.coords)) {
                                 delete wfe.coords.monthandday;
                                 wfe.coords.date = false;
+                            }
+                            if ('weekday' in wfe.coords) {
+                                wfe.coords.date = true;
                             }
                         } else {
                             wfe.coords.date = true;
@@ -3168,7 +3072,7 @@ var wfe = {
                     wfe.editor.makeBlockAndInitDrag('weatherDay');
                 if ('weathernight' in wfe.coords)
                     wfe.editor.makeBlockAndInitDrag('weatherNight');
-                if ('weathercur' in wfe.coords) 
+                if ('weathercur' in wfe.coords)
                     wfe.editor.makeBlockAndInitDrag('weatherCurrent');
                 if ('weatherair' in wfe.coords)
                     wfe.editor.makeImgAndInitDrag('weatherAir');
@@ -3250,11 +3154,11 @@ var wfe = {
         },
         initdragN: function (el) {
             setTimeout(function () {
-            wfe.editor.initdrag(wfe.elements[el].editorId,
-                wfe.elements[el].coords(),
-                wfe.elements[el].prewiewClass,
-                wfe.elements[el].drawFunc);
-            },10);
+                wfe.editor.initdrag(wfe.elements[el].editorId,
+                    wfe.elements[el].coords(),
+                    wfe.elements[el].prewiewClass,
+                    wfe.elements[el].drawFunc);
+            }, 10);
         },
         makeImgAndInitDrag: function (el) {
             wfe.editor.makeImg(el);
