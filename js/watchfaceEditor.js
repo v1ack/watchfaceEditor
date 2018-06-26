@@ -2538,7 +2538,7 @@ var wfe = {
             }
         },
         weatherd_change: function () {
-            if ($("in-weatherd").value > 99) $("in-weatherd").value = 99;
+            if ($("in-weatherd").value > 199) $("in-weatherd").value = 199;
             if ($("in-weatherd").value < -99) $("in-weatherd").value = -99;
             wfe.data.temp[0] = $("in-weatherd").value;
             removeByClass("c_temp_sep_day");
@@ -2554,7 +2554,7 @@ var wfe = {
             }
         },
         weathern_change: function () {
-            if ($("in-weathern").value > 99) $("in-weathern").value = 99;
+            if ($("in-weathern").value > 199) $("in-weathern").value = 199;
             if ($("in-weathern").value < -99) $("in-weathern").value = -99;
             wfe.data.temp[1] = $("in-weathern").value;
             removeByClass("c_temp_sep_night");
