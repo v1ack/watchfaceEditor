@@ -585,8 +585,8 @@ var wfe = {
                             }
                             if ('NightAlt' in json.Weather.Temperature.Today.Separate) {
                                 wfe.coords.weatherNightAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Night));
-                                wfe.coords.weatherNightAlt.Number.BottomRightX = wfe.coords.weatherNightAlt.Number.BottomRightX - wfe.coords.weatherNightAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.DayAlt.X;
-                                wfe.coords.weatherNightAlt.Number.BottomRightY = wfe.coords.weatherNightAlt.Number.BottomRightY - wfe.coords.weatherNightAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.DayAlt.Y;
+                                wfe.coords.weatherNightAlt.Number.BottomRightX = wfe.coords.weatherNightAlt.Number.BottomRightX - wfe.coords.weatherNightAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.NightAlt.X;
+                                wfe.coords.weatherNightAlt.Number.BottomRightY = wfe.coords.weatherNightAlt.Number.BottomRightY - wfe.coords.weatherNightAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.NightAlt.Y;
                                 wfe.coords.weatherNightAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.NightAlt.X;
                                 wfe.coords.weatherNightAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.NightAlt.Y;
                             }
@@ -1343,7 +1343,9 @@ var wfe = {
             weatherDay: '"Temperature":',
             weatherNight: '"Night":',
             stepsGoal: '"GoalImage":',
-            stepsLinear: '"Linear":'
+            stepsLinear: '"Linear":',
+            weatherDayAlt: '"DayAlt":',
+            weatherNightAlt: '"NightAlt":'
         },
         toggle: function (el) {
             switch (el) {
@@ -2643,10 +2645,6 @@ var wfe = {
                 if ('weathercur' in wfe.coords)
                     wfe.draw.weather.temp.current();
             }
-            //            removeByClass("c_stat_lock");
-            //            if (wfe.coords.status)
-            //                if ('statlock' in wfe.coords)
-            //                    wfe.draw.status.lock();
         },
         steps_change: function () {
             if ($("in-steps").value > 99999) $("in-steps").value = 99999;

@@ -1,4 +1,5 @@
-.uk-light button:disabled, .uk-light button:disabled:hover{
+.uk-light button:disabled,
+.uk-light button:disabled:hover {
     color: #999;
 }
 
