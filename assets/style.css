@@ -97,6 +97,10 @@ img {
     position: relative;
 }
 
+#watchface {
+    overflow: hidden;
+}
+
 #watchface,
 .watchface-cover {
     position: absolute;
