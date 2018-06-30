@@ -215,6 +215,13 @@
                                         <label><input class="uk-checkbox" type="checkbox" checked id="in-lock" onchange="wfe.view.lock_change();"> <span data-translate-id="lock">Lock</span></label>
                                     </div>
                                 </div>
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label" data-translate-id="weatherAlt-label">Alt weather</label>
+                                    <div class="uk-form-controls uk-child-width-auto uk-grid">
+                                        <label><input class="uk-checkbox" type="checkbox" id="in-weatherAlt" onchange="wfe.view.weatherAltChange();"> <span data-translate-id="weatherAlt">Show alt weather</span></label>
+                                        <small data-translate-id="weatherAltDescription">Appears when curret weather is unavalible</small>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <!--          ads              -->
@@ -232,13 +239,6 @@
                             </div>
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.jsoneditor.exportjs()" data-translate-id="exportJson">Export JSON</button>
                             <button class="uk-button uk-button-primary uk-button-small editorbutton" onclick="wfe.editor.undo()" data-translate-id="undo">Undo</button>
-                            <!--<div class="uk-inline">
-                                <button class="uk-button uk-button-default uk-button-small editorbutton" onclick="wfe.editor.покаНичего();" data-translate-id="altWeeather" type="button" style="width: 190px" disabled>Alt weather</button>
-                                <button class="uk-button uk-button-primary uk-button-small editorbutton" type="button" style="width: 40px; margin-left: -5px">&#63;</button>
-                                <div uk-drop="delay-show: 0; delay-hide:0; mode: click">
-                                    <div class="uk-card uk-card-body uk-card-default uk-card-small" data-translate-id="altWeeatherTip">Пока здесь пусто, но скоро тут появится очень нужная, позновательная, полезная и интересная информация</div>
-                                </div>
-                            </div>-->
                         </div>
                     </li>
                     <li>
@@ -300,6 +300,8 @@
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherCurrent');" data-translate-id="tgweathercur" id="tgweathercur">Toggle current weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherDay');" data-translate-id="tgweatherday" id="tgweatherday">Toggle day weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherNight');" data-translate-id="tgweathernight" id="tgweathernight">Toggle night weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherDayAlt');" data-translate-id="tgaltweatherday" id="tgweatherDayAlt">Toggle alt day weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherNightAlt');" data-translate-id="tgaltweathernight" id="tgweatherNightAlt">Toggle alt night weather</button>
                                     </div>
                                 </li>
                             </ul>

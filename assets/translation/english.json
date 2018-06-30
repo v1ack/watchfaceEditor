@@ -119,5 +119,10 @@
     "analogDescription": "Click to add a dot, right click to remove, drag to move. Max 24 dots for all arrows if you use 2 arrows and 30 dots if you use 3 arrows",
     "checkImages": "Check images in watchface folder. At least images with index(s): ",
     "imagesLimitSteps": "Image limit for steps progress is 20. If you use more, they won't be dispaly",
-    "fixcoordsTip": "It sets coordinates for bottom right based on height of highest element and width of widest"
+    "fixcoordsTip": "It sets coordinates for bottom right based on height of highest element and width of widest",
+    "weatherAlt": "Show alt weather",
+    "weatherAltDescription": "Appears when curret weather is unavalible",
+    "tgweatherDayAlt": "Toggle alt day weather",
+    "tgweatherNightAlt": "Toggle alt night weather",
+    "weatherAlt-label": "Alt weather"
 }

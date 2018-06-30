@@ -408,6 +408,28 @@ var wfe = {
                 wfe.draw.weather.temp.sep.night();
             }
         },
+        weatherDayAlt: {
+            name: 'Weather day alt',
+            editorId: 'e_weather_temp_today_sep_day_alt',
+            prewiewClass: 'c_temp_sep_day_a',
+            coords: function () {
+                return wfe.coords.weatherDayAlt.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.sep.dayAlt();
+            }
+        },
+        weatherNightAlt: {
+            name: 'Weather night alt',
+            editorId: 'e_weather_temp_today_sep_night_alt',
+            prewiewClass: 'c_temp_sep_night_a',
+            coords: function () {
+                return wfe.coords.weatherNightAlt.Number;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.temp.sep.nightAlt();
+            }
+        },
         weatherCurrent: {
             name: 'Current weather',
             editorId: 'e_weather_temp_current',
@@ -554,10 +576,20 @@ var wfe = {
                                 wfe.coords.weatherday = json.Weather.Temperature.Today.Separate.Day;
                             if ('Night' in json.Weather.Temperature.Today.Separate)
                                 wfe.coords.weathernight = json.Weather.Temperature.Today.Separate.Night;
-                            if ('AltDay' in json.Weather.Temperature.Today.Separate)
-                                wfe.coords.weatherAltDay = json.Weather.Temperature.Today.Separate.AltDay;
-                            if ('AltNight' in json.Weather.Temperature.Today.Separate)
-                                wfe.coords.weatherAltNight = json.Weather.Temperature.Today.Separate.AltNight;
+                            if ('DayAlt' in json.Weather.Temperature.Today.Separate) {
+                                wfe.coords.weatherDayAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Day));
+                                wfe.coords.weatherDayAlt.Number.BottomRightX = wfe.coords.weatherDayAlt.Number.BottomRightX - wfe.coords.weatherDayAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.DayAlt.X;
+                                wfe.coords.weatherDayAlt.Number.BottomRightY = wfe.coords.weatherDayAlt.Number.BottomRightY - wfe.coords.weatherDayAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.DayAlt.Y;
+                                wfe.coords.weatherDayAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.DayAlt.X;
+                                wfe.coords.weatherDayAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.DayAlt.Y;
+                            }
+                            if ('NightAlt' in json.Weather.Temperature.Today.Separate) {
+                                wfe.coords.weatherNightAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Night));
+                                wfe.coords.weatherNightAlt.Number.BottomRightX = wfe.coords.weatherNightAlt.Number.BottomRightX - wfe.coords.weatherNightAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.DayAlt.X;
+                                wfe.coords.weatherNightAlt.Number.BottomRightY = wfe.coords.weatherNightAlt.Number.BottomRightY - wfe.coords.weatherNightAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.DayAlt.Y;
+                                wfe.coords.weatherNightAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.NightAlt.X;
+                                wfe.coords.weatherNightAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.NightAlt.Y;
+                            }
                         }
                     }
                     if ('Current' in json.Weather.Temperature)
@@ -694,6 +726,16 @@ var wfe = {
                                 packed.Weather.Temperature.Today.Separate.Day = wfe.coords.weatherday;
                             if ('weathernight' in wfe.coords)
                                 packed.Weather.Temperature.Today.Separate.Night = wfe.coords.weathernight;
+                            if ('weatherDayAlt' in wfe.coords) {
+                                packed.Weather.Temperature.Today.Separate.DayAlt = {};
+                                packed.Weather.Temperature.Today.Separate.DayAlt.X = wfe.coords.weatherDayAlt.Number.TopLeftX;
+                                packed.Weather.Temperature.Today.Separate.DayAlt.Y = wfe.coords.weatherDayAlt.Number.TopLeftY;
+                            }
+                            if ('weatherNightAlt' in wfe.coords) {
+                                packed.Weather.Temperature.Today.Separate.NightAlt = {};
+                                packed.Weather.Temperature.Today.Separate.NightAlt.X = wfe.coords.weatherNightAlt.Number.TopLeftX;
+                                packed.Weather.Temperature.Today.Separate.NightAlt.Y = wfe.coords.weatherNightAlt.Number.TopLeftY;
+                            }
                         }
                     }
                     if ('weathercur' in wfe.coords)
@@ -742,7 +784,8 @@ var wfe = {
         lock: true,
         jsset: false,
         imagesset: false,
-        wfname: "watchface"
+        wfname: 'watchface',
+        weatherAlt: false
     },
     init: function () {
         //Device
@@ -1230,12 +1273,12 @@ var wfe = {
         }
     },
     jsoneditor: {
-        elements: ['seconds', 'ampm', 'weekday', 'dateday', 'datemonth', 'dateoneline', 'batteryicon', 'batterytext', 'batteryscale', 'statalarm', 'statbt', 'statdnd', 'statlock', 'actcal', 'actsteps', 'actstepsgoal', 'actpulse', 'actdist', 'weatheroneline', 'weatherday', 'weathernight', 'weathercur', 'stepslinear', 'stepsgoal', 'weatherair'],
-        toggleButton: function(element){
+        elements: ['seconds', 'ampm', 'weekday', 'dateday', 'datemonth', 'dateoneline', 'batteryicon', 'batterytext', 'batteryscale', 'statalarm', 'statbt', 'statdnd', 'statlock', 'actcal', 'actsteps', 'actstepsgoal', 'actpulse', 'actdist', 'weatheroneline', 'weatherday', 'weathernight', 'weathercur', 'stepslinear', 'stepsgoal', 'weatherair', 'weatherDayAlt', 'weatherNightAlt'],
+        toggleButton: function (element) {
             if (element in wfe.coords)
-                    wfe.jsoneditor.togglebuttonOld('tg' + element, 1);
-                else
-                    wfe.jsoneditor.togglebuttonOld('tg' + element, 0);
+                wfe.jsoneditor.togglebuttonOld('tg' + element, 1);
+            else
+                wfe.jsoneditor.togglebuttonOld('tg' + element, 0);
         },
         togglebuttonOld: function (bt, state) {
             if (state) {
@@ -1830,6 +1873,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if ('weatherday' in wfe.coords) {
                             delete wfe.coords.weatherday;
+                            delete wfe.coords.weatherDayAlt;
                             if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
@@ -1855,6 +1899,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if ('weathernight' in wfe.coords) {
                             delete wfe.coords.weathernight;
+                            delete wfe.coords.weatherNightAlt;
                             if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
@@ -1872,6 +1917,112 @@ var wfe = {
                                 MinusImageIndex: 217,
                                 DegreesImageIndex: 218
                             }
+                        break;
+                    }
+                case 'weatherDayAlt':
+                    {
+                        if ('weatherDayAlt' in wfe.coords)
+                            delete wfe.coords.weatherDayAlt
+                        else {
+                            if (!(wfe.coords.weather) || !('weatherday' in wfe.coords)) {
+                                wfe.coords.weather = true;
+                                wfe.coords.weatherday = {
+                                    Number: {
+                                        TopLeftX: 0,
+                                        TopLeftY: 0,
+                                        BottomRightX: 33,
+                                        BottomRightY: 9,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                                wfe.coords.weatherDayAlt = {
+                                    Number: {
+                                        TopLeftX: 10,
+                                        TopLeftY: 10,
+                                        BottomRightX: 43,
+                                        BottomRightY: 19,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                            } else
+                                wfe.coords.weatherDayAlt = {
+                                    Number: {
+                                        TopLeftX: 10,
+                                        TopLeftY: 10,
+                                        BottomRightX: wfe.coords.weatherday.Number.BottomRightX - wfe.coords.weatherday.Number.TopLeftX + 10,
+                                        BottomRightY: wfe.coords.weatherday.Number.BottomRightY - wfe.coords.weatherday.Number.TopLeftY + 10,
+                                        Alignment: "TopLeft",
+                                        Spacing: wfe.coords.weatherday.Number.Spacing,
+                                        ImageIndex: wfe.coords.weatherday.Number.ImageIndex,
+                                        ImagesCount: wfe.coords.weatherday.Number.ImagesCount
+                                    },
+                                    MinusImageIndex: wfe.coords.weatherday.Number.MinusImageIndex,
+                                    DegreesImageIndex: wfe.coords.weatherday.Number.DegreesImageIndex
+                                }
+                        }
+                        break;
+                    }
+                case 'weatherNightAlt':
+                    {
+                        if ('weatherNightAlt' in wfe.coords)
+                            delete wfe.coords.weatherNightAlt
+                        else {
+                            if (!(wfe.coords.weather) || !('weathernight' in wfe.coords)) {
+                                wfe.coords.weather = true;
+                                wfe.coords.weathernight = {
+                                    Number: {
+                                        TopLeftX: 0,
+                                        TopLeftY: 0,
+                                        BottomRightX: 33,
+                                        BottomRightY: 9,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                                wfe.coords.weatherNightAlt = {
+                                    Number: {
+                                        TopLeftX: 10,
+                                        TopLeftY: 10,
+                                        BottomRightX: 43,
+                                        BottomRightY: 19,
+                                        Alignment: "TopLeft",
+                                        Spacing: 2,
+                                        ImageIndex: 200,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 217,
+                                    DegreesImageIndex: 218
+                                }
+                            } else
+                                wfe.coords.weatherNightAlt = {
+                                    Number: {
+                                        TopLeftX: 10,
+                                        TopLeftY: 10,
+                                        BottomRightX: wfe.coords.weathernight.Number.BottomRightX - wfe.coords.weathernight.Number.TopLeftX + 10,
+                                        BottomRightY: wfe.coords.weathernight.Number.BottomRightY - wfe.coords.weathernight.Number.TopLeftY + 10,
+                                        Alignment: "TopLeft",
+                                        Spacing: wfe.coords.weathernight.Number.Spacing,
+                                        ImageIndex: wfe.coords.weathernight.Number.ImageIndex,
+                                        ImagesCount: wfe.coords.weathernight.Number.ImagesCount
+                                    },
+                                    MinusImageIndex: wfe.coords.weathernight.Number.MinusImageIndex,
+                                    DegreesImageIndex: wfe.coords.weathernight.Number.DegreesImageIndex
+                                }
+                        }
                         break;
                     }
                 case 'stepsGoal':
@@ -2185,6 +2336,10 @@ var wfe = {
                         wfe.draw.weather.temp.sep.day();
                     if ('weathernight' in wfe.coords)
                         wfe.draw.weather.temp.sep.night();
+                    if ('weatherDayAlt' in wfe.coords)
+                        wfe.draw.weather.temp.sep.dayAlt();
+                    if ('weatherNightAlt' in wfe.coords)
+                        wfe.draw.weather.temp.sep.nightAlt();
                     if ('weathercur' in wfe.coords)
                         wfe.draw.weather.temp.current();
                     if ('weatherair' in wfe.coords)
@@ -2453,7 +2608,6 @@ var wfe = {
             if (wfe.coords.status)
                 if ('statbt' in wfe.coords)
                     wfe.draw.status.bt();
-
         },
         dnd_change: function () {
             wfe.data.dnd = $("in-dnd").checked;
@@ -2468,6 +2622,31 @@ var wfe = {
             if (wfe.coords.status)
                 if ('statlock' in wfe.coords)
                     wfe.draw.status.lock();
+        },
+        weatherAltChange: function () {
+            wfe.data.weatherAlt = $('in-weatherAlt').checked;
+            if (wfe.data.weatherAlt) {
+                removeByClass("c_temp_sep_day");
+                removeByClass("c_temp_sep_night");
+                removeByClass("c_temp_cur");
+                if ('weatherDayAlt' in wfe.coords)
+                    wfe.draw.weather.temp.sep.dayAlt();
+                if ('weatherNightAlt' in wfe.coords)
+                    wfe.draw.weather.temp.sep.nightAlt();
+            } else {
+                removeByClass("c_temp_sep_night_alt");
+                removeByClass("c_temp_sep_day_alt");
+                if ('weatherday' in wfe.coords)
+                    wfe.draw.weather.temp.sep.day();
+                if ('weathernight' in wfe.coords)
+                    wfe.draw.weather.temp.sep.night();
+                if ('weathercur' in wfe.coords)
+                    wfe.draw.weather.temp.current();
+            }
+            //            removeByClass("c_stat_lock");
+            //            if (wfe.coords.status)
+            //                if ('statlock' in wfe.coords)
+            //                    wfe.draw.status.lock();
         },
         steps_change: function () {
             if ($("in-steps").value > 99999) $("in-steps").value = 99999;
@@ -3072,6 +3251,10 @@ var wfe = {
                     wfe.editor.makeBlockAndInitDrag('weatherDay');
                 if ('weathernight' in wfe.coords)
                     wfe.editor.makeBlockAndInitDrag('weatherNight');
+                if ('weatherDayAlt' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherDayAlt');
+                if ('weatherNightAlt' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherNightAlt');
                 if ('weathercur' in wfe.coords)
                     wfe.editor.makeBlockAndInitDrag('weatherCurrent');
                 if ('weatherair' in wfe.coords)
@@ -3492,6 +3675,8 @@ var wfe = {
                 },
                 sep: {
                     day: function () {
+                        if (wfe.data.weatherAlt)
+                            return;
                         var minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherday.MinusImageIndex) : 0;
                         t = wfe.view.makeBlock(wfe.coords.weatherday.Number, Math.abs(wfe.data.temp[0]));
                         if ('DegreesImageIndex' in wfe.coords.weatherday) {
@@ -3506,6 +3691,8 @@ var wfe = {
                         wfe.view.renderBlock(t.block, t.width, wfe.coords.weatherday.Number, "c_temp_sep_day");
                     },
                     night: function () {
+                        if (wfe.data.weatherAlt)
+                            return;
                         var minus = wfe.data.temp[1] < 0 ? $c(wfe.coords.weathernight.MinusImageIndex) : 0;
                         t = wfe.view.makeBlock(wfe.coords.weathernight.Number, Math.abs(wfe.data.temp[1]));
                         if ('DegreesImageIndex' in wfe.coords.weathernight) {
@@ -3518,9 +3705,43 @@ var wfe = {
                             t.width += minus.width;
                         }
                         wfe.view.renderBlock(t.block, t.width, wfe.coords.weathernight.Number, "c_temp_sep_night");
+                    },
+                    dayAlt: function () {
+                        if (!wfe.data.weatherAlt)
+                            return;
+                        var minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherday.MinusImageIndex) : 0;
+                        t = wfe.view.makeBlock(wfe.coords.weatherday.Number, Math.abs(wfe.data.temp[0]));
+                        if ('DegreesImageIndex' in wfe.coords.weatherday) {
+                            var deg = $c(wfe.coords.weatherday.DegreesImageIndex);
+                            t.block.push(deg);
+                            t.width += deg.width + wfe.coords.weatherday.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        wfe.view.renderBlock(t.block, t.width, wfe.coords.weatherDayAlt.Number, "c_temp_sep_day_alt");
+                    },
+                    nightAlt: function () {
+                        if (!wfe.data.weatherAlt)
+                            return;
+                        var minus = wfe.data.temp[1] < 0 ? $c(wfe.coords.weathernight.MinusImageIndex) : 0;
+                        t = wfe.view.makeBlock(wfe.coords.weathernight.Number, Math.abs(wfe.data.temp[1]));
+                        if ('DegreesImageIndex' in wfe.coords.weathernight) {
+                            var deg = $c(wfe.coords.weathernight.DegreesImageIndex);
+                            t.block.push(deg);
+                            t.width += deg.width + wfe.coords.weathernight.Number.Spacing;
+                        }
+                        if (minus != 0) {
+                            t.block.splice(0, 0, minus);
+                            t.width += minus.width;
+                        }
+                        wfe.view.renderBlock(t.block, t.width, wfe.coords.weatherNightAlt.Number, "c_temp_sep_night_alt");
                     }
                 },
                 current: function () {
+                    if (wfe.data.weatherAlt)
+                        return;
                     var minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weathercur.MinusImageIndex) : 0;
                     t = wfe.view.makeBlock(wfe.coords.weathercur.Number, Math.abs(wfe.data.temp[0]));
                     if ('DegreesImageIndex' in wfe.coords.weathercur) {
