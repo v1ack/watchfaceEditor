@@ -2382,9 +2382,9 @@ var wfe = {
         date_change: function () {
             var t = $("in-date").valueAsDate;
             try {
-                wfe.data.day = t.getDate();
-                wfe.data.month = t.getMonth() + 1;
-                wfe.data.weekDay = t.getDay() > 0 ? t.getDay() - 1 : 6;
+                wfe.data.day = t.getUTCDate();
+                wfe.data.month = t.getUTCMonth() + 1;
+                wfe.data.weekDay = t.getUTCDay() > 0 ? t.getUTCDay() - 1 : 6;
                 removeByClass("c_date_sepday");
                 removeByClass("c_date_weekday");
                 removeByClass("c_date_sepmonth");
