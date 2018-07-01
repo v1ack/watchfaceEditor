@@ -2787,7 +2787,7 @@ var wfe = {
             }
         },
         air_change: function () {
-            if ($("in-air").value > 999) $("in-air").value = 999;
+            if ($("in-air").value > 500) $("in-air").value = 500;
             if ($("in-air").value < 0) $("in-air").value = 0;
             wfe.data.air = $("in-air").value;
             removeByClass("c_air_text");

@@ -125,6 +125,6 @@
     "tgweatherDayAlt": "Toggle alt day weather",
     "tgweatherNightAlt": "Toggle alt night weather",
     "weatherAlt-label": "Alt weather",
-    "airQualityLabel": "Air",
-    "tgweatherAirText": "Toggle air polution"
+    "airQualityLabel": "Air quality",
+    "tgweatherAirIndex": "Toggle air polution"
 }

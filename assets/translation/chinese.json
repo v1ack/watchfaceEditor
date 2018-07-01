@@ -60,7 +60,7 @@
     "tgbatnum": "启/禁用【电量数值】",
     "tgweathericon": "启/禁用【天气图标】",
     "tgweathercusticon": "启/禁用【天气自定义图标】",
-    "tgweatherair": "启/禁用【空气污染】",
+    "tgweatherair": "启/禁用【空气污染图标】",
     "tgweatheroneline": "启/禁用【单行式高低温】",
     "tgweathercur": "启/禁用【当前温度】",
     "tgweatherday": "启/禁用【白天温度】",
@@ -119,5 +119,12 @@
     "theme": "主题",
     "themeDark": "暗色",
     "themeLight": "亮色",
-    "device": "设备"
+    "device": "设备",
+    "tgweatherAirIndex": "启/禁用【空气污染指数】",
+    "weatherAltDescription": "当温度缺失（不可用）时，显示替代图示",
+    "tgweatherDayAlt": "启/禁用【白天温度缺失图示】",
+    "tgweatherNightAlt": "启/禁用【夜间温度缺失图示】",
+    "weatherAlt-label": "温度缺失图示",
+    "airQualityLabel": "空气质量",
+    "weatherAlt": "显示温度缺失图示",
 }
