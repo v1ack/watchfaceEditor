@@ -222,6 +222,12 @@
                                         <small data-translate-id="weatherAltDescription">Appears when curret weather is unavalible</small>
                                     </div>
                                 </div>
+                                <div class="uk-width-1-4@s">
+                                    <label class="uk-form-label" data-translate-id="airQualityLabel">Air</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="in-air" type="number" placeholder="Air" min="0" max="999" onchange="wfe.view.air_change();" value="300">
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <!--          ads              -->
@@ -295,13 +301,14 @@
                                     <div class="uk-accordion-content">
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherIcon');" data-translate-id="tgweathericon" id="tgweathericon">Toggle icon</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherIconCustom');" data-translate-id="tgweathercusticon" id="tgweathercusticon">Toggle custom icon</button>
-                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherAir');" data-translate-id="tgweatherair" id="tgweatherair">Toggle air polution</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherOneLine');" data-translate-id="tgweatheroneline" id="tgweatheroneline">Toggle weather oneline</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherCurrent');" data-translate-id="tgweathercur" id="tgweathercur">Toggle current weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherDay');" data-translate-id="tgweatherday" id="tgweatherday">Toggle day weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherNight');" data-translate-id="tgweathernight" id="tgweathernight">Toggle night weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherDayAlt');" data-translate-id="tgaltweatherday" id="tgweatherDayAlt">Toggle alt day weather</button>
                                         <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherNightAlt');" data-translate-id="tgaltweathernight" id="tgweatherNightAlt">Toggle alt night weather</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherAirIcon');" data-translate-id="tgweatherair" id="tgweatherAirIcon">Toggle air polution icon</button>
+                                        <button class="uk-button uk-button-primary uk-button-small editor-button" onclick="wfe.jsoneditor.toggle('weatherAirText');" data-translate-id="tgweatherAirText" id="tgweatherAirText">Toggle air polution</button>
                                     </div>
                                 </li>
                             </ul>

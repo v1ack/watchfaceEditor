@@ -55,7 +55,7 @@
     "weather": "Weather",
     "tgweathericon": "Toggle icon",
     "tgweathercusticon": "Toggle custom icon",
-    "tgweatherair": "Toggle air polution",
+    "tgweatherair": "Toggle air polution icon",
     "tgweatheroneline": "Toggle weather oneline",
     "tgweathercur": "Toggle current weather",
     "tgweatherday": "Toggle day weather",
@@ -124,5 +124,7 @@
     "weatherAltDescription": "Appears when curret weather is unavalible",
     "tgweatherDayAlt": "Toggle alt day weather",
     "tgweatherNightAlt": "Toggle alt night weather",
-    "weatherAlt-label": "Alt weather"
+    "weatherAlt-label": "Alt weather",
+    "airQualityLabel": "Air",
+    "tgweatherAirText": "Toggle air polution"
 }

@@ -441,15 +441,26 @@ var wfe = {
                 wfe.draw.weather.temp.current();
             }
         },
-        weatherAir: {
-            name: 'Air quality',
-            editorId: 'e_weather_air',
-            prewiewClass: 'c_air',
+        weatherAirIcon: {
+            name: 'Air quality icon',
+            editorId: 'e_weather_air_icon',
+            prewiewClass: 'c_air_icon',
             coords: function () {
-                return wfe.coords.weatherair.Icon;
+                return wfe.coords.weatherAirIcon;
             },
             drawFunc: function () {
-                wfe.draw.weather.air();
+                wfe.draw.weather.airIcon();
+            }
+        },
+        weatherAirText: {
+            name: 'Air quality',
+            editorId: 'e_weather_air_text',
+            prewiewClass: 'c_air_text',
+            coords: function () {
+                return wfe.coords.weatherAirText;
+            },
+            drawFunc: function () {
+                wfe.draw.weather.airText();
             }
         },
         stepsGoal: {
@@ -595,8 +606,12 @@ var wfe = {
                     if ('Current' in json.Weather.Temperature)
                         wfe.coords.weathercur = json.Weather.Temperature.Current;
                 }
-                if ('AirPollution' in json.Weather)
-                    wfe.coords.weatherair = json.Weather.AirPollution;
+                if ('AirPollution' in json.Weather) {
+                    if ('Icon' in json.Weather.AirPollution)
+                        wfe.coords.weatherAirIcon = json.Weather.AirPollution.Icon;
+                    if ('Index' in json.Weather.AirPollution)
+                        wfe.coords.weatherAirText = json.Weather.AirPollution.Index;
+                }
             } else
                 wfe.coords.weather = false;
             if ('StepsProgress' in json) {
@@ -741,8 +756,13 @@ var wfe = {
                     if ('weathercur' in wfe.coords)
                         packed.Weather.Temperature.Current = wfe.coords.weathercur;
                 }
-                if ('weatherair' in wfe.coords)
-                    packed.Weather.AirPollution = wfe.coords.weatherair;
+                if ('weatherAirIcon' in wfe.coords || 'weatherAirText' in wfe.coords) {
+                    packed.Weather.AirPollution = {};
+                    if ('weatherAirIcon' in wfe.coords)
+                        packed.Weather.AirPollution.Icon = wfe.coords.weatherAirIcon;
+                    if ('weatherAirText' in wfe.coords)
+                        packed.Weather.AirPollution.Index = wfe.coords.weatherAirText;
+                }
             }
             if (wfe.coords.stepsprogress) {
                 packed.StepsProgress = {};
@@ -778,6 +798,7 @@ var wfe = {
         pulse: 72,
         temp: [22, 24],
         weathericon: 0,
+        air: 300,
         alarm: true,
         bluetooth: true,
         dnd: true,
@@ -1166,10 +1187,10 @@ var wfe = {
                         label: "Weather current",
                         addition: (", " + wfe.coords.weathercur.MinusImageIndex + ", " + wfe.coords.weathercur.DegreesImageIndex)
                     }, wfe.coords.weathercur.Number.ImageIndex, wfe.coords.weathercur.Number.ImagesCount, wfe.coords.weathercur.MinusImageIndex, wfe.coords.weathercur.DegreesImageIndex);
-                if ('weatherair' in wfe.coords)
+                if ('weatherAirIcon' in wfe.coords)
                     wfe.imagestab.insertimg({
                         label: "Weather air pollution"
-                    }, wfe.coords.weatherair.Icon.ImageIndex, wfe.coords.weatherair.Icon.ImagesCount);
+                    }, wfe.coords.weatherAirIcon.ImageIndex, wfe.coords.weatherAirIcon.ImagesCount);
             }
             if (wfe.coords.stepsprogress) {
                 if ('stepslinear' in wfe.coords)
@@ -1273,7 +1294,7 @@ var wfe = {
         }
     },
     jsoneditor: {
-        elements: ['seconds', 'ampm', 'weekday', 'dateday', 'datemonth', 'dateoneline', 'batteryicon', 'batterytext', 'batteryscale', 'statalarm', 'statbt', 'statdnd', 'statlock', 'actcal', 'actsteps', 'actstepsgoal', 'actpulse', 'actdist', 'weatheroneline', 'weatherday', 'weathernight', 'weathercur', 'stepslinear', 'stepsgoal', 'weatherair', 'weatherDayAlt', 'weatherNightAlt'],
+        elements: ['seconds', 'ampm', 'weekday', 'dateday', 'datemonth', 'dateoneline', 'batteryicon', 'batterytext', 'batteryscale', 'statalarm', 'statbt', 'statdnd', 'statlock', 'actcal', 'actsteps', 'actstepsgoal', 'actpulse', 'actdist', 'weatheroneline', 'weatherday', 'weathernight', 'weathercur', 'stepslinear', 'stepsgoal', 'weatherAirIcon', 'weatherAirText', 'weatherDayAlt', 'weatherNightAlt'],
         toggleButton: function (element) {
             if (element in wfe.coords)
                 wfe.jsoneditor.togglebuttonOld('tg' + element, 1);
@@ -1337,7 +1358,8 @@ var wfe = {
             batteryScale: '"Battery":',
             weatherIcon: '"Weather":',
             weatherIconCustom: '"CustomIcon":',
-            weatherAir: '"AirPollution":',
+            weatherAirIcon: '"AirPollution":',
+            weatherAirText: '"AirPollution":',
             weatherOneLine: '"Temperature":',
             weatherCurrent: '"Current":',
             weatherDay: '"Temperature":',
@@ -1768,7 +1790,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if (wfe.coords.weathericon) {
                             delete wfe.coords.weathericon;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weathericon = {
@@ -1785,7 +1807,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if (wfe.coords.weathericon) {
                             delete wfe.coords.weathericon;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weathericon = {
@@ -1798,22 +1820,41 @@ var wfe = {
                             }
                         break;
                     }
-                case 'weatherAir':
+                case 'weatherAirIcon':
                     {
                         if (!(wfe.coords.weather))
                             wfe.coords.weather = true;
-                        if ('weatherair' in wfe.coords) {
-                            delete wfe.coords.weatherair;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                        if ('weatherAirIcon' in wfe.coords) {
+                            delete wfe.coords.weatherAirIcon;
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
-                            wfe.coords.weatherair = {
-                                Icon: {
-                                    X: 0,
-                                    Y: 0,
-                                    ImageIndex: 235,
-                                    ImagesCount: 6
-                                }
+                            wfe.coords.weatherAirIcon = {
+                                X: 0,
+                                Y: 0,
+                                ImageIndex: 235,
+                                ImagesCount: 6
+                            }
+                        break;
+                    }
+                case 'weatherAirText':
+                    {
+                        if (!(wfe.coords.weather))
+                            wfe.coords.weather = true;
+                        if ('weatherAirText' in wfe.coords) {
+                            delete wfe.coords.weatherAirText;
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
+                                wfe.coords.weather = false;
+                        } else
+                            wfe.coords.weatherAirText = {
+                                TopLeftX: 0,
+                                TopLeftY: 0,
+                                BottomRightX: 24,
+                                BottomRightY: 9,
+                                Alignment: "TopLeft",
+                                Spacing: 2,
+                                ImageIndex: 200,
+                                ImagesCount: 10
                             }
                         break;
                     }
@@ -1823,7 +1864,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if ('weatheroneline' in wfe.coords) {
                             delete wfe.coords.weatheroneline;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weatheroneline = {
@@ -1850,7 +1891,7 @@ var wfe = {
                             wfe.coords.weather = true;
                         if ('weathercur' in wfe.coords) {
                             delete wfe.coords.weathercur;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weathercur = {
@@ -1876,7 +1917,7 @@ var wfe = {
                         if ('weatherday' in wfe.coords) {
                             delete wfe.coords.weatherday;
                             delete wfe.coords.weatherDayAlt;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weatherday = {
@@ -1902,7 +1943,7 @@ var wfe = {
                         if ('weathernight' in wfe.coords) {
                             delete wfe.coords.weathernight;
                             delete wfe.coords.weatherNightAlt;
-                            if (!('weathericon' in wfe.coords || 'weatherair' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords))
+                            if (!('weathericon' in wfe.coords || 'weatherAirIcon' in wfe.coords || 'weatheroneline' in wfe.coords || 'weathercur' in wfe.coords || 'weatherday' in wfe.coords || 'weathernight' in wfe.coords || 'weatherAirText' in wfe.coords))
                                 wfe.coords.weather = false;
                         } else
                             wfe.coords.weathernight = {
@@ -2344,8 +2385,10 @@ var wfe = {
                         wfe.draw.weather.temp.sep.nightAlt();
                     if ('weathercur' in wfe.coords)
                         wfe.draw.weather.temp.current();
-                    if ('weatherair' in wfe.coords)
-                        wfe.draw.weather.air();
+                    if ('weatherAirIcon' in wfe.coords)
+                        wfe.draw.weather.airIcon();
+                    if ('weatherAirText' in wfe.coords)
+                        wfe.draw.weather.airText();
                 }
                 if (wfe.coords.stepsprogress) {
                     if ('stepscircle' in wfe.coords)
@@ -2742,6 +2785,15 @@ var wfe = {
                 if ('weathernight' in wfe.coords)
                     wfe.draw.weather.temp.sep.night();
             }
+        },
+        air_change: function () {
+            if ($("in-air").value > 999) $("in-air").value = 999;
+            if ($("in-air").value < 0) $("in-air").value = 0;
+            wfe.data.air = $("in-air").value;
+            removeByClass("c_air_text");
+            if (wfe.coords.weather)
+                if ('weatherAirText' in wfe.coords)
+                    wfe.draw.weather.airText();
         },
         weathericon_change: function () {
             if ($("in-weatheri").value > 26) $("in-weatheri").value = 26;
@@ -3255,8 +3307,10 @@ var wfe = {
                     wfe.editor.makeBlockAndInitDrag('weatherNightAlt');
                 if ('weathercur' in wfe.coords)
                     wfe.editor.makeBlockAndInitDrag('weatherCurrent');
-                if ('weatherair' in wfe.coords)
-                    wfe.editor.makeImgAndInitDrag('weatherAir');
+                if ('weatherAirIcon' in wfe.coords)
+                    wfe.editor.makeImgAndInitDrag('weatherAirIcon');
+                if ('weatherAirText' in wfe.coords)
+                    wfe.editor.makeBlockAndInitDrag('weatherAirText');
             }
             if (wfe.coords.stepsprogress) {
                 if ('stepscircle' in wfe.coords) {}
@@ -3754,8 +3808,12 @@ var wfe = {
                     wfe.view.renderBlock(t.block, t.width, wfe.coords.weathercur.Number, "c_temp_cur");
                 }
             },
-            air: function () {
-                wfe.view.setPosN(wfe.coords.weatherair.Icon, 0, "c_air");
+            airIcon: function () {
+                wfe.view.setPosN(wfe.coords.weatherAirIcon, 0, "c_air_icon");
+            },
+            airText: function () {
+                //wfe.view.setTextPos(wfe.elements['weatherAirText'].coords, 153, wfe.elements['weatherAirText'].prewiewClass);
+                wfe.view.setTextPos(wfe.coords.weatherAirText, wfe.data.air, "c_air_text");
             }
         }
     }
