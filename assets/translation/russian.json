@@ -60,7 +60,7 @@
     "tgbatnum": "Проценты",
     "tgweathericon": "Иконка",
     "tgweathercusticon": "Пользовательская иконка",
-    "tgweatherair": "Качество воздуха",
+    "tgweatherair": "Качество воздуха (иконка)",
     "tgweatheroneline": "Погода в одну линию",
     "tgweathercur": "Текущая погода",
     "tgweatherday": "Погода днем",
@@ -124,5 +124,7 @@
     "weatherAltDescription": "Появляется когда текущая погода недоступна",
     "tgweatherDayAlt": "Toggle alt day weather",
     "tgweatherNightAlt": "Toggle alt night weather",
-    "weatherAlt-label": "Alt weather"
+    "weatherAlt-label": "Alt weather",
+    "airQualityLabel": "Качество воздуха",
+    "tgweatherAirIndex": "Качество воздуха (индекс)"
 }
