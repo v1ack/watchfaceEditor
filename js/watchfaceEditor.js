@@ -2580,7 +2580,7 @@ var wfe = {
                 wfe.draw.time.time();
         },
         date_change: function () {
-            var t = $("in-date").valueAsDate;
+            var t = $("in-date").valueAsDate || new Date($("in-date").value);
             try {
                 wfe.data.day = t.getUTCDate();
                 wfe.data.month = t.getUTCMonth() + 1;
