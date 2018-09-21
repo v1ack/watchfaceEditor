@@ -3673,7 +3673,7 @@ var wfe = {
                 $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + wfe.coords.stepscircle.StartAngle) + " " + wfe.coords.stepscircle.CenterX + " " + wfe.coords.stepscircle.CenterY + ")\" cx=\"" + wfe.coords.stepscircle.CenterX + "\" cy=\"" + wfe.coords.stepscircle.CenterY + "\" rx=\"" + wfe.coords.stepscircle.RadiusX + "\" ry=\"" + wfe.coords.stepscircle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + wfe.coords.stepscircle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
             },
             linear: function () {
-                var end = Math.round(wfe.data.steps / (wfe.data.stepsgoal / (wfe.coords.stepslinear.Segments.length))) - 1;
+                var end = Math.floor(wfe.data.steps / (wfe.data.stepsgoal / (wfe.coords.stepslinear.Segments.length))) - 1;
                 if (end > wfe.coords.stepslinear.Segments.length - 1)
                     end = wfe.coords.stepslinear.Segments.length - 1;
                 for (var i = 0; i <= end; i++) {
