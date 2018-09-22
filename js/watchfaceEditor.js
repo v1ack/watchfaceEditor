@@ -1760,26 +1760,26 @@ var wfe = {
                             wfe.coords.batteryscale = {
                                 StartImageIndex: 200,
                                 Segments: [{
-                                    X: 40,
-                                    Y: 42
-                    }, {
                                     X: 55,
-                                    Y: 42
+                                    Y: 0
                     }, {
-                                    X: 70,
-                                    Y: 42
+                                    X: 65,
+                                    Y: 0
                     }, {
-                                    X: 86,
-                                    Y: 42
+                                    X: 75,
+                                    Y: 0
                     }, {
-                                    X: 101,
-                                    Y: 42
+                                    X: 85,
+                                    Y: 0
+                    }, {
+                                    X: 95,
+                                    Y: 0
+                    }, {
+                                    X: 105,
+                                    Y: 0
                     }, {
                                     X: 115,
-                                    Y: 42
-                    }, {
-                                    X: 129,
-                                    Y: 42
+                                    Y: 0
                     }]
                             }
                         break;
@@ -2097,36 +2097,36 @@ var wfe = {
                                 StartImageIndex: 200,
                                 Segments: [
                                     {
-                                        X: 40,
-                                        Y: 121
+                                        X: 50,
+                                        Y: 160
                         },
                                     {
-                                        X: 55,
-                                        Y: 121
+                                        X: 60,
+                                        Y: 160
                         },
                                     {
-                                        X: 67,
-                                        Y: 121
+                                        X: 70,
+                                        Y: 160
                         },
                                     {
-                                        X: 79,
-                                        Y: 121
+                                        X: 80,
+                                        Y: 160
                         },
                                     {
-                                        X: 91,
-                                        Y: 121
+                                        X: 90,
+                                        Y: 160
                         },
                                     {
-                                        X: 104,
-                                        Y: 121
+                                        X: 100,
+                                        Y: 160
                         },
                                     {
-                                        X: 117,
-                                        Y: 121
+                                        X: 110,
+                                        Y: 160
                         },
                                     {
-                                        X: 130,
-                                        Y: 121
+                                        X: 120,
+                                        Y: 160
                         }
                     ]
                             }
@@ -2580,7 +2580,7 @@ var wfe = {
                 wfe.draw.time.time();
         },
         date_change: function () {
-            var t = $("in-date").valueAsDate;
+            var t = $("in-date").valueAsDate || new Date($("in-date").value);
             try {
                 wfe.data.day = t.getUTCDate();
                 wfe.data.month = t.getUTCMonth() + 1;
@@ -3673,7 +3673,7 @@ var wfe = {
                 $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + wfe.coords.stepscircle.StartAngle) + " " + wfe.coords.stepscircle.CenterX + " " + wfe.coords.stepscircle.CenterY + ")\" cx=\"" + wfe.coords.stepscircle.CenterX + "\" cy=\"" + wfe.coords.stepscircle.CenterY + "\" rx=\"" + wfe.coords.stepscircle.RadiusX + "\" ry=\"" + wfe.coords.stepscircle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + wfe.coords.stepscircle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
             },
             linear: function () {
-                var end = Math.round(wfe.data.steps / (wfe.data.stepsgoal / (wfe.coords.stepslinear.Segments.length))) - 1;
+                var end = Math.floor(wfe.data.steps / (wfe.data.stepsgoal / (wfe.coords.stepslinear.Segments.length))) - 1;
                 if (end > wfe.coords.stepslinear.Segments.length - 1)
                     end = wfe.coords.stepslinear.Segments.length - 1;
                 for (var i = 0; i <= end; i++) {
