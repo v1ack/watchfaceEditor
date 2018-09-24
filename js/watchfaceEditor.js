@@ -3576,7 +3576,7 @@ var wfe = {
                 wfe.view.setTextPos(wfe.coords.batterytext, wfe.data.battery, "c_battery_text");
             },
             scale: function () {
-                var end = Math.round(wfe.data.battery / (100 / (wfe.coords.batteryscale.Segments.length - 1)));
+                var end = Math.ceil(wfe.data.battery / (100 / (wfe.coords.batteryscale.Segments.length - 1)));
                 for (var i = 0; i <= end; i++) {
                     t = $c(wfe.coords.batteryscale.StartImageIndex + i);
                     wfe.view.setPos(t, wfe.coords.batteryscale.Segments[i]);
