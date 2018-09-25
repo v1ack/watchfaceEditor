@@ -864,6 +864,9 @@ var wfe = {
         if (localStorage.lang.indexOf("zh") >= 0) {
             wfe.app.changeLang('chinese');
         } else
+        if (localStorage.lang.indexOf("nl") >= 0) {
+            wfe.app.changeLang('dutch');
+        } else
         if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp != 1) {
             UIkit.notification("Please contact me if you can help me to translate this app to your language", {
                 status: 'primary',
