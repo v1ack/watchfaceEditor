@@ -14,3 +14,11 @@ function showUntanslated() {
 //setTimeout(function () {
 //    wfe.load.allinone();
 //}, 300);
+function showTranslation() {
+    var json = {};
+    var strings = document.querySelectorAll('[data-translate-id]');
+    for (var i = 0; i < strings.length; i++) {
+        json[strings[i].dataset.translateId] = strings[i].innerHTML;
+    }
+    console.log(JSON.stringify(json));
+}
