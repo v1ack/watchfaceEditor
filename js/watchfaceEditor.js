@@ -2711,7 +2711,7 @@ var wfe = {
                     wfe.draw.stepsprogress.circle();
                 if ('stepslinear' in wfe.coords)
                     wfe.draw.stepsprogress.linear();
-                if ('stepsgoal' in wfe.coords && wfe.data.steps >= wfe.data.stepsgoal)
+                if ('stepsgoal' in wfe.coords && (wfe.data.steps >= wfe.data.stepsgoal))
                     wfe.draw.stepsprogress.goal();
             }
         },
