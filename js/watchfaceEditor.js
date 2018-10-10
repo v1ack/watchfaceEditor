@@ -2698,7 +2698,7 @@ var wfe = {
         steps_change: function () {
             if ($("in-steps").value > 99999) $("in-steps").value = 99999;
             if ($("in-steps").value < 0) $("in-steps").value = 0;
-            wfe.data.steps = $("in-steps").value;
+            wfe.data.steps = parseInt($("in-steps").value);
             removeByClass("c_act_steps");
             if (wfe.coords.activity)
                 if ('actsteps' in wfe.coords)
@@ -2747,7 +2747,7 @@ var wfe = {
         stepsgoal_change: function () {
             if ($("in-stepsgoal").value > 99999) $("in-stepsgoal").value = 99999;
             if ($("in-stepsgoal").value < 0) $("in-stepsgoal").value = 0;
-            wfe.data.stepsgoal = $("in-stepsgoal").value;
+            wfe.data.stepsgoal = parseInt($("in-stepsgoal").value);
             removeByClass("c_act_stepsgoal");
             if (wfe.coords.activity)
                 if ('statstepsgoal' in wfe.coords)
@@ -2759,7 +2759,7 @@ var wfe = {
                     wfe.draw.stepsprogress.circle();
                 if ('stepslinear' in wfe.coords)
                     wfe.draw.stepsprogress.linear();
-                if ('stepsgoal' in wfe.coords)
+                if ('stepsgoal' in wfe.coords && (wfe.data.steps >= wfe.data.stepsgoal))
                     wfe.draw.stepsprogress.goal();
             }
         },
