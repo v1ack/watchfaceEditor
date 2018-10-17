@@ -867,6 +867,9 @@ var wfe = {
         if (localStorage.lang.indexOf("nl") >= 0) {
             wfe.app.changeLang('dutch');
         } else
+		if (localStorage.lang.indexOf("de") >= 0) {
+            wfe.app.changeLang('german');
+        } else
         if (localStorage.lang.indexOf("tr") >= 0) {
             wfe.app.changeLang('turkish');
         } else
