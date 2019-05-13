@@ -119,7 +119,25 @@ var wfe = {
         notWebkitBased: undefined,
         lang: {},
         local: (location.protocol != "file:" ? false : true),
-        firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true)
+        firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true),
+        endLoad: function () {
+            window.onload = function () {
+                if (localStorage.showdemo == 'true') {
+                    if (localStorage.device == "cor")
+                        wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":293,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":9},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":9}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":84},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":83}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
+                    else
+                        wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":87,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":37,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":112,"Y":77},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":62,"Y":77}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
+                    wfe.view.makeWf();
+                    wfe.load.disableBtn(1);
+                } else
+                    $("showdemocheck").checked = false;
+                UIkit.modal($("modal-loading")).hide();
+                if (!localStorage.settingsShown) {
+                    UIkit.modal($("modal-settings")).show();
+                    localStorage.settingsShown = true;
+                }
+            }
+        }
     },
     elements: {
         timeHoursTens: {
@@ -890,23 +908,9 @@ var wfe = {
         }
 
         //Demo
-        if (localStorage.showdemo != 0) {
-            window.onload = function () {
-                if (localStorage.device == "cor") {
-                    wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":293,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":9},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":9}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":84},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":83}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
-                } else
-                    wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":87,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":37,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":112,"Y":77},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":62,"Y":77}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
-                //setTimeout(wfe.view.makeWf, 350);
-                wfe.view.makeWf();
-                wfe.load.disableBtn(1);
-                UIkit.modal($("modal-loading")).hide();
-            }
-            if (!('showdemo' in localStorage))
-                localStorage.showdemo = 1;
-        } else
-            $("showdemocheck").checked = false;
+        if (localStorage.showdemo == undefined) {localStorage.showdemo = true}
         $("showdemocheck").onchange = function () {
-            localStorage.showdemo = $("showdemocheck").checked ? 1 : 0;
+            localStorage.showdemo = $("showdemocheck").checked;
             location.reload();
         };
         localStorage.biptools = 0;
@@ -922,10 +926,6 @@ var wfe = {
         //Default images initialising
         for (var i = 200; i <= wfe.app.lastimage; i++)
             $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '" class="default-image">';
-        if (!('helpShown' in localStorage)) {
-            UIkit.modal($("modal-howto")).show();
-            localStorage.helpShown = true;
-        }
 
         //Browser support
         wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
@@ -1034,10 +1034,6 @@ var wfe = {
                 setTimeout(show, 250);
             }
         }
-        if (localStorage.showdemo == 0)
-            window.onload = function () {
-                UIkit.modal($("modal-loading")).hide();
-            }
 
         if (navigator.userAgent.indexOf("Electron") >= 0) {
             addScript('js/electronApp.js');
@@ -1047,6 +1043,8 @@ var wfe = {
             setTimeout(addScript, 2000, 'js/metrika.js');
         else
             addScript('js/utilit.js');
+        
+        wfe.app.endLoad();
     },
     coords: {},
     coordsHistory: [],
