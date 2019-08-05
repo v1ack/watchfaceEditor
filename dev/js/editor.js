@@ -1,0 +1,318 @@
+import wfe from './wfe_obj.js';
+import {
+    $ as $,
+    $c as $c,
+    removeByClass as removeByClass
+} from './utils.js';
+let makeBlock = function(el) {
+        $("editor").innerHTML +=
+            '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * 3) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * 3) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * 3) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+    },
+    makeImg = function(el) {
+        $("editor").innerHTML +=
+            '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * 3) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * 3) + 'px; top:' + (wfe.elements[el].coords().Y * 3) + 'px; left:' + (wfe.elements[el].coords().X * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+    },
+    makeImgStat = function(el, id) {
+        $("editor").innerHTML +=
+            '<div id="' + id + '" style="height:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * 3) + 'px; width:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+    },
+    styleToNum = function(el) {
+        return Number(el.replace('px', ''));
+    },
+    init = function() {
+        // if (!('designtabversion' in localStorage) || localStorage.designtabversion < wfe.app.designtabversion)
+        //     localStorage.designtabversion = wfe.app.designtabversion;
+        $("editor").innerHTML = '';
+        if ('bg' in wfe.coords) {
+            var bg = $c(wfe.coords.bg.Image.ImageIndex);
+            bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
+            bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
+            bg.style.position = "absolute";
+            bg.height *= 3;
+            bg.width *= 3;
+            bg.removeAttribute("id");
+            $("editor").appendChild(bg);
+            setTimeout(function() {
+                $("editor").childNodes[0].ondragstart = function() {
+                    return false;
+                };
+            }, 10);
+        }
+        if ('time' in wfe.coords) {
+            makeImgAndInitDrag('timeHoursTens');
+            makeImgAndInitDrag('timeHoursOnes');
+            makeImgAndInitDrag('timeMinutesTens');
+            makeImgAndInitDrag('timeMinutesOnes');
+            if ('seconds' in wfe.coords) {
+                makeImgAndInitDrag('timeSecondsTens');
+                makeImgAndInitDrag('timeSecondsOnes');
+            }
+            if ('amPm' in wfe.coords) {
+                $("editor").innerHTML +=
+                    '<div id="e_time_am" style="height:' + ($(wfe.coords.amPm.ImageIndexAm).height * 3) + 'px; width:' + ($(wfe.coords.amPm.ImageIndexAm).width * 3) + 'px; top:' + (wfe.coords.amPm.Y * 3) + 'px; left:' + (wfe.coords.amPm.X * 3) + 'px;" class="editor-elem"></div>';
+                initdragN('timeM');
+            }
+        }
+        if (wfe.coords.date) {
+            if ('weekDay' in wfe.coords)
+                makeImgAndInitDrag('dateWeekday');
+            if ('dateDay' in wfe.coords)
+                makeBlockAndInitDrag('dateDay');
+            if ('dateMonth' in wfe.coords)
+                makeBlockAndInitDrag('dateMonth');
+            if ('dateOneLine' in wfe.coords)
+                makeBlockAndInitDrag('dateOneLine');
+        }
+        if (wfe.coords.activity) {
+            if ('actCal' in wfe.coords)
+                makeBlockAndInitDrag('actCalories');
+            if ('actSteps' in wfe.coords)
+                makeBlockAndInitDrag('actSteps');
+            if ('actStepsGoal' in wfe.coords)
+                makeBlockAndInitDrag('actStepsGoal');
+            if ('actPulse' in wfe.coords)
+                makeBlockAndInitDrag('actPulse');
+            if ('actDistance' in wfe.coords)
+                makeBlockAndInitDrag('actDistance');
+        }
+        if (wfe.coords.battery) {
+            if ('batteryIcon' in wfe.coords)
+                makeImgAndInitDrag('batteryIcon');
+            if ('batteryText' in wfe.coords)
+                makeBlockAndInitDrag('batteryText');
+            if ('batteryScale' in wfe.coords) {
+                let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i], "c_battery_scale", wfe.draw.battery.scale);
+                for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
+                    $("editor").innerHTML +=
+                        '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                    setTimeout(e_battery_linar_initdrag, 10, i);
+                }
+            }
+        }
+        if (wfe.coords.status) {
+            if ('statAlarm' in wfe.coords) {
+                makeImgStat(wfe.coords.statAlarm, "e_stat_alarm");
+                initdragN('statAlarm');
+            }
+            if ('statBt' in wfe.coords) {
+                makeImgStat(wfe.coords.statBt, "e_stat_bt");
+                initdragN('statBluetooth');
+            }
+            if ('statDnd' in wfe.coords) {
+                makeImgStat(wfe.coords.statDnd, "e_stat_dnd");
+                initdragN('statDND');
+            }
+            if ('statLock' in wfe.coords) {
+                makeImgStat(wfe.coords.statLock, "e_stat_lock");
+                initdragN('statLock');
+            }
+        }
+        if (wfe.coords.weather) {
+            if ('weathericon' in wfe.coords)
+                if ('CustomIcon' in wfe.coords.weathericon) {
+                    $("editor").innerHTML +=
+                        '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * 3) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * 3) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * 3) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * 3) + 'px;" class="editor-elem"></div>';
+                    setTimeout(function() {
+                        initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon, "c_weather_icon", wfe.draw.weather.icon);
+                    }, 10);
+                } else {
+                    $("editor").innerHTML +=
+                        '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * 3) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                    setTimeout(function() {
+                        initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates, "c_weather_icon", wfe.draw.weather.icon);
+                    }, 10);
+                }
+            if ('weatherOneLine' in wfe.coords)
+                makeBlockAndInitDrag('weatherOneLine');
+            if ('weatherDay' in wfe.coords)
+                makeBlockAndInitDrag('weatherDay');
+            if ('weatherNight' in wfe.coords)
+                makeBlockAndInitDrag('weatherNight');
+            if ('weatherDayAlt' in wfe.coords)
+                makeBlockAndInitDrag('weatherDayAlt');
+            if ('weatherNightAlt' in wfe.coords)
+                makeBlockAndInitDrag('weatherNightAlt');
+            if ('weatherCurrent' in wfe.coords)
+                makeBlockAndInitDrag('weatherCurrent');
+            if ('weatherAirIcon' in wfe.coords)
+                makeImgAndInitDrag('weatherAirIcon');
+            if ('weatherAirText' in wfe.coords)
+                makeBlockAndInitDrag('weatherAirText');
+        }
+        if (wfe.coords.stepsprogress) {
+            if ('stepscircle' in wfe.coords) {}
+            if ('stepsLinear' in wfe.coords) {
+                let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i], "c_steps_linear", wfe.draw.stepsprogress.linear);
+                for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
+                    $("editor").innerHTML +=
+                        '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                    setTimeout(e_steps_linar_initdrag, 10, i);
+                }
+            }
+            if ('stepsGoal' in wfe.coords)
+                makeImgAndInitDrag('stepsGoal');
+        }
+    },
+    initdrag = function(el, elcoords, cls, drawF) {
+        el = $(el);
+        el.onmousedown = function(e) {
+            wfe.coordsHistory.push(JSON.stringify(wfe.coords));
+            var ed = getOffsetRect($("editor"));
+            var curcoords = getCoords(el);
+            var shiftX = e.pageX - curcoords.left;
+            var shiftY = e.pageY - curcoords.top;
+            el.style.position = 'absolute';
+            moveAt(e);
+
+            el.style.zIndex = 1000;
+
+            function moveAt(e) {
+                el.style.left = e.pageX - ed.left - shiftX + 'px';
+                el.style.top = e.pageY - ed.top - shiftY + 'px';
+                $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
+            }
+
+            $("editor").onmousemove = function(e) {
+                moveAt(e);
+            };
+
+            el.onmouseup = function() {
+                $("editor").onmousemove = null;
+                el.onmouseup = null;
+                el.style.zIndex = 'auto';
+                el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
+                el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                if ('X' in elcoords) {
+                    elcoords.X = styleToNum(el.style.left) / 3;
+                    elcoords.Y = styleToNum(el.style.top) / 3;
+                } else {
+                    var t1 = elcoords.TopLeftX,
+                        t2 = elcoords.TopLeftY;
+                    elcoords.TopLeftX = styleToNum(el.style.left) / 3;
+                    elcoords.TopLeftY = styleToNum(el.style.top) / 3;
+                    elcoords.BottomRightX += elcoords.TopLeftX - t1;
+                    elcoords.BottomRightY += elcoords.TopLeftY - t2;
+                }
+                removeByClass(cls);
+                drawF();
+                $("e_coords").innerHTML = ('coordinates' in wfe.app.lang ? wfe.app.lang.coordinates : "Coordinates");
+            };
+
+        };
+
+        el.ondragstart = function() {
+            return false;
+        };
+
+        function getCoords(elem) {
+            var box = elem.getBoundingClientRect();
+            return {
+                top: box.top + pageYOffset,
+                left: box.left + pageXOffset
+            };
+        }
+
+    },
+    initdragN = function(el) {
+        setTimeout(function() {
+            initdrag(wfe.elements[el].editorId,
+                wfe.elements[el].coords(),
+                wfe.elements[el].prewiewClass,
+                wfe.elements[el].drawFunc);
+        }, 10);
+    },
+    makeImgAndInitDrag = function(el) {
+        makeImg(el);
+        initdragN(el);
+    },
+    makeBlockAndInitDrag = function(el) {
+        makeBlock(el);
+        initdragN(el);
+    },
+    getOffsetRect = function(elem) {
+        var box = elem.getBoundingClientRect();
+
+        var body = document.body;
+        var docElem = document.documentElement;
+
+        var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+        var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+
+        var clientTop = docElem.clientTop || body.clientTop || 0;
+        var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+        var top = box.top + scrollTop - clientTop;
+        var left = box.left + scrollLeft - clientLeft;
+
+        return {
+            top: Math.round(top),
+            left: Math.round(left)
+        };
+    },
+    calc = function(el, digitcount) {
+        var width = 0,
+            height = 0;
+        for (let i = 0; i < el.ImagesCount; i++) {
+            if ($(el.ImageIndex + i).width > width)
+                width = $(el.ImageIndex + i).width;
+            if ($(el.ImageIndex + i).height > height)
+                height = $(el.ImageIndex + i).height;
+        }
+        width = width * digitcount + el.Spacing * (digitcount - 1);
+        if (arguments.length > 2)
+            for (let i = 2; i < arguments.length; i++)
+                width += $(arguments[i]).width + el.Spacing;
+        if (el.Alignment == "TopRight") {
+            el.BottomRightY = el.TopLeftY + height - 1;
+            el.TopLeftX = el.BottomRightX - width + 1;
+        } else {
+            el.BottomRightY = el.TopLeftY + height - 1;
+            el.BottomRightX = el.TopLeftX + width - 1;
+        }
+    },
+    makejsbetter = function() {
+        if (wfe.coords.date) {
+            if ('dateDay' in wfe.coords)
+                calc(wfe.coords.dateDay, 2);
+            if ('dateMonth' in wfe.coords)
+                calc(wfe.coords.dateMonth, 2);
+            if ('dateOneLine' in wfe.coords)
+                calc(wfe.coords.dateOneLine.Number, 4, wfe.coords.dateOneLine.DelimiterImageIndex);
+        }
+        if ('batteryText' in wfe.coords)
+            calc(wfe.coords.batteryText, 3);
+        if (wfe.coords.activity) {
+            if ('actCal' in wfe.coords)
+                calc(wfe.coords.actCal, 4);
+            if ('actSteps' in wfe.coords)
+                calc(wfe.coords.actSteps, 5);
+            if ('actStepsGoal' in wfe.coords)
+                calc(wfe.coords.actStepsGoal, 5);
+            if ('actPulse' in wfe.coords)
+                calc(wfe.coords.actPulse, 3);
+            if ('actDistance' in wfe.coords)
+                calc(wfe.coords.actDistance.Number, 4, wfe.coords.actDistance.DecimalPointImageIndex, wfe.coords.actDistance.SuffixImageIndex);
+        }
+        if (wfe.coords.weather) {
+            if ('weatherOneLine' in wfe.coords)
+                calc(wfe.coords.weatherOneLine.Number, 4, wfe.coords.weatherOneLine.MinusSignImageIndex, wfe.coords.weatherOneLine.MinusSignImageIndex, wfe.coords.weatherOneLine.DelimiterImageIndex, wfe.coords.weatherOneLine.DegreesImageIndex);
+            if ('weatherDay' in wfe.coords)
+                calc(wfe.coords.weatherDay.Number, 2, wfe.coords.weatherDay.MinusImageIndex, wfe.coords.weatherDay.DegreesImageIndex);
+            if ('weatherNight' in wfe.coords)
+                calc(wfe.coords.weatherNight.Number, 2, wfe.coords.weatherNight.MinusImageIndex, wfe.coords.weatherNight.DegreesImageIndex);
+            if ('weatherCurrent' in wfe.coords)
+                calc(wfe.coords.weatherCurrent.Number, 2, wfe.coords.weatherCurrent.MinusImageIndex, wfe.coords.weatherCurrent.DegreesImageIndex);
+        }
+        init();
+        wfe.makeWf();
+    },
+    undo = function() {
+        if (wfe.coordsHistory.length) {
+            wfe.coords = JSON.parse(wfe.coordsHistory.pop());
+            init();
+            wfe.makeWf();
+        }
+    };
+$('editbutton').addEventListener('click', init);
+$('fix-coords').addEventListener('click', makejsbetter);
+$('editor-undo').addEventListener('click', undo);

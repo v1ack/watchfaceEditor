@@ -1,0 +1,21 @@
+{
+    "name": "watchfaceeditor",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack -p",
+        "watch": "webpack --watch",
+        "dev": "webpack -w --devtool source-map"
+    },
+    "author": "vlack",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {
+        "uikit": "^3.1.7",
+        "vue": "^2.6.10",
+        "webpack": "^4.39.0",
+        "webpack-cli": "^3.3.6"
+    }
+}
