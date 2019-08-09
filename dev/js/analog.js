@@ -296,7 +296,7 @@ function moveDot(el, elcoords) {
 
 }
 
-$('analogbutton').addEventListener('click', () => {
+$('analog-watch-tab').addEventListener('click', () => {
     init('hours');
     UIkit.tab($('analog-tab')).show(0);
 });

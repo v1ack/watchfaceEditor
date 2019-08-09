@@ -31,17 +31,6 @@ img {
     user-select: none;
 }
 
-.bip #editor,
-.bip #analog {
-    height: 528px;
-    width: 528px;
-}
-
-.cor #editor {
-    height: 480px;
-    width: 240px;
-}
-
 .analog-dot {
     position: absolute;
     background: white;
@@ -120,38 +109,8 @@ img {
     height: 528px;
 }
 
-#realsizePreview > canvas {
+#realsizePreview>canvas {
     height: 72.91mm;
-}
-
-.bip #watchfaceimage {
-    background: url(b.png);
-    padding-left: 43px;
-    padding-top: 163px;
-    height: 353px;
-    width: 233px;
-}
-
-.bip #watchfaceblock,
-.bip #watchface,
-.bip .watchface-cover {
-    height: 176px;
-    width: 176px;
-}
-
-.cor #watchfaceimage {
-    background: url(c.png);
-    padding-left: 24px;
-    padding-top: 88px;
-    height: 264px;
-    width: 105px;
-}
-
-.cor #watchfaceblock,
-.cor #watchface,
-.cor .watchface-cover {
-    height: 160px;
-    width: 80px;
 }
 
 #watchface img {

@@ -256,4 +256,4 @@ function insertimg(name, imageindex, imagescount) {
         }
 }
 
-$('imagesbutton').addEventListener('click', () => init(wfe.coords));
+$('resources-tab').addEventListener('click', () => init(wfe.coords));

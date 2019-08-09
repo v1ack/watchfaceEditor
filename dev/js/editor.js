@@ -313,6 +313,6 @@ let makeBlock = function(el) {
             wfe.makeWf();
         }
     };
-$('editbutton').addEventListener('click', init);
+$('editor-tab').addEventListener('click', init);
 $('fix-coords').addEventListener('click', makejsbetter);
 $('editor-undo').addEventListener('click', undo);

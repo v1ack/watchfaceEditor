@@ -1,5 +1,4 @@
 /* global UIkit, html2canvas, jsonlint, saveAs */
-import wf_data from './wf_format.js';
 import {
     $,
     $c,
@@ -21,7 +20,7 @@ wfe.app = {
         else
             app.changeTheme('dark');
     },
-    lastimage: 300,
+    lastimage: 301,
     imagestabversion: 2,
     editortabversion: 1,
     designtabversion: 1,
@@ -33,10 +32,7 @@ wfe.app = {
     endLoad: function() {
         window.onload = function() {
             if (localStorage.showdemo == 'true') {
-                if (localStorage.device == "cor")
-                    wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":293,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":9},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":9}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":45,"Y":84},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":8,"Y":83}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
-                else
-                    wfe.coords = JSON.parse('{"bg":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":87,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":37,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":112,"Y":77},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":62,"Y":77}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}');
+                wfe.coords = wfe.default_coords;
                 wfe.makeWf();
                 wfe.load.disableBtn(1);
             } else
@@ -51,13 +47,14 @@ wfe.app = {
 };
 wfe.init = function() {
     //Device
-    if (localStorage.device === undefined)
-        localStorage.device = "bip";
-    if (location.search.slice(1) == 'cor')
-        localStorage.device = "cor";
-    else
-    if (location.search.slice(1) == 'bip')
-        localStorage.device = "bip";
+    let device_list = ['bip', 'cor', 'band4'];
+    if (device_list.includes(location.search.slice(1))) {
+        app.change_device(location.search.slice(1), wfe);
+    } else if (device_list.includes(localStorage.device)) {
+        app.change_device(localStorage.device, wfe);
+    } else {
+        app.change_device('bip', wfe);
+    }
     let device = document.getElementsByName('device'),
         device_change = () => {
             for (let i = 0; i < device.length; i++)
@@ -71,22 +68,10 @@ wfe.init = function() {
             device[i].checked = true;
         device[i].onchange = device_change;
     }
-    if (localStorage.device == "cor") {
-        document.getElementsByTagName("main")[0].classList.remove('bip');
-        document.getElementsByTagName("main")[0].classList.add('cor');
-        $("svg-cont-steps").attributes.width.value = 80;
-        $("svg-cont-steps").attributes.height.value = 160;
-        $("svg-cont-clock").attributes.width.value = 80;
-        $("svg-cont-clock").attributes.height.value = 160;
-        $("amazfit-upload").href = "https://amazfitwatchfaces.com/cor/upload";
-        $("amazfit-editor-bip").removeAttribute('hidden');
-        $("amazfit-editor-cor").setAttribute('hidden', '');
-        $("analogbutton").setAttribute('hidden', '');
-    }
 
     //Functions
     function addScript(url) {
-        var e = document.createElement("script");
+        let e = document.createElement("script");
         e.src = url;
         e.type = "text/javascript";
         document.getElementsByTagName("head")[0].appendChild(e);
@@ -175,7 +160,7 @@ wfe.init = function() {
     //Buttons initialising
     $('inputimages').onchange = function() {
         if ($('inputimages').files.length) {
-            var i = 0;
+            let i = 0;
             console.log("Images count: ", $('inputimages').files.length);
             while (i < $('inputimages').files.length) {
                 wfe.load.renderImage($('inputimages').files[i]);
@@ -198,10 +183,10 @@ wfe.init = function() {
             wfe.data.wfname = $('inputjs').files[0].name.split(".")[0];
             console.log("Watchface name: ", wfe.data.wfname);
             document.title = "WF editor - " + wfe.data.wfname;
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    wfe.coords = wf_data.import(jsonlint.parse(e.target.result), localStorage.device);
+                    wfe.coords = wfe.converter.import(jsonlint.parse(e.target.result));
                 } catch (error) {
                     $("jsonerrortext").innerHTML = error;
 
@@ -229,13 +214,13 @@ wfe.init = function() {
 
     //Update bages
     //        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
-    //            $("imagesbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+    //            $("resources-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
     //        if (!('editortabversion' in localStorage) || localStorage.editortabversion < wfe.app.editortabversion)
-    //            $("codeopenbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+    //            $("jsonEditor-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
     //        if (!('designtabversion' in localStorage) || localStorage.designtabversion < wfe.app.designtabversion)
-    //            $("editbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+    //            $("editor-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
     //        if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
-    //            $("analogbutton").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
+    //            $("analog-watch-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
 
     //Donate window
     UIkit.modal("#donateframe")._events[0] = function() {
@@ -271,25 +256,25 @@ wfe.init = function() {
 };
 wfe.load = {
     allinone: function() {
-        wfe.coords = wf_data.import(JSON.parse('{"Background":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"Time":{"DrawingOrder":"1234","Hours":{"Ones":{"ImageIndex":200,"ImagesCount":10,"X":9,"Y":0},"Tens":{"ImageIndex":200,"ImagesCount":10,"X":0,"Y":0}},"Minutes":{"Ones":{"ImageIndex":200,"ImagesCount":10,"X":29,"Y":0},"Tens":{"ImageIndex":200,"ImagesCount":10,"X":20,"Y":0}},"AmPm":{"X":41,"Y":11,"ImageIndexAm":233,"ImageIndexPm":234},"Seconds":{"Tens":{"X":41,"Y":0,"ImageIndex":200,"ImagesCount":10},"Ones":{"X":51,"Y":0,"ImageIndex":200,"ImagesCount":10}}},"Date":{"WeekDay":{"X":0,"Y":24,"ImageIndex":210,"ImagesCount":7},"MonthAndDay":{"Separate":{"Day":{"TopLeftX":0,"TopLeftY":11,"BottomRightX":15,"BottomRightY":20,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Month":{"TopLeftX":20,"TopLeftY":11,"BottomRightX":35,"BottomRightY":20,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10}},"TwoDigitsMonth":true,"TwoDigitsDay":true}},"Activity":{"Steps":{"TopLeftX":40,"TopLeftY":111,"BottomRightX":82,"BottomRightY":120,"Alignment":"TopRight","Spacing":2,"ImageIndex":200,"ImagesCount":10},"StepsGoal":{"TopLeftX":94,"TopLeftY":111,"BottomRightX":136,"BottomRightY":120,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Pulse":{"TopLeftX":43,"TopLeftY":148,"BottomRightX":67,"BottomRightY":157,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Calories":{"TopLeftX":2,"TopLeftY":148,"BottomRightX":35,"BottomRightY":157,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Distance":{"Number":{"TopLeftX":0,"TopLeftY":162,"BottomRightX":58,"BottomRightY":171,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"SuffixImageIndex":231,"DecimalPointImageIndex":232}},"StepsProgress":{"Linear":{"StartImageIndex":200,"Segments":[{"X":40,"Y":121},{"X":55,"Y":121},{"X":67,"Y":121},{"X":79,"Y":121},{"X":91,"Y":121},{"X":104,"Y":121},{"X":117,"Y":121},{"X":130,"Y":121}]},"Circle":{"CenterX":88,"CenterY":88,"RadiusX":24,"RadiusY":24,"StartAngle":0,"EndAngle":360,"Width":3,"Color":"0x00FF00"},"GoalImage":{"X":83,"Y":111,"ImageIndex":266}},"Status":{"Alarm":{"Coordinates":{"X":140,"Y":0},"ImageIndexOn":224},"Bluetooth":{"Coordinates":{"X":164,"Y":13},"ImageIndexOn":220,"ImageIndexOff":221},"Lock":{"Coordinates":{"X":166,"Y":0},"ImageIndexOn":223},"DoNotDisturb":{"Coordinates":{"X":153,"Y":0},"ImageIndexOn":222}},"Battery":{"Icon":{"X":116,"Y":0,"ImageIndex":225,"ImagesCount":6},"Text":{"TopLeftX":3,"TopLeftY":133,"BottomRightX":27,"BottomRightY":142,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Scale":{"StartImageIndex":200,"Segments":[{"X":90,"Y":64},{"X":104,"Y":73},{"X":100,"Y":93},{"X":80,"Y":106},{"X":65,"Y":95},{"X":63,"Y":76},{"X":69,"Y":64}]}},"Weather":{"Icon":{"CustomIcon":{"X":146,"Y":146,"ImageIndex":267,"ImagesCount":26}},"AirPollution":{"Icon":{"X":79,"Y":136,"ImageIndex":235,"ImagesCount":6}},"Temperature":{"Current":{"Number":{"TopLeftX":142,"TopLeftY":136,"BottomRightX":175,"BottomRightY":145,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218},"Today":{"Separate":{"Day":{"Number":{"TopLeftX":93,"TopLeftY":166,"BottomRightX":114,"BottomRightY":175,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218},"Night":{"Number":{"TopLeftX":93,"TopLeftY":153,"BottomRightX":114,"BottomRightY":162,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218}}}}},"AnalogDialFace":{"Hours":{"OnlyBorder":false,"Color":"0xFFFFFF","Center":{"X":88,"Y":88},"Shape":[{"X":-17,"Y":-2},{"X":54,"Y":-2},{"X":54,"Y":1},{"X":-17,"Y":1}]},"Minutes":{"OnlyBorder":false,"Color":"0xFFFFFF","Center":{"X":88,"Y":88},"Shape":[{"X":-17,"Y":-2},{"X":68,"Y":-2},{"X":68,"Y":1},{"X":-17,"Y":1}]},"Seconds":{"OnlyBorder":false,"Color":"0xFF0000","Center":{"X":88,"Y":88},"Shape":[{"X":-21,"Y":-1},{"X":82,"Y":-1},{"X":82,"Y":0},{"X":-21,"Y":0}],"CenterImage":{"X":84,"Y":84,"ImageIndex":200}}}}'), localStorage.device);
+        wfe.coords = wfe.converter.import(JSON.parse('{"Background":{"Image":{"ImageIndex":265,"X":0,"Y":0}},"Time":{"DrawingOrder":"1234","Hours":{"Ones":{"ImageIndex":200,"ImagesCount":10,"X":9,"Y":0},"Tens":{"ImageIndex":200,"ImagesCount":10,"X":0,"Y":0}},"Minutes":{"Ones":{"ImageIndex":200,"ImagesCount":10,"X":29,"Y":0},"Tens":{"ImageIndex":200,"ImagesCount":10,"X":20,"Y":0}},"AmPm":{"X":41,"Y":11,"ImageIndexAm":233,"ImageIndexPm":234},"Seconds":{"Tens":{"X":41,"Y":0,"ImageIndex":200,"ImagesCount":10},"Ones":{"X":51,"Y":0,"ImageIndex":200,"ImagesCount":10}}},"Date":{"WeekDay":{"X":0,"Y":24,"ImageIndex":210,"ImagesCount":7},"MonthAndDay":{"Separate":{"Day":{"TopLeftX":0,"TopLeftY":11,"BottomRightX":15,"BottomRightY":20,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Month":{"TopLeftX":20,"TopLeftY":11,"BottomRightX":35,"BottomRightY":20,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10}},"TwoDigitsMonth":true,"TwoDigitsDay":true}},"Activity":{"Steps":{"TopLeftX":40,"TopLeftY":111,"BottomRightX":82,"BottomRightY":120,"Alignment":"TopRight","Spacing":2,"ImageIndex":200,"ImagesCount":10},"StepsGoal":{"TopLeftX":94,"TopLeftY":111,"BottomRightX":136,"BottomRightY":120,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Pulse":{"TopLeftX":43,"TopLeftY":148,"BottomRightX":67,"BottomRightY":157,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Calories":{"TopLeftX":2,"TopLeftY":148,"BottomRightX":35,"BottomRightY":157,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Distance":{"Number":{"TopLeftX":0,"TopLeftY":162,"BottomRightX":58,"BottomRightY":171,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"SuffixImageIndex":231,"DecimalPointImageIndex":232}},"StepsProgress":{"Linear":{"StartImageIndex":200,"Segments":[{"X":40,"Y":121},{"X":55,"Y":121},{"X":67,"Y":121},{"X":79,"Y":121},{"X":91,"Y":121},{"X":104,"Y":121},{"X":117,"Y":121},{"X":130,"Y":121}]},"Circle":{"CenterX":88,"CenterY":88,"RadiusX":24,"RadiusY":24,"StartAngle":0,"EndAngle":360,"Width":3,"Color":"0x00FF00"},"GoalImage":{"X":83,"Y":111,"ImageIndex":266}},"Status":{"Alarm":{"Coordinates":{"X":140,"Y":0},"ImageIndexOn":224},"Bluetooth":{"Coordinates":{"X":164,"Y":13},"ImageIndexOn":220,"ImageIndexOff":221},"Lock":{"Coordinates":{"X":166,"Y":0},"ImageIndexOn":223},"DoNotDisturb":{"Coordinates":{"X":153,"Y":0},"ImageIndexOn":222}},"Battery":{"Icon":{"X":116,"Y":0,"ImageIndex":225,"ImagesCount":6},"Text":{"TopLeftX":3,"TopLeftY":133,"BottomRightX":27,"BottomRightY":142,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"Scale":{"StartImageIndex":200,"Segments":[{"X":90,"Y":64},{"X":104,"Y":73},{"X":100,"Y":93},{"X":80,"Y":106},{"X":65,"Y":95},{"X":63,"Y":76},{"X":69,"Y":64}]}},"Weather":{"Icon":{"CustomIcon":{"X":146,"Y":146,"ImageIndex":267,"ImagesCount":26}},"AirPollution":{"Icon":{"X":79,"Y":136,"ImageIndex":235,"ImagesCount":6}},"Temperature":{"Current":{"Number":{"TopLeftX":142,"TopLeftY":136,"BottomRightX":175,"BottomRightY":145,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218},"Today":{"Separate":{"Day":{"Number":{"TopLeftX":93,"TopLeftY":166,"BottomRightX":114,"BottomRightY":175,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218},"Night":{"Number":{"TopLeftX":93,"TopLeftY":153,"BottomRightX":114,"BottomRightY":162,"Alignment":"TopLeft","Spacing":2,"ImageIndex":200,"ImagesCount":10},"MinusImageIndex":217,"DegreesImageIndex":218}}}}},"AnalogDialFace":{"Hours":{"OnlyBorder":false,"Color":"0xFFFFFF","Center":{"X":88,"Y":88},"Shape":[{"X":-17,"Y":-2},{"X":54,"Y":-2},{"X":54,"Y":1},{"X":-17,"Y":1}]},"Minutes":{"OnlyBorder":false,"Color":"0xFFFFFF","Center":{"X":88,"Y":88},"Shape":[{"X":-17,"Y":-2},{"X":68,"Y":-2},{"X":68,"Y":1},{"X":-17,"Y":1}]},"Seconds":{"OnlyBorder":false,"Color":"0xFF0000","Center":{"X":88,"Y":88},"Shape":[{"X":-21,"Y":-1},{"X":82,"Y":-1},{"X":82,"Y":0},{"X":-21,"Y":0}],"CenterImage":{"X":84,"Y":84,"ImageIndex":200}}}}'));
         wfe.makeWf();
     },
     disableBtn: function(i) {
         if (i) {
-            $("editbutton").classList.remove("uk-disabled");
+            $("editor-tab").classList.remove("uk-disabled");
             $("makepng").removeAttribute("disabled");
             $("viewsettings").removeAttribute("disabled");
-            $("codeopenbutton").classList.remove("uk-disabled");
-            $("imagesbutton").classList.remove("uk-disabled");
-            $("analogbutton").classList.remove("uk-disabled");
+            $("jsonEditor-tab").classList.remove("uk-disabled");
+            $("resources-tab").classList.remove("uk-disabled");
+            $("analog-watch-tab").classList.remove("uk-disabled");
             setTimeout(wfe.makeWf, 300);
         } else {
-            $("editbutton").classList.add("uk-disabled");
+            $("editor-tab").classList.add("uk-disabled");
             $("makepng").setAttribute("disabled", "");
             $("viewsettings").setAttribute("disabled", "");
-            $("codeopenbutton").classList.add("uk-disabled");
-            $("imagesbutton").classList.add("uk-disabled");
-            $("analogbutton").classList.add("uk-disabled");
+            $("jsonEditor-tab").classList.add("uk-disabled");
+            $("resources-tab").classList.add("uk-disabled");
+            $("analog-watch-tab").classList.add("uk-disabled");
         }
     },
     clearjs: function() {
@@ -312,7 +297,7 @@ wfe.load = {
         wfe.load.disableBtn(0);
     },
     renderImage: function(file) {
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function(event) {
             let the_url = event.target.result;
             if (!(isNaN(Number(file.name.replace('.png', ''))))) {

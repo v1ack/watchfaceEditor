@@ -1,5 +1,6 @@
-var wf_data = {
-    import: function(json, device) {
+let wf_data = {
+    import: function(json) {
+        let device = 'cor';
         let data = {};
         if ('Background' in json)
             data.bg = json.Background;
@@ -159,12 +160,14 @@ var wf_data = {
             data.analog = false;
         return data;
     },
-    export: function(obj, device) {
+    export: function(data) {
+        let obj = JSON.parse(JSON.stringify(data));
+        let device = 'cor';
         let packed = {};
         if ('bg' in obj)
             packed.Background = obj.bg;
         if ('time' in obj) {
-            packed.Time = JSON.parse(JSON.stringify(obj.time));
+            packed.Time = obj.time;
             if ('seconds' in obj)
                 packed.Time.Seconds = obj.seconds;
             if ('amPm' in obj)
@@ -227,7 +230,7 @@ var wf_data = {
                     packed.Activity.Steps = obj.actSteps;
                 else {
                     packed.Activity.Steps = obj.actSteps.cor;
-                    packed.Activity.Steps.Number = JSON.parse(JSON.stringify(obj.actSteps));
+                    packed.Activity.Steps.Number = obj.actSteps;
                     delete packed.Activity.Steps.Number.cor;
                 }
             if ('actStepsGoal' in obj)
@@ -309,4 +312,21 @@ var wf_data = {
         return packed;
     }
 };
-export default wf_data;
+
+let device = {
+    height: 240,
+    width: 120,
+    tabs: ['editor-tab', 'jsonEditor-tab', 'resources-tab'],
+    images: {
+        watchface_block: {
+            left: 31,
+            top: 108,
+            height: 402,
+            width: 154,
+            image: 'b4.png'
+        }
+    },
+    data: wf_data,
+    default_coords: JSON.parse('{"bg":{"Image":{"ImageIndex":301,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":68,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":23,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":69,"Y":132},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":24,"Y":132}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}')
+};
+export default device;

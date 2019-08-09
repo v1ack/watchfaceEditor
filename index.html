@@ -84,7 +84,7 @@
             </div>
         </nav>
     </header>
-    <main class="uk-container uk-position-relative uk-margin-top bip">
+    <main class="uk-container uk-position-relative uk-margin-top">
         <div class="uk-grid">
             <div class="uk-width-auto uk-flex uk-flex-center">
                 <div id="watchfaceimage">
@@ -107,10 +107,10 @@
                 </ul>
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container; swiping: false; animation: uk-animation-fade" style="margin-top: 0">
                     <li><a href="#" data-translate-id="view">View</a></li>
-                    <li id="editbutton" class="uk-disabled"><a href="#" data-translate-id="design">Design</a></li>
-                    <li id="codeopenbutton" class="uk-disabled"><a href="#" data-translate-id="edit">Edit</a></li>
-                    <li id="analogbutton" class="uk-disabled"><a href="#" data-translate-id="analog">Analog</a></li>
-                    <li id="imagesbutton" class="uk-disabled"><a href="#" data-translate-id="resources">Resources</a></li>
+                    <li id="editor-tab" class="uk-disabled main-tab"><a href="#" data-translate-id="design">Design</a></li>
+                    <li id="jsonEditor-tab" class="uk-disabled main-tab"><a href="#" data-translate-id="edit">Edit</a></li>
+                    <li id="analog-watch-tab" class="uk-disabled main-tab"><a href="#" data-translate-id="analog">Analog</a></li>
+                    <li id="resources-tab" class="uk-disabled main-tab"><a href="#" data-translate-id="resources">Resources</a></li>
                 </ul>
                 <ul class="uk-switcher switcher-container uk-margin">
                     <li>
@@ -575,6 +575,7 @@
                     <div class="uk-grid-small uk-child-width-auto uk-grid">
                         <label><input class="uk-radio" type="radio" name="device" value="bip"> Bip</label>
                         <label><input class="uk-radio" type="radio" name="device" value="cor"> Cor</label>
+                        <label><input class="uk-radio" type="radio" name="device" value="band4"> Mi Band 4</label>
                     </div>
                 </div>
                 <div class="uk-margin-top">

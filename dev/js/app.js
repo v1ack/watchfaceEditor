@@ -2,7 +2,39 @@
 import {
     $ as $
 } from './utils.js';
-var lang = {};
+import devices from './devices/devices_list';
+
+function change_device(name, wfe_obj) {
+    localStorage.device = name;
+    let device = devices[name];
+    $('watchface').style.height = device.height + 'px';
+    $('watchface').style.width = device.width + 'px';
+    $('svg-cont-steps').attributes.height.value = device.height;
+    $('svg-cont-steps').attributes.width.value = device.width;
+    $('svg-cont-clock').attributes.height.value = device.height;
+    $('svg-cont-clock').attributes.width.value = device.width;
+    $('svg-cont-steps').style.width = device.width + 'px';
+    $('editor').style.height = device.height * 3 + 'px';
+    $('editor').style.width = device.width * 3 + 'px';
+    $('analog').style.height = device.height * 3 + 'px';
+    $('analog').style.width = device.width * 3 + 'px';
+    $('watchfaceimage').style.background = 'url(assets/' + device.images.watchface_block.image + ')';
+    $('watchfaceimage').style.paddingLeft = device.images.watchface_block.left + 'px';
+    $('watchfaceimage').style.paddingTop = device.images.watchface_block.top + 'px';
+    $('watchfaceimage').style.height = device.images.watchface_block.height + 'px';
+    $('watchfaceimage').style.width = device.images.watchface_block.width + 'px';
+    wfe_obj.default_coords = device.default_coords;
+    wfe_obj.converter = device.data;
+    for (let i = 0, elements = document.getElementsByClassName('main-tab'); i < elements.length; i++) {
+        if (device.tabs.includes(elements[i].id)) {
+            elements[i].removeAttribute('hidden');
+        } else {
+            elements[i].setAttribute('hidden', '');
+        }
+    }
+}
+
+let lang = {};
 
 function changeLang(lang) {
     try {
@@ -12,7 +44,7 @@ function changeLang(lang) {
         if (xhr.status == 200) {
             lang = JSON.parse(xhr.responseText);
             let strings = document.querySelectorAll('[data-translate-id]');
-            for (var i = 0; i < strings.length; i++) {
+            for (let i = 0; i < strings.length; i++) {
                 if (strings[i].dataset.translateId in lang)
                     if (strings[i].dataset.link === undefined)
                         strings[i].innerHTML = lang[strings[i].dataset.translateId];
@@ -116,6 +148,7 @@ $('theme-light').addEventListener('click', () => changeTheme('light'));
 $('theme-dark').addEventListener('click', () => changeTheme('dark'));
 
 export default {
-        changeLang: changeLang,
-        changeTheme: changeTheme
+    changeLang: changeLang,
+    changeTheme: changeTheme,
+    change_device: change_device
 };

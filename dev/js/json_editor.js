@@ -2,7 +2,6 @@
 import {
     $ as $
 } from './utils.js';
-import wf_data from './wf_format.js';
 import wfe from './wfe_obj.js';
 
 let elements = ['seconds', 'amPm', 'weekDay', 'dateDay', 'dateMonth', 'dateOneLine', 'batteryIcon', 'batteryText', 'batteryScale', 'statAlarm', 'statBt', 'statDnd', 'statLock', 'actCal', 'actSteps', 'actStepsGoal', 'actPulse', 'actDistance', 'weatherOneLine', 'weatherDay', 'weatherNight', 'weatherCurrent', 'stepsLinear', 'stepsGoal', 'weatherAirIcon', 'weatherAirText', 'weatherDayAlt', 'weatherNightAlt'];
@@ -25,7 +24,7 @@ function togglebuttonOld(bt, state) {
 }
 
 function updatecode() {
-    $("codearea").innerHTML = syntaxHighlight(JSON.stringify(wf_data.export(wfe.coords, localStorage.device), null, 4));
+    $("codearea").innerHTML = syntaxHighlight(JSON.stringify(wfe.converter.export(wfe.coords), null, 4));
     if (checkDef())
         $("defaultimages").classList.add("uk-label-success");
     else
@@ -941,13 +940,13 @@ function exportjs() {
     checkDef(1);
     checkLimits();
     if (wfe.app.notWebkitBased) {
-        var blob = new Blob([JSON.stringify(wf_data.export(wfe.coords, localStorage.device), null, 4)], {
+        let blob = new Blob([JSON.stringify(wfe.converter.export(wfe.coords), null, 4)], {
             type: "text/plain;charset=utf-8"
         });
         saveAs(blob, wfe.data.wfname + '.json');
     } else {
-        var a = document.createElement('a');
-        a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(wf_data.export(wfe.coords, localStorage.device), null, 4));
+        let a = document.createElement('a');
+        a.href = 'data:application/octet-stream;base64, ' + btoa(JSON.stringify(wfe.converter.export(wfe.coords), null, 4));
         a.download = wfe.data.wfname + '.json';
         a.click();
     }
@@ -956,7 +955,7 @@ function exportjs() {
 function codeareablur() {
     try {
         wfe.coordsHistory.push(JSON.stringify(wfe.coords));
-        wfe.coords = wf_data.import(jsonlint.parse($("codearea").innerText), localStorage.device);
+        wfe.coords = wfe.converter.import(jsonlint.parse($("codearea").innerText));
         updatecode();
     } catch (error) {
         $("jsonerrortext").innerHTML = error;
@@ -976,7 +975,7 @@ function undo() {
 let regexr = /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
     regexrimg = /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g;
 
-$('codeopenbutton').addEventListener('click', () => init());
+$('jsonEditor-tab').addEventListener('click', () => init());
 $('editor-export').addEventListener('click', () => exportjs());
 $('jsoneditor-export').addEventListener('click', () => exportjs());
 $('jsoneditor-undo').addEventListener('click', () => undo());

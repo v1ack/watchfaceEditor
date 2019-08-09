@@ -26,7 +26,8 @@ var wfe = {
         imagesset: false,
         wfname: 'watchface',
         weatherAlt: false
-    }
+    },
+    converter: null
 };
 wfe.elements = {
     timeHoursTens: {
