@@ -183,8 +183,10 @@ let makeBlock = function(el) {
                 $("editor").onmousemove = null;
                 el.onmouseup = null;
                 el.style.zIndex = 'auto';
-                el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < wfe.device.height * 3 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
-                el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < wfe.device.width * 3 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                let top = styleToNum(el.style.top),
+                    left = styleToNum(el.style.left);
+                el.style.top = top > 0 && top < wfe.device.height * 3 ? Math.round(top / 3) * 3 + 'px' : "0px";
+                el.style.left = left > 0 && left < wfe.device.width * 3 ? Math.round(left / 3) * 3 + 'px' : "0px";
                 if ('X' in elcoords) {
                     elcoords.X = styleToNum(el.style.left) / 3;
                     elcoords.Y = styleToNum(el.style.top) / 3;

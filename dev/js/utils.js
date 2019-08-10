@@ -1,32 +1,34 @@
 function $(el) {
-    if (el === null) throw {
-        name: "Get element error",
+    if (el === null || el === '') throw {
+        name: "Get element error: no element",
         element: el
     };
-    let node = document.getElementById(el);
-    if (node === null) throw {
-        name: "Get element error",
-        element: el
-    };
-    return node;
+    switch (el[0]) {
+        case '<':
+            {
+                return document.getElementsByTagName(el.slice(1));
+            }
+        case '.':
+            {
+                return document.getElementsByClassName(el.slice(1));
+            }
+        default:
+            {
+                let node = document.getElementById(el);
+                if (node === null) throw {
+                    name: "Get element error",
+                    element: el
+                };
+                return node;
+            }
+    }
 }
 
-function $c(el) {
-    if ($(el) === null)
-        throw {
-            name: "ImageError",
-            imageIndex: el
-        };
-    return document.getElementById(el).cloneNode(false);
-}
-
-function div(a, b) {
-    return (a - a % b) / b;
-}
+let $c = el => $(el).cloneNode(false),
+    div = (a, b) => (a - a % b) / b;
 
 function removeByClass(cl) {
-    var els = document.getElementsByClassName(cl);
-    for (var i = 0; els.length; i++)
+    for (let i = 0, els = $('.' + cl); els.length; i++)
         $("watchface").removeChild(els[0]);
 }
 

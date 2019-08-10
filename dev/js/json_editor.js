@@ -322,7 +322,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device === 'cor')
+                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -346,7 +346,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device === 'cor')
+                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -370,7 +370,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device === 'cor')
+                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -394,7 +394,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device === 'cor')
+                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -981,7 +981,7 @@ $('jsoneditor-export').addEventListener('click', () => exportjs());
 $('jsoneditor-undo').addEventListener('click', () => undo());
 $('codearea').addEventListener('blur', () => codeareablur());
 
-let buttons = document.getElementsByClassName('editor-button');
+let buttons = $('.editor-button');
 let click_toggle = e => {
     toggle(e.target.id.split('-')[1]);
 };

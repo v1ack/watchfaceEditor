@@ -1,5 +1,12 @@
 /* global UIkit */
 const warning = () => {
+    let date = new Date();
+    let time = date.getTime();
+    if (window.last_time) {
+        if (time - 1000 * 30 - window.last_time < 0)
+            return;
+    }
+    window.last_time = time;
     UIkit.notification("watchfaceEditor for Mi Band 4 is in development. Be careful if you use it!", {
         status: 'danger',
         pos: 'top-left',

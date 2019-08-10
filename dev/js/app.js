@@ -25,7 +25,7 @@ function change_device(name, wfe_obj) {
     $('watchfaceimage').style.width = device.images.watchface_block.width + 'px';
     wfe_obj.default_coords = device.default_coords;
     wfe_obj.converter = device.data;
-    for (let i = 0, elements = document.getElementsByClassName('main-tab'); i < elements.length; i++) {
+    for (let i = 0, elements = $('.main-tab'); i < elements.length; i++) {
         if (device.tabs.includes(elements[i].id)) {
             elements[i].removeAttribute('hidden');
         } else {
@@ -70,12 +70,12 @@ function changeLang(lang) {
 
 function changeTheme(theme) {
     if (localStorage.appTheme === 'amazfit') {
-        document.getElementsByClassName('uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>';
-        document.getElementsByTagName('html')[0].style.background = '';
-        document.getElementsByClassName('uk-navbar')[0].style.height = '';
-        document.getElementsByClassName('uk-navbar')[0].classList.add('we-white');
-        document.getElementsByClassName('uk-navbar')[0].classList.remove('amazfit');
-        document.getElementsByClassName('uk-navbar-container')[0].style.background = 'linear-gradient(to left, #28a5f5, #1e87f0)';
+        $('.uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>';
+        $('<html')[0].style.background = '';
+        $('.uk-navbar')[0].style.height = '';
+        $('.uk-navbar')[0].classList.add('we-white');
+        $('.uk-navbar')[0].classList.remove('amazfit');
+        $('.uk-navbar-container')[0].style.background = 'linear-gradient(to left, #28a5f5, #1e87f0)';
         $('menu-amazfit').setAttribute('hidden', '');
         $('tablist-amazfit').setAttribute('hidden', '');
         $('tablist').removeAttribute('hidden');
@@ -86,7 +86,7 @@ function changeTheme(theme) {
         case 'light':
             localStorage.appTheme = 'light';
             document.body.classList.remove('uk-light');
-            document.getElementsByTagName('html')[0].classList.remove('uk-background-secondary');
+            $('<html')[0].classList.remove('uk-background-secondary');
             $('vars').classList.remove('uk-card-secondary');
             $('modal-howto').childNodes[1].classList.remove('uk-background-secondary');
             $('modal-about').childNodes[1].classList.remove('uk-background-secondary');
@@ -98,7 +98,7 @@ function changeTheme(theme) {
         case 'dark':
             localStorage.appTheme = 'dark';
             document.body.classList.add('uk-light');
-            document.getElementsByTagName('html')[0].classList.add('uk-background-secondary');
+            $('<html')[0].classList.add('uk-background-secondary');
             $('vars').classList.add('uk-card-secondary');
             $('modal-howto').childNodes[1].classList.add('uk-background-secondary');
             $('modal-about').childNodes[1].classList.add('uk-background-secondary');
@@ -109,13 +109,13 @@ function changeTheme(theme) {
             break;
         case 'amazfit':
             changeTheme('dark');
-            document.getElementsByClassName('uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://amazfitwatchfaces.com/"><img src="assets/logo.png" style="width: 200px; image-rendering: auto;"></a>';
+            $('.uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://amazfitwatchfaces.com/"><img src="assets/logo.png" style="width: 200px; image-rendering: auto;"></a>';
             localStorage.appTheme = 'amazfit';
-            document.getElementsByTagName('html')[0].style.background = '#121314';
-            document.getElementsByClassName('uk-navbar')[0].style.height = '50px';
-            document.getElementsByClassName('uk-navbar')[0].classList.remove('we-white');
-            document.getElementsByClassName('uk-navbar')[0].classList.add('amazfit');
-            document.getElementsByClassName('uk-navbar-container')[0].style.background = '#222';
+            $('<html')[0].style.background = '#121314';
+            $('.uk-navbar')[0].style.height = '50px';
+            $('.uk-navbar')[0].classList.remove('we-white');
+            $('.uk-navbar')[0].classList.add('amazfit');
+            $('.uk-navbar-container')[0].style.background = '#222';
             $('menu-amazfit').removeAttribute('hidden');
             $('tablist-amazfit').removeAttribute('hidden');
             $('tablist').setAttribute('hidden', '');

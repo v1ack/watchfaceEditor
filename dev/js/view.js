@@ -29,7 +29,7 @@ let draw = {
             setPosN(wfe.coords.time.Minutes.Tens, Number(wfe.data.timeOnClock[1][0]), "c_time");
             setPosN(wfe.coords.time.Minutes.Ones, Number(wfe.data.timeOnClock[1][1]), "c_time");
             if ('DrawingOrder' in wfe.coords.time) {
-                let time = document.getElementsByClassName("c_time");
+                let time = $('.c_time');
                 time[0].style.zIndex = Number(wfe.coords.time.DrawingOrder[0]);
                 time[1].style.zIndex = Number(wfe.coords.time.DrawingOrder[1]);
                 time[2].style.zIndex = Number(wfe.coords.time.DrawingOrder[2]);
@@ -416,7 +416,7 @@ function makeWf() {
                 X: 0,
                 Y: 0
             }, 0, "wf_bg");
-        document.getElementsByClassName('wf_bg')[0].classList.remove('default-image');
+        $('.wf_bg')[0].classList.remove('default-image');
         if ('bg' in wfe.coords)
             setPosN(wfe.coords.bg.Image, 0, "c_bg");
         if ('time' in wfe.coords)
@@ -904,6 +904,17 @@ let changes = {
         if (wfe.coords.weather)
             if (wfe.coords.weathericon)
                 draw.weather.icon();
+    },
+    animation_change: () => {
+        if ($("in-animation").value > wfe.coords.Animation.AnimationImage.ImageCount)
+            $("in-animation").value = wfe.coords.Animation.AnimationImage.ImageCount;
+        if ($("in-animation").value < 1) $("in-animation").value = 1;
+        wfe.data.animation = $("in-animation").value - 1;
+        removeByClass("c_animation");
+        if ('Animation' in wfe.coords) {
+            $('in-animation').max = wfe.coords.Animation.AnimationImage.ImageCount;
+            draw.Animation();
+        }
     }
 };
 
@@ -940,7 +951,7 @@ function makePreview() {
 
 $('realsizePreview').addEventListener('click', makePreview);
 $('makepng').addEventListener('click', makepng);
-let elements = ['time', 'date', 'battery', 'calories', 'steps', 'stepsGoal', 'pulse', 'distance', 'weatherd', 'weathern', 'weathericon', 'sec', 'alarm', 'bt', 'dnd', 'lock', 'weatherAlt', 'air'];
+let elements = ['time', 'date', 'battery', 'calories', 'steps', 'stepsGoal', 'pulse', 'distance', 'weatherd', 'weathern', 'weathericon', 'sec', 'alarm', 'bt', 'dnd', 'lock', 'weatherAlt', 'air', 'animation'];
 for (let i in elements) {
     $('in-' + elements[i]).addEventListener('change', changes[elements[i] + '_change']);
 }
