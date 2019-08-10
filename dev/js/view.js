@@ -9,15 +9,15 @@ import wfe from './wfe_obj.js';
 let draw = {
     time: {
         time: function() {
-            var ntimeOnClock = wfe.data.timeOnClock[0];
+            let ntimeOnClock = wfe.data.timeOnClock[0];
             if ('amPm' in wfe.coords) {
-                var am = 1;
+                let am = 1;
                 if (Number(ntimeOnClock) > 12) {
                     ntimeOnClock = (Number(ntimeOnClock) - 12).toString();
-                    if (ntimeOnClock.length == 1)
+                    if (ntimeOnClock.length === 1)
                         ntimeOnClock = "0" + ntimeOnClock;
                     am = 0;
-                } else if (Number(ntimeOnClock) == 12)
+                } else if (Number(ntimeOnClock) === 12)
                     am = 0;
                 let t = am ? $c(wfe.coords.amPm.ImageIndexAm) : $c(wfe.coords.amPm.ImageIndexPm);
                 setPos(t, wfe.coords.amPm);
@@ -29,7 +29,7 @@ let draw = {
             setPosN(wfe.coords.time.Minutes.Tens, Number(wfe.data.timeOnClock[1][0]), "c_time");
             setPosN(wfe.coords.time.Minutes.Ones, Number(wfe.data.timeOnClock[1][1]), "c_time");
             if ('DrawingOrder' in wfe.coords.time) {
-                var time = document.getElementsByClassName("c_time");
+                let time = document.getElementsByClassName("c_time");
                 time[0].style.zIndex = Number(wfe.coords.time.DrawingOrder[0]);
                 time[1].style.zIndex = Number(wfe.coords.time.DrawingOrder[1]);
                 time[2].style.zIndex = Number(wfe.coords.time.DrawingOrder[2]);
@@ -46,7 +46,7 @@ let draw = {
             setPosN(wfe.coords.weekDay, wfe.data.weekDay, "c_date_weekDay");
         },
         sepday: function() {
-            var t = makeBlock(wfe.coords.dateDay, wfe.data.day);
+            let t = makeBlock(wfe.coords.dateDay, wfe.data.day);
             if (wfe.coords.monthandday.TwoDigitsDay)
                 if (!div(wfe.data.day, 10)) {
                     t.block.splice(-1, 0, $c(wfe.coords.dateDay.ImageIndex));
@@ -55,7 +55,7 @@ let draw = {
             renderBlock(t.block, t.width, wfe.coords.dateDay, "c_date_sepday");
         },
         sepmonth: function() {
-            var t = makeBlock(wfe.coords.dateMonth, wfe.data.month);
+            let t = makeBlock(wfe.coords.dateMonth, wfe.data.month);
             if (wfe.coords.monthandday.TwoDigitsMonth)
                 if (!div(wfe.data.month, 10)) {
                     t.block.splice(-1, 0, $c(wfe.coords.dateMonth.ImageIndex));
@@ -73,7 +73,7 @@ let draw = {
                 }
             t.block.push(dot);
             t.width += dot.width + wfe.coords.dateOneLine.Number.Spacing;
-            var t2 = makeBlock(wfe.coords.dateOneLine.Number, wfe.data.day);
+            let t2 = makeBlock(wfe.coords.dateOneLine.Number, wfe.data.day);
             t.block = t.block.concat(t2.block);
             if (wfe.coords.monthandday.TwoDigitsDay)
                 if (!div(wfe.data.day, 10)) {
@@ -87,7 +87,7 @@ let draw = {
     },
     battery: {
         icon: function() {
-            var battery = Math.round(wfe.data.battery / (100 / (wfe.coords.batteryIcon.ImagesCount - 1)));
+            let battery = Math.round(wfe.data.battery / (100 / (wfe.coords.batteryIcon.ImagesCount - 1)));
             setPosN(wfe.coords.batteryIcon, battery, "c_battery_icon");
         },
         text: function() {
@@ -95,7 +95,7 @@ let draw = {
         },
         scale: function() {
             let end = Math.ceil(wfe.data.battery / (100 / (wfe.coords.batteryScale.Segments.length - 1)));
-            for (var i = 0; i <= end; i++) {
+            for (let i = 0; i <= end; i++) {
                 let t = $c(wfe.coords.batteryScale.StartImageIndex + i);
                 setPos(t, wfe.coords.batteryScale.Segments[i]);
                 insert(t, "c_battery_scale");
@@ -161,24 +161,24 @@ let draw = {
     },
     activity: {
         cal: function() {
-            setTextPos(wfe.coords.actCal, wfe.data.calories, "c_act_cal", localStorage.device == 'cor');
+            setTextPos(wfe.coords.actCal, wfe.data.calories, "c_act_cal", localStorage.device === 'cor');
         },
         steps: function() {
-            setTextPos(wfe.coords.actSteps, wfe.data.steps, "c_act_steps", localStorage.device == 'cor');
+            setTextPos(wfe.coords.actSteps, wfe.data.steps, "c_act_steps", localStorage.device === 'cor');
         },
         stepsGoal: function() {
-            setTextPos(wfe.coords.actStepsGoal, wfe.data.stepsGoal, "c_act_stepsg", localStorage.device == 'cor');
+            setTextPos(wfe.coords.actStepsGoal, wfe.data.stepsGoal, "c_act_stepsg", localStorage.device === 'cor');
         },
         pulse: function() {
-            setTextPos(wfe.coords.actPulse, wfe.data.pulse, "c_act_pulse", localStorage.device == 'cor');
+            setTextPos(wfe.coords.actPulse, wfe.data.pulse, "c_act_pulse", localStorage.device === 'cor');
         },
         distance: function() {
-            var dot = $c(wfe.coords.actDistance.DecimalPointImageIndex),
+            let dot = $c(wfe.coords.actDistance.DecimalPointImageIndex),
                 km = $c(wfe.coords.actDistance.SuffixImageIndex);
             let t = makeBlock(wfe.coords.actDistance.Number, wfe.data.distance[0]);
             t.block.push(dot);
             t.width += dot.width + wfe.coords.actDistance.Number.Spacing;
-            var t2 = makeBlock(wfe.coords.actDistance.Number, wfe.data.distance[1]);
+            let t2 = makeBlock(wfe.coords.actDistance.Number, wfe.data.distance[1]);
             t.block = t.block.concat(t2.block);
             t.width += t2.width;
             t.block.push(km);
@@ -188,17 +188,17 @@ let draw = {
     },
     stepsprogress: {
         circle: function() {
-            var col = wfe.coords.stepscircle.Color.replace("0x", "#"),
+            let col = wfe.coords.stepscircle.Color.replace("0x", "#"),
                 full = Math.floor(2 * wfe.coords.stepscircle.RadiusX * Math.PI / 360 * (wfe.coords.stepscircle.EndAngle - wfe.coords.stepscircle.StartAngle));
-            var fill = Math.round(wfe.data.steps / (wfe.data.stepsGoal / full));
+            let fill = Math.round(wfe.data.steps / (wfe.data.stepsGoal / full));
             if (fill > full) fill = full;
             $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + wfe.coords.stepscircle.StartAngle) + " " + wfe.coords.stepscircle.CenterX + " " + wfe.coords.stepscircle.CenterY + ")\" cx=\"" + wfe.coords.stepscircle.CenterX + "\" cy=\"" + wfe.coords.stepscircle.CenterY + "\" rx=\"" + wfe.coords.stepscircle.RadiusX + "\" ry=\"" + wfe.coords.stepscircle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + wfe.coords.stepscircle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
         },
         linear: function() {
-            var end = Math.floor(wfe.data.steps / (wfe.data.stepsGoal / (wfe.coords.stepsLinear.Segments.length))) - 1;
+            let end = Math.floor(wfe.data.steps / (wfe.data.stepsGoal / (wfe.coords.stepsLinear.Segments.length))) - 1;
             if (end > wfe.coords.stepsLinear.Segments.length - 1)
                 end = wfe.coords.stepsLinear.Segments.length - 1;
-            for (var i = 0; i <= end; i++) {
+            for (let i = 0; i <= end; i++) {
                 let t = $c(wfe.coords.stepsLinear.StartImageIndex + i);
                 setPos(t, wfe.coords.stepsLinear.Segments[i]);
                 insert(t, "c_steps_linear");
@@ -225,7 +225,7 @@ let draw = {
         },
         temp: {
             oneline: function() {
-                var sep = $c(wfe.coords.weatherOneLine.DelimiterImageIndex),
+                let sep = $c(wfe.coords.weatherOneLine.DelimiterImageIndex),
                     deg = $c(wfe.coords.weatherOneLine.DegreesImageIndex),
                     minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherOneLine.MinusSignImageIndex) : 0;
                 let t = makeBlock(wfe.coords.weatherOneLine.Number, Math.abs(wfe.data.temp[0]));
@@ -235,7 +235,7 @@ let draw = {
                 }
                 t.block.push(sep);
                 t.width += sep.width + wfe.coords.weatherOneLine.Number.Spacing;
-                var t2 = makeBlock(wfe.coords.weatherOneLine.Number, Math.abs(wfe.data.temp[1]));
+                let t2 = makeBlock(wfe.coords.weatherOneLine.Number, Math.abs(wfe.data.temp[1]));
                 minus = wfe.data.temp[1] < 0 ? $c(wfe.coords.weatherOneLine.MinusSignImageIndex) : 0;
                 if (minus !== 0) {
                     t2.block.splice(0, 0, minus);
@@ -254,7 +254,7 @@ let draw = {
                     let minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherDay.MinusImageIndex) : 0;
                     let t = makeBlock(wfe.coords.weatherDay.Number, Math.abs(wfe.data.temp[0]));
                     if ('DegreesImageIndex' in wfe.coords.weatherDay) {
-                        var deg = $c(wfe.coords.weatherDay.DegreesImageIndex);
+                        let deg = $c(wfe.coords.weatherDay.DegreesImageIndex);
                         t.block.push(deg);
                         t.width += deg.width + wfe.coords.weatherDay.Number.Spacing;
                     }
@@ -270,7 +270,7 @@ let draw = {
                     let minus = wfe.data.temp[1] < 0 ? $c(wfe.coords.weatherNight.MinusImageIndex) : 0;
                     let t = makeBlock(wfe.coords.weatherNight.Number, Math.abs(wfe.data.temp[1]));
                     if ('DegreesImageIndex' in wfe.coords.weatherNight) {
-                        var deg = $c(wfe.coords.weatherNight.DegreesImageIndex);
+                        let deg = $c(wfe.coords.weatherNight.DegreesImageIndex);
                         t.block.push(deg);
                         t.width += deg.width + wfe.coords.weatherNight.Number.Spacing;
                     }
@@ -286,7 +286,7 @@ let draw = {
                     let minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherDay.MinusImageIndex) : 0;
                     let t = makeBlock(wfe.coords.weatherDay.Number, Math.abs(wfe.data.temp[0]));
                     if ('DegreesImageIndex' in wfe.coords.weatherDay) {
-                        var deg = $c(wfe.coords.weatherDay.DegreesImageIndex);
+                        let deg = $c(wfe.coords.weatherDay.DegreesImageIndex);
                         t.block.push(deg);
                         t.width += deg.width + wfe.coords.weatherDay.Number.Spacing;
                     }
@@ -302,7 +302,7 @@ let draw = {
                     let minus = wfe.data.temp[1] < 0 ? $c(wfe.coords.weatherNight.MinusImageIndex) : 0;
                     let t = makeBlock(wfe.coords.weatherNight.Number, Math.abs(wfe.data.temp[1]));
                     if ('DegreesImageIndex' in wfe.coords.weatherNight) {
-                        var deg = $c(wfe.coords.weatherNight.DegreesImageIndex);
+                        let deg = $c(wfe.coords.weatherNight.DegreesImageIndex);
                         t.block.push(deg);
                         t.width += deg.width + wfe.coords.weatherNight.Number.Spacing;
                     }
@@ -319,7 +319,7 @@ let draw = {
                 let minus = wfe.data.temp[0] < 0 ? $c(wfe.coords.weatherCurrent.MinusImageIndex) : 0;
                 let t = makeBlock(wfe.coords.weatherCurrent.Number, Math.abs(wfe.data.temp[0]));
                 if ('DegreesImageIndex' in wfe.coords.weatherCurrent) {
-                    var deg = $c(wfe.coords.weatherCurrent.DegreesImageIndex);
+                    let deg = $c(wfe.coords.weatherCurrent.DegreesImageIndex);
                     t.block.push(deg);
                     t.width += deg.width + wfe.coords.weatherCurrent.Number.Spacing;
                 }
@@ -337,15 +337,18 @@ let draw = {
             //setTextPos(wfe.elements['weatherAirText'].coords, 153, wfe.elements['weatherAirText'].prewiewClass);
             setTextPos(wfe.coords.weatherAirText, wfe.data.air, "c_air_text");
         }
+    },
+    Animation: () => {
+        setPosN(wfe.coords.Animation.AnimationImage, wfe.data.animation, 'c_animation');
     }
 };
 
 function drawAnalog(el, value) {
-    var col = el.Color.replace("0x", "#"),
+    let col = el.Color.replace("0x", "#"),
         d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
         iters = el.Shape.length,
         fill = el.OnlyBorder ? "none" : col;
-    for (var i = 0; i < iters; i++) {
+    for (let i = 0; i < iters; i++) {
         d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
     }
     d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
@@ -356,7 +359,7 @@ function drawAnalog(el, value) {
 }
 
 function setTextPos(el, value, cls, cor) {
-    var t = makeBlock(el, value);
+    let t = makeBlock(el, value);
     if (cor) {
         if ('PrefixImageIndex' in el.cor) {
             let image = $c(el.cor.PrefixImageIndex);
@@ -384,7 +387,7 @@ function insert(t, name) {
 }
 
 function setPosN(el, value, cls) {
-    var t = $c(el.ImageIndex + value);
+    let t = $c(el.ImageIndex + value);
     t.style.left = el.X + "px";
     t.style.top = el.Y + "px";
     insert(t, cls);
@@ -401,8 +404,7 @@ function makeWf() {
         $("svg-cont-clock").innerHTML = '';
         $("svg-cont-steps").innerHTML = '';
         //UIkit.notification.closeAll()
-        var t = 0;
-        if (localStorage.device == 'cor') {
+        if (localStorage.device === 'cor') {
             setPosN({
                 ImageIndex: 293,
                 X: 0,
@@ -497,16 +499,19 @@ function makeWf() {
             if ('analogseconds' in wfe.coords)
                 draw.analog.seconds();
         }
+        if (wfe.coords.Animation) {
+            draw.Animation();
+        }
     } catch (error) {
         console.warn(error);
-        if (error.name == "ImageError") {
+        if (error.name === "ImageError") {
             UIkit.notification(('imagenotfound' in wfe.app.lang ? wfe.app.lang.imagenotfound : "Image with index $index not found").replace("$index", "<b>" + error.imageIndex + "</b>"), {
                 status: 'danger',
                 pos: 'top-left',
                 timeout: 7500
             });
         }
-        if (error.name == "TypeError") {
+        if (error.name === "TypeError") {
             UIkit.notification("Image for prorety not found", {
                 status: 'danger',
                 pos: 'top-left',
@@ -517,7 +522,7 @@ function makeWf() {
 }
 
 function renderBlock(block, width, el, cls) {
-    var t, offset = 0,
+    let t, offset = 0,
         topoffset;
     switch (el.Alignment) {
         case 18:
@@ -639,7 +644,7 @@ function renderBlock(block, width, el, cls) {
 
 function makeBlock(el, value) {
     value = value.toString();
-    var block = Array(),
+    let block = Array(),
         width = 0,
         t;
     while (value !== "") {
@@ -657,7 +662,7 @@ function makeBlock(el, value) {
 
 let changes = {
     time_change: () => {
-        var t = $("in-time").value.split(":");
+        let t = $("in-time").value.split(":");
         wfe.data.timeOnClock[0] = t[0];
         wfe.data.timeOnClock[1] = t[1];
         wfe.data.analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
@@ -676,7 +681,7 @@ let changes = {
             draw.time.time();
     },
     date_change: () => {
-        var t = $("in-date").valueAsDate || new Date($("in-date").value);
+        let t = $("in-date").valueAsDate || new Date($("in-date").value);
         try {
             wfe.data.day = t.getUTCDate();
             wfe.data.month = t.getUTCMonth() + 1;
@@ -702,9 +707,9 @@ let changes = {
     sec_change: () => {
         if ($("in-sec").value > 59) $("in-sec").value = 59;
         if ($("in-sec").value < 0) $("in-sec").value = 0;
-        var sec = $("in-sec").value;
+        let sec = $("in-sec").value;
         wfe.data.seconds[0] = Number(sec.split("")[0]);
-        wfe.data.seconds[1] = Number((sec.split("").length == 1 ? 0 : sec.split("")[1]));
+        wfe.data.seconds[1] = Number((sec.split("").length === 1 ? 0 : sec.split("")[1]));
         wfe.data.analog[2] = sec * 6;
         $("svg-cont-clock").innerHTML = '';
         if ('analog' in wfe.coords) {
@@ -808,7 +813,7 @@ let changes = {
     distance_change: () => {
         if ($("in-distance").value > 99) $("in-distance").value = 99;
         if ($("in-distance").value < 0) $("in-distance").value = 0;
-        var dist = $("in-distance").value.split(".");
+        let dist = $("in-distance").value.split(".");
         wfe.data.distance[0] = Number(dist[0]);
         wfe.data.distance[1] = dist.length > 1 ? dist[1].slice(0, 2) : "00";
         removeByClass("c_act_distance");
@@ -908,7 +913,7 @@ function makepng() {
         el = 'watchfaceimage';
     html2canvas($(el), {
         onrendered: function(canvas) {
-            let ctx = canvas.getContext('2d');
+            // let ctx = canvas.getContext('2d');
             if (wfe.app.notWebkitBased) {
                 canvas.toBlob(function(blob) {
                     saveAs(blob, wfe.data.wfname + '.png');

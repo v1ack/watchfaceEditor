@@ -322,7 +322,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device == 'cor')
+                    if (localStorage.device === 'cor')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -346,7 +346,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device == 'cor')
+                    if (localStorage.device === 'cor')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -370,7 +370,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device == 'cor')
+                    if (localStorage.device === 'cor')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -394,7 +394,7 @@ function toggle(el) {
                         ImageIndex: 200,
                         ImagesCount: 10
                     };
-                    if (localStorage.device == 'cor')
+                    if (localStorage.device === 'cor')
                         wfe.coords.actSteps.cor = {};
                 }
                 break;
@@ -853,9 +853,9 @@ function toggle(el) {
 }
 
 function select(s) {
-    var target = findspan(s);
+    let target = findspan(s);
     if (!target) return 0;
-    var rng, sel;
+    let rng, sel;
     rng = document.createRange();
     rng.selectNode(target.childNodes[0]);
     sel = window.getSelection();
@@ -865,9 +865,9 @@ function select(s) {
 }
 
 function findspan(s) {
-    for (var i = 0; i < $("codearea").childNodes.length; i++)
-        if ($("codearea").childNodes[i].tagName == 'SPAN')
-            if ($("codearea").childNodes[i].childNodes[0].data == s)
+    for (let i = 0; i < $("codearea").childNodes.length; i++)
+        if ($("codearea").childNodes[i].tagName === 'SPAN')
+            if ($("codearea").childNodes[i].childNodes[0].data === s)
                 return $("codearea").childNodes[i];
 }
 
@@ -889,7 +889,7 @@ function init() {
 function syntaxHighlight(json) {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-        var cls = 'number';
+        let cls = 'number';
         if (/^"/.test(match)) {
             if (/:$/.test(match)) {
                 cls = 'key';
@@ -906,13 +906,13 @@ function syntaxHighlight(json) {
 }
 
 function checkDef(show) {
-    var defImagesList = Array();
+    let defImagesList = Array();
     for (let i = 0; i < $('watchface').childNodes.length; i++)
         if ($('watchface').childNodes[i].classList.contains('default-image'))
             defImagesList.push($('watchface').childNodes[i].src.slice(-7, -4));
     defImagesList.sort();
     for (let i = defImagesList.length - 1; i > 0; i--) {
-        if (defImagesList[i] == defImagesList[i - 1]) defImagesList.splice(i, 1);
+        if (defImagesList[i] === defImagesList[i - 1]) defImagesList.splice(i, 1);
     }
     if (show && defImagesList.length)
         UIkit.notification(('checkImages' in wfe.app.lang ? wfe.app.lang.checkImages : "Check images in watchface folder. At least images with index(s): ") + defImagesList, {
@@ -972,8 +972,8 @@ function undo() {
         updatecode();
     }
 }
-let regexr = /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
-    regexrimg = /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g;
+// let regexr = /<\/?\w*>|<\w*\s\w*="#[\w\d]{6}">|<([\w\s]*="[\s\w:(,);\-&.]*")*>/g,
+//     regexrimg = /"(Suffix|DecimalPoint|MinusSign|Degrees|Minus|)ImageIndex(On|Off|Am|Pm|)":\s(2|3)\d\d/g;
 
 $('jsonEditor-tab').addEventListener('click', () => init());
 $('editor-export').addEventListener('click', () => exportjs());

@@ -243,7 +243,7 @@ function insertimg(name, imageindex, imagescount) {
         name.addition = name.addition.slice(2);
     }
     $(name.insertto).innerHTML += '<div class="imagessection"><div><span class="imagessection-h">' + name.label + '</span><span class="imagessection-description">ImageIndex: ' + imageindex + name.addition + '</span></div><div class="imagessection-images"></div></div>';
-    if (((imageindex - imageindex % 100) / 100 == 2) || ((imageindex - imageindex % 100) / 100 == 3))
+    if (((imageindex - imageindex % 100) / 100 === 2) || ((imageindex - imageindex % 100) / 100 === 3))
         $(name.insertto).lastChild.classList.add("imagessection-def");
     for (let i = 0; i < imagescount; i++) {
         $(name.insertto).lastChild.lastChild.appendChild($c(imageindex + i));

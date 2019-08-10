@@ -1,4 +1,4 @@
-var wfe = {
+let wfe = {
     view: {},
     coords: {},
     coordsHistory: [],
@@ -25,7 +25,8 @@ var wfe = {
         jsset: false,
         imagesset: false,
         wfname: 'watchface',
-        weatherAlt: false
+        weatherAlt: false,
+        animation: 0
     },
     converter: null
 };
@@ -381,7 +382,18 @@ wfe.elements = {
         drawFunc: function() {
             wfe.draw.stepsprogress.goal();
         }
+    },
+    Animation: {
+        name: 'Animation',
+        editorId: 'e_animation',
+        prewiewClass: 'c_animation',
+        coords: function() {
+            return wfe.coords.Animation.AnimationImage;
+        },
+        drawFunc: function() {
+            wfe.draw.Animation();
+        }
     }
 };
-// window.wfe = wfe;
+//window.wfe = wfe;
 export default wfe;

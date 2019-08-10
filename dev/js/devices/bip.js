@@ -61,13 +61,7 @@ let wf_data = {
             if ('Calories' in json.Activity)
                 data.actCal = json.Activity.Calories;
             if ('Steps' in json.Activity)
-                if (device == 'bip')
-                    data.actSteps = json.Activity.Steps;
-                else {
-                    data.actSteps = json.Activity.Steps.Number;
-                    delete json.Activity.Steps.Number;
-                    data.actSteps.cor = json.Activity.Steps;
-                }
+                data.actSteps = json.Activity.Steps;
             if ('StepsGoal' in json.Activity)
                 data.actStepsGoal = json.Activity.StepsGoal;
             if ('Pulse' in json.Activity)
@@ -138,7 +132,7 @@ let wf_data = {
             data.analog = false;
         return data;
     },
-    export: function(data, device) {
+    export: function(data) {
         let obj = JSON.parse(JSON.stringify(data));
         let packed = {};
         if ('bg' in obj)
@@ -183,49 +177,20 @@ let wf_data = {
             if ('batteryIcon' in obj)
                 packed.Battery.Icon = obj.batteryIcon;
             if ('batteryText' in obj)
-                if (device == 'bip')
-                    packed.Battery.Text = obj.batteryText;
-                else {
-                    packed.Battery.Text = {};
-                    packed.Battery.Text.Number = obj.batteryText;
-                }
+                packed.Battery.Text = obj.batteryText;
             if ('batteryScale' in obj)
                 packed.Battery.Scale = obj.batteryScale;
         }
         if (obj.activity) {
             packed.Activity = {};
             if ('actCal' in obj)
-                if (device == 'bip')
-                    packed.Activity.Calories = obj.actCal;
-                else {
-                    packed.Activity.Calories = obj.actCal.cor;
-                    packed.Activity.Calories.Number = obj.actCal;
-                    delete packed.Activity.Calories.Number.cor;
-                }
+                packed.Activity.Calories = obj.actCal;
             if ('actSteps' in obj)
-                if (device == 'bip')
-                    packed.Activity.Steps = obj.actSteps;
-                else {
-                    packed.Activity.Steps = obj.actSteps.cor;
-                    packed.Activity.Steps.Number = obj.actSteps;
-                    delete packed.Activity.Steps.Number.cor;
-                }
+                packed.Activity.Steps = obj.actSteps;
             if ('actStepsGoal' in obj)
-                if (device == 'bip')
-                    packed.Activity.StepsGoal = obj.actStepsGoal;
-                else {
-                    packed.Activity.StepsGoal = obj.actStepsGoal.cor;
-                    packed.Activity.StepsGoal.Number = obj.actStepsGoal;
-                    delete packed.Activity.StepsGoal.Number.cor;
-                }
+                packed.Activity.StepsGoal = obj.actStepsGoal;
             if ('actPulse' in obj)
-                if (device == 'bip')
-                    packed.Activity.Pulse = obj.actPulse;
-                else {
-                    packed.Activity.Pulse = obj.actPulse.cor;
-                    packed.Activity.Pulse.Number = obj.actPulse;
-                    delete packed.Activity.Pulse.Number.cor;
-                }
+                packed.Activity.Pulse = obj.actPulse;
             if ('actDistance' in obj)
                 packed.Activity.Distance = obj.actDistance;
         }

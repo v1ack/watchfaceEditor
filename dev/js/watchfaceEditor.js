@@ -1,9 +1,6 @@
-/* global UIkit, html2canvas, jsonlint, saveAs */
+/* global UIkit, jsonlint */
 import {
-    $,
-    $c,
-    div,
-    removeByClass
+    $
 } from './utils.js';
 import app from './app.js';
 import './images_tab.js';
@@ -27,11 +24,11 @@ wfe.app = {
     analogtabversion: 2,
     notWebkitBased: undefined,
     lang: {},
-    local: (location.protocol != "file:" ? false : true),
+    local: (location.protocol !== "file:" ? false : true),
     firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true),
     endLoad: function() {
         window.onload = function() {
-            if (localStorage.showdemo == 'true') {
+            if (localStorage.showdemo === 'true') {
                 wfe.coords = wfe.default_coords;
                 wfe.makeWf();
                 wfe.load.disableBtn(1);
@@ -64,7 +61,7 @@ wfe.init = function() {
                 }
         };
     for (let i = 0; i < device.length; i++) {
-        if (device[i].value == localStorage.device)
+        if (device[i].value === localStorage.device)
             device[i].checked = true;
         device[i].onchange = device_change;
     }
@@ -78,7 +75,7 @@ wfe.init = function() {
     }
 
     //Theme
-    if (location.host == 'amazfitwatchfaces.com' && localStorage.appTheme === undefined)
+    if (location.host === 'amazfitwatchfaces.com' && localStorage.appTheme === undefined)
         localStorage.appTheme = 'amazfit';
     app.changeTheme(localStorage.appTheme);
 
@@ -100,20 +97,13 @@ wfe.init = function() {
     if (localStorage.lang.indexOf("tr") >= 0) {
         app.changeLang('turkish');
     } else
-    if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp != 1) {
+    if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',
             pos: 'top-left',
             timeout: 7500
         });
         localStorage.translatehelp = 1;
-    }
-    if ((localStorage.lang.indexOf("ru") >= 0 && !localStorage.forumLinkShown) && localStorage.showcount > 1) {
-        UIkit.notification('<a href="http://myamazfit.ru/" style="color: rgb(150, 150, 150)">myamazfit.ru</a> - русскоязычный форум по устройствам Amazfit', {
-            pos: 'top-left',
-            timeout: 7500
-        });
-        localStorage.forumLinkShown = true;
     }
 
     //Demo
@@ -238,7 +228,7 @@ wfe.init = function() {
         localStorage.showcount = 1;
     } else {
         localStorage.showcount++;
-        if (localStorage.showcount == 10) {
+        if (localStorage.showcount === 10) {
             setTimeout(() => UIkit.modal($("modal-donate")).show(), 250);
         }
     }
@@ -302,7 +292,7 @@ wfe.load = {
             let the_url = event.target.result;
             if (!(isNaN(Number(file.name.replace('.png', ''))))) {
                 $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
-            } else if (file.name == "weather.png") {
+            } else if (file.name === "weather.png") {
                 $('weather').parentNode.removeChild($('weather'));
                 $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
             }

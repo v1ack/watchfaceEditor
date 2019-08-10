@@ -1,4 +1,4 @@
-/* global UIkit */
+/* global UIkit, pageXOffset, pageYOffset */
 import {
     $ as $,
     $c as $c
@@ -9,7 +9,7 @@ function init() {
     //    if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
     //        localStorage.analogtabversion = wfe.app.analogtabversion;
     if ('bg' in wfe.coords) {
-        var bg = $c(wfe.coords.bg.Image.ImageIndex);
+        let bg = $c(wfe.coords.bg.Image.ImageIndex);
         bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
         bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
         bg.style.position = "absolute";
@@ -66,7 +66,7 @@ function update(arrow) {
         $("analog").innerHTML += '<div class="analog-center" style="left: ' + (currentElement.Center.X * 3 - 11) + 'px;top:' + (currentElement.Center.Y * 3 - 11) + 'px"></div>';
         $("analog").innerHTML += '<div class="analog-line" style="left: ' + (currentElement.Center.X * 3 - 3) + 'px;height:' + (currentElement.Center.Y * 3 - 11) + 'px"></div>';
         $("analog").innerHTML += '<svg id="analogsvg" width="528" height="528"></svg>';
-        for (var i in $("analog").childNodes.length) {
+        for (let i in $("analog").childNodes.length) {
             $("analog").childNodes[i].oncontextmenu = event.preventDefault();
         }
         drawAnalog(currentElement, 0);
@@ -78,7 +78,7 @@ function update(arrow) {
         $('analog-fill').checked = !currentElement.OnlyBorder;
         $('analog-color').style.backgroundColor = currentElement.Color;
         $('analog-color').value = '';
-    } else $('analog').onclick = function(e) {
+    } else $('analog').onclick = function() {
         return false;
     };
 }
@@ -86,8 +86,8 @@ function update(arrow) {
 function addDot(e) {
     if (dotCount >= 12)
         return;
-    var ed = wfe.editor.getOffsetRect($("analog"));
-    var d = document.createElement('div');
+    let ed = getOffsetRect($("analog")),
+        d = document.createElement('div');
     d.classList.add('analog-dot');
     d.id = 'dot' + dotCount++;
     d.style.left = e.pageX - ed.left - (e.pageX - ed.left) % 3 + 'px';
@@ -96,7 +96,7 @@ function addDot(e) {
         e.preventDefault();
         removeDot(e);
     };
-    var c = {
+    let c = {
         X: (Number(d.style.top.replace('px', '')) + 3 - currentElement.Center.X * 3) / -3,
         Y: (Number(d.style.left.replace('px', '')) + 3 - currentElement.Center.X * 3) / 3
     };
@@ -248,11 +248,11 @@ function toggle(elem) {
 
 function moveDot(el, elcoords) {
     el.onmousedown = function(e) {
-        if (e.which != 1) return;
-        var ed = wfe.editor.getOffsetRect($("analog"));
-        var curcoords = getCoords(el);
-        var shiftX = e.pageX - curcoords.left;
-        var shiftY = e.pageY - curcoords.top;
+        if (e.which !== 1) return;
+        let ed = getOffsetRect($("analog")),
+            curcoords = getCoords(el),
+            shiftX = e.pageX - curcoords.left,
+            shiftY = e.pageY - curcoords.top;
 
         el.style.position = 'absolute';
         moveAt(e);
@@ -272,8 +272,8 @@ function moveDot(el, elcoords) {
             $("analog").onmousemove = null;
             el.onmouseup = null;
             el.style.zIndex = 'auto';
-            el.style.top = wfe.editor.styleToNum(el.style.top) > 0 && wfe.editor.styleToNum(el.style.top) < 528 ? wfe.editor.styleToNum(el.style.top) - wfe.editor.styleToNum(el.style.top) % 3 + 'px' : "0px";
-            el.style.left = wfe.editor.styleToNum(el.style.left) > 0 && wfe.editor.styleToNum(el.style.left) < 528 ? wfe.editor.styleToNum(el.style.left) - wfe.editor.styleToNum(el.style.left) % 3 + 'px' : "0px";
+            el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
+            el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
 
             elcoords.X = (Number(el.style.top.replace('px', '')) + 3 - currentElement.Center.X * 3) / -3;
             elcoords.Y = (Number(el.style.left.replace('px', '')) + 3 - currentElement.Center.X * 3) / 3;
@@ -287,7 +287,7 @@ function moveDot(el, elcoords) {
     };
 
     function getCoords(elem) {
-        var box = elem.getBoundingClientRect();
+        let box = elem.getBoundingClientRect();
         return {
             top: box.top + pageYOffset,
             left: box.left + pageXOffset
@@ -295,6 +295,27 @@ function moveDot(el, elcoords) {
     }
 
 }
+
+// TODO: Убрать дублирующийся из editor.js код
+let getOffsetRect = function(elem) {
+        let box = elem.getBoundingClientRect(),
+            body = document.body,
+            docElem = document.documentElement,
+            scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+            scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+            clientTop = docElem.clientTop || body.clientTop || 0,
+            clientLeft = docElem.clientLeft || body.clientLeft || 0,
+            top = box.top + scrollTop - clientTop,
+            left = box.left + scrollLeft - clientLeft;
+
+        return {
+            top: Math.round(top),
+            left: Math.round(left)
+        };
+    },
+    styleToNum = function(el) {
+        return Number(el.replace('px', ''));
+    };
 
 $('analog-watch-tab').addEventListener('click', () => {
     init('hours');

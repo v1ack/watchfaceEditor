@@ -1,6 +1,6 @@
 import bip from './bip.js';
-import cor from './cor';
-import band4 from './band4';
+import cor from './cor.js';
+import band4 from './band4.js';
 
 let devices = {
     bip: bip,

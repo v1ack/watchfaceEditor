@@ -32,24 +32,29 @@ function change_device(name, wfe_obj) {
             elements[i].setAttribute('hidden', '');
         }
     }
+    wfe_obj.device = {
+        name: name,
+        height: device.height,
+        width: device.width
+    };
 }
 
-let lang = {};
+let app_lang = {};
 
 function changeLang(lang) {
     try {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', 'assets/translation/' + lang + '.json', false);
         xhr.send();
-        if (xhr.status == 200) {
-            lang = JSON.parse(xhr.responseText);
+        if (xhr.status === 200) {
+            app_lang = JSON.parse(xhr.responseText);
             let strings = document.querySelectorAll('[data-translate-id]');
             for (let i = 0; i < strings.length; i++) {
-                if (strings[i].dataset.translateId in lang)
+                if (strings[i].dataset.translateId in app_lang)
                     if (strings[i].dataset.link === undefined)
-                        strings[i].innerHTML = lang[strings[i].dataset.translateId];
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
                     else
-                        strings[i].innerHTML = lang[strings[i].dataset.translateId].replace(/\$link/g, strings[i].dataset.link);
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/g, strings[i].dataset.link);
             }
         } else
             throw ("Respanse status: " + xhr.status);
@@ -64,7 +69,7 @@ function changeLang(lang) {
 }
 
 function changeTheme(theme) {
-    if (localStorage.appTheme == 'amazfit') {
+    if (localStorage.appTheme === 'amazfit') {
         document.getElementsByClassName('uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>';
         document.getElementsByTagName('html')[0].style.background = '';
         document.getElementsByClassName('uk-navbar')[0].style.height = '';

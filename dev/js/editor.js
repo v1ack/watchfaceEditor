@@ -1,3 +1,4 @@
+/* global pageXOffset, pageYOffset */
 import wfe from './wfe_obj.js';
 import {
     $ as $,
@@ -24,7 +25,7 @@ let makeBlock = function(el) {
         //     localStorage.designtabversion = wfe.app.designtabversion;
         $("editor").innerHTML = '';
         if ('bg' in wfe.coords) {
-            var bg = $c(wfe.coords.bg.Image.ImageIndex);
+            let bg = $c(wfe.coords.bg.Image.ImageIndex);
             bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
             bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
             bg.style.position = "absolute";
@@ -152,15 +153,17 @@ let makeBlock = function(el) {
             if ('stepsGoal' in wfe.coords)
                 makeImgAndInitDrag('stepsGoal');
         }
+        if ('Animation' in wfe.coords)
+            makeImgAndInitDrag('Animation');
     },
     initdrag = function(el, elcoords, cls, drawF) {
         el = $(el);
         el.onmousedown = function(e) {
             wfe.coordsHistory.push(JSON.stringify(wfe.coords));
-            var ed = getOffsetRect($("editor"));
-            var curcoords = getCoords(el);
-            var shiftX = e.pageX - curcoords.left;
-            var shiftY = e.pageY - curcoords.top;
+            let ed = getOffsetRect($("editor")),
+                curcoords = getCoords(el),
+                shiftX = e.pageX - curcoords.left,
+                shiftY = e.pageY - curcoords.top;
             el.style.position = 'absolute';
             moveAt(e);
 
@@ -180,13 +183,13 @@ let makeBlock = function(el) {
                 $("editor").onmousemove = null;
                 el.onmouseup = null;
                 el.style.zIndex = 'auto';
-                el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
-                el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+                el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < wfe.device.height * 3 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
+                el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < wfe.device.width * 3 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
                 if ('X' in elcoords) {
                     elcoords.X = styleToNum(el.style.left) / 3;
                     elcoords.Y = styleToNum(el.style.top) / 3;
                 } else {
-                    var t1 = elcoords.TopLeftX,
+                    let t1 = elcoords.TopLeftX,
                         t2 = elcoords.TopLeftY;
                     elcoords.TopLeftX = styleToNum(el.style.left) / 3;
                     elcoords.TopLeftY = styleToNum(el.style.top) / 3;
@@ -205,7 +208,7 @@ let makeBlock = function(el) {
         };
 
         function getCoords(elem) {
-            var box = elem.getBoundingClientRect();
+            let box = elem.getBoundingClientRect();
             return {
                 top: box.top + pageYOffset,
                 left: box.left + pageXOffset
@@ -230,19 +233,15 @@ let makeBlock = function(el) {
         initdragN(el);
     },
     getOffsetRect = function(elem) {
-        var box = elem.getBoundingClientRect();
-
-        var body = document.body;
-        var docElem = document.documentElement;
-
-        var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
-        var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
-
-        var clientTop = docElem.clientTop || body.clientTop || 0;
-        var clientLeft = docElem.clientLeft || body.clientLeft || 0;
-
-        var top = box.top + scrollTop - clientTop;
-        var left = box.left + scrollLeft - clientLeft;
+        let box = elem.getBoundingClientRect(),
+            body = document.body,
+            docElem = document.documentElement,
+            scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+            scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+            clientTop = docElem.clientTop || body.clientTop || 0,
+            clientLeft = docElem.clientLeft || body.clientLeft || 0,
+            top = box.top + scrollTop - clientTop,
+            left = box.left + scrollLeft - clientLeft;
 
         return {
             top: Math.round(top),
@@ -250,7 +249,7 @@ let makeBlock = function(el) {
         };
     },
     calc = function(el, digitcount) {
-        var width = 0,
+        let width = 0,
             height = 0;
         for (let i = 0; i < el.ImagesCount; i++) {
             if ($(el.ImageIndex + i).width > width)
@@ -262,7 +261,7 @@ let makeBlock = function(el) {
         if (arguments.length > 2)
             for (let i = 2; i < arguments.length; i++)
                 width += $(arguments[i]).width + el.Spacing;
-        if (el.Alignment == "TopRight") {
+        if (el.Alignment === "TopRight") {
             el.BottomRightY = el.TopLeftY + height - 1;
             el.TopLeftX = el.BottomRightX - width + 1;
         } else {
