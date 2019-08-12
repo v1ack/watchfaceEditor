@@ -6,5 +6,6 @@
     "unused": true,
     "varstmt": true,
     "eqeqeq": true,
-    "nocomma": true
+    "nocomma": true,
+    "node": true
 }

@@ -3,8 +3,14 @@ import {
     $ as $
 } from './utils.js';
 import devices from './devices/devices_list';
-
+/**
+ * Changes device
+ *
+ * @param {string} name 
+ * @param {object} wfe_obj
+ */
 function change_device(name, wfe_obj) {
+
     localStorage.device = name;
     let device = devices[name];
     $('watchface').style.height = device.height + 'px';
@@ -18,6 +24,8 @@ function change_device(name, wfe_obj) {
     $('editor').style.width = device.width * 3 + 'px';
     $('analog').style.height = device.height * 3 + 'px';
     $('analog').style.width = device.width * 3 + 'px';
+    $('.analog-block')[0].style.height = device.height * 3 + 'px';
+    $('.analog-block')[0].style.width = device.width * 3 + 'px';
     $('watchfaceimage').style.background = 'url(assets/' + device.images.watchface_block.image + ')';
     $('watchfaceimage').style.paddingLeft = device.images.watchface_block.left + 'px';
     $('watchfaceimage').style.paddingTop = device.images.watchface_block.top + 'px';
@@ -40,7 +48,11 @@ function change_device(name, wfe_obj) {
 }
 
 let app_lang = {};
-
+/**
+ * Downloads language json and applys it to app_lang
+ *
+ * @param {string} lang language name
+ */
 function changeLang(lang) {
     try {
         let xhr = new XMLHttpRequest();
@@ -68,6 +80,11 @@ function changeLang(lang) {
     }
 }
 
+/**
+ * Changes application theme
+ *
+ * @param {string} theme name
+ */
 function changeTheme(theme) {
     if (localStorage.appTheme === 'amazfit') {
         $('.uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>';

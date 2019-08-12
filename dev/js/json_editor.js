@@ -1,8 +1,9 @@
-/* global UIkit, jsonlint, saveAs */
+/* global UIkit, saveAs */
 import {
     $ as $
 } from './utils.js';
 import wfe from './wfe_obj.js';
+let jsonlint = require('jsonlint-mod');
 
 let elements = ['seconds', 'amPm', 'weekDay', 'dateDay', 'dateMonth', 'dateOneLine', 'batteryIcon', 'batteryText', 'batteryScale', 'statAlarm', 'statBt', 'statDnd', 'statLock', 'actCal', 'actSteps', 'actStepsGoal', 'actPulse', 'actDistance', 'weatherOneLine', 'weatherDay', 'weatherNight', 'weatherCurrent', 'stepsLinear', 'stepsGoal', 'weatherAirIcon', 'weatherAirText', 'weatherDayAlt', 'weatherNightAlt'];
 

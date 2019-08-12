@@ -1,4 +1,4 @@
-/* global UIkit, jsonlint */
+/* global UIkit */
 import {
     $
 } from './utils.js';
@@ -9,6 +9,8 @@ import './analog.js';
 import './view.js';
 import './editor';
 import wfe from './wfe_obj.js';
+import set_metric from './metrika.js';
+let jsonlint = require("jsonlint-mod");
 
 wfe.app = {
     changeThemeBtn: function() {
@@ -238,7 +240,7 @@ wfe.init = function() {
         wfe.app.local = false;
     }
     if (!wfe.app.local)
-        setTimeout(addScript, 2000, 'js/metrika.js');
+        setTimeout(set_metric, 2000);
     else
         addScript('js/utilit.js');
 

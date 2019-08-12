@@ -65,7 +65,7 @@ function update(arrow) {
     if (('analog' + currentElementName) in wfe.coords) {
         $("analog").innerHTML += '<div class="analog-center" style="left: ' + (currentElement.Center.X * 3 - 11) + 'px;top:' + (currentElement.Center.Y * 3 - 11) + 'px"></div>';
         $("analog").innerHTML += '<div class="analog-line" style="left: ' + (currentElement.Center.X * 3 - 3) + 'px;height:' + (currentElement.Center.Y * 3 - 11) + 'px"></div>';
-        $("analog").innerHTML += '<svg id="analogsvg" width="528" height="528"></svg>';
+        $("analog").innerHTML += '<svg id="analogsvg" width="' + wfe.device.width * 3 + '" height="' + wfe.device.height * 3 + '"></svg>';
         for (let i in $("analog").childNodes.length) {
             $("analog").childNodes[i].oncontextmenu = event.preventDefault();
         }
@@ -153,8 +153,8 @@ function toggle(elem) {
                 wfe.coords.analog = true;
                 wfe.coords.analoghours = {
                     Center: {
-                        X: 88,
-                        Y: 88
+                        X: wfe.device.width / 2,
+                        Y: wfe.device.height / 2
                     },
                     Color: "0xFFFFFF",
                     OnlyBorder: false,
@@ -183,8 +183,8 @@ function toggle(elem) {
                 wfe.coords.analog = true;
                 wfe.coords.analogminutes = {
                     Center: {
-                        X: 88,
-                        Y: 88
+                        X: wfe.device.width / 2,
+                        Y: wfe.device.height / 2
                     },
                     Color: "0xFFFFFF",
                     OnlyBorder: false,
@@ -217,8 +217,8 @@ function toggle(elem) {
                 wfe.coords.analog = true;
                 wfe.coords.analogseconds = {
                     Center: {
-                        X: 88,
-                        Y: 88
+                        X: wfe.device.width / 2,
+                        Y: wfe.device.height / 2
                     },
                     Color: "0xFF0000",
                     OnlyBorder: false,

@@ -3,7 +3,11 @@ import {
     $c as $c
 } from './utils.js';
 import wfe from './wfe_obj.js';
-
+/**
+ * Renders image tab
+ *
+ * @param {object} coords wfe.coords object
+ */
 function init(coords) {
     //    if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
     //        localStorage.imagestabversion = wfe.app.imagestabversion;
@@ -230,8 +234,15 @@ function init(coords) {
         insertto: "imagesavalible"
     }, 267, 26);
 }
-
+/**
+ * Renders images
+ *
+ * @param {string} name
+ * @param {number} imageindex
+ * @param {number} imagescount
+ */
 function insertimg(name, imageindex, imagescount) {
+
     if (!('insertto' in name))
         name.insertto = "imagesinuse";
     if (!('addition' in name))

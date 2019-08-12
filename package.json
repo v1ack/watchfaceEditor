@@ -13,6 +13,8 @@
     "license": "ISC",
     "dependencies": {},
     "devDependencies": {
+        "html2canvas": "^1.0.0-rc.3",
+        "jsonlint-mod": "^1.7.5",
         "uikit": "^3.1.7",
         "vue": "^2.6.10",
         "webpack": "^4.39.0",

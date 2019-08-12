@@ -1,4 +1,4 @@
-/* global saveAs, UIkit, html2canvas */
+/* global saveAs, UIkit */
 import {
     $ as $,
     $c as $c,
@@ -6,6 +6,7 @@ import {
     removeByClass as removeByClass
 } from './utils.js';
 import wfe from './wfe_obj.js';
+import html2canvas from 'html2canvas';
 let draw = {
     time: {
         time: function() {
@@ -923,30 +924,50 @@ function makepng() {
     if ($('makepngwithwatch').checked)
         el = 'watchfaceimage';
     html2canvas($(el), {
-        onrendered: function(canvas) {
-            // let ctx = canvas.getContext('2d');
-            if (wfe.app.notWebkitBased) {
-                canvas.toBlob(function(blob) {
-                    saveAs(blob, wfe.data.wfname + '.png');
-                });
-            } else {
-                let a = document.createElement('a');
-                a.href = canvas.toDataURL('image/png');
-                a.download = wfe.data.wfname + '.png';
-                a.click();
-                a = null;
-            }
+        allowTaint: false
+    }).then(canvas => {
+        // let ctx = canvas.getContext('2d');
+        if (wfe.app.notWebkitBased) {
+            canvas.toBlob(function(blob) {
+                saveAs(blob, wfe.data.wfname + '.png');
+            });
+        } else {
+            let a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = wfe.data.wfname + '.png';
+            a.click();
+            a = null;
         }
     });
+    // , {
+    //     onrendered: function(canvas) {
+    //         // let ctx = canvas.getContext('2d');
+    //         if (wfe.app.notWebkitBased) {
+    //             canvas.toBlob(function(blob) {
+    //                 saveAs(blob, wfe.data.wfname + '.png');
+    //             });
+    //         } else {
+    //             let a = document.createElement('a');
+    //             a.href = canvas.toDataURL('image/png');
+    //             a.download = wfe.data.wfname + '.png';
+    //             a.click();
+    //             a = null;
+    //         }
+    //     }
+    // });
 }
 
 function makePreview() {
-    html2canvas($('watchfaceimage'), {
-        onrendered: function(canvas) {
-            $('realsizePreview').innerHTML = '';
-            $('realsizePreview').appendChild(canvas);
-        }
+    html2canvas($('watchfaceimage')).then(canvas => {
+        $('realsizePreview').innerHTML = '';
+        $('realsizePreview').appendChild(canvas);
     });
+    // html2canvas($('watchfaceimage'), {
+    //     onrendered: function(canvas) {
+    //         $('realsizePreview').innerHTML = '';
+    //         $('realsizePreview').appendChild(canvas);
+    //     }
+    // });
 }
 
 $('realsizePreview').addEventListener('click', makePreview);

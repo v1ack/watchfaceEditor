@@ -154,16 +154,16 @@ let wf_data = {
                 data.stepsGoal = json.StepsProgress.GoalImage;
         } else
             data.stepsprogress = false;
-        // if ('AnalogDialFace' in json) {
-        //     data.analog = true;
-        //     if ('Hours' in json.AnalogDialFace)
-        //         data.analoghours = json.AnalogDialFace.Hours;
-        //     if ('Minutes' in json.AnalogDialFace)
-        //         data.analogminutes = json.AnalogDialFace.Minutes;
-        //     if ('Seconds' in json.AnalogDialFace)
-        //         data.analogseconds = json.AnalogDialFace.Seconds;
-        // } else
-        //     data.analog = false;
+        if ('AnalogDialFace' in json) {
+            data.analog = true;
+            if ('Hours' in json.AnalogDialFace)
+                data.analoghours = json.AnalogDialFace.Hours;
+            if ('Minutes' in json.AnalogDialFace)
+                data.analogminutes = json.AnalogDialFace.Minutes;
+            if ('Seconds' in json.AnalogDialFace)
+                data.analogseconds = json.AnalogDialFace.Seconds;
+        } else
+            data.analog = false;
         if ('Other' in json) {
             if ('Animation' in json.Other) {
                 data.Animation = json.Other.Animation;
@@ -303,15 +303,15 @@ let wf_data = {
             if ('stepsGoal' in obj)
                 packed.StepsProgress.GoalImage = obj.stepsGoal;
         }
-        // if (obj.analog) {
-        //     packed.AnalogDialFace = {};
-        //     if ('analoghours' in obj)
-        //         packed.AnalogDialFace.Hours = obj.analoghours;
-        //     if ('analogminutes' in obj)
-        //         packed.AnalogDialFace.Minutes = obj.analogminutes;
-        //     if ('analogseconds' in obj)
-        //         packed.AnalogDialFace.Seconds = obj.analogseconds;
-        // }
+        if (obj.analog) {
+            packed.AnalogDialFace = {};
+            if ('analoghours' in obj)
+                packed.AnalogDialFace.Hours = obj.analoghours;
+            if ('analogminutes' in obj)
+                packed.AnalogDialFace.Minutes = obj.analogminutes;
+            if ('analogseconds' in obj)
+                packed.AnalogDialFace.Seconds = obj.analogseconds;
+        }
         if (obj.Animation) {
             packed.Other = {};
             packed.Other.Animation = obj.Animation;
