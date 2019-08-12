@@ -103,7 +103,7 @@
     "icon": "图标",
     "weather_cloudy_rain": "多云有阵雨",
     "weather_cloudy_snow": "多云有阵雪",
-    "imagecreator": "<a style=\"color: white\" href=\"https://v1ack.github.io/watchfaceEditor/zh_cn-imagecreator.html\" target=\"_blank\">【表盘元素】创建工具</a>",
+    "imagecreator": "【表盘元素】创建工具",
     "translatedby": "翻译:TXK",
     "hours": "时针",
     "minutes": "分针",
