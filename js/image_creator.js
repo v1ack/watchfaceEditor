@@ -1,3 +1,4 @@
+/* global saveAs, UIkit */
 function addScript(url) {
     let e = document.createElement("script");
     e.src = url;
@@ -40,36 +41,61 @@ class Creator {
         this.rad = document.getElementsByName('color');
         this.radbg = document.getElementsByName('bgcolor');
         this.fonts = document.getElementsByName('fontfamily');
+        this.limit = 127;
     }
     update() {
-        $("images").innerHTML = '';
+        let images = $("images"),
+            hidden_images = $("hidden-images");
+        hidden_images.innerHTML = '';
+        images.innerHTML = '';
         this.wordsArray = $("text").value.split(",");
         if (this.wordsArray[0] !== '')
             this.array = this.wordsArray;
         else
             this.array = this.numberArray;
         for (let i = 0; i < this.array.length; i++) {
-            $("images").innerHTML += '<div class="imagecover" style="font-size:' + $("textsize").value + 'px; color:' + this.color + ';background:' + this.bg_color + '" id="' + i + '"><span class="spanimage" style="top:' + this.topOffset + 'px">' + this.array[i] + '</span></div>';
+            hidden_images.innerHTML += '<div class="imagecover" style="font-size:' + $("textsize").value + 'px; color:' + this.color + ';background:' + this.bg_color + '" id="hidden-image-' + i + '"><span class="spanimage" style="top:' + this.topOffset + 'px">' + this.array[i] + '</span></div>';
         }
+        hidden_images.style.fontFamily = this.font;
         if (!this.heightChanged) {
             this.height = 0;
             for (let i = 0; i < this.array.length; i++)
-                if ($(i).offsetHeight > this.height)
-                    this.height = $(i).offsetHeight;
+                if ($('hidden-image-' + i).offsetHeight > this.height)
+                    this.height = $('hidden-image-' + i).offsetHeight;
             $("imageheight").value = this.height;
         }
         for (let i = 0; i < this.array.length; i++)
-            $(i).style.height = this.height + 'px';
+            $('hidden-image-' + i).style.height = this.height + 'px';
         if (!this.widthChanged) {
             this.width = 0;
             for (let i = 0; i < this.array.length; i++)
-                if ($(i).offsetWidth > this.width)
-                    this.width = $(i).offsetWidth;
+                if ($('hidden-image-' + i).offsetWidth > this.width)
+                    this.width = $('hidden-image-' + i).offsetWidth;
             $("imagewidth").value = this.width;
         }
         for (let i = 0; i < this.array.length; i++)
-            $(i).style.width = this.width + 'px';
-        $("images").style.fontFamily = this.font;
+            $('hidden-image-' + i).style.width = this.width + 'px';
+        for (let el = 0; el < this.array.length; el++) {
+            let canvas = document.createElement("canvas");
+            canvas.id = 'canvas-image-' + el;
+            canvas.width = this.width;
+            canvas.height = this.height;
+            let ctx = canvas.getContext("2d");
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+            ctx.fillStyle = this.bg_color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = $("textsize").value + "px " + this.font;
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            ctx.fillStyle = this.color;
+            ctx.fillText($('hidden-image-' + el).innerText, canvas.width / 2, canvas.height / 2 + Number(this.topOffset));
+            let imageDataFiltered = this.cleaner(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            ctx.putImageData(imageDataFiltered, 0, 0);
+            images.appendChild(canvas);
+        }
     }
     heightChange() {
         if ($("imageheight").value !== '') {
@@ -98,31 +124,25 @@ class Creator {
         }
         this.update();
     }
+    colorLimitChange() {
+        if ($("color_limit").value !== '') {
+            this.limit = $("color_limit").value;
+        } else {
+            this.limit = 127;
+            $("color_limit").value = 127;
+        }
+        this.update();
+    }
     save() {
         this.number = $("imageindex").value;
+        let saveForEdge = blob => {
+            saveAs(blob, this.number + ".png");
+            creator.number++;
+        };
         for (let el = 0; el < this.array.length; el++) {
-            let canvas = document.createElement("canvas");
-            canvas.width = this.width;
-            canvas.height = this.height;
-            let ctx = canvas.getContext("2d");
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.msImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.fillStyle = this.bg_color;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.font = $("textsize").value + "px " + this.font;
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.fillStyle = this.color;
-            ctx.fillText($(el).innerText, canvas.width / 2, canvas.height / 2);
-            let imageDataFiltered = this.cleaner(ctx.getImageData(0, 0, canvas.width, canvas.height));
-            ctx.putImageData(imageDataFiltered, 0, 0);
+            let canvas = $('canvas-image-' + el);
             if (edgeBrowser) {
-                canvas.toBlob(blob => {
-                    saveAs(blob, this.number + ".png");
-                    creator.number++;
-                });
+                canvas.toBlob(saveForEdge);
             } else {
                 let a = document.createElement('a');
                 a.href = canvas.toDataURL("image/png");
@@ -139,9 +159,9 @@ class Creator {
             let r = pixels[i],
                 g = pixels[i + 1],
                 b = pixels[i + 2];
-            pixels[i] = (r > 127 ? 255 : 0);
-            pixels[i + 1] = (g > 127 ? 255 : 0);
-            pixels[i + 2] = (b > 127 ? 255 : 0);
+            pixels[i] = (r > this.limit ? 255 : 0);
+            pixels[i + 1] = (g > this.limit ? 255 : 0);
+            pixels[i + 2] = (b > this.limit ? 255 : 0);
             //pixels[i + 3] = (pixels[i + 3] > 127 ? 255 : 0);
         }
         return imageData;
@@ -211,19 +231,19 @@ function changeLang(lang) {
 }
 if (!('lang' in localStorage))
     localStorage.lang = navigator.language || navigator.userLanguage;
-// if (localStorage.lang.indexOf("ru") >= 0) {
-//     changeLang('russian');
-// } else
+if (localStorage.lang.indexOf("ru") >= 0) {
+    changeLang('russian');
+} else
 if (localStorage.lang.indexOf("zh") >= 0) {
     changeLang('chinese');
 } else
 if (localStorage.lang.indexOf("tr") >= 0) {
     changeLang('turkish');
 }
-// $('lang-ru').addEventListener('click', () => {
-//     localStorage.lang = 'ru';
-//     changeLang('russian');
-// });
+$('lang-ru').addEventListener('click', () => {
+    localStorage.lang = 'ru';
+    changeLang('russian');
+});
 $('lang-en').addEventListener('click', () => {
     localStorage.lang = 'en';
     changeLang('english');
@@ -242,6 +262,7 @@ $('text').addEventListener('change', creator.update.bind(creator));
 $('imageheight').addEventListener('change', creator.heightChange.bind(creator));
 $('imagewidth').addEventListener('change', creator.widthChange.bind(creator));
 $('imageoffset').addEventListener('change', creator.topOffsetChange.bind(creator));
+$('color_limit').addEventListener('change', creator.colorLimitChange.bind(creator));
 $('download').addEventListener('click', creator.save.bind(creator));
 
 function install_metric(alt = false) {

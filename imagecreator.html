@@ -69,6 +69,10 @@
             -ms-interpolation-mode: nearest-neighbor;
             /* IE (non standard naming) */
         }
+        
+        #images canvas {
+            margin: 5px;
+        }
     </style>
     <style></style>
 </head>
@@ -139,11 +143,17 @@
                     <input class="uk-input" type="number" placeholder="Top offset" id="imageoffset">
                 </div>
             </div>
+            <div class="uk-form-width-medium">
+                <label class="uk-form-label" data-translate-id="color_limit">Color limir for converting</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" type="number" placeholder="Color limir" id="color_limit" max="255" min="0" value="127">
+                </div>
+            </div>
         </div>
         <div class="uk-margin">
             <div class="uk-form-label" data-translate-id="font_color">Font color</div>
             <div class="uk-grid-small uk-child-width-auto uk-grid">
-                <label><input class="uk-radio" type="radio" name="color" value="#000000"> <span data-translate-id="color_black">Black</span></label>
+                <label><input class="uk-radio" type="radio" name="color" value="#000000" checked> <span data-translate-id="color_black">Black</span></label>
                 <label><input class="uk-radio" type="radio" name="color" value="#FFFFFF"> <span data-translate-id="color_white">White</span></label>
                 <label><input class="uk-radio" type="radio" name="color" value="#00FF00"> <span data-translate-id="color_green">Green</span></label>
                 <label><input class="uk-radio" type="radio" name="color" value="#FFFF00"> <span data-translate-id="color_yellow">Yellow</span></label>
@@ -157,7 +167,7 @@
             <div class="uk-form-label" data-translate-id="background_color">Background color</div>
             <div class="uk-grid-small uk-child-width-auto uk-grid">
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#000000"> <span data-translate-id="color_black">Black</span></label>
-                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFFFF"> <span data-translate-id="color_white">White</span></label>
+                <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFFFF" checked> <span data-translate-id="color_white">White</span></label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#00FF00"> <span data-translate-id="color_green">Green</span></label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#FFFF00"> <span data-translate-id="color_yellow">Yellow</span></label>
                 <label><input class="uk-radio" type="radio" name="bgcolor" value="#0000FF"> <span data-translate-id="color_blue">Blue</span></label>
@@ -177,7 +187,8 @@
                 <label style="font-family: customfont"><input class="uk-radio" type="radio" name="fontfamily" value="customfont"> <span data-translate-id="custom">Custom font</span></label>
             </div>
         </div>
-        <div id="images" class="uk-placeholder uk-text-center uk-grid uk-grid-collapse"></div>
+        <div id="images" class="uk-placeholder uk-text-center uk-grid uk-grid-collapse" style="background-color: #edf8ff;"></div>
+        <div id="hidden-images" class="uk-text-center uk-grid uk-grid-collapse" style="opacity: 0"></div>
     </main>
     <footer>
         <p class="uk-text-center uk-text-meta" style="margin-top: 15px">designed by vlack <span style="margin-left: 10px;margin-right: 10px" data-translate-id="translated_by"></span>Github: <a href="https://github.com/v1ack/Bip-Watchface-View" target="_blank">v1ack</a><span style="margin-left: 10px"></span>Telegram:
@@ -197,7 +208,7 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Language</h2>
             <div class="uk-grid-small uk-child-width-auto uk-grid">
-                <!-- <label class="uk-link" id="lang-ru">Русский</label> -->
+                <label class="uk-link" id="lang-ru">Русский</label>
                 <label class="uk-link" id="lang-en">English</label>
                 <label class="uk-link" id="lang-zh">中文</label>
                 <label class="uk-link" id="lang-tr">Turkish</label>

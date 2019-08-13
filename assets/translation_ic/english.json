@@ -22,5 +22,6 @@
     "custom": "Custom",
     "donate": "Donate",
     "close": "Close",
-    "translated_by": ""
+    "translated_by": "",
+    "color_limit": "Color limir for converting"
 }
