@@ -272,8 +272,10 @@ function moveDot(el, elcoords) {
             $("analog").onmousemove = null;
             el.onmouseup = null;
             el.style.zIndex = 'auto';
-            el.style.top = styleToNum(el.style.top) > 0 && styleToNum(el.style.top) < 528 ? styleToNum(el.style.top) - styleToNum(el.style.top) % 3 + 'px' : "0px";
-            el.style.left = styleToNum(el.style.left) > 0 && styleToNum(el.style.left) < 528 ? styleToNum(el.style.left) - styleToNum(el.style.left) % 3 + 'px' : "0px";
+            let top = styleToNum(el.style.top),
+                left = styleToNum(el.style.left);
+            el.style.top = top > 0 && top < wfe.device.height * 3 ? Math.round(top / 3) * 3 + 'px' : "0px";
+            el.style.left = left > 0 && left < wfe.device.width * 3 ? Math.round(left / 3) * 3 + 'px' : "0px";
 
             elcoords.X = (Number(el.style.top.replace('px', '')) + 3 - currentElement.Center.X * 3) / -3;
             elcoords.Y = (Number(el.style.left.replace('px', '')) + 3 - currentElement.Center.X * 3) / 3;

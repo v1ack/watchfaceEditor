@@ -314,6 +314,7 @@ function toggle(el) {
                         wfe.coords.activity = false;
                 } else {
                     wfe.coords.actSteps = {
+                        Number: {
                         TopLeftX: 0,
                         TopLeftY: 0,
                         BottomRightX: 42,
@@ -322,9 +323,8 @@ function toggle(el) {
                         Spacing: 2,
                         ImageIndex: 200,
                         ImagesCount: 10
+                        }
                     };
-                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
-                        wfe.coords.actSteps.cor = {};
                 }
                 break;
             }
@@ -338,6 +338,7 @@ function toggle(el) {
                         wfe.coords.activity = false;
                 } else {
                     wfe.coords.actCal = {
+                        Number:{
                         TopLeftX: 0,
                         TopLeftY: 0,
                         BottomRightX: 33,
@@ -346,9 +347,8 @@ function toggle(el) {
                         Spacing: 2,
                         ImageIndex: 200,
                         ImagesCount: 10
+                        }
                     };
-                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
-                        wfe.coords.actSteps.cor = {};
                 }
                 break;
             }
@@ -362,6 +362,7 @@ function toggle(el) {
                         wfe.coords.activity = false;
                 } else {
                     wfe.coords.actPulse = {
+                        Number:{
                         TopLeftX: 0,
                         TopLeftY: 0,
                         BottomRightX: 24,
@@ -370,9 +371,8 @@ function toggle(el) {
                         Spacing: 2,
                         ImageIndex: 200,
                         ImagesCount: 10
+                        }
                     };
-                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
-                        wfe.coords.actSteps.cor = {};
                 }
                 break;
             }
@@ -386,6 +386,7 @@ function toggle(el) {
                         wfe.coords.activity = false;
                 } else {
                     wfe.coords.actStepsGoal = {
+                        Number:{
                         TopLeftX: 0,
                         TopLeftY: 0,
                         BottomRightX: 42,
@@ -394,9 +395,8 @@ function toggle(el) {
                         Spacing: 2,
                         ImageIndex: 200,
                         ImagesCount: 10
+                        }
                     };
-                    if (localStorage.device === 'cor' || localStorage.device === 'band4')
-                        wfe.coords.actSteps.cor = {};
                 }
                 break;
             }

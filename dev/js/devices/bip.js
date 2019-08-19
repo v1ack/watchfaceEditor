@@ -59,13 +59,13 @@ let wf_data = {
         if ('Activity' in json) {
             data.activity = true;
             if ('Calories' in json.Activity)
-                data.actCal = json.Activity.Calories;
+                data.actCal =  {Number: json.Activity.Calories};
             if ('Steps' in json.Activity)
-                data.actSteps = json.Activity.Steps;
+                data.actSteps =  {Number: json.Activity.Steps};
             if ('StepsGoal' in json.Activity)
-                data.actStepsGoal = json.Activity.StepsGoal;
+                data.actStepsGoal =  {Number: json.Activity.StepsGoal};
             if ('Pulse' in json.Activity)
-                data.actPulse = json.Activity.Pulse;
+                data.actPulse = {Number: json.Activity.Pulse};
             if ('Distance' in json.Activity)
                 data.actDistance = json.Activity.Distance;
         } else
@@ -184,13 +184,13 @@ let wf_data = {
         if (obj.activity) {
             packed.Activity = {};
             if ('actCal' in obj)
-                packed.Activity.Calories = obj.actCal;
+                packed.Activity.Calories = obj.actCal.Number;
             if ('actSteps' in obj)
-                packed.Activity.Steps = obj.actSteps;
+                packed.Activity.Steps = obj.actSteps.Number;
             if ('actStepsGoal' in obj)
-                packed.Activity.StepsGoal = obj.actStepsGoal;
+                packed.Activity.StepsGoal = obj.actStepsGoal.Number;
             if ('actPulse' in obj)
-                packed.Activity.Pulse = obj.actPulse;
+                packed.Activity.Pulse = obj.actPulse.Number;
             if ('actDistance' in obj)
                 packed.Activity.Distance = obj.actDistance;
         }

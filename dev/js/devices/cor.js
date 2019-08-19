@@ -1,4 +1,4 @@
-const copy = e => JSON.parse(JSON.stringify(e));
+// const copy = e => JSON.parse(JSON.stringify(e));
 let wf_data = {
     import: function(json) {
         let data = {};
@@ -60,24 +60,16 @@ let wf_data = {
         if ('Activity' in json) {
             data.activity = true;
             if ('Calories' in json.Activity) {
-                data.actCal = copy(json.Activity.Calories.Number);
-                delete json.Activity.Calories.Number;
-                data.actCal.cor = json.Activity.Calories;
+                data.actCal = json.Activity.Calories;
             }
             if ('Steps' in json.Activity) {
-                data.actSteps = json.Activity.Steps.Number;
-                delete json.Activity.Steps.Number;
-                data.actSteps.cor = json.Activity.Steps;
+                data.actSteps = json.Activity.Steps;
             }
             if ('StepsGoal' in json.Activity) {
-                data.actStepsGoal = json.Activity.StepsGoal.Number;
-                delete json.Activity.StepsGoal.Number;
-                data.actStepsGoal.cor = json.Activity.StepsGoal;
+                data.actStepsGoal = json.Activity.StepsGoal;
             }
             if ('Pulse' in json.Activity) {
-                data.actPulse = json.Activity.Pulse.Number;
-                delete json.Activity.Pulse.Number;
-                data.actPulse.cor = json.Activity.Pulse;
+                data.actPulse = json.Activity.Pulse;
             }
             if ('Distance' in json.Activity)
                 data.actDistance = json.Activity.Distance;
@@ -199,24 +191,16 @@ let wf_data = {
         if (obj.activity) {
             packed.Activity = {};
             if ('actCal' in obj) {
-                packed.Activity.Calories = obj.actCal.cor;
-                packed.Activity.Calories.Number = obj.actCal;
-                delete packed.Activity.Calories.Number.cor;
+                packed.Activity.Calories = obj.actCal;
             }
             if ('actSteps' in obj) {
-                packed.Activity.Steps = obj.actSteps.cor;
-                packed.Activity.Steps.Number = obj.actsteps;
-                delete packed.Activity.Steps.Number.cor;
+                packed.Activity.Steps = obj.actSteps;
             }
             if ('actStepsGoal' in obj) {
-                packed.Activity.StepsGoal = obj.actStepsGoal.cor;
-                packed.Activity.StepsGoal.Number = obj.actStepsGoal;
-                delete packed.Activity.StepsGoal.Number.cor;
+                packed.Activity.StepsGoal = obj.actStepsGoal;
             }
             if ('actPulse' in obj) {
-                packed.Activity.Pulse = obj.actPulse.cor;
-                packed.Activity.Pulse.Number = obj.actPulse;
-                delete packed.Activity.Pulse.Number.cor;
+                packed.Activity.Pulse = obj.actPulse;
             }
             if ('actDistance' in obj)
                 packed.Activity.Distance = obj.actDistance;

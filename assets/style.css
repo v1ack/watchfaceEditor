@@ -2,7 +2,9 @@
 .uk-light button:disabled:hover {
     color: #999;
 }
-
+#new_watchface img {
+    position: absolute;
+}
 #modal-loading {
     transition: opacity 1s linear;
 }

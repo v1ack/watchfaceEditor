@@ -2,13 +2,14 @@
 import wfe from './wfe_obj.js';
 import {
     $ as $,
-    $c as $c,
-    removeByClass as removeByClass
+    $c as $c
 } from './utils.js';
+import updateWatchface from "./watchface_react";
 /**
  * Makes block and inserts it (TopLeft and BottomRight) for visual editor
  *
  * @param {string} el name
+ * @returns {null} null
  */
 function makeBlock(el) {
     $("editor").innerHTML +=
@@ -19,6 +20,7 @@ function makeBlock(el) {
  * Makes block and insetrs it (X and Y) for visual editor
  *
  * @param {string} el name
+ * @returns {null} null
  */
 function makeImg(el) {
     $("editor").innerHTML +=
@@ -30,6 +32,7 @@ function makeImg(el) {
  *
  * @param {string} el element
  * @param {string} id in editor html
+ * @returns {null} null
  */
 function makeImgStat(el, id) {
     $("editor").innerHTML +=
@@ -40,7 +43,7 @@ function makeImgStat(el, id) {
  * Convert style value to Number
  *
  * @param {string} el style value
- * @returns style value in number
+ * @returns {Number} style value in number
  */
 function styleToNum(el) {
     return Number(el.replace('px', ''));
@@ -48,7 +51,7 @@ function styleToNum(el) {
 
 /**
  * Initialise this tab
- *
+ * @returns {null} null
  */
 function init() {
     // if (!('designtabversion' in localStorage) || localStorage.designtabversion < wfe.app.designtabversion)
@@ -112,7 +115,7 @@ function init() {
         if ('batteryText' in wfe.coords)
             makeBlockAndInitDrag('batteryText');
         if ('batteryScale' in wfe.coords) {
-            let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i], "c_battery_scale", wfe.draw.battery.scale);
+            let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i]);
             for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
                 $("editor").innerHTML +=
                     '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
@@ -144,13 +147,13 @@ function init() {
                 $("editor").innerHTML +=
                     '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * 3) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * 3) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * 3) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * 3) + 'px;" class="editor-elem"></div>';
                 setTimeout(function() {
-                    initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon, "c_weather_icon", wfe.draw.weather.icon);
+                    initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon);
                 }, 10);
             } else {
                 $("editor").innerHTML +=
                     '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * 3) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
                 setTimeout(function() {
-                    initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates, "c_weather_icon", wfe.draw.weather.icon);
+                    initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates);
                 }, 10);
             }
         if ('weatherOneLine' in wfe.coords)
@@ -171,9 +174,9 @@ function init() {
             makeBlockAndInitDrag('weatherAirText');
     }
     if (wfe.coords.stepsprogress) {
-        if ('stepscircle' in wfe.coords) {}
+        // if ('stepscircle' in wfe.coords) {}
         if ('stepsLinear' in wfe.coords) {
-            let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i], "c_steps_linear", wfe.draw.stepsprogress.linear);
+            let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i]);
             for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
                 $("editor").innerHTML +=
                     '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
@@ -192,16 +195,16 @@ function init() {
  *
  * @param {number} el id
  * @param {object} elcoords coordinates object
- * @param {string} cls class
- * @param {object} drawF function draws this element
+ * @returns {null} null
  */
-function initdrag(el, elcoords, cls, drawF) {
+function initdrag(el, elcoords) {
     el = $(el);
 
     /**
      * Set moving
      *
-     * @param {Event} e
+     * @param {Event} e mouse down event
+     * @returns {null} null
      */
     el.onmousedown = function(e) {
         wfe.coordsHistory.push(JSON.stringify(wfe.coords));
@@ -243,8 +246,7 @@ function initdrag(el, elcoords, cls, drawF) {
                 elcoords.BottomRightX += elcoords.TopLeftX - t1;
                 elcoords.BottomRightY += elcoords.TopLeftY - t2;
             }
-            removeByClass(cls);
-            drawF();
+            updateWatchface();
             $("e_coords").innerHTML = ('coordinates' in wfe.app.lang ? wfe.app.lang.coordinates : "Coordinates");
         };
 
@@ -269,13 +271,12 @@ function initdrag(el, elcoords, cls, drawF) {
  * *I dot't give a fuck why timeout is here
  * 
  * @param {string} el name
+ * @returns {null} null
  */
 function initdragN(el) {
     setTimeout(function() {
         initdrag(wfe.elements[el].editorId,
-            wfe.elements[el].coords(),
-            wfe.elements[el].prewiewClass,
-            wfe.elements[el].drawFunc);
+            wfe.elements[el].coords());
     }, 10);
 }
 
@@ -292,8 +293,8 @@ function makeBlockAndInitDrag(el) {
 /**
  * Magic function for drag&drop from stackoverflow
  *
- * @param {object} elem
- * @returns
+ * @param {object} elem idk
+ * @returns {object} top & left paddings
  */
 function getOffsetRect(elem) {
     let box = elem.getBoundingClientRect(),
@@ -317,6 +318,7 @@ function getOffsetRect(elem) {
  *
  * @param {string} el element
  * @param {number} digitcount max digits count
+ * @returns {null} null
  */
 function calc(el, digitcount) {
     let width = 0,
@@ -343,6 +345,7 @@ function calc(el, digitcount) {
 /**
  * Apply calc() to elements
  *
+ * @returns {null} null
  */
 function makejsbetter() {
     if (wfe.coords.date) {
@@ -384,6 +387,7 @@ function makejsbetter() {
 /**
  * Undo action
  *
+ * @returns {null} null
  */
 function undo() {
     if (wfe.coordsHistory.length) {

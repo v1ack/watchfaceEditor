@@ -10,7 +10,9 @@ import './view.js';
 import './editor';
 import wfe from './wfe_obj.js';
 import set_metric from './metrika.js';
-let jsonlint = require("jsonlint-mod");
+import jsonlint from 'jsonlint-mod';
+
+import './watchface_react.jsx';
 
 wfe.app = {
     changeThemeBtn: function() {
@@ -24,10 +26,10 @@ wfe.app = {
     editortabversion: 1,
     designtabversion: 1,
     analogtabversion: 2,
-    notWebkitBased: undefined,
+    notWebkitBased: null,
     lang: {},
-    local: (location.protocol !== "file:" ? false : true),
-    firstopen_editor: ('firstopen_editor' in sessionStorage ? false : true),
+    local: (location.protocol === "file:"),
+    firstopen_editor: (!('firstopen_editor' in sessionStorage)),
     endLoad: function() {
         window.onload = function() {
             if (localStorage.showdemo === 'true') {
@@ -45,7 +47,7 @@ wfe.app = {
     }
 };
 wfe.init = function() {
-    //Device
+    // Device
     let device_list = ['bip', 'cor', 'band4'];
     if (device_list.includes(location.search.slice(1))) {
         app.change_device(location.search.slice(1), wfe);
@@ -68,7 +70,7 @@ wfe.init = function() {
         device[i].onchange = device_change;
     }
 
-    //Functions
+    // Functions
     function addScript(url) {
         let e = document.createElement("script");
         e.src = url;
@@ -76,12 +78,12 @@ wfe.init = function() {
         $('<head')[0].appendChild(e);
     }
 
-    //Theme
+    // Theme
     if (location.host === 'amazfitwatchfaces.com' && localStorage.appTheme === undefined)
         localStorage.appTheme = 'amazfit';
     app.changeTheme(localStorage.appTheme);
 
-    //Language
+    // Language
     if (!('lang' in localStorage))
         localStorage.lang = navigator.language || navigator.userLanguage;
     if (localStorage.lang.indexOf("ru") >= 0) {
@@ -108,7 +110,7 @@ wfe.init = function() {
         localStorage.translatehelp = 1;
     }
 
-    //Demo
+    // Demo
     if (localStorage.showdemo === undefined) {
         localStorage.showdemo = true;
     }
@@ -118,7 +120,7 @@ wfe.init = function() {
     };
     localStorage.biptools = 0;
 
-    //Analog clock description
+    // Analog clock description
     if (localStorage.analogDescription)
         UIkit.alert($("analogDescription")).close();
     else
@@ -126,12 +128,12 @@ wfe.init = function() {
             localStorage.analogDescription = true;
         };
 
-    //Default images initialising
+    // Default images initialising
     for (let i = 200; i <= wfe.app.lastimage; i++)
         $("defimages").innerHTML += '<img src="defaultimages/' + i + '.png" id="' + i + '" class="default-image">';
 
-    //Browser support
-    wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
+    // Browser support
+    wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/u) > 0 || navigator.userAgent.search(/Firefox/u) > 0 ? true : false;
     if (wfe.app.notWebkitBased) {
         UIkit.notification(('browserwarn' in wfe.app.lang ? wfe.app.lang.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
             status: 'warning',
@@ -142,14 +144,14 @@ wfe.init = function() {
         addScript("js/canvas-toBlob.js");
         $("inputblock").childNodes[3].childNodes[1].style.overflowX = "hidden";
     } else
-    if (navigator.userAgent.match(/Android|iPhone/i))
+    if (navigator.userAgent.match(/Android|iPhone/iu))
         UIkit.notification(("This site is not optimized for mobile devices, something may not work"), {
             status: 'warning',
             pos: 'top-left',
             timeout: 7500
         });
 
-    //Buttons initialising
+    // Buttons initialising
     $('inputimages').onchange = function() {
         if ($('inputimages').files.length) {
             let i = 0;
@@ -204,7 +206,7 @@ wfe.init = function() {
             wfe.load.disableBtn(0);
     };
 
-    //Update bages
+    // Update bages
     //        if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
     //            $("resources-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
     //        if (!('editortabversion' in localStorage) || localStorage.editortabversion < wfe.app.editortabversion)
@@ -214,7 +216,7 @@ wfe.init = function() {
     //        if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
     //            $("analog-watch-tab").lastChild.innerHTML += ' <span class="uk-badge indevbadge">New</span>';
 
-    //Donate window
+    // Donate window
     UIkit.modal("#donateframe")._events[0] = function() {
         $("donateframe").innerHTML = '<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C%20watchfaceEditor&targets-hint=&default-sum=100&button-text=14&payment-type-choice=on&hint=%D0%9E%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BE%D1%82%D0%B7%D1%8B%D0%B2&successURL=&quickpay=shop&account=41001928688597" width="460" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>';
         setTimeout(function() {
@@ -225,7 +227,7 @@ wfe.init = function() {
         $("siteopened").innerHTML = $("siteopened").innerHTML.replace("$times", localStorage.showcount);
     };
 
-    //Shows count
+    // Shows count
     if (!('showcount' in localStorage)) {
         localStorage.showcount = 1;
     } else {
