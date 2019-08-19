@@ -360,13 +360,13 @@ function makejsbetter() {
         calc(wfe.coords.batteryText, 3);
     if (wfe.coords.activity) {
         if ('actCal' in wfe.coords)
-            calc(wfe.coords.actCal, 4);
+            calc(wfe.coords.actCal.Number, 4);
         if ('actSteps' in wfe.coords)
-            calc(wfe.coords.actSteps, 5);
+            calc(wfe.coords.actSteps.Number, 5);
         if ('actStepsGoal' in wfe.coords)
-            calc(wfe.coords.actStepsGoal, 5);
+            calc(wfe.coords.actStepsGoal.Number, 5);
         if ('actPulse' in wfe.coords)
-            calc(wfe.coords.actPulse, 3);
+            calc(wfe.coords.actPulse.Number, 3);
         if ('actDistance' in wfe.coords)
             calc(wfe.coords.actDistance.Number, 4, wfe.coords.actDistance.DecimalPointImageIndex, wfe.coords.actDistance.SuffixImageIndex);
     }

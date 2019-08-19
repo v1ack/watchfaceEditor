@@ -94,9 +94,11 @@ class BlockElement extends React.Component {
     makeBlock() {
         let el = null,
             extra = this.props.extra || {},
-            value = Math.abs(Number(this.props.value)).toString(),
+            value = this.props.value.toString(),
             block = [],
             width = 0;
+        if (value[0] === '-')
+            value = value.slice(1);
         if (this.props.el.Number) {
             el = this.props.el.Number;
             if (this.props.el.DegreesImageIndex)
@@ -126,7 +128,9 @@ class BlockElement extends React.Component {
         if (extra) {
             if (extra.secondPart) {
                 let delimiter = $(extra.DelimiterImageIndex);
-                value = Math.abs(Number(extra.secondPart)).toString();
+                value = extra.secondPart.toString();
+                if (value[0] === '-')
+                    value = value.slice(1);
                 block.push({
                     src: delimiter.src,
                     width: delimiter.width,
