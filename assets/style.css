@@ -2,7 +2,8 @@
 .uk-light button:disabled:hover {
     color: #999;
 }
-#new_watchface img {
+#watchface img, 
+#watchface>div>* {
     position: absolute;
 }
 #modal-loading {
@@ -85,18 +86,10 @@ img {
     position: relative;
 }
 
-#watchfaceblock {
-    position: relative;
-}
-
 #watchface {
-    overflow: hidden;
-}
-
-#watchface,
-.watchface-cover {
-    position: absolute;
+    position: relative;
     top: 0;
+    overflow: hidden;
 }
 
 #analog {
@@ -112,11 +105,8 @@ img {
 }
 
 #realsizePreview>canvas {
-    height: 72.91mm;
-}
-
-#watchface img {
-    position: absolute;
+    height: 72.91mm!important;
+    width: auto!important;
 }
 
 .indevbadge {

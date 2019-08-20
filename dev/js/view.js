@@ -1,80 +1,14 @@
 /* global saveAs, UIkit */
 import {
-    $ as $,
-    $c as $c
+    $ as $
 } from './utils.js';
 import wfe from './wfe_obj.js';
 import html2canvas from 'html2canvas';
 import updateWatchface from './watchface_react';
 
-let draw = {
-    analog: {
-        hours: function() {
-            drawAnalog(wfe.coords.analoghours, wfe.data.analog[0]);
-        },
-        minutes: function() {
-            drawAnalog(wfe.coords.analogminutes, wfe.data.analog[1]);
-        },
-        seconds: function() {
-            drawAnalog(wfe.coords.analogseconds, wfe.data.analog[2]);
-        }
-    },
-    stepsprogress: {
-        circle: function() {
-            let col = wfe.coords.stepscircle.Color.replace("0x", "#"),
-                full = Math.floor(2 * wfe.coords.stepscircle.RadiusX * Math.PI / 360 * (wfe.coords.stepscircle.EndAngle - wfe.coords.stepscircle.StartAngle));
-            let fill = Math.round(wfe.data.steps / (wfe.data.stepsGoal / full));
-            if (fill > full) fill = full;
-            $('svg-cont-steps').innerHTML += "<ellipse transform=\"rotate(" + (-90 + wfe.coords.stepscircle.StartAngle) + " " + wfe.coords.stepscircle.CenterX + " " + wfe.coords.stepscircle.CenterY + ")\" cx=\"" + wfe.coords.stepscircle.CenterX + "\" cy=\"" + wfe.coords.stepscircle.CenterY + "\" rx=\"" + wfe.coords.stepscircle.RadiusX + "\" ry=\"" + wfe.coords.stepscircle.RadiusY + "\" fill=\"rgba(255,255,255,0)\" stroke-width=\"" + wfe.coords.stepscircle.Width + "\" stroke=\"" + col + "\" stroke-dasharray=\"" + fill + " " + (full - fill) + "\" stroke-linecap=\"none\"></ellipse>";
-        }
-    }
-};
-
-function drawAnalog(el, value) {
-    let col = el.Color.replace("0x", "#"),
-        d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
-        iters = el.Shape.length,
-        fill = el.OnlyBorder ? "none" : col;
-    for (let i = 0; i < iters; i++) {
-        d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
-    }
-    d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
-    $('svg-cont-clock').innerHTML += '<path d="' + d + '" transform="rotate(' + (value - 90) + ' ' + el.Center.X + ' ' + el.Center.Y + ') translate(' + el.Center.X + " " + el.Center.Y + ') " fill="' + fill + '" stroke="' + col + '"></path>';
-    if ('CenterImage' in el) {
-        setPosN(el.CenterImage, 0, "c_an_img");
-    }
-}
-
-function insert(t, name) {
-    t.removeAttribute('id');
-    t.classList.add(name);
-    $("watchface").appendChild(t);
-}
-
-function setPosN(el, value, cls) {
-    let t = $c(el.ImageIndex + value);
-    t.style.left = el.X + "px";
-    t.style.top = el.Y + "px";
-    insert(t, cls);
-}
-
 function makeWf() {
     try {
         updateWatchface();
-        $("watchface").innerHTML = '';
-        $("svg-cont-clock").innerHTML = '';
-        $("svg-cont-steps").innerHTML = '';
-        if (wfe.coords.stepsprogress)
-            if ('stepscircle' in wfe.coords)
-                draw.stepsprogress.circle();
-        if (wfe.coords.analog) {
-            if ('analoghours' in wfe.coords)
-                draw.analog.hours();
-            if ('analogminutes' in wfe.coords)
-                draw.analog.minutes();
-            if ('analogseconds' in wfe.coords)
-                draw.analog.seconds();
-        }
     } catch (error) {
         console.warn(error);
         if (error.name === "ImageError") {
@@ -102,15 +36,6 @@ let changes = {
         wfe.data.timeOnClock[1] = t[1];
         wfe.data.analog[0] = (t[0] > 12 ? t[0] - 12 : t[0]) * 30 + t[1] * 0.5;
         wfe.data.analog[1] = t[1] * 6;
-        $("svg-cont-clock").innerHTML = '';
-        if ('analog' in wfe.coords) {
-            if ('analoghours' in wfe.coords)
-                draw.analog.hours();
-            if ('analogminutes' in wfe.coords)
-                draw.analog.minutes();
-            if ('analogseconds' in wfe.coords)
-                draw.analog.seconds();
-        }
         updateWatchface();
     },
     date_change: () => {
@@ -131,15 +56,6 @@ let changes = {
         wfe.data.seconds[0] = Number(sec.split("")[0]);
         wfe.data.seconds[1] = Number((sec.split("").length === 1 ? 0 : sec.split("")[1]));
         wfe.data.analog[2] = sec * 6;
-        $("svg-cont-clock").innerHTML = '';
-        if ('analog' in wfe.coords) {
-            if ('analoghours' in wfe.coords)
-                draw.analog.hours();
-            if ('analogminutes' in wfe.coords)
-                draw.analog.minutes();
-            if ('analogseconds' in wfe.coords)
-                draw.analog.seconds();
-        }
         updateWatchface();
     },
     battery_change: () => {
@@ -172,10 +88,6 @@ let changes = {
         if ($("in-steps").value > 99999) $("in-steps").value = 99999;
         if ($("in-steps").value < 0) $("in-steps").value = 0;
         wfe.data.steps = parseInt($("in-steps").value, 10);
-        $("svg-cont-steps").innerHTML = '';
-        if (wfe.coords.stepsprogress)
-            if ('stepscircle' in wfe.coords)
-                draw.stepsprogress.circle();
         updateWatchface();
     },
     distance_change: () => {
@@ -237,14 +149,36 @@ let changes = {
     }
 };
 
+function cleaner(imageData) {
+    let pixels = imageData.data;
+    for (let i = 0; i < pixels.length; i += 4) {
+        let r = pixels[i],
+            g = pixels[i + 1],
+            b = pixels[i + 2];
+        pixels[i] = (r > 127 ? 255 : 0);
+        pixels[i + 1] = (g > 127 ? 255 : 0);
+        pixels[i + 2] = (b > 127 ? 255 : 0);
+    }
+    return imageData;
+}
+
+window.html2canvas = html2canvas;
 function makepng() {
-    let el = 'watchfaceblock';
+    let el = 'watchface';
     if ($('makepngwithwatch').checked)
         el = 'watchfaceimage';
+    window.scrollTo(0, 0);
     html2canvas($(el), {
-        allowTaint: false
+        allowTaint: true,
+        scale: 1,
+        useCORS: true,
+        scrollY: 0,
+        scrollX: -4
     }).then(canvas => {
-        // let ctx = canvas.getContext('2d');
+        if (wfe.device.name === 'bip' && !($('makepngwithwatch').checked)) {
+            let ctx = canvas.getContext('2d');
+            ctx.putImageData(cleaner(ctx.getImageData(0, 0, canvas.width, canvas.height)), 0, 0);
+        }
         if (wfe.app.notWebkitBased) {
             canvas.toBlob(function(blob) {
                 saveAs(blob, wfe.data.wfname + '.png');
@@ -257,38 +191,21 @@ function makepng() {
             a = null;
         }
     });
-    // , {
-    //     onrendered: function(canvas) {
-    //         // let ctx = canvas.getContext('2d');
-    //         if (wfe.app.notWebkitBased) {
-    //             canvas.toBlob(function(blob) {
-    //                 saveAs(blob, wfe.data.wfname + '.png');
-    //             });
-    //         } else {
-    //             let a = document.createElement('a');
-    //             a.href = canvas.toDataURL('image/png');
-    //             a.download = wfe.data.wfname + '.png';
-    //             a.click();
-    //             a = null;
-    //         }
-    //     }
-    // });
 }
 
 function makePreview() {
-    html2canvas($('watchfaceimage')).then(canvas => {
+    window.scrollTo(0, 0);
+    html2canvas($('watchfaceimage'), {
+        allowTaint: true,
+        scale: 1
+    }).then(canvas => {
         $('realsizePreview').innerHTML = '';
         $('realsizePreview').appendChild(canvas);
+        console.log('done');
     });
-    // html2canvas($('watchfaceimage'), {
-    //     onrendered: function(canvas) {
-    //         $('realsizePreview').innerHTML = '';
-    //         $('realsizePreview').appendChild(canvas);
-    //     }
-    // });
 }
 
-$('realsizePreview').addEventListener('click', makePreview);
+$('real_size_preview_button').addEventListener('click', makePreview);
 $('makepng').addEventListener('click', makepng);
 let elements = ['time', 'date', 'battery', 'calories', 'steps', 'stepsGoal', 'pulse', 'distance', 'weatherd', 'weathern', 'weathericon', 'sec', 'alarm', 'bt', 'dnd', 'lock', 'weatherAlt', 'air', 'animation'];
 for (let i in elements) {
@@ -296,8 +213,3 @@ for (let i in elements) {
 }
 
 wfe.makeWf = makeWf;
-// wfe.makeWf = updateWatchface;
-wfe.view = {
-    setPosN: setPosN
-};
-wfe.draw = draw;

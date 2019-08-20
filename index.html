@@ -87,16 +87,7 @@
         <div class="uk-grid">
             <div class="uk-width-auto uk-flex uk-flex-center">
                 <div id="watchfaceimage">
-                    <div id="watchfaceblock">
-                        <div id="new_watchface"></div>
-                        <div id="watchface"></div>
-                        <div class="watchface-cover">
-                            <svg id="svg-cont-steps" width="176" height="176"></svg>
-                        </div>
-                        <div class="watchface-cover" style="top: 0;position: relative; z-index: 5">
-                            <svg id="svg-cont-clock" width="176" height="176"></svg>
-                        </div>
-                    </div>
+                    <div id="watchface"></div>
                 </div>
             </div>
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0; padding-bottom: 10px;">
@@ -127,7 +118,7 @@
                         </div>
                         <br>
                         <button id="viewsettings" class="uk-button uk-button-default" type="button" uk-toggle="target: #vars; animation: uk-animation-fade" disabled data-translate-id="settings">Settings</button>
-                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-preview" data-translate-id="realsizePreview">Real-size preview</button>
+                        <button id="real_size_preview_button" class="uk-button uk-button-default" type="button" uk-toggle="target: #modal-preview" data-translate-id="realsizePreview">Real-size preview</button>
                         <button id="makepng" class="uk-button uk-button-default" disabled data-translate-id="makepng">Make PNG</button>
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> <span data-translate-id="withwatch">With watch</span></label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">

@@ -1,40 +1,21 @@
 function $(el) {
-    if (el === null || el === '') throw {
-        name: "Get element error: no element",
-        element: el
-    };
+    if (el === null || el === '') throw new Error("Get element error - no element: " + el);
     switch (el[0]) {
-        case '<':
-            {
-                return document.getElementsByTagName(el.slice(1));
-            }
-        case '.':
-            {
-                return document.getElementsByClassName(el.slice(1));
-            }
-        default:
-            {
-                let node = document.getElementById(el);
-                if (node === null) throw {
-                    name: "Get element error",
-                    element: el
-                };
-                return node;
-            }
+    case '<':
+        return document.getElementsByTagName(el.slice(1));
+    case '.':
+        return document.getElementsByClassName(el.slice(1));
+    default:
+        if (document.getElementById(el) === null) throw new Error("Get element error: " + el);
+        return document.getElementById(el);
     }
 }
 
 let $c = el => $(el).cloneNode(false),
     div = (a, b) => (a - a % b) / b;
 
-function removeByClass(cl) {
-    for (let i = 0, els = $('.' + cl); els.length; i++)
-        $("watchface").removeChild(els[0]);
-}
-
 export {
     $,
     $c,
-    div,
-    removeByClass
+    div
 };

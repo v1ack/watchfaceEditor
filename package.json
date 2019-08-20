@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack -p",
         "watch": "webpack --watch",
-        "dev": "webpack -w --devtool source-map"
+        "dev": "webpack -w"
     },
     "author": "vlack",
     "license": "ISC",
@@ -20,6 +20,7 @@
         "@babel/preset-react": "^7.0.0",
         "babel": "^6.23.0",
         "babel-loader": "^8.0.6",
+        "eslint-plugin-react": "^7.14.3",
         "html2canvas": "^1.0.0-rc.3",
         "jsonlint-mod": "^1.7.5",
         "react-dom": "^16.9.0",

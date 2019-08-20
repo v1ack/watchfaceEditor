@@ -41,21 +41,23 @@ function init() {
             currentElement.OnlyBorder = true;
         update();
     };
-    update(currentElementName !== undefined ? currentElementName : 'hours');
+    update(currentElementName ? currentElementName : 'hours');
 }
 
 function update(arrow) {
-    if (arrow !== undefined) {
+    if (arrow) {
         switch (arrow) {
-            case 'hours':
-                currentElement = wfe.coords.analoghours;
-                break;
-            case 'minutes':
-                currentElement = wfe.coords.analogminutes;
-                break;
-            case 'seconds':
-                currentElement = wfe.coords.analogseconds;
-                break;
+        case 'hours':
+            currentElement = wfe.coords.analoghours;
+            break;
+        case 'minutes':
+            currentElement = wfe.coords.analogminutes;
+            break;
+        case 'seconds':
+            currentElement = wfe.coords.analogseconds;
+            break;
+        default:
+            throw new Error('Update analog error');
         }
         currentElementName = arrow;
     }
@@ -107,7 +109,7 @@ function addDot(e) {
 function removeDot(e) {
     if (dotCount > 2) {
         currentElement.Shape.splice(Number(e.target.id.replace('dot', '')), 1);
-        dotCount--;
+        dotCount -= 1;
         update(currentElementName);
     }
 }
@@ -134,9 +136,6 @@ function drawAnalog(el, value) {
     }
     d += "L " + el.Shape[0].X * 3 + " " + el.Shape[0].Y * 3 + " ";
     $('analogsvg').innerHTML += '<path d="' + d + '" transform="rotate(' + (value - 90) + ' ' + el.Center.X * 3 + ' ' + el.Center.Y * 3 + ') translate(' + el.Center.X * 3 + " " + el.Center.Y * 3 + ') " fill="' + fill + '" stroke="' + col + '"></path>';
-    if ('CenterImage' in el) {
-        wfe.view.setPosN(el.CenterImage, 0, "c_an_img");
-    }
 }
 let currentElement = {},
     currentElementName = 'hours',
@@ -144,104 +143,106 @@ let currentElement = {},
 
 function toggle(elem) {
     switch (elem) {
-        case 'hours':
-            if ('analoghours' in wfe.coords) {
-                delete wfe.coords.analoghours;
-                if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
-                    wfe.coords.analog = false;
-            } else {
-                wfe.coords.analog = true;
-                wfe.coords.analoghours = {
-                    Center: {
-                        X: wfe.device.width / 2,
-                        Y: wfe.device.height / 2
-                    },
-                    Color: "0xFFFFFF",
-                    OnlyBorder: false,
-                    Shape: [{
-                        X: -17,
-                        Y: -2
-                    }, {
-                        X: 54,
-                        Y: -2
-                    }, {
-                        X: 54,
-                        Y: 1
-                    }, {
-                        X: -17,
-                        Y: 1
-                    }]
-                };
-            }
-            break;
-        case 'minutes':
-            if ('analogminutes' in wfe.coords) {
-                delete wfe.coords.analogminutes;
-                if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
-                    wfe.coords.analog = false;
-            } else {
-                wfe.coords.analog = true;
-                wfe.coords.analogminutes = {
-                    Center: {
-                        X: wfe.device.width / 2,
-                        Y: wfe.device.height / 2
-                    },
-                    Color: "0xFFFFFF",
-                    OnlyBorder: false,
-                    Shape: [{
-                            X: -17,
-                            Y: -2
-                        },
-                        {
-                            X: 68,
-                            Y: -2
-                        },
-                        {
-                            X: 68,
-                            Y: 1
-                        },
-                        {
-                            X: -17,
-                            Y: 1
-                        }
-                    ]
-                };
-            }
-            break;
-        case 'seconds':
-            if ('analogseconds' in wfe.coords) {
-                delete wfe.coords.analogseconds;
-                if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
-                    wfe.coords.analog = false;
-            } else {
-                wfe.coords.analog = true;
-                wfe.coords.analogseconds = {
-                    Center: {
-                        X: wfe.device.width / 2,
-                        Y: wfe.device.height / 2
-                    },
-                    Color: "0xFF0000",
-                    OnlyBorder: false,
-                    Shape: [{
-                            X: -21,
-                            Y: -1
-                        },
-                        {
-                            X: 82,
-                            Y: -1
-                        },
-                        {
-                            X: 82,
-                            Y: 0
-                        },
-                        {
-                            X: -21,
-                            Y: 0
-                        }
-                    ]
-                };
-            }
-            break;
+    case 'hours':
+        if ('analoghours' in wfe.coords) {
+            delete wfe.coords.analoghours;
+            if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
+                wfe.coords.analog = false;
+        } else {
+            wfe.coords.analog = true;
+            wfe.coords.analoghours = {
+                Center: {
+                    X: wfe.device.width / 2,
+                    Y: wfe.device.height / 2
+                },
+                Color: "0xFFFFFF",
+                OnlyBorder: false,
+                Shape: [{
+                    X: -17,
+                    Y: -2
+                }, {
+                    X: 54,
+                    Y: -2
+                }, {
+                    X: 54,
+                    Y: 1
+                }, {
+                    X: -17,
+                    Y: 1
+                }]
+            };
+        }
+        break;
+    case 'minutes':
+        if ('analogminutes' in wfe.coords) {
+            delete wfe.coords.analogminutes;
+            if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
+                wfe.coords.analog = false;
+        } else {
+            wfe.coords.analog = true;
+            wfe.coords.analogminutes = {
+                Center: {
+                    X: wfe.device.width / 2,
+                    Y: wfe.device.height / 2
+                },
+                Color: "0xFFFFFF",
+                OnlyBorder: false,
+                Shape: [{
+                    X: -17,
+                    Y: -2
+                },
+                {
+                    X: 68,
+                    Y: -2
+                },
+                {
+                    X: 68,
+                    Y: 1
+                },
+                {
+                    X: -17,
+                    Y: 1
+                }
+                ]
+            };
+        }
+        break;
+    case 'seconds':
+        if ('analogseconds' in wfe.coords) {
+            delete wfe.coords.analogseconds;
+            if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
+                wfe.coords.analog = false;
+        } else {
+            wfe.coords.analog = true;
+            wfe.coords.analogseconds = {
+                Center: {
+                    X: wfe.device.width / 2,
+                    Y: wfe.device.height / 2
+                },
+                Color: "0xFF0000",
+                OnlyBorder: false,
+                Shape: [{
+                    X: -21,
+                    Y: -1
+                },
+                {
+                    X: 82,
+                    Y: -1
+                },
+                {
+                    X: 82,
+                    Y: 0
+                },
+                {
+                    X: -21,
+                    Y: 0
+                }
+                ]
+            };
+        }
+        break;
+    default:
+        throw new Error('Toggle not found');
     }
     init(elem);
 }
@@ -299,25 +300,25 @@ function moveDot(el, elcoords) {
 }
 
 // TODO: Убрать дублирующийся из editor.js код
-let getOffsetRect = function(elem) {
-        let box = elem.getBoundingClientRect(),
-            body = document.body,
-            docElem = document.documentElement,
-            scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
-            scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
-            clientTop = docElem.clientTop || body.clientTop || 0,
-            clientLeft = docElem.clientLeft || body.clientLeft || 0,
-            top = box.top + scrollTop - clientTop,
-            left = box.left + scrollLeft - clientLeft;
+function getOffsetRect(elem) {
+    let box = elem.getBoundingClientRect(),
+        body = document.body,
+        docElem = document.documentElement,
+        scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+        scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+        clientTop = docElem.clientTop || body.clientTop || 0,
+        clientLeft = docElem.clientLeft || body.clientLeft || 0,
+        top = box.top + scrollTop - clientTop,
+        left = box.left + scrollLeft - clientLeft;
 
-        return {
-            top: Math.round(top),
-            left: Math.round(left)
-        };
-    },
-    styleToNum = function(el) {
-        return Number(el.replace('px', ''));
+    return {
+        top: Math.round(top),
+        left: Math.round(left)
     };
+}
+function styleToNum (el) {
+    return Number(el.replace('px', ''));
+}
 
 $('analog-watch-tab').addEventListener('click', () => {
     init('hours');

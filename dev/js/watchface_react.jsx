@@ -50,6 +50,9 @@ class StatusElement extends React.Component {
             return (
                 <img src={$(this.props.el.ImageIndexOff).src} style={{top: this.props.el.Coordinates.Y + 'px', left: this.props.el.Coordinates.X + 'px'}}/>
             );
+        return (
+            <span className="no-data"></span>
+        );
     }
 }
 
@@ -65,10 +68,7 @@ class SegmentsElement extends React.Component {
             end = Math.ceil(this.props.value / (this.props.maxValue / (el.Segments.length - 1))),
             itemsList = [];
         for (let i = 0; i <= end; i++) {
-            // let t = $(el.StartImageIndex + i);
             itemsList.push(<img src={$(el.StartImageIndex + i).src} style={{top: el.Segments[i].Y + 'px', left: el.Segments[i].X + 'px'}} />);
-            // setPos(t, this.props.el.Segments[i]);
-            // insert(t, "c_battery_scale");
         }
         return (
             itemsList
@@ -366,6 +366,46 @@ class BlockElement extends React.Component {
     }
 }
 
+class AnalogArrow extends React.Component {
+    render() {
+        let el = this.props.el;
+
+        let col = el.Color.replace("0x", "#"),
+            d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
+            iters = el.Shape.length,
+            fill = el.OnlyBorder ? "none" : col;
+        for (let i = 0; i < iters; i++) {
+            d += "L " + el.Shape[i].X + " " + el.Shape[i].Y + " ";
+        }
+        d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
+        return (
+            <div>
+                <svg width={this.props.device.width} height={this.props.device.height}>
+                    <path d={d} transform={'rotate(' + (this.props.value - 90) + ' ' + el.Center.X + ' ' + el.Center.Y + ') translate(' + el.Center.X + " " + el.Center.Y + ')'} fill={fill} stroke={col}></path>
+                </svg>
+                {el.CenterImage &&
+                    <ImageElement el={el.CenterImage} />
+                }
+            </div>
+        );
+    }
+}
+
+class StepsCircle extends React.Component {
+    render() {
+        let el = this.props.el;
+        let col = el.Color.replace("0x", "#"),
+            full = Math.floor(2 * el.RadiusX * Math.PI / 360 * (el.EndAngle - el.StartAngle));
+        let fill = Math.round(this.props.value / (this.props.maxValue / full));
+        if (fill > full) fill = full;
+        return (
+            <svg width={this.props.device.width} height={this.props.device.height}>
+                <ellipse transform={"rotate(" + (-90 + el.StartAngle) + " " + el.CenterX + " " + el.CenterY + ")"} cx={el.CenterX} cy={el.CenterY} rx={el.RadiusX} ry={el.RadiusY} fill="rgba(255,255,255,0)" strokeWidth={el.Width} stroke={col} strokeDasharray={fill + " " + (full - fill)} strokeLinecap="none"></ellipse>
+            </svg>
+        );
+    }
+}
+
 /**
  * Main watchface block
  *
@@ -430,7 +470,15 @@ class Watchface extends React.Component {
                 {this.props.coords.batteryScale &&
                     <SegmentsElement el={this.props.coords.batteryScale} value={this.props.data.battery} maxValue={100} />
                 }
-                {/* Analog */}
+                {this.props.coords.analoghours &&
+                    <AnalogArrow el={this.props.coords.analoghours} value={this.props.data.analog[0]} device={this.props.device}/>
+                }
+                {this.props.coords.analogminutes &&
+                    <AnalogArrow el={this.props.coords.analogminutes} value={this.props.data.analog[1]} device={this.props.device}/>
+                }
+                {this.props.coords.analogseconds &&
+                    <AnalogArrow el={this.props.coords.analogseconds} value={this.props.data.analog[2]} device={this.props.device}/>
+                }
                 {this.props.coords.statAlarm &&
                     <StatusElement el={this.props.coords.statAlarm} value={this.props.data.alarm} />
                 }
@@ -461,7 +509,9 @@ class Watchface extends React.Component {
                 {this.props.coords.stepsLinear &&
                     <SegmentsElement el={this.props.coords.stepsLinear} value={this.props.data.steps} maxValue={this.props.data.stepsGoal} />
                 }
-                {/* Steps progress circle */}
+                {this.props.coords.stepscircle &&
+                    <StepsCircle el={this.props.coords.stepscircle} value={this.props.data.steps} maxValue={this.props.data.stepsGoal} device={this.props.device}/>
+                }
                 {this.props.coords.stepsGoal && this.props.data.steps >= this.props.data.stepsGoal &&
                     <ImageElement el={this.props.coords.stepsGoal} />
                 }
@@ -502,8 +552,8 @@ class Watchface extends React.Component {
 
 function updateWatchface() {
     ReactDOM.render(
-        <Watchface coords={wfe.coords} data={wfe.data} />,
-        document.getElementById('new_watchface')
+        <Watchface coords={wfe.coords} data={wfe.data} device={wfe.device}/>,
+        document.getElementById('watchface')
     );
 }
 // Костыль

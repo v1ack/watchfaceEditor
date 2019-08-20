@@ -6,8 +6,9 @@ import devices from './devices/devices_list';
 /**
  * Changes device
  *
- * @param {string} name 
- * @param {object} wfe_obj
+ * @param {string} name device
+ * @param {object} wfe_obj main app object
+ * @returns {undefined} undefined
  */
 function change_device(name, wfe_obj) {
 
@@ -15,11 +16,6 @@ function change_device(name, wfe_obj) {
     let device = devices[name];
     $('watchface').style.height = device.height + 'px';
     $('watchface').style.width = device.width + 'px';
-    $('svg-cont-steps').attributes.height.value = device.height;
-    $('svg-cont-steps').attributes.width.value = device.width;
-    $('svg-cont-clock').attributes.height.value = device.height;
-    $('svg-cont-clock').attributes.width.value = device.width;
-    $('svg-cont-steps').style.width = device.width + 'px';
     $('editor').style.height = device.height * 3 + 'px';
     $('editor').style.width = device.width * 3 + 'px';
     $('analog').style.height = device.height * 3 + 'px';
@@ -52,6 +48,7 @@ let app_lang = {};
  * Downloads language json and applys it to app_lang
  *
  * @param {string} lang language name
+ * @returns {undefined} undefined
  */
 function changeLang(lang) {
     try {
@@ -63,13 +60,13 @@ function changeLang(lang) {
             let strings = document.querySelectorAll('[data-translate-id]');
             for (let i = 0; i < strings.length; i++) {
                 if (strings[i].dataset.translateId in app_lang)
-                    if (strings[i].dataset.link === undefined)
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
+                    if (strings[i].dataset.link)
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/gu, strings[i].dataset.link);
                     else
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/g, strings[i].dataset.link);
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
             }
         } else
-            throw ("Respanse status: " + xhr.status);
+            throw new Error("Respanse status: " + xhr.status);
     } catch (error) {
         console.warn("Loading translation error", error);
         UIkit.notification('<b>Loading translation error: </b>' + error, {
@@ -84,6 +81,7 @@ function changeLang(lang) {
  * Changes application theme
  *
  * @param {string} theme name
+ * @returns {undefined} undefined
  */
 function changeTheme(theme) {
     if (localStorage.appTheme === 'amazfit') {
@@ -100,45 +98,47 @@ function changeTheme(theme) {
         $('theme-settings').removeAttribute('hidden');
     }
     switch (theme) {
-        case 'light':
-            localStorage.appTheme = 'light';
-            document.body.classList.remove('uk-light');
-            $('<html')[0].classList.remove('uk-background-secondary');
-            $('vars').classList.remove('uk-card-secondary');
-            $('modal-howto').childNodes[1].classList.remove('uk-background-secondary');
-            $('modal-about').childNodes[1].classList.remove('uk-background-secondary');
-            $('modal-donate').childNodes[1].classList.remove('uk-background-secondary');
-            $('jsonerrormodal').childNodes[1].classList.remove('uk-background-secondary');
-            $('modal-preview').childNodes[1].classList.remove('uk-background-secondary');
-            $('modal-settings').childNodes[1].classList.remove('uk-background-secondary');
-            break;
-        case 'dark':
-            localStorage.appTheme = 'dark';
-            document.body.classList.add('uk-light');
-            $('<html')[0].classList.add('uk-background-secondary');
-            $('vars').classList.add('uk-card-secondary');
-            $('modal-howto').childNodes[1].classList.add('uk-background-secondary');
-            $('modal-about').childNodes[1].classList.add('uk-background-secondary');
-            $('modal-donate').childNodes[1].classList.add('uk-background-secondary');
-            $('jsonerrormodal').childNodes[1].classList.add('uk-background-secondary');
-            $('modal-preview').childNodes[1].classList.add('uk-background-secondary');
-            $('modal-settings').childNodes[1].classList.add('uk-background-secondary');
-            break;
-        case 'amazfit':
-            changeTheme('dark');
-            $('.uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://amazfitwatchfaces.com/"><img src="assets/logo.png" style="width: 200px; image-rendering: auto;"></a>';
-            localStorage.appTheme = 'amazfit';
-            $('<html')[0].style.background = '#121314';
-            $('.uk-navbar')[0].style.height = '50px';
-            $('.uk-navbar')[0].classList.remove('we-white');
-            $('.uk-navbar')[0].classList.add('amazfit');
-            $('.uk-navbar-container')[0].style.background = '#222';
-            $('menu-amazfit').removeAttribute('hidden');
-            $('tablist-amazfit').removeAttribute('hidden');
-            $('tablist').setAttribute('hidden', '');
-            $('donate-link').setAttribute('hidden', '');
-            $('theme-settings').setAttribute('hidden', '');
-            break;
+    case 'light':
+        localStorage.appTheme = 'light';
+        document.body.classList.remove('uk-light');
+        $('<html')[0].classList.remove('uk-background-secondary');
+        $('vars').classList.remove('uk-card-secondary');
+        $('modal-howto').childNodes[1].classList.remove('uk-background-secondary');
+        $('modal-about').childNodes[1].classList.remove('uk-background-secondary');
+        $('modal-donate').childNodes[1].classList.remove('uk-background-secondary');
+        $('jsonerrormodal').childNodes[1].classList.remove('uk-background-secondary');
+        $('modal-preview').childNodes[1].classList.remove('uk-background-secondary');
+        $('modal-settings').childNodes[1].classList.remove('uk-background-secondary');
+        break;
+    case 'dark':
+        localStorage.appTheme = 'dark';
+        document.body.classList.add('uk-light');
+        $('<html')[0].classList.add('uk-background-secondary');
+        $('vars').classList.add('uk-card-secondary');
+        $('modal-howto').childNodes[1].classList.add('uk-background-secondary');
+        $('modal-about').childNodes[1].classList.add('uk-background-secondary');
+        $('modal-donate').childNodes[1].classList.add('uk-background-secondary');
+        $('jsonerrormodal').childNodes[1].classList.add('uk-background-secondary');
+        $('modal-preview').childNodes[1].classList.add('uk-background-secondary');
+        $('modal-settings').childNodes[1].classList.add('uk-background-secondary');
+        break;
+    case 'amazfit':
+        changeTheme('dark');
+        $('.uk-navbar-left')[0].innerHTML = '<a class="uk-navbar-item uk-logo we-white" href="https://amazfitwatchfaces.com/"><img src="assets/logo.png" style="width: 200px; image-rendering: auto;"></a>';
+        localStorage.appTheme = 'amazfit';
+        $('<html')[0].style.background = '#121314';
+        $('.uk-navbar')[0].style.height = '50px';
+        $('.uk-navbar')[0].classList.remove('we-white');
+        $('.uk-navbar')[0].classList.add('amazfit');
+        $('.uk-navbar-container')[0].style.background = '#222';
+        $('menu-amazfit').removeAttribute('hidden');
+        $('tablist-amazfit').removeAttribute('hidden');
+        $('tablist').setAttribute('hidden', '');
+        $('donate-link').setAttribute('hidden', '');
+        $('theme-settings').setAttribute('hidden', '');
+        break;
+    default:
+        throw new Error('Theme not found');
     }
 }
 
