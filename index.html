@@ -35,24 +35,24 @@
         <div class="uk-modal-dialog" uk-height-viewport>
             <div class="uk-transform-center uk-position-absolute" style="left: 50%; top: 50%">
                 <div class="uk-padding-large">
-                    <h1 class="uk-text-center we-white">Watchface Editor</h1>
+                    <h1 class="uk-text-center" style="color: white">Watchface Editor</h1>
                     <span style="top: -30px; position: relative;" class="uk-align-right we-white">by vlack</span>
                 </div>
                 <div uk-spinner class="uk-position-bottom-center"></div>
             </div>
         </div>
-        <script>
+        <!-- <script>
             if (location.ancestorOrigins.length > 0)
                 if (!(location.ancestorOrigins[0].match(/webvisor/g)))
                     window.parent.location.href = "https://v1ack.github.io/watchfaceEditor/";
-        </script>
+        </script> -->
     </div>
     <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
                 <div uk-navbar class="we-white">
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60%; margin-right: 10px;">Watchface Editor</a>
+                        <a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60px; margin-right: 10px;">Watchface Editor</a>
                     </div>
                     <div class="uk-navbar-left" id="tablist" style="margin-left: 15px">
                         <ul class="uk-navbar-nav">
@@ -61,22 +61,6 @@
                             <a class="uk-navbar-item" href="#modal-settings" uk-toggle data-translate-id="settings">Settings</a>
                             <a class="uk-navbar-item" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                             <a class="uk-navbar-item" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank" data-translate-id="imagecreator">Image creator</a>
-                        </ul>
-                    </div>
-                    <div class="uk-navbar-right" id="tablist-amazfit" hidden>
-                        <ul class="uk-navbar-nav">
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/editor/watchfaceEditor/?bip" id="amazfit-editor-bip" hidden>Bip WatchfaceEditor</a>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/editor/watchfaceEditor/?cor" id="amazfit-editor-cor">Cor WatchfaceEditor</a>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/bip/upload" id="amazfit-upload">Upload</a>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/forum/">Forum</a>
-                            <a class="uk-navbar-item" href="#">Downloads</a>
-                            <div uk-dropdown="mode: click" style="margin: -20px" class="uk-light uk-background-secondary">
-                                <ul class="uk-nav uk-dropdown-nav">
-                                    <li><a href="https://amazfitwatchfaces.com/apps">Applications</a></li>
-                                    <li><a href="https://amazfitwatchfaces.com/bip/firmware/">Firmware</a></li>
-                                </ul>
-                            </div>
-                            <a class="uk-navbar-item" href="https://amazfitwatchfaces.com/contact">Contact Us</a>
                         </ul>
                     </div>
                 </div>
