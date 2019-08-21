@@ -7,6 +7,7 @@ import wfe from './wfe_obj.js';
  * Renders image tab
  *
  * @param {object} coords wfe.coords object
+ * @returns {undefined}
  */
 function init(coords) {
     //    if (!('imagestabversion' in localStorage) || localStorage.imagestabversion < wfe.app.imagestabversion)
@@ -237,9 +238,10 @@ function init(coords) {
 /**
  * Renders images
  *
- * @param {string} name
- * @param {number} imageindex
- * @param {number} imagescount
+ * @param {string} name image name
+ * @param {number} imageindex index 
+ * @param {number} imagescount count
+ * @returns {undefined}
  */
 function insertimg(name, imageindex, imagescount) {
 
@@ -247,8 +249,8 @@ function insertimg(name, imageindex, imagescount) {
         name.insertto = "imagesinuse";
     if (!('addition' in name))
         name.addition = "";
-    if (imagescount === undefined) imagescount = 1;
-    if (imageindex === undefined) {
+    if (!imagescount) imagescount = 1;
+    if (!imageindex) {
         imagescount = 0;
         imageindex = '';
         name.addition = name.addition.slice(2);

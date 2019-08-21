@@ -1,7 +1,6 @@
 /* global UIkit, pageXOffset, pageYOffset */
 import {
-    $ as $,
-    $c as $c
+    $ as $
 } from './utils.js';
 import wfe from './wfe_obj.js';
 
@@ -9,7 +8,7 @@ function init() {
     //    if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
     //        localStorage.analogtabversion = wfe.app.analogtabversion;
     if ('bg' in wfe.coords) {
-        let bg = $c(wfe.coords.bg.Image.ImageIndex);
+        let bg = (wfe.coords.bg.Image.ImageIndex);
         bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
         bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
         bg.style.position = "absolute";
@@ -145,7 +144,7 @@ function toggle(elem) {
     switch (elem) {
     case 'hours':
         if ('analoghours' in wfe.coords) {
-            delete wfe.coords.analoghours;
+            Reflect.deleteProperty(wfe.coords.analoghours);
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {
@@ -175,7 +174,7 @@ function toggle(elem) {
         break;
     case 'minutes':
         if ('analogminutes' in wfe.coords) {
-            delete wfe.coords.analogminutes;
+            Reflect.deleteProperty(wfe.coords.analogminutes);
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {
@@ -209,7 +208,7 @@ function toggle(elem) {
         break;
     case 'seconds':
         if ('analogseconds' in wfe.coords) {
-            delete wfe.coords.analogseconds;
+            Reflect.deleteProperty(wfe.coords.analogseconds);
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {

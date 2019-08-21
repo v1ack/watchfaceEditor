@@ -51,12 +51,11 @@ let app_lang = {};
  * @returns {undefined} undefined
  */
 function changeLang(lang) {
-    try {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'assets/translation/' + lang + '.json', false);
-        xhr.send();
-        if (xhr.status === 200) {
-            app_lang = JSON.parse(xhr.responseText);
+    fetch('assets/translation/' + lang + '.json').
+        then(response => (response.status === 200 ? response : null)).
+        then(response => response.json()).
+        then(translation => {
+            app_lang = translation;
             let strings = document.querySelectorAll('[data-translate-id]');
             for (let i = 0; i < strings.length; i++) {
                 if (strings[i].dataset.translateId in app_lang)
@@ -65,16 +64,15 @@ function changeLang(lang) {
                     else
                         strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
             }
-        } else
-            throw new Error("Respanse status: " + xhr.status);
-    } catch (error) {
-        console.warn("Loading translation error", error);
-        UIkit.notification('<b>Loading translation error: </b>' + error, {
-            status: 'danger',
-            pos: 'top-left',
-            timeout: 5000
+        }).
+        catch(error => {
+            console.warn("Loading translation error", error);
+            UIkit.notification('<b>Loading translation error: </b>' + error, {
+                status: 'danger',
+                pos: 'top-left',
+                timeout: 5000
+            });
         });
-    }
 }
 
 /**
@@ -138,7 +136,7 @@ function changeTheme(theme) {
         $('theme-settings').setAttribute('hidden', '');
         break;
     default:
-        throw new Error('Theme not found');
+        changeTheme('light');
     }
 }
 

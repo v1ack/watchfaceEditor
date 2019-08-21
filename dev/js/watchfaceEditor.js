@@ -79,7 +79,7 @@ wfe.init = function() {
     }
 
     // Theme
-    if (location.host === 'amazfitwatchfaces.com' && localStorage.appTheme === undefined)
+    if (location.host === 'amazfitwatchfaces.com' && !localStorage.appTheme)
         localStorage.appTheme = 'amazfit';
     app.changeTheme(localStorage.appTheme);
 
@@ -111,7 +111,7 @@ wfe.init = function() {
     }
 
     // Demo
-    if (localStorage.showdemo === undefined) {
+    if (!localStorage.showdemo) {
         localStorage.showdemo = true;
     }
     $("showdemocheck").onchange = function() {
@@ -158,7 +158,7 @@ wfe.init = function() {
             console.log("Images count: ", $('inputimages').files.length);
             while (i < $('inputimages').files.length) {
                 wfe.load.renderImage($('inputimages').files[i]);
-                i++;
+                i += 1;
             }
             wfe.data.imagesset = true;
             if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger")) {
@@ -228,23 +228,23 @@ wfe.init = function() {
     };
 
     // Shows count
-    if (!('showcount' in localStorage)) {
-        localStorage.showcount = 1;
-    } else {
-        localStorage.showcount++;
+    if ('showcount' in localStorage) {
+        localStorage.showcount += 1;
         if (localStorage.showcount === 10) {
             setTimeout(() => UIkit.modal($("modal-donate")).show(), 250);
         }
+    } else {
+        localStorage.showcount = 1;
     }
 
     if (navigator.userAgent.indexOf("Electron") >= 0) {
         addScript('js/electronApp.js');
         wfe.app.local = false;
     }
-    if (!wfe.app.local)
-        setTimeout(set_metric, 2000);
-    else
+    if (wfe.app.local)
         addScript('js/utilit.js');
+    else
+        setTimeout(set_metric, 2000);
 
     wfe.app.endLoad();
 };
