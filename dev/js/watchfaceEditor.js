@@ -1,7 +1,5 @@
 /* global UIkit */
-import {
-    $
-} from './utils.js';
+import {$} from './utils.js';
 import app from './app.js';
 import './images_tab.js';
 import './json_editor.js';
@@ -13,6 +11,7 @@ import set_metric from './metrika.js';
 import jsonlint from 'jsonlint-mod';
 
 import './watchface_react.jsx';
+import createForm from './preview_data.jsx';
 
 wfe.app = {
     changeThemeBtn: function() {
@@ -56,18 +55,11 @@ wfe.init = function() {
     } else {
         app.change_device('bip', wfe);
     }
-    let device = document.getElementsByName('device'),
-        device_change = () => {
-            for (let i = 0; i < device.length; i++)
-                if (device[i].checked) {
-                    localStorage.device = device[i].value;
-                    location.search = '';
-                }
-        };
-    for (let i = 0; i < device.length; i++) {
-        if (device[i].value === localStorage.device)
-            device[i].checked = true;
-        device[i].onchange = device_change;
+    for (let i in device_list) {
+        $('device_' + device_list[i]).addEventListener('click', () => {
+            app.change_device(device_list[i], wfe);
+            location.search = '';
+        });
     }
 
     // Functions
@@ -256,6 +248,8 @@ wfe.init = function() {
     else
         setTimeout(set_metric, 2000);
 
+    createForm();
+    
     wfe.app.endLoad();
 };
 wfe.load = {

@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import wfe from './wfe_obj';
-import {$ as $, div as div} from './utils';
+import {$, div} from './utils';
 
 /**
  * Renders image element
@@ -379,14 +379,14 @@ class AnalogArrow extends React.Component {
         }
         d += "L " + el.Shape[0].X + " " + el.Shape[0].Y + " ";
         return (
-            <div>
+            <>
                 <svg width={this.props.device.width} height={this.props.device.height}>
                     <path d={d} transform={'rotate(' + (this.props.value - 90) + ' ' + el.Center.X + ' ' + el.Center.Y + ') translate(' + el.Center.X + " " + el.Center.Y + ')'} fill={fill} stroke={col}></path>
                 </svg>
                 {el.CenterImage &&
                     <ImageElement el={el.CenterImage} />
                 }
-            </div>
+            </>
         );
     }
 }
@@ -417,26 +417,30 @@ class Watchface extends React.Component {
         if (!this.props.coords)
             return;
         let am = null,
-            hours = this.props.data.timeOnClock[0];
+            hours = this.props.data.time.hours,
+            seconds = this.props.data.seconds.toString();
+        if (seconds.length === 1)
+            seconds = '0' + seconds;
         if (this.props.coords.amPm) {
-            if (Number(this.props.data.timeOnClock[0]) > 12) {
-                hours = (Number(this.props.data.timeOnClock[0]) - 12).toString();
+            if (Number(this.props.data.time.hours) > 12) {
+                hours = (Number(this.props.data.time.hours) - 12).toString();
+                am = false;
+            } else
                 am = true;
-            }
-            am = false;
         }
+        
         return (
-            <div>
+            <>
                 {this.props.coords.bg &&
                     <ImageElement el={this.props.coords.bg.Image}/>
                 }
                 {this.props.coords.time &&
-                    [
-                        <ImageElement el={this.props.coords.time.Hours.Ones} value={hours[1]} key={'hours.ones'}/>,
-                        <ImageElement el={this.props.coords.time.Hours.Tens} value={hours[0]} key={'hours.tens'}/>,
-                        <ImageElement el={this.props.coords.time.Minutes.Tens} value={this.props.data.timeOnClock[1][0]} key={'minutes.tens'}/>,
-                        <ImageElement el={this.props.coords.time.Minutes.Ones} value={this.props.data.timeOnClock[1][1]} key={'minutes.ones'}/>
-                    ]
+                    <>
+                        <ImageElement el={this.props.coords.time.Hours.Ones} value={hours[1]} key={'hours.ones'}/>
+                        <ImageElement el={this.props.coords.time.Hours.Tens} value={hours[0]} key={'hours.tens'}/>
+                        <ImageElement el={this.props.coords.time.Minutes.Tens} value={this.props.data.time.minutes[0]} key={'minutes.tens'}/>
+                        <ImageElement el={this.props.coords.time.Minutes.Ones} value={this.props.data.time.minutes[1]} key={'minutes.ones'}/>
+                    </>
                 }
                 {am !== null && (
                     am ? <img src={$(this.props.coords.amPm.ImageIndexAm).src} style={{top: this.props.coords.amPm.Y + 'px', left: this.props.coords.amPm.X + 'px'}} /> : <img src={$(this.props.coords.amPm.ImageIndexPm).src} style={{top: this.props.coords.amPm.Y + 'px', left: this.props.coords.amPm.X + 'px'}} />
@@ -444,22 +448,22 @@ class Watchface extends React.Component {
 
                 }
                 {this.props.coords.seconds &&
-                    [
-                        <ImageElement el={this.props.coords.seconds.Ones} value={this.props.data.seconds[1]} key={'seconds.ones'}/>,
-                        <ImageElement el={this.props.coords.seconds.Tens} value={this.props.data.seconds[0]} key={'seconds.tens'}/>
-                    ]
+                    <>
+                        <ImageElement el={this.props.coords.seconds.Ones} value={seconds[1]} key={'seconds.ones'}/>
+                        <ImageElement el={this.props.coords.seconds.Tens} value={seconds[0]} key={'seconds.tens'}/>
+                    </>
                 }
                 {this.props.coords.weekDay &&
-                    <ImageElement el={this.props.coords.weekDay} value={this.props.data.weekDay} />
+                    <ImageElement el={this.props.coords.weekDay} value={this.props.data.date.weekDay} />
                 }
                 {this.props.coords.dateDay &&
-                    <BlockElement el={this.props.coords.dateDay} value={this.props.data.day.toString().length === 1 && this.props.coords.monthandday.TwoDigitsDay ? '0' + this.props.data.day : this.props.data.day} />
+                    <BlockElement el={this.props.coords.dateDay} value={this.props.data.date.day.toString().length === 1 && this.props.coords.monthandday.TwoDigitsDay ? '0' + this.props.data.date.day : this.props.data.date.day} />
                 }
                 {this.props.coords.dateMonth &&
-                    <BlockElement el={this.props.coords.dateMonth} value={this.props.data.month.toString().length === 1 && this.props.coords.monthandday.TwoDigitsMonth ? '0' + this.props.data.month : this.props.data.month} />
+                    <BlockElement el={this.props.coords.dateMonth} value={this.props.data.date.month.toString().length === 1 && this.props.coords.monthandday.TwoDigitsMonth ? '0' + this.props.data.date.month : this.props.data.date.month} />
                 }
                 {this.props.coords.dateOneLine &&
-                    <BlockElement el={this.props.coords.dateOneLine.Number} value={this.props.data.month.toString().length === 1 && this.props.coords.monthandday.TwoDigitsMonth ? '0' + this.props.data.month : this.props.data.month} extra={{secondPart: this.props.data.day.toString().length === 1 && this.props.coords.monthandday.TwoDigitsDay ? '0' + this.props.data.day : this.props.data.day, DelimiterImageIndex: this.props.coords.dateOneLine.DelimiterImageIndex}}/>
+                    <BlockElement el={this.props.coords.dateOneLine.Number} value={this.props.data.date.month.toString().length === 1 && this.props.coords.monthandday.TwoDigitsMonth ? '0' + this.props.data.date.month : this.props.data.date.month} extra={{secondPart: this.props.data.date.day.toString().length === 1 && this.props.coords.monthandday.TwoDigitsDay ? '0' + this.props.data.date.day : this.props.data.date.day, DelimiterImageIndex: this.props.coords.dateOneLine.DelimiterImageIndex}}/>
                 }
                 {this.props.coords.batteryIcon && 
                     <ImageElement el={this.props.coords.batteryIcon} value={Math.round(this.props.data.battery / (100 / (this.props.coords.batteryIcon.ImagesCount - 1)))} />
@@ -471,13 +475,13 @@ class Watchface extends React.Component {
                     <SegmentsElement el={this.props.coords.batteryScale} value={this.props.data.battery} maxValue={100} />
                 }
                 {this.props.coords.analoghours &&
-                    <AnalogArrow el={this.props.coords.analoghours} value={this.props.data.analog[0]} device={this.props.device}/>
+                    <AnalogArrow el={this.props.coords.analoghours} value={(this.props.data.time.hours > 12 ? this.props.data.time.hours - 12 : this.props.data.time.hours) * 30 + this.props.data.time.minutes * 0.5} device={this.props.device}/>
                 }
                 {this.props.coords.analogminutes &&
-                    <AnalogArrow el={this.props.coords.analogminutes} value={this.props.data.analog[1]} device={this.props.device}/>
+                    <AnalogArrow el={this.props.coords.analogminutes} value={this.props.data.time.minutes * 6} device={this.props.device}/>
                 }
                 {this.props.coords.analogseconds &&
-                    <AnalogArrow el={this.props.coords.analogseconds} value={this.props.data.analog[2]} device={this.props.device}/>
+                    <AnalogArrow el={this.props.coords.analogseconds} value={this.props.data.seconds * 6} device={this.props.device}/>
                 }
                 {this.props.coords.statAlarm &&
                     <StatusElement el={this.props.coords.statAlarm} value={this.props.data.alarm} />
@@ -519,22 +523,22 @@ class Watchface extends React.Component {
                     this.props.coords.weathericon.CustomIcon ? <img src={$(this.props.coords.weathericon.CustomIcon.ImageIndex + this.props.data.weathericon).src} style={{top: this.props.coords.weathericon.CustomIcon.Y + 'px', left: this.props.coords.weathericon.CustomIcon.X + 'px'}}/> : <img src={$('weather').src} style={{top: this.props.coords.weathericon.Coordinates.Y + 'px', left: this.props.coords.weathericon.Coordinates.X + 'px'}}/>
                 )}
                 {this.props.coords.weatherDay && !this.props.data.weatherAlt &&
-                    <BlockElement el={this.props.coords.weatherDay} value={this.props.data.temp[0]} />
+                    <BlockElement el={this.props.coords.weatherDay} value={this.props.data.weatherDay} />
                 }
                 {this.props.coords.weatherNight && !this.props.data.weatherAlt &&
-                    <BlockElement el={this.props.coords.weatherNight} value={this.props.data.temp[1]} />
+                    <BlockElement el={this.props.coords.weatherNight} value={this.props.data.weatherNight} />
                 }
                 {this.props.coords.weatherDayAlt && this.props.data.weatherAlt &&
-                    <BlockElement el={this.props.coords.weatherDayAlt} value={this.props.data.temp[0]}/>
+                    <BlockElement el={this.props.coords.weatherDayAlt} value={this.props.data.weatherDay}/>
                 }
                 {this.props.coords.weatherNightAlt && this.props.data.weatherAlt &&
-                    <BlockElement el={this.props.coords.weatherNightAlt} value={this.props.data.temp[1]}/>
+                    <BlockElement el={this.props.coords.weatherNightAlt} value={this.props.data.weatherNight}/>
                 }
                 {this.props.coords.weatherCurrent &&
-                    <BlockElement el={this.props.coords.weatherCurrent} value={this.props.data.temp[0]} />
+                    <BlockElement el={this.props.coords.weatherCurrent} value={this.props.data.weatherDay} />
                 }
                 {this.props.coords.weatherOneLine &&
-                    <BlockElement el={this.props.coords.weatherOneLine} value={this.props.data.temp[0]} extra={{secondPart: this.props.data.temp[1], DelimiterImageIndex: this.props.coords.weatherOneLine.DelimiterImageIndex}} />
+                    <BlockElement el={this.props.coords.weatherOneLine} value={this.props.data.weatherDay} extra={{secondPart: this.props.data.weatherNight, DelimiterImageIndex: this.props.coords.weatherOneLine.DelimiterImageIndex}} />
                 }
                 {this.props.coords.weatherAirIcon &&
                     <ImageElement el={this.props.coords.weatherAirIcon} />
@@ -545,7 +549,7 @@ class Watchface extends React.Component {
                 {this.props.coords.Animation &&
                     <ImageElement el={this.props.coords.Animation.AnimationImage} value={this.props.data.animation} />
                 }
-            </div>
+            </>
         );
     }
 }

@@ -1,14 +1,12 @@
 /* global UIkit, pageXOffset, pageYOffset */
-import {
-    $ as $
-} from './utils.js';
+import {$, $c} from './utils.js';
 import wfe from './wfe_obj.js';
 
 function init() {
     //    if (!('analogtabversion' in localStorage) || localStorage.analogtabversion < wfe.app.analogtabversion)
     //        localStorage.analogtabversion = wfe.app.analogtabversion;
     if ('bg' in wfe.coords) {
-        let bg = (wfe.coords.bg.Image.ImageIndex);
+        let bg = $c(wfe.coords.bg.Image.ImageIndex);
         bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
         bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
         bg.style.position = "absolute";

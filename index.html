@@ -50,17 +50,31 @@
     <header class="uk-section-primary uk-preserve-color">
         <nav class="uk-navbar-container" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
             <div class="uk-container uk-container-expand">
-                <div uk-navbar class="we-white">
+                <div uk-navbar>
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo we-white" href="https://v1ack.github.io/watchfaceEditor/"><img src="assets/icon/android-chrome-192x192.png" style="width: auto; height: 60px; margin-right: 10px;">Watchface Editor</a>
                     </div>
                     <div class="uk-navbar-left" id="tablist" style="margin-left: 15px">
-                        <ul class="uk-navbar-nav">
+                        <ul class="uk-navbar-nav we-white">
                             <a class="uk-navbar-item" href="#modal-howto" uk-toggle data-translate-id="help">Help</a>
                             <a class="uk-navbar-item" href="#modal-donate" uk-toggle data-translate-id="donate">Donate</a>
                             <a class="uk-navbar-item" href="#modal-settings" uk-toggle data-translate-id="settings">Settings</a>
                             <a class="uk-navbar-item" href="#modal-about" uk-toggle data-translate-id="about">About</a>
                             <a class="uk-navbar-item" href="https://v1ack.github.io/watchfaceEditor/imagecreator.html" target="_blank" data-translate-id="imagecreator">Image creator</a>
+                        </ul>
+                    </div>
+                    <div class="uk-navbar-right">
+                        <ul class="uk-navbar-nav">
+                            <li>
+                                <a href="#" class="we-white" data-translate-id="device">Device</a>
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <li id="device_bip"><a href="#">Amazfit Bip</a></li>
+                                        <li id="device_cor"><a href="#">Amazfit Cor</a></li>
+                                        <li id="device_band4"><a href="#">Mi Band 4 <span class="uk-badge" style="zoom: .7; vertical-align: super;">Beta</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -75,11 +89,6 @@
                 </div>
             </div>
             <div id="inputblock" class="uk-width-expand uk-padding" style="padding-top: 0; padding-bottom: 10px;">
-                <ul class="uk-subnav uk-subnav-pill" uk-margin id="menu-amazfit" hidden>
-                    <li><a href="#modal-howto" uk-toggle data-translate-id="help">Help</a></li>
-                    <li><a href="#modal-settings" uk-toggle data-translate-id="settings">Settings</a></li>
-                    <li><a href="#modal-about" uk-toggle data-translate-id="about">About</a></li>
-                </ul>
                 <ul class="uk-tab" uk-switcher="connect: .switcher-container; swiping: false; animation: uk-animation-fade" style="margin-top: 0">
                     <li><a href="#" data-translate-id="view">View</a></li>
                     <li id="editor-tab" class="uk-disabled main-tab"><a href="#" data-translate-id="design">Design</a></li>
@@ -107,107 +116,7 @@
                         <label><input id="makepngwithwatch" class="uk-checkbox" type="checkbox"> <span data-translate-id="withwatch">With watch</span></label>
                         <div id="vars" hidden class="uk-margin-top uk-card uk-card-default uk-card-body">
                             <h3 class="uk-card-title" data-translate-id="settings">Settings</h3>
-                            <form class="uk-grid-small" uk-grid>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="time">Time</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-time" type="time" value="20:38">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="date">Date</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-date" type="date" value="2017-12-06">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="battery">Battery</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-battery" type="number" placeholder="Battery" min="0" max="100" value="20">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="calories">Calories</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-calories" type="number" placeholder="Calories" min="0" max="9999" value="860">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="steps">Steps</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-steps" type="number" placeholder="Steps" min="0" max="99999" value="5687">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="stepsgoal">Steps goal</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-stepsGoal" type="number" placeholder="Steps goal" min="0" max="99999" value="12000">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="pulse">Pulse</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-pulse" type="number" placeholder="Pulse" min="0" max="99999" value="72">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="distance">Distance</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-distance" type="number" placeholder="Distance" min="0" max="99999" value="5.67">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="weatherD">Weather day</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weatherd" type="number" placeholder="Weather day" min="-99" max="99" value="22">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="weatherN">Weather night</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weathern" type="number" placeholder="Weather night" min="-99" max="99" value="24">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="weatherIconNumber">Weather icon number</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-weathericon" type="number" placeholder="Weather icon" min="1" max="26" value="1">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="seconds">Seconds</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-sec" type="number" placeholder="Seconds" min="0" max="59" value="43">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label">Animation image</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-animation" type="number" placeholder="Only Band 4" min="0" max="10">
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="status">Status</label>
-                                    <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-alarm"> <span data-translate-id="alarm">Alarm</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-bt"> <span data-translate-id="bluetooth">Bluetooth</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-dnd"> <span data-translate-id="dnd">Do not disturb</span></label>
-                                        <label><input class="uk-checkbox" type="checkbox" checked id="in-lock"> <span data-translate-id="lock">Lock</span></label>
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="weatherAlt-label">Alt weather</label>
-                                    <div class="uk-form-controls uk-child-width-auto uk-grid">
-                                        <label><input class="uk-checkbox" type="checkbox" id="in-weatherAlt"> <span data-translate-id="weatherAlt">Show alt weather</span></label>
-                                        <small data-translate-id="weatherAltDescription">Appears when current weather is unavailable</small>
-                                    </div>
-                                </div>
-                                <div class="uk-width-1-4@s">
-                                    <label class="uk-form-label" data-translate-id="airQualityLabel">Air</label>
-                                    <div class="uk-form-controls">
-                                        <input class="uk-input" id="in-air" type="number" placeholder="Air" min="0" max="999" value="300">
-                                    </div>
-                                </div>
+                            <form class="uk-grid-small" uk-grid id="form-react">
                             </form>
                         </div>
                         <!--          ads              -->
@@ -551,14 +460,6 @@
                     </div>
                 </div>
                 <div class="uk-margin-top"><input id="showdemocheck" class="uk-checkbox" type="checkbox" checked> <span data-translate-id="showdemo">Show demo</span></div>
-                <div class="uk-margin-top">
-                    <span data-translate-id="device">Device</span>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid">
-                        <label><input class="uk-radio" type="radio" name="device" value="bip"> Bip</label>
-                        <label><input class="uk-radio" type="radio" name="device" value="cor"> Cor</label>
-                        <label><input class="uk-radio" type="radio" name="device" value="band4"> Mi Band 4</label>
-                    </div>
-                </div>
                 <div class="uk-margin-top">
                     <span>Language</span>
                     <div class="uk-grid-small uk-child-width-auto uk-grid">

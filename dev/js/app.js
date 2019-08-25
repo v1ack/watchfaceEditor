@@ -1,7 +1,5 @@
 /* global UIkit */
-import {
-    $ as $
-} from './utils.js';
+import {$} from './utils.js';
 import devices from './devices/devices_list';
 /**
  * Changes device
@@ -11,7 +9,8 @@ import devices from './devices/devices_list';
  * @returns {undefined} undefined
  */
 function change_device(name, wfe_obj) {
-
+    $('device_' + localStorage.device).classList.remove('uk-active');
+    $('device_' + name).classList.add('uk-active');
     localStorage.device = name;
     let device = devices[name];
     $('watchface').style.height = device.height + 'px';

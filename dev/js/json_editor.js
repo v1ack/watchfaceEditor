@@ -1,7 +1,5 @@
 /* global UIkit, saveAs */
-import {
-    $ as $
-} from './utils.js';
+import {$} from './utils.js';
 import wfe from './wfe_obj.js';
 import jsonlint from 'jsonlint-mod';
 

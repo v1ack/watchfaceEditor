@@ -1,9 +1,6 @@
 /* global pageXOffset, pageYOffset */
 import wfe from './wfe_obj.js';
-import {
-    $ as $,
-    $c as $c
-} from './utils.js';
+import {$, $c} from './utils.js';
 import updateWatchface from "./watchface_react";
 /**
  * Makes block and inserts it (TopLeft and BottomRight) for visual editor

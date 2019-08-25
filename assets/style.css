@@ -3,7 +3,7 @@
     color: #999;
 }
 #watchface img, 
-#watchface>div>* {
+#watchface>* {
     position: absolute;
 }
 #modal-loading {
@@ -152,7 +152,7 @@ img {
     width: 230px;
 }
 
-.we-white a {
+.we-white a, .we-white {
     color: white!important;
 }
 

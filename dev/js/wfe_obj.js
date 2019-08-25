@@ -12,20 +12,25 @@ let wfe = {
     coords: {},
     coordsHistory: [],
     data: {
-        timeOnClock: ["20", "38"],
-        seconds: [4, 3],
-        analog: [259, 228, 60],
-        weekDay: 2,
-        day: 6,
-        month: 12,
+        time: {
+            hours: '20',
+            minutes: '38'
+        },
+        seconds: 43,
+        date: {
+            weekDay: 2,
+            day: 6,
+            month: 12
+        },
         battery: 20,
         calories: 860,
         steps: 5687,
         stepsGoal: 12000,
         distance: [5, 67],
         pulse: 72,
-        temp: [22, 24],
-        weathericon: 0,
+        weatherDay: 22,
+        weatherNight: 24,
+        weathericon: 1,
         air: 300,
         alarm: true,
         bluetooth: true,
@@ -35,7 +40,7 @@ let wfe = {
         imagesset: false,
         wfname: 'watchface',
         weatherAlt: false,
-        animation: 0
+        animation: 1
     },
     converter: null
 };
