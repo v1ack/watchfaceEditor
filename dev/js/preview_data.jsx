@@ -166,7 +166,7 @@ class Form extends React.Component {
                 <NumberImput value="pulse" name="Pulse" translate="pulse" max={9999} min={0} />
                 <NumberImput value="steps" name="Steps" translate="steps" max={99999} min={0} />
                 <NumberImput value="stepsGoal" name="Steps goal" translate="stepsgoal" max={99999} min={0} />
-                <NumberImput value="seconds" name="Seconds" translate="seconds" max={9999} min={0} />
+                <NumberImput value="seconds" name="Seconds" translate="seconds" max={59} min={0} />
                 <NumberImput value="weatherDay" name="Weather day" translate="weatherD" max={99} min={-99} />
                 <NumberImput value="weatherNight" name="Weather night" translate="weatherN" max={99} min={-99} />
                 <NumberImput value="weathericon" name="Weather icon number" translate="weatherIconNumber" max={26} min={1} />

@@ -5,6 +5,12 @@ import ReactDOM from 'react-dom';
 import wfe from './wfe_obj';
 import {$, div} from './utils';
 
+const make2digits = value => {
+    if (value.length === 1)
+        return '0' + value;
+    return value;
+};
+
 /**
  * Renders image element
  *
@@ -418,12 +424,11 @@ class Watchface extends React.Component {
             return;
         let am = null,
             hours = this.props.data.time.hours,
-            seconds = this.props.data.seconds.toString();
-        if (seconds.length === 1)
-            seconds = '0' + seconds;
+            seconds = make2digits(this.props.data.seconds.toString());
         if (this.props.coords.amPm) {
             if (Number(this.props.data.time.hours) > 12) {
-                hours = (Number(this.props.data.time.hours) - 12).toString();
+                hours = make2digits((Number(this.props.data.time.hours) - 12).toString());
+                console.log(hours);
                 am = false;
             } else
                 am = true;
