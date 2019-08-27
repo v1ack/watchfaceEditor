@@ -142,7 +142,7 @@ function toggle(elem) {
     switch (elem) {
     case 'hours':
         if ('analoghours' in wfe.coords) {
-            Reflect.deleteProperty(wfe.coords.analoghours);
+            Reflect.deleteProperty(wfe.coords, 'analoghours');
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {
@@ -172,7 +172,7 @@ function toggle(elem) {
         break;
     case 'minutes':
         if ('analogminutes' in wfe.coords) {
-            Reflect.deleteProperty(wfe.coords.analogminutes);
+            Reflect.deleteProperty(wfe.coords, 'analogminutes');
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {
@@ -206,7 +206,7 @@ function toggle(elem) {
         break;
     case 'seconds':
         if ('analogseconds' in wfe.coords) {
-            Reflect.deleteProperty(wfe.coords.analogseconds);
+            Reflect.deleteProperty(wfe.coords, 'analogseconds');
             if (!('analoghours' in wfe.coords || 'analogseconds' in wfe.coords || 'analogminutes' in wfe.coords))
                 wfe.coords.analog = false;
         } else {

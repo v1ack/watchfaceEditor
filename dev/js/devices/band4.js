@@ -209,7 +209,7 @@ let wf_data = {
             if (obj.battery) {
                 packed.Status.Battery = {};
                 if ('BatteryConfig' in obj)
-                    packed.Status.Battery.Icon = obj.BatteryConfig;
+                    packed.Status.Battery.BatteryConfig = obj.BatteryConfig;
                 if ('batteryIcon' in obj)
                     packed.Status.Battery.Icon = obj.batteryIcon;
                 if ('batteryText' in obj)
@@ -315,6 +315,8 @@ let wf_data = {
 let device = {
     height: 240,
     width: 120,
+    editor_zoom: 3,
+    preview_zoom: 1,
     tabs: ['editor-tab', 'jsonEditor-tab', 'resources-tab'],
     images: {
         watchface_block: {

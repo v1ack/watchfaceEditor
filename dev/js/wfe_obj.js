@@ -275,6 +275,13 @@ wfe.elements = {
         coords: function() {
             return wfe.coords.Animation.AnimationImage;
         }
+    },
+    stepscircle: {
+        name: 'Steps Circle',
+        editorId: 'e_steps_circle',
+        coords: function() {
+            return wfe.coords.stepscircle;
+        }
     }
 };
 window.wfe = wfe;

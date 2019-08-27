@@ -376,8 +376,10 @@ class AnalogArrow extends React.Component {
     render() {
         let el = this.props.el;
 
-        let col = el.Color.replace("0x", "#"),
-            d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
+        let col = el.Color.replace("0x", "#");
+        if (col.length === 10)
+            col = '#' + col.substring(3, 10);
+        let d = "M " + el.Shape[0].X + " " + el.Shape[0].Y,
             iters = el.Shape.length,
             fill = el.OnlyBorder ? "none" : col;
         for (let i = 0; i < iters; i++) {
@@ -397,12 +399,39 @@ class AnalogArrow extends React.Component {
     }
 }
 
-class StepsCircle extends React.Component {
+class AnalogArrowImageElement extends React.Component {
+    /**
+     * Get src of images, depend on value
+     *
+     * @returns {object} image src
+     * @memberof ImageElement
+     *
+     */
+    getImage() {
+        return $(this.props.el.ImageIndex).src;
+    }
+
+    render() {
+        let height = $(this.props.el.ImageIndex).height;
+        return (
+            <img src={this.getImage()} style={{
+                transform: 'rotate(' + this.props.value + 'deg)',
+                transformOrigin: '50% ' + ((this.props.el.Y / height) * 100) + '%',
+                top: (227 - this.props.el.Y) + 'px',
+                left: (227 - this.props.el.X) + 'px'
+            }} />
+        );
+    }
+}
+
+class CircleElement extends React.Component {
     render() {
         let el = this.props.el;
         let col = el.Color.replace("0x", "#"),
             full = Math.floor(2 * el.RadiusX * Math.PI / 360 * (el.EndAngle - el.StartAngle));
         let fill = Math.round(this.props.value / (this.props.maxValue / full));
+        if (col.length === 10)
+            col = '#' + col.substring(3, 10);
         if (fill > full) fill = full;
         return (
             <svg width={this.props.device.width} height={this.props.device.height}>
@@ -428,7 +457,6 @@ class Watchface extends React.Component {
         if (this.props.coords.amPm) {
             if (Number(this.props.data.time.hours) > 12) {
                 hours = make2digits((Number(this.props.data.time.hours) - 12).toString());
-                console.log(hours);
                 am = false;
             } else
                 am = true;
@@ -479,6 +507,9 @@ class Watchface extends React.Component {
                 {this.props.coords.batteryScale &&
                     <SegmentsElement el={this.props.coords.batteryScale} value={this.props.data.battery} maxValue={100} />
                 }
+                {this.props.coords.batteryCircle &&
+                    <CircleElement el={this.props.coords.batteryCircle} value={this.props.data.battery} maxValue={100} device={this.props.device}/>
+                }
                 {this.props.coords.analoghours &&
                     <AnalogArrow el={this.props.coords.analoghours} value={(this.props.data.time.hours > 12 ? this.props.data.time.hours - 12 : this.props.data.time.hours) * 30 + this.props.data.time.minutes * 0.5} device={this.props.device}/>
                 }
@@ -487,6 +518,15 @@ class Watchface extends React.Component {
                 }
                 {this.props.coords.analogseconds &&
                     <AnalogArrow el={this.props.coords.analogseconds} value={this.props.data.seconds * 6} device={this.props.device}/>
+                }
+                {this.props.coords.analoghours_image &&
+                    <AnalogArrowImageElement el={this.props.coords.analoghours} value={this.props.data.analog[0]} device={this.props.device}/>
+                }
+                {this.props.coords.analogminutes_image &&
+                    <AnalogArrowImageElement el={this.props.coords.analogminutes} value={this.props.data.analog[1]} device={this.props.device}/>
+                }
+                {this.props.coords.analogseconds_image &&
+                    <AnalogArrowImageElement el={this.props.coords.analogseconds} value={this.props.data.analog[2]} device={this.props.device}/>
                 }
                 {this.props.coords.statAlarm &&
                     <StatusElement el={this.props.coords.statAlarm} value={this.props.data.alarm} />
@@ -519,7 +559,7 @@ class Watchface extends React.Component {
                     <SegmentsElement el={this.props.coords.stepsLinear} value={this.props.data.steps} maxValue={this.props.data.stepsGoal} />
                 }
                 {this.props.coords.stepscircle &&
-                    <StepsCircle el={this.props.coords.stepscircle} value={this.props.data.steps} maxValue={this.props.data.stepsGoal} device={this.props.device}/>
+                    <CircleElement el={this.props.coords.stepscircle} value={this.props.data.steps} maxValue={this.props.data.stepsGoal} device={this.props.device}/>
                 }
                 {this.props.coords.stepsGoal && this.props.data.steps >= this.props.data.stepsGoal &&
                     <ImageElement el={this.props.coords.stepsGoal} />

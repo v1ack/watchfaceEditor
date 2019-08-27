@@ -16,12 +16,14 @@ function change_device(name, wfe_obj) {
     let device = devices[name];
     $('watchface').style.height = device.height + 'px';
     $('watchface').style.width = device.width + 'px';
-    $('editor').style.height = device.height * 3 + 'px';
-    $('editor').style.width = device.width * 3 + 'px';
-    $('analog').style.height = device.height * 3 + 'px';
-    $('analog').style.width = device.width * 3 + 'px';
-    $('.analog-block')[0].style.height = device.height * 3 + 'px';
-    $('.analog-block')[0].style.width = device.width * 3 + 'px';
+    if (device.preview_zoom !== 1)
+        $('watchfaceimage').style.zoom = device.preview_zoom;
+    $('editor').style.height = device.height * device.editor_zoom + 'px';
+    $('editor').style.width = device.width * device.editor_zoom + 'px';
+    $('analog').style.height = device.height * device.editor_zoom + 'px';
+    $('analog').style.width = device.width * device.editor_zoom + 'px';
+    $('.analog-block')[0].style.height = device.height * device.editor_zoom + 'px';
+    $('.analog-block')[0].style.width = device.width * device.editor_zoom + 'px';
     $('watchfaceimage').style.background = 'url(assets/' + device.images.watchface_block.image + ')';
     $('watchfaceimage').style.paddingLeft = device.images.watchface_block.left + 'px';
     $('watchfaceimage').style.paddingTop = device.images.watchface_block.top + 'px';
@@ -39,7 +41,8 @@ function change_device(name, wfe_obj) {
     wfe_obj.device = {
         name: name,
         height: device.height,
-        width: device.width
+        width: device.width,
+        editor_zoom: device.editor_zoom
     };
 }
 

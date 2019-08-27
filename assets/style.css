@@ -28,7 +28,7 @@ img {
 #editor,
 #analog {
     position: relative;
-    background: black;
+    background: #676767;
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;

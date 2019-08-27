@@ -269,6 +269,8 @@ let wf_data = {
 let device = {
     height: 160,
     width: 80,
+    editor_zoom: 3,
+    preview_zoom: 1,
     tabs: ['editor-tab', 'jsonEditor-tab', 'resources-tab'],
     images: {
         watchface_block: {

@@ -13,9 +13,10 @@ const warning = () => {
         timeout: 7500
     });
 };
-const copy = e => JSON.parse(JSON.stringify(e));
+
 let wf_data = {
     import: function(json) {
+        warning();
         let data = {};
         if ('Background' in json)
             data.bg = json.Background;
@@ -23,7 +24,11 @@ let wf_data = {
             data.time = json.Time;
             if ('Seconds' in json.Time) {
                 data.seconds = json.Time.Seconds;
-                delete data.time.Seconds;
+                Reflect.deleteProperty(data.time, 'Seconds');
+            }
+            if ('AmPm' in json.Time) {
+                data.amPm = json.Time.AmPm;
+                Reflect.deleteProperty(data.time, 'AmPm');
             }
         }
         if ('Date' in json) {
@@ -37,37 +42,27 @@ let wf_data = {
                         data.dateDay = json.Date.MonthAndDay.Separate.Day;
                     if ('Month' in json.Date.MonthAndDay.Separate)
                         data.dateMonth = json.Date.MonthAndDay.Separate.Month;
-                    delete data.monthandday.Separate;
+                    Reflect.deleteProperty(data.monthandday, 'Separate');
                 }
                 if ('OneLine' in json.Date.MonthAndDay) {
                     data.dateOneLine = json.Date.MonthAndDay.OneLine;
-                    delete data.monthandday.OneLine;
+                    Reflect.deleteProperty(data.monthandday, 'OneLine');
                 }
-            }
-            if ('DayAmPm' in json.Date) {
-                data.amPm = {
-                    X: json.Date.DayAmPm.TopLeftX,
-                    Y: json.Date.DayAmPm.TopLeftY,
-                    ImageIndexAm: json.Date.DayAmPm.ImageIndexAMEN,
-                    ImageIndexPm: json.Date.DayAmPm.ImageIndexPMEN
-                };
             }
         } else
             data.date = false;
+        if ('Battery' in json) {
+            data.battery = true;
+            if ('Images' in json.Battery)
+                data.batteryIcon = json.Battery.Images;
+            if ('Text' in json.Battery)
+                data.batteryText = json.Battery.Text;
+            if ('Scale' in json.Battery)
+                data.batteryScale = json.Battery.Scale;
+        } else
+            data.battery = false;
         if ('Status' in json) {
             data.status = true;
-            if ('Battery' in json.Status) {
-                data.battery = true;
-                if ('BatteryConfig' in json.Status.Battery)
-                    data.BatteryConfig = json.Status.Battery.BatteryConfig;
-                if ('Icon' in json.Status.Battery)
-                    data.batteryIcon = json.Status.Battery.Icon;
-                if ('Text' in json.Status.Battery)
-                    data.batteryText = json.Status.Battery.Text;
-                if ('Scale' in json.Status.Battery)
-                    data.batteryScale = json.Status.Battery.Scale;
-            } else
-                data.battery = false;
             if ('Alarm' in json.Status)
                 data.statAlarm = json.Status.Alarm;
             if ('Bluetooth' in json.Status)
@@ -80,96 +75,43 @@ let wf_data = {
             data.status = false;
         if ('Activity' in json) {
             data.activity = true;
-            if ('Calories' in json.Activity) {
-                data.actCal = json.Activity.Calories;
-            }
-            if ('Steps' in json.Activity) {
-                data.actSteps = json.Activity.Steps;
-                data.actSteps.Number = json.Activity.Steps.Step;
-                delete data.actSteps.Step;
-            }
-            if ('StepsGoal' in json.Activity) {
-                data.actStepsGoal = json.Activity.StepsGoal;
-            }
-            if ('Pulse' in json.Activity) {
-                data.actPulse = json.Activity.Pulse;
-                data.actPulse.Number = json.Activity.Pulse.Pulse;
-                delete data.actPulse.Pulse;
-            }
+            if ('Calories' in json.Activity)
+                data.actCal = {Number: json.Activity.Calories};
+            if ('Steps' in json.Activity)
+                data.actSteps = {Number: json.Activity.Steps.Step};
+            if ('StepsGoal' in json.Activity)
+                data.actStepsGoal = {Number: json.Activity.StepsGoal};
+            if ('Pulse' in json.Activity)
+                data.actPulse = {Number: json.Activity.Pulse};
             if ('Distance' in json.Activity)
                 data.actDistance = json.Activity.Distance;
+            if ('StarImage' in json.Activity)
+                data.stepsGoal = json.Activity.StarImage;
         } else
             data.activity = false;
-        // if ('Weather' in json) {
-        //     data.weather = true;
-        //     if ('Icon' in json.Weather)
-        //         data.weathericon = json.Weather.Icon;
-        //     if ('Temperature' in json.Weather) {
-        //         if ('Today' in json.Weather.Temperature) {
-        //             if ('OneLine' in json.Weather.Temperature.Today)
-        //                 data.weatherOneLine = json.Weather.Temperature.Today.OneLine;
-        //             if ('Separate' in json.Weather.Temperature.Today) {
-        //                 if ('Day' in json.Weather.Temperature.Today.Separate)
-        //                     data.weatherDay = json.Weather.Temperature.Today.Separate.Day;
-        //                 if ('Night' in json.Weather.Temperature.Today.Separate)
-        //                     data.weatherNight = json.Weather.Temperature.Today.Separate.Night;
-        //                 if ('DayAlt' in json.Weather.Temperature.Today.Separate) {
-        //                     data.weatherDayAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Day));
-        //                     data.weatherDayAlt.Number.BottomRightX = data.weatherDayAlt.Number.BottomRightX - data.weatherDayAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.DayAlt.X;
-        //                     data.weatherDayAlt.Number.BottomRightY = data.weatherDayAlt.Number.BottomRightY - data.weatherDayAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.DayAlt.Y;
-        //                     data.weatherDayAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.DayAlt.X;
-        //                     data.weatherDayAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.DayAlt.Y;
-        //                 }
-        //                 if ('NightAlt' in json.Weather.Temperature.Today.Separate) {
-        //                     data.weatherNightAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Night));
-        //                     data.weatherNightAlt.Number.BottomRightX = data.weatherNightAlt.Number.BottomRightX - data.weatherNightAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.NightAlt.X;
-        //                     data.weatherNightAlt.Number.BottomRightY = data.weatherNightAlt.Number.BottomRightY - data.weatherNightAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.NightAlt.Y;
-        //                     data.weatherNightAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.NightAlt.X;
-        //                     data.weatherNightAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.NightAlt.Y;
-        //                 }
-        //             }
-        //         }
-        //         if ('Current' in json.Weather.Temperature)
-        //             data.weatherCurrent = json.Weather.Temperature.Current;
-        //     }
-        //     if ('AirPollution' in json.Weather) {
-        //         if ('Icon' in json.Weather.AirPollution)
-        //             data.weatherAirIcon = json.Weather.AirPollution.Icon;
-        //         if ('Index' in json.Weather.AirPollution)
-        //             data.weatherAirText = json.Weather.AirPollution.Index;
-        //     }
-        // } else
-        //     data.weather = false;
+        data.weather = false;
         if ('StepsProgress' in json) {
             data.stepsprogress = true;
             if ('Circle' in json.StepsProgress)
                 data.stepscircle = json.StepsProgress.Circle;
             if ('Linear' in json.StepsProgress)
                 data.stepsLinear = json.StepsProgress.Linear;
-            if ('GoalImage' in json.StepsProgress)
-                data.stepsGoal = json.StepsProgress.GoalImage;
         } else
             data.stepsprogress = false;
         if ('AnalogDialFace' in json) {
             data.analog = true;
             if ('Hours' in json.AnalogDialFace)
-                data.analoghours = json.AnalogDialFace.Hours;
+                data.analoghours_image = json.AnalogDialFace.Hours.CenterImage;
             if ('Minutes' in json.AnalogDialFace)
-                data.analogminutes = json.AnalogDialFace.Minutes;
+                data.analogminutes_image = json.AnalogDialFace.Minutes.CenterImage;
             if ('Seconds' in json.AnalogDialFace)
-                data.analogseconds = json.AnalogDialFace.Seconds;
+                data.analogseconds_image = json.AnalogDialFace.Seconds.CenterImage;
         } else
             data.analog = false;
-        if ('Other' in json) {
-            if ('Animation' in json.Other) {
-                data.Animation = json.Other.Animation;
-            }
-        }
         return data;
     },
     export: function(data) {
-        warning();
-        let obj = copy(data);
+        let obj = JSON.parse(JSON.stringify(data));
         let packed = {};
         if ('bg' in obj)
             packed.Background = obj.bg;
@@ -177,8 +119,10 @@ let wf_data = {
             packed.Time = obj.time;
             if ('seconds' in obj)
                 packed.Time.Seconds = obj.seconds;
+            if ('amPm' in obj)
+                packed.Time.AmPm = obj.amPm;
         }
-        if (obj.date || 'amPm' in obj) {
+        if (obj.date) {
             packed.Date = {};
             if ('weekDay' in obj)
                 packed.Date.WeekDay = obj.weekDay;
@@ -194,29 +138,9 @@ let wf_data = {
                 if ('dateOneLine' in obj)
                     packed.Date.MonthAndDay.OneLine = obj.dateOneLine;
             }
-            if ('amPm' in obj)
-                packed.Date.DayAmPm = {
-                    TopLeftX: obj.amPm.X,
-                    TopLeftY: obj.amPm.Y,
-                    ImageIndexAMCN: obj.amPm.ImageIndexAm,
-                    ImageIndexPMCN: obj.amPm.ImageIndexPm,
-                    ImageIndexAMEN: obj.amPm.ImageIndexAm,
-                    ImageIndexPMEN: obj.amPm.ImageIndexPm
-                };
         }
-        if (obj.status || obj.battery) {
+        if (obj.status) {
             packed.Status = {};
-            if (obj.battery) {
-                packed.Status.Battery = {};
-                if ('BatteryConfig' in obj)
-                    packed.Status.Battery.Icon = obj.BatteryConfig;
-                if ('batteryIcon' in obj)
-                    packed.Status.Battery.Icon = obj.batteryIcon;
-                if ('batteryText' in obj)
-                    packed.Status.Battery.Text = obj.batteryText;
-                if ('batteryScale' in obj)
-                    packed.Status.Battery.Scale = obj.batteryScale;
-            }
             if ('statAlarm' in obj)
                 packed.Status.Alarm = obj.statAlarm;
             if ('statBt' in obj)
@@ -226,66 +150,30 @@ let wf_data = {
             if ('statLock' in obj)
                 packed.Status.Lock = obj.statLock;
         }
+        if (obj.battery) {
+            packed.Battery = {};
+            if ('batteryIcon' in obj)
+                packed.Battery.Images = obj.batteryIcon;
+            if ('batteryText' in obj)
+                packed.Battery.Text = obj.batteryText;
+            if ('batteryScale' in obj)
+                packed.Battery.Scale = obj.batteryScale;
+        }
         if (obj.activity) {
             packed.Activity = {};
-            if ('actCal' in obj) {
-                packed.Activity.Calories = obj.actCal;
-            }
-            if ('actSteps' in obj) {
-                packed.Activity.Steps = obj.actSteps;
-                packed.Activity.Steps.Step = packed.Activity.Steps.Number;
-                delete packed.Activity.Steps.Number;
-            }
-            if ('actStepsGoal' in obj) {
-                packed.Activity.StepsGoal = obj.actStepsGoal;
-            }
-            if ('actPulse' in obj) {
-                packed.Activity.Pulse = obj.actPulse;
-                packed.Activity.Pulse.Pulse = packed.Activity.Pulse.Number;
-                delete packed.Activity.Pulse.Number;
-            }
+            if ('actCal' in obj)
+                packed.Activity.Calories = obj.actCal.Number;
+            if ('actSteps' in obj)
+                packed.Activity.Steps = {Step: obj.actSteps.Number};
+            if ('actStepsGoal' in obj)
+                packed.Activity.StepsGoal = obj.actStepsGoal.Number;
+            if ('actPulse' in obj)
+                packed.Activity.Pulse = obj.actPulse.Number;
             if ('actDistance' in obj)
                 packed.Activity.Distance = obj.actDistance;
+            if ('stepsGoal' in obj)
+                packed.Activity.StarImage = obj.stepsGoal;
         }
-        // if (obj.weather) {
-        //     packed.Weather = {};
-        //     if ('weathericon' in obj)
-        //         packed.Weather.Icon = obj.weathericon;
-        //     if ('weatherCurrent' in obj || 'weatherDay' in obj || 'weatherNight' in obj || 'weatherOneLine' in obj) {
-        //         packed.Weather.Temperature = {};
-        //         if ('weatherDay' in obj || 'weatherNight' in obj || 'weatherOneLine' in obj) {
-        //             packed.Weather.Temperature.Today = {};
-        //             if ('weatherOneLine' in obj)
-        //                 packed.Weather.Temperature.Today.OneLine = obj.weatherOneLine;
-        //             if ('weatherDay' in obj || 'weatherNight' in obj) {
-        //                 packed.Weather.Temperature.Today.Separate = {};
-        //                 if ('weatherDay' in obj)
-        //                     packed.Weather.Temperature.Today.Separate.Day = obj.weatherDay;
-        //                 if ('weatherNight' in obj)
-        //                     packed.Weather.Temperature.Today.Separate.Night = obj.weatherNight;
-        //                 if ('weatherDayAlt' in obj) {
-        //                     packed.Weather.Temperature.Today.Separate.DayAlt = {};
-        //                     packed.Weather.Temperature.Today.Separate.DayAlt.X = obj.weatherDayAlt.Number.TopLeftX;
-        //                     packed.Weather.Temperature.Today.Separate.DayAlt.Y = obj.weatherDayAlt.Number.TopLeftY;
-        //                 }
-        //                 if ('weatherNightAlt' in obj) {
-        //                     packed.Weather.Temperature.Today.Separate.NightAlt = {};
-        //                     packed.Weather.Temperature.Today.Separate.NightAlt.X = obj.weatherNightAlt.Number.TopLeftX;
-        //                     packed.Weather.Temperature.Today.Separate.NightAlt.Y = obj.weatherNightAlt.Number.TopLeftY;
-        //                 }
-        //             }
-        //         }
-        //         if ('weatherCurrent' in obj)
-        //             packed.Weather.Temperature.Current = obj.weatherCurrent;
-        //     }
-        //     if ('weatherAirIcon' in obj || 'weatherAirText' in obj) {
-        //         packed.Weather.AirPollution = {};
-        //         if ('weatherAirIcon' in obj)
-        //             packed.Weather.AirPollution.Icon = obj.weatherAirIcon;
-        //         if ('weatherAirText' in obj)
-        //             packed.Weather.AirPollution.Index = obj.weatherAirText;
-        //     }
-        // }
         if (obj.stepsprogress) {
             packed.StepsProgress = {};
             if ('stepscircle' in obj)
@@ -297,16 +185,18 @@ let wf_data = {
         }
         if (obj.analog) {
             packed.AnalogDialFace = {};
-            if ('analoghours' in obj)
-                packed.AnalogDialFace.Hours = obj.analoghours;
-            if ('analogminutes' in obj)
-                packed.AnalogDialFace.Minutes = obj.analogminutes;
-            if ('analogseconds' in obj)
-                packed.AnalogDialFace.Seconds = obj.analogseconds;
-        }
-        if (obj.Animation) {
-            packed.Other = {};
-            packed.Other.Animation = obj.Animation;
+            if ('analoghours_image' in obj) {
+                packed.AnalogDialFace.Hours = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
+                packed.AnalogDialFace.Hours.CenterImage = obj.analoghours;
+            }
+            if ('analogminutes_image' in obj) {
+                packed.AnalogDialFace.Minutes = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
+                packed.AnalogDialFace.Minutes.CenterImage = obj.analogminutes;
+            }
+            if ('analogseconds_image' in obj) {
+                packed.AnalogDialFace.Seconds = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
+                packed.AnalogDialFace.Seconds.CenterImage = obj.analogseconds;
+            }
         }
         return packed;
     }
@@ -315,6 +205,8 @@ let wf_data = {
 let device = {
     height: 454,
     width: 454,
+    editor_zoom: 1,
+    preview_zoom: 0.5,
     tabs: ['editor-tab', 'jsonEditor-tab', 'resources-tab'],
     images: {
         watchface_block: {
@@ -326,6 +218,6 @@ let device = {
         }
     },
     data: wf_data,
-    default_coords: JSON.parse('{"bg":{"Image":{"ImageIndex":301,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":68,"Y":26},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":23,"Y":26}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":69,"Y":132},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":24,"Y":132}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}')
+    default_coords: JSON.parse('{"bg":{"Image":{"ImageIndex":302,"X":0,"Y":0}},"time":{"Hours":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":186,"Y":194},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":148,"Y":194}},"Minutes":{"Ones":{"ImageIndex":255,"ImagesCount":10,"X":275,"Y":194},"Tens":{"ImageIndex":255,"ImagesCount":10,"X":238,"Y":194}}},"date":false,"battery":false,"status":false,"activity":false,"weather":false,"stepsprogress":false,"analog":false}')
 };
 export default device;

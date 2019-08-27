@@ -10,7 +10,7 @@ import updateWatchface from "./watchface_react";
  */
 function makeBlock(el) {
     $("editor").innerHTML +=
-        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * 3) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * 3) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * 3) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * wfe.device.editor_zoom) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * wfe.device.editor_zoom) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * wfe.device.editor_zoom) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
 }
 
 /**
@@ -21,7 +21,7 @@ function makeBlock(el) {
  */
 function makeImg(el) {
     $("editor").innerHTML +=
-        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * 3) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * 3) + 'px; top:' + (wfe.elements[el].coords().Y * 3) + 'px; left:' + (wfe.elements[el].coords().X * 3) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.elements[el].coords().Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.elements[el].coords().X * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
 }
 
 /**
@@ -33,7 +33,27 @@ function makeImg(el) {
  */
 function makeImgStat(el, id) {
     $("editor").innerHTML +=
-        '<div id="' + id + '" style="height:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * 3) + 'px; width:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * 3) + 'px; top:' + (el.Coordinates.Y * 3) + 'px; left:' + (el.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+        '<div id="' + id + '" style="height:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * wfe.device.editor_zoom) + 'px; width:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * wfe.device.editor_zoom) + 'px; top:' + (el.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (el.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+}
+
+/**
+ * Makes block and inserts it (TopLeft and BottomRight) for visual editor
+ *
+ * @param {string} el name
+ * @returns {null} null
+ */
+function makeCircleBlock(el) {
+    let circle = wfe.elements[el].coords();
+    $("editor").innerHTML +=
+        '<div id="' + wfe.elements[el].editorId + '" style="height:' + (circle.RadiusY * 2 * wfe.device.editor_zoom) + 'px; width:' + (circle.RadiusX * 2 * wfe.device.editor_zoom) + 'px; top:' + (circle.CenterY - circle.RadiusY) * wfe.device.editor_zoom + 'px; left:' + (circle.CenterX - circle.RadiusX) * wfe.device.editor_zoom + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+}
+
+function makeCircleAndInitDrag(el) {
+    makeCircleBlock(el);
+    setTimeout(function () {
+        initdrag(wfe.elements[el].editorId,
+            wfe.elements[el].coords());
+    }, 10);
 }
 
 /**
@@ -56,11 +76,11 @@ function init() {
     $("editor").innerHTML = '';
     if ('bg' in wfe.coords) {
         let bg = $c(wfe.coords.bg.Image.ImageIndex);
-        bg.style.left = wfe.coords.bg.Image.X * 3 + "px";
-        bg.style.top = wfe.coords.bg.Image.Y * 3 + "px";
+        bg.style.left = wfe.coords.bg.Image.X * wfe.device.editor_zoom + "px";
+        bg.style.top = wfe.coords.bg.Image.Y * wfe.device.editor_zoom + "px";
         bg.style.position = "absolute";
-        bg.height *= 3;
-        bg.width *= 3;
+        bg.height *= wfe.device.editor_zoom;
+        bg.width *= wfe.device.editor_zoom;
         bg.removeAttribute("id");
         $("editor").appendChild(bg);
         setTimeout(function() {
@@ -80,7 +100,7 @@ function init() {
         }
         if ('amPm' in wfe.coords) {
             $("editor").innerHTML +=
-                '<div id="e_time_am" style="height:' + ($(wfe.coords.amPm.ImageIndexAm).height * 3) + 'px; width:' + ($(wfe.coords.amPm.ImageIndexAm).width * 3) + 'px; top:' + (wfe.coords.amPm.Y * 3) + 'px; left:' + (wfe.coords.amPm.X * 3) + 'px;" class="editor-elem"></div>';
+                '<div id="e_time_am" style="height:' + ($(wfe.coords.amPm.ImageIndexAm).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.amPm.ImageIndexAm).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.amPm.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.amPm.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
             initdragN('timeM');
         }
     }
@@ -115,7 +135,7 @@ function init() {
             let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i]);
             for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
                 $("editor").innerHTML +=
-                    '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                    '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
                 setTimeout(e_battery_linar_initdrag, 10, i);
             }
         }
@@ -142,13 +162,13 @@ function init() {
         if ('weathericon' in wfe.coords)
             if ('CustomIcon' in wfe.coords.weathericon) {
                 $("editor").innerHTML +=
-                    '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * 3) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * 3) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * 3) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * 3) + 'px;" class="editor-elem"></div>';
+                    '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
                 setTimeout(function() {
                     initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon);
                 }, 10);
             } else {
                 $("editor").innerHTML +=
-                    '<div id="e_weather_icon" style="height:' + ($("weather").height * 3) + 'px; width:' + ($("weather").width * 3) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * 3) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * 3) + 'px;" class="editor-elem"></div>';
+                    '<div id="e_weather_icon" style="height:' + ($("weather").height * wfe.device.editor_zoom) + 'px; width:' + ($("weather").width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
                 setTimeout(function() {
                     initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates);
                 }, 10);
@@ -171,12 +191,14 @@ function init() {
             makeBlockAndInitDrag('weatherAirText');
     }
     if (wfe.coords.stepsprogress) {
-        // if ('stepscircle' in wfe.coords) {}
+        if ('stepscircle' in wfe.coords) {
+            makeCircleAndInitDrag('stepscircle');
+        }
         if ('stepsLinear' in wfe.coords) {
             let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i]);
             for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
                 $("editor").innerHTML +=
-                    '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * 3) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * 3) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * 3) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * 3) + 'px;" class="editor-elem"></div>';
+                    '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
                 setTimeout(e_steps_linar_initdrag, 10, i);
             }
         }
@@ -196,71 +218,69 @@ function init() {
  */
 function initdrag(el, elcoords) {
     el = $(el);
+    el.elcoords = elcoords;
+    el.onmousedown = drag_on_mouse_down;
+    el.ondragstart = () => false;
+}
 
-    /**
-     * Set moving
-     *
-     * @param {Event} e mouse down event
-     * @returns {null} null
-     */
-    el.onmousedown = function(e) {
-        wfe.coordsHistory.push(JSON.stringify(wfe.coords));
-        let ed = getOffsetRect($("editor")),
-            curcoords = getCoords(el),
-            shiftX = e.pageX - curcoords.left,
-            shiftY = e.pageY - curcoords.top;
-        el.style.position = 'absolute';
-        moveAt(e);
+function drag_on_mouse_down(e) {
+    let el = e.target;
+    wfe.coordsHistory.push(JSON.stringify(wfe.coords));
+    let ed = getOffsetRect($("editor")),
+        curcoords = getCoords(el),
+        shiftX = e.pageX - curcoords.left,
+        shiftY = e.pageY - curcoords.top;
+    el.style.position = 'absolute';
+    moveAt(e);
+    el.style.zIndex = 1000;
 
-        el.style.zIndex = 1000;
-
-        function moveAt(e) {
-            el.style.left = e.pageX - ed.left - shiftX + 'px';
-            el.style.top = e.pageY - ed.top - shiftY + 'px';
-            $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % 3) / 3 + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % 3) / 3;
-        }
-
-        $("editor").onmousemove = function(e) {
-            moveAt(e);
-        };
-
-        el.onmouseup = function() {
-            $("editor").onmousemove = null;
-            el.onmouseup = null;
-            el.style.zIndex = 'auto';
-            let top = styleToNum(el.style.top),
-                left = styleToNum(el.style.left);
-            el.style.top = top > 0 && top < wfe.device.height * 3 ? Math.round(top / 3) * 3 + 'px' : "0px";
-            el.style.left = left > 0 && left < wfe.device.width * 3 ? Math.round(left / 3) * 3 + 'px' : "0px";
-            if ('X' in elcoords) {
-                elcoords.X = styleToNum(el.style.left) / 3;
-                elcoords.Y = styleToNum(el.style.top) / 3;
-            } else {
-                let t1 = elcoords.TopLeftX,
-                    t2 = elcoords.TopLeftY;
-                elcoords.TopLeftX = styleToNum(el.style.left) / 3;
-                elcoords.TopLeftY = styleToNum(el.style.top) / 3;
-                elcoords.BottomRightX += elcoords.TopLeftX - t1;
-                elcoords.BottomRightY += elcoords.TopLeftY - t2;
-            }
-            updateWatchface();
-            $("e_coords").innerHTML = ('coordinates' in wfe.app.lang ? wfe.app.lang.coordinates : "Coordinates");
-        };
-
-    };
-
-    el.ondragstart = function() {
-        return false;
-    };
-
-    function getCoords(elem) {
-        let box = elem.getBoundingClientRect();
-        return {
-            top: box.top + pageYOffset,
-            left: box.left + pageXOffset
-        };
+    function moveAt(e) {
+        let el = e.target;
+        if (!el.elcoords)
+            return;
+        el.style.left = e.pageX - ed.left - shiftX + 'px';
+        el.style.top = e.pageY - ed.top - shiftY + 'px';
+        $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % wfe.device.editor_zoom) / wfe.device.editor_zoom + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % wfe.device.editor_zoom) / wfe.device.editor_zoom;
     }
 
+    $("editor").onmousemove = e => moveAt(e);
+    el.onmouseup = drag_on_mouse_up;
+}
+
+function getCoords(elem) {
+    let box = elem.getBoundingClientRect();
+    return {
+        top: box.top + pageYOffset,
+        left: box.left + pageXOffset
+    };
+}
+
+function drag_on_mouse_up(e) {
+    let el = e.target,
+        coords = el.elcoords;
+    $("editor").onmousemove = null;
+    el.onmouseup = null;
+    el.style.zIndex = 'auto';
+    let top = styleToNum(el.style.top),
+        left = styleToNum(el.style.left);
+    el.style.top = top > 0 && top < wfe.device.height * wfe.device.editor_zoom ? Math.round(top / wfe.device.editor_zoom) * wfe.device.editor_zoom + 'px' : "0px";
+    el.style.left = left > 0 && left < wfe.device.width * wfe.device.editor_zoom ? Math.round(left / wfe.device.editor_zoom) * wfe.device.editor_zoom + 'px' : "0px";
+    if ('X' in coords) {
+        coords.X = styleToNum(el.style.left) / wfe.device.editor_zoom;
+        coords.Y = styleToNum(el.style.top) / wfe.device.editor_zoom;
+    } else if ('CenterX' in coords) {
+        coords.CenterX = (styleToNum(el.style.left) + coords.RadiusX * wfe.device.editor_zoom) / wfe.device.editor_zoom;
+        coords.CenterY = (styleToNum(el.style.top) + coords.RadiusY * wfe.device.editor_zoom) / wfe.device.editor_zoom;
+    } else {
+        let t1 = coords.TopLeftX,
+            t2 = coords.TopLeftY;
+        coords.TopLeftX = styleToNum(el.style.left) / wfe.device.editor_zoom;
+        coords.TopLeftY = styleToNum(el.style.top) / wfe.device.editor_zoom;
+        coords.BottomRightX += coords.TopLeftX - t1;
+        coords.BottomRightY += coords.TopLeftY - t2;
+    }
+    updateWatchface();
+    $("e_coords").innerHTML = ('coordinates' in wfe.app.lang ? wfe.app.lang.coordinates : "Coordinates");
 }
 
 /**

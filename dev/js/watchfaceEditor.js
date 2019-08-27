@@ -20,7 +20,7 @@ wfe.app = {
         else
             app.changeTheme('dark');
     },
-    lastimage: 301,
+    lastimage: 302,
     imagestabversion: 2,
     editortabversion: 1,
     designtabversion: 1,
@@ -47,7 +47,7 @@ wfe.app = {
 };
 wfe.init = function() {
     // Device
-    let device_list = ['bip', 'cor', 'band4'];
+    let device_list = ['bip', 'cor', 'band4', 'gtr'];
     if (device_list.includes(location.search.slice(1))) {
         app.change_device(location.search.slice(1), wfe);
     } else if (device_list.includes(localStorage.device)) {
@@ -62,7 +62,6 @@ wfe.init = function() {
         });
     }
 
-    window.gtr = () => app.change_device('gtr', wfe);
     // Functions
     function addScript(url) {
         let e = document.createElement("script");
