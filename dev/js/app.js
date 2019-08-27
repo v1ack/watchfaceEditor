@@ -9,7 +9,8 @@ import devices from './devices/devices_list';
  * @returns {undefined} undefined
  */
 function change_device(name, wfe_obj) {
-    $('device_' + localStorage.device).classList.remove('uk-active');
+    if (localStorage.device)
+        $('device_' + localStorage.device).classList.remove('uk-active');
     $('device_' + name).classList.add('uk-active');
     localStorage.device = name;
     let device = devices[name];

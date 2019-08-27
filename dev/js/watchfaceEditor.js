@@ -62,6 +62,7 @@ wfe.init = function() {
         });
     }
 
+    window.gtr = () => app.change_device('gtr', wfe);
     // Functions
     function addScript(url) {
         let e = document.createElement("script");
