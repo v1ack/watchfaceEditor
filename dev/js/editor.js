@@ -1,6 +1,6 @@
 /* global pageXOffset, pageYOffset */
 import wfe from './wfe_obj.js';
-import {$, $c} from './utils.js';
+import {$, $c, styleToNum, getOffsetRect} from './utils.js';
 import updateWatchface from "./watchface_react";
 /**
  * Makes block and inserts it (TopLeft and BottomRight) for visual editor
@@ -54,16 +54,6 @@ function makeCircleAndInitDrag(el) {
         initdrag(wfe.elements[el].editorId,
             wfe.elements[el].coords());
     }, 10);
-}
-
-/**
- * Convert style value to Number
- *
- * @param {string} el style value
- * @returns {Number} style value in number
- */
-function styleToNum(el) {
-    return Number(el.replace('px', ''));
 }
 
 /**
@@ -280,7 +270,7 @@ function drag_on_mouse_up(e) {
         coords.BottomRightY += coords.TopLeftY - t2;
     }
     updateWatchface();
-    $("e_coords").innerHTML = ('coordinates' in wfe.app.lang ? wfe.app.lang.coordinates : "Coordinates");
+    $("e_coords").innerHTML = ('coordinates' in wfe.language ? wfe.language.coordinates : "Coordinates");
 }
 
 /**
@@ -305,29 +295,6 @@ function makeImgAndInitDrag(el) {
 function makeBlockAndInitDrag(el) {
     makeBlock(el);
     initdragN(el);
-}
-
-/**
- * Magic function for drag&drop from stackoverflow
- *
- * @param {object} elem idk
- * @returns {object} top & left paddings
- */
-function getOffsetRect(elem) {
-    let box = elem.getBoundingClientRect(),
-        body = document.body,
-        docElem = document.documentElement,
-        scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
-        scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
-        clientTop = docElem.clientTop || body.clientTop || 0,
-        clientLeft = docElem.clientLeft || body.clientLeft || 0,
-        top = box.top + scrollTop - clientTop,
-        left = box.left + scrollLeft - clientLeft;
-
-    return {
-        top: Math.round(top),
-        left: Math.round(left)
-    };
 }
 
 /**

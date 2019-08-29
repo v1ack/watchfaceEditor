@@ -821,12 +821,11 @@ function toggle(el) {
 function select(s) {
     let target = findspan(s);
     if (!target) return 0;
-    let rng, sel;
-    rng = document.createRange();
-    rng.selectNode(target.childNodes[0]);
-    sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(rng);
+    let range = document.createRange();
+    range.selectNode(target.childNodes[0]);
+    let selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
     $("codearea").scrollTop = target.offsetTop - 200;
 }
 
@@ -843,7 +842,7 @@ function init() {
     updatecode();
     if (wfe.app.firstopen_editor && localStorage.showcount < 8) {
         sessionStorage.firstopen_editor = false;
-        UIkit.notification(('jsonupdate' in wfe.app.lang ? wfe.app.lang.jsonupdate : "To update pre.just click out of JSON input"), {
+        UIkit.notification(('jsonupdate' in wfe.language ? wfe.language.jsonupdate : "To update pre.just click out of JSON input"), {
             status: 'primary',
             pos: 'top-left',
             timeout: 3000
@@ -881,7 +880,7 @@ function checkDef(show) {
         if (defImagesList[i] === defImagesList[i - 1]) defImagesList.splice(i, 1);
     }
     if (show && defImagesList.length)
-        UIkit.notification(('checkImages' in wfe.app.lang ? wfe.app.lang.checkImages : "Check images in watchface folder. At least images with index(s): ") + defImagesList, {
+        UIkit.notification(('checkImages' in wfe.language ? wfe.language.checkImages : "Check images in watchface folder. At least images with index(s): ") + defImagesList, {
             status: 'warning',
             pos: 'top-left',
             timeout: 5000
@@ -899,7 +898,7 @@ function checkLimits() {
     }
     if ('stepsLinear' in wfe.coords)
         if (wfe.coords.stepsLinear.Segments.length > 20)
-            notify('imagesLimitSteps' in wfe.app.lang ? wfe.app.lang.imagesLimitSteps : "Image limit for steps progress is 20. If you use more, they won't be dispaly");
+            notify('imagesLimitSteps' in wfe.language ? wfe.language.imagesLimitSteps : "Image limit for steps progress is 20. If you use more, they won't be dispaly");
 }
 
 function exportjs() {

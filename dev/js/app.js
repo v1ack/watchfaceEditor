@@ -1,6 +1,28 @@
-/* global UIkit */
 import {$} from './utils.js';
 import devices from './devices/devices_list';
+import wfe from './wfe_obj.js';
+
+import russian from '../translation/russian.json';
+import chinese from '../translation/chinese.json';
+import dutch from '../translation/dutch.json';
+import english from '../translation/english.json';
+import german from '../translation/german.json';
+import turkish from '../translation/turkish.json';
+
+import renderForm from './preview_data.jsx';
+
+let languages = {
+    russian: russian,
+    chinese: chinese,
+    dutch: dutch,
+    german: german,
+    turkish: turkish
+};
+for (let i in languages)
+    Reflect.setPrototypeOf(languages[i], english);
+
+languages.english = english;
+
 /**
  * Changes device
  *
@@ -46,7 +68,7 @@ function change_device(name, wfe_obj) {
     };
 }
 
-let app_lang = {};
+wfe.language = english;
 /**
  * Downloads language json and applys it to app_lang
  *
@@ -54,28 +76,16 @@ let app_lang = {};
  * @returns {undefined} undefined
  */
 function changeLang(lang) {
-    fetch('assets/translation/' + lang + '.json').
-        then(response => (response.status === 200 ? response : null)).
-        then(response => response.json()).
-        then(translation => {
-            app_lang = translation;
-            let strings = document.querySelectorAll('[data-translate-id]');
-            for (let i = 0; i < strings.length; i++) {
-                if (strings[i].dataset.translateId in app_lang)
-                    if (strings[i].dataset.link)
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/gu, strings[i].dataset.link);
-                    else
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
-            }
-        }).
-        catch(error => {
-            console.warn("Loading translation error", error);
-            UIkit.notification('<b>Loading translation error: </b>' + error, {
-                status: 'danger',
-                pos: 'top-left',
-                timeout: 5000
-            });
-        });
+    wfe.language = languages[lang];
+    let strings = document.querySelectorAll('[data-translate-id]');
+    for (let i = 0; i < strings.length; i++) {
+        if (strings[i].dataset.translateId in wfe.language)
+            if (strings[i].dataset.link)
+                strings[i].innerHTML = wfe.language[strings[i].dataset.translateId].replace(/\$link/gu, strings[i].dataset.link);
+            else
+                strings[i].innerHTML = wfe.language[strings[i].dataset.translateId];
+    }
+    renderForm();
 }
 
 /**

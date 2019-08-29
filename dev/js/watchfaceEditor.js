@@ -127,7 +127,7 @@ wfe.init = function() {
     // Browser support
     wfe.app.notWebkitBased = navigator.userAgent.search(/Edge/u) > 0 || navigator.userAgent.search(/Firefox/u) > 0;
     if (wfe.app.notWebkitBased) {
-        UIkit.notification(('browserwarn' in wfe.app.lang ? wfe.app.lang.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
+        UIkit.notification(('browserwarn' in wfe.language ? wfe.language.browserwarn : "Something may not work in your browser. WebKit-based browser recommended"), {
             status: 'warning',
             pos: 'top-left',
             timeout: 7500

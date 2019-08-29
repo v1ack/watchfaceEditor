@@ -126,5 +126,8 @@
     "tgweatherNightAlt": "Toggle alt night weather",
     "weatherAlt-label": "Alt weather",
     "airQualityLabel": "Air quality",
-    "tgweatherAirIndex": "Toggle air polution"
+    "tgweatherAirIndex": "Toggle air polution",
+    "imagecreator": "Image creator",
+    "translatedby": "",
+    "animation": "Animation image"
 }

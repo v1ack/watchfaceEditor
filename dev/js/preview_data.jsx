@@ -33,7 +33,7 @@ class Checkbox extends React.Component {
 
     render() {
         return (
-            <label><input className="uk-checkbox" onChange={this.onChange} type="checkbox" checked={this.state.value}/> <span data-translate-id={this.props.translate}>{this.props.name}</span></label>
+            <label><input className="uk-checkbox" onChange={this.onChange} type="checkbox" checked={this.state.value}/> {this.props.name}</label>
         );
     }
 }
@@ -57,7 +57,7 @@ class NumberImput extends React.Component {
 
     render() {
         return (
-            <FormAppearance name={this.props.name} translate={this.props.translate}>
+            <FormAppearance name={this.props.name}>
                 <input className="uk-input" type="number" placeholder={this.props.name} min={this.props.min} max={this.props.max} value={this.state.value} onChange={this.onChange}/>
             </FormAppearance>
         );
@@ -85,7 +85,7 @@ class FormAppearance extends React.Component {
         let classes = this.props.classes || " ";
         return (
             <div className="uk-width-1-4@s">
-                <label className="uk-form-label" data-translate-id={this.props.translate}>{this.props.name}</label>
+                <label className="uk-form-label">{this.props.name}</label>
                 <div className={"uk-form-controls " + classes}>
                     {this.props.children}
                 </div>
@@ -120,7 +120,7 @@ class Date extends React.Component {
 
     render() {
         return (
-            <FormAppearance name={this.props.name} translate={this.props.translate}>
+            <FormAppearance name={this.props.name}>
                 <input className="uk-input" type="date" defaultValue="2017-12-06" onChange={this.onChange}/>
             </FormAppearance>
         );
@@ -147,7 +147,7 @@ class Time extends React.Component {
 
     render() {
         return (
-            <FormAppearance name="Time" translate="time">
+            <FormAppearance name={this.props.name}>
                 <input className="uk-input" type="time" defaultValue="20:38" onChange={this.onChange}/>
             </FormAppearance>
         );
@@ -158,29 +158,29 @@ class Form extends React.Component {
     render() {
         return (
             <>
-                <Date name="Date" translate="date" value="date"/>
-                <Time name="Time" translate="time" value="time"/>
-                <NumberImput value="battery" name="Battery" translate="battery" max={100} min={0} />
-                <NumberImput value="calories" name="Calories" translate="calories" max={9999} min={0} />
-                <Distance value="distance" name="Distance" translate="distance" max={99999} min={0} />
-                <NumberImput value="pulse" name="Pulse" translate="pulse" max={9999} min={0} />
-                <NumberImput value="steps" name="Steps" translate="steps" max={99999} min={0} />
-                <NumberImput value="stepsGoal" name="Steps goal" translate="stepsgoal" max={99999} min={0} />
-                <NumberImput value="seconds" name="Seconds" translate="seconds" max={59} min={0} />
-                <NumberImput value="weatherDay" name="Weather day" translate="weatherD" max={99} min={-99} />
-                <NumberImput value="weatherNight" name="Weather night" translate="weatherN" max={99} min={-99} />
-                <NumberImput value="weathericon" name="Weather icon number" translate="weatherIconNumber" max={26} min={1} />
-                <FormAppearance name="Status" translate="status" classes="uk-child-width-auto uk-grid">
-                    <Checkbox value="bluetooth" name="Bluetooth" translate="bluetooth"/>
-                    <Checkbox value="alarm" name="Alarm" translate="alarm"/>
-                    <Checkbox value="dnd" name="Do not disturb" translate="dnd"/>
-                    <Checkbox value="lock" name="Lock" translate="lock"/>
+                <Date name={wfe.language.date} value="date"/>
+                <Time name={wfe.language.time} value="time"/>
+                <NumberImput value="battery" name={wfe.language.battery} max={100} min={0} />
+                <NumberImput value="calories" name={wfe.language.calories} max={9999} min={0} />
+                <Distance value="distance" name={wfe.language.distance} max={99999} min={0} />
+                <NumberImput value="pulse" name={wfe.language.pulse} max={9999} min={0} />
+                <NumberImput value="steps" name={wfe.language.steps} max={99999} min={0} />
+                <NumberImput value="stepsGoal" name={wfe.language.stepsgoal} max={99999} min={0} />
+                <NumberImput value="seconds" name={wfe.language.seconds} max={59} min={0} />
+                <NumberImput value="weatherDay" name={wfe.language.weatherD} max={99} min={-99} />
+                <NumberImput value="weatherNight" name={wfe.language.weatherN} max={99} min={-99} />
+                <NumberImput value="weathericon" name={wfe.language.weatherIconNumber} max={26} min={1} />
+                <FormAppearance name={wfe.language.status} classes="uk-child-width-auto uk-grid">
+                    <Checkbox value="bluetooth" name={wfe.language.bluetooth}/>
+                    <Checkbox value="alarm" name={wfe.language.alarm}/>
+                    <Checkbox value="dnd" name={wfe.language.dnd}/>
+                    <Checkbox value="lock" name={wfe.language.lock}/>
                 </FormAppearance>
-                <NumberImput value="animation" name="Animation image" translate="animation" max={10} min={1} />
-                <NumberImput value="air" name="Air" translate="airQualityLabel" max={9999} min={0} />
-                <FormAppearance name="Alt weather" translate="weatherAlt-label" classes="uk-child-width-auto uk-grid">
-                    <Checkbox value="weatherAlt" name="Show alt weather" translate="weatherAlt"/>
-                    <small data-translate-id="weatherAltDescription">Appears when current weather is unavailable</small>
+                <NumberImput value="animation" name={wfe.language.animation} max={10} min={1} />
+                <NumberImput value="air" name={wfe.language.airQualityLabel} max={9999} min={0} />
+                <FormAppearance name={wfe.language['weatherAlt-label']} classes="uk-child-width-auto uk-grid">
+                    <Checkbox value="weatherAlt" name={wfe.language.weatherAlt}/>
+                    <small>{wfe.language.weatherAltDescription}</small>
                 </FormAppearance>
             </>
         );

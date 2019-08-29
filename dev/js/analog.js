@@ -1,5 +1,5 @@
 /* global UIkit, pageXOffset, pageYOffset */
-import {$, $c} from './utils.js';
+import {$, $c, styleToNum, getOffsetRect} from './utils.js';
 import wfe from './wfe_obj.js';
 
 function init() {
@@ -294,27 +294,6 @@ function moveDot(el, elcoords) {
         };
     }
 
-}
-
-// TODO: Убрать дублирующийся из editor.js код
-function getOffsetRect(elem) {
-    let box = elem.getBoundingClientRect(),
-        body = document.body,
-        docElem = document.documentElement,
-        scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
-        scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
-        clientTop = docElem.clientTop || body.clientTop || 0,
-        clientLeft = docElem.clientLeft || body.clientLeft || 0,
-        top = box.top + scrollTop - clientTop,
-        left = box.left + scrollLeft - clientLeft;
-
-    return {
-        top: Math.round(top),
-        left: Math.round(left)
-    };
-}
-function styleToNum (el) {
-    return Number(el.replace('px', ''));
 }
 
 $('analog-watch-tab').addEventListener('click', () => {

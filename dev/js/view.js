@@ -10,7 +10,7 @@ function makeWf() {
     } catch (error) {
         console.warn(error);
         if (error.name === "ImageError") {
-            UIkit.notification(('imagenotfound' in wfe.app.lang ? wfe.app.lang.imagenotfound : "Image with index $index not found").replace("$index", "<b>" + error.imageIndex + "</b>"), {
+            UIkit.notification(('imagenotfound' in wfe.language ? wfe.language.imagenotfound : "Image with index $index not found").replace("$index", "<b>" + error.imageIndex + "</b>"), {
                 timeout: 7500,
                 status: 'danger',
                 pos: 'top-left'

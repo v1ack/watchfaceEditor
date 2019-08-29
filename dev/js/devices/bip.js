@@ -59,11 +59,11 @@ let wf_data = {
         if ('Activity' in json) {
             data.activity = true;
             if ('Calories' in json.Activity)
-                data.actCal =  {Number: json.Activity.Calories};
+                data.actCal = {Number: json.Activity.Calories};
             if ('Steps' in json.Activity)
-                data.actSteps =  {Number: json.Activity.Steps};
+                data.actSteps = {Number: json.Activity.Steps};
             if ('StepsGoal' in json.Activity)
-                data.actStepsGoal =  {Number: json.Activity.StepsGoal};
+                data.actStepsGoal = {Number: json.Activity.StepsGoal};
             if ('Pulse' in json.Activity)
                 data.actPulse = {Number: json.Activity.Pulse};
             if ('Distance' in json.Activity)
