@@ -91,110 +91,98 @@ function init() {
         if ('amPm' in wfe.coords) {
             $("editor").innerHTML +=
                 '<div id="e_time_am" style="height:' + ($(wfe.coords.amPm.ImageIndexAm).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.amPm.ImageIndexAm).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.amPm.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.amPm.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
-            initdragN('timeM');
+            initdragN('amPm');
         }
     }
-    if (wfe.coords.date) {
-        if ('weekDay' in wfe.coords)
-            makeImgAndInitDrag('dateWeekday');
-        if ('dateDay' in wfe.coords)
-            makeBlockAndInitDrag('dateDay');
-        if ('dateMonth' in wfe.coords)
-            makeBlockAndInitDrag('dateMonth');
-        if ('dateOneLine' in wfe.coords)
-            makeBlockAndInitDrag('dateOneLine');
-    }
-    if (wfe.coords.activity) {
-        if ('actCal' in wfe.coords)
-            makeBlockAndInitDrag('actCalories');
-        if ('actSteps' in wfe.coords)
-            makeBlockAndInitDrag('actSteps');
-        if ('actStepsGoal' in wfe.coords)
-            makeBlockAndInitDrag('actStepsGoal');
-        if ('actPulse' in wfe.coords)
-            makeBlockAndInitDrag('actPulse');
-        if ('actDistance' in wfe.coords)
-            makeBlockAndInitDrag('actDistance');
-    }
-    if (wfe.coords.battery) {
-        if ('batteryIcon' in wfe.coords)
-            makeImgAndInitDrag('batteryIcon');
-        if ('batteryText' in wfe.coords)
-            makeBlockAndInitDrag('batteryText');
-        if ('batteryScale' in wfe.coords) {
-            let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i]);
-            for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
-                $("editor").innerHTML +=
-                    '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
-                setTimeout(e_battery_linar_initdrag, 10, i);
-            }
+    if ('dateWeekday' in wfe.coords)
+        makeImgAndInitDrag('dateWeekday');
+    if ('dateDay' in wfe.coords)
+        makeBlockAndInitDrag('dateDay');
+    if ('dateMonth' in wfe.coords)
+        makeBlockAndInitDrag('dateMonth');
+    if ('dateOneLine' in wfe.coords)
+        makeBlockAndInitDrag('dateOneLine');
+    if ('actCalories' in wfe.coords)
+        makeBlockAndInitDrag('actCalories');
+    if ('actSteps' in wfe.coords)
+        makeBlockAndInitDrag('actSteps');
+    if ('actStepsGoal' in wfe.coords)
+        makeBlockAndInitDrag('actStepsGoal');
+    if ('actPulse' in wfe.coords)
+        makeBlockAndInitDrag('actPulse');
+    if ('actDistance' in wfe.coords)
+        makeBlockAndInitDrag('actDistance');
+    if ('batteryIcon' in wfe.coords)
+        makeImgAndInitDrag('batteryIcon');
+    if ('batteryText' in wfe.coords)
+        makeBlockAndInitDrag('batteryText');
+    if ('batteryScale' in wfe.coords) {
+        let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i]);
+        for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
+            $("editor").innerHTML +=
+                '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+            setTimeout(e_battery_linar_initdrag, 10, i);
         }
     }
-    if (wfe.coords.status) {
-        if ('statAlarm' in wfe.coords) {
-            makeImgStat(wfe.coords.statAlarm, "e_stat_alarm");
-            initdragN('statAlarm');
+    if ('statAlarm' in wfe.coords) {
+        makeImgStat(wfe.coords.statAlarm, "e_stat_alarm");
+        initdragN('statAlarm');
+    }
+    if ('statBluetooth' in wfe.coords) {
+        makeImgStat(wfe.coords.statBluetooth, "e_stat_bt");
+        initdragN('statBluetooth');
+    }
+    if ('statDnd' in wfe.coords) {
+        makeImgStat(wfe.coords.statDnd, "e_stat_dnd");
+        initdragN('statDnd');
+    }
+    if ('statLock' in wfe.coords) {
+        makeImgStat(wfe.coords.statLock, "e_stat_lock");
+        initdragN('statLock');
+    }
+    if ('weathericon' in wfe.coords)
+        if ('CustomIcon' in wfe.coords.weathericon) {
+            $("editor").innerHTML +=
+                '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+            setTimeout(function() {
+                initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon);
+            }, 10);
+        } else {
+            $("editor").innerHTML +=
+                '<div id="e_weather_icon" style="height:' + ($("weather").height * wfe.device.editor_zoom) + 'px; width:' + ($("weather").width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+            setTimeout(function() {
+                initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates);
+            }, 10);
         }
-        if ('statBt' in wfe.coords) {
-            makeImgStat(wfe.coords.statBt, "e_stat_bt");
-            initdragN('statBluetooth');
-        }
-        if ('statDnd' in wfe.coords) {
-            makeImgStat(wfe.coords.statDnd, "e_stat_dnd");
-            initdragN('statDND');
-        }
-        if ('statLock' in wfe.coords) {
-            makeImgStat(wfe.coords.statLock, "e_stat_lock");
-            initdragN('statLock');
+    if ('weatherOneLine' in wfe.coords)
+        makeBlockAndInitDrag('weatherOneLine');
+    if ('weatherDay' in wfe.coords)
+        makeBlockAndInitDrag('weatherDay');
+    if ('weatherNight' in wfe.coords)
+        makeBlockAndInitDrag('weatherNight');
+    if ('weatherDayAlt' in wfe.coords)
+        makeBlockAndInitDrag('weatherDayAlt');
+    if ('weatherNightAlt' in wfe.coords)
+        makeBlockAndInitDrag('weatherNightAlt');
+    if ('weatherCurrent' in wfe.coords)
+        makeBlockAndInitDrag('weatherCurrent');
+    if ('weatherAirIcon' in wfe.coords)
+        makeImgAndInitDrag('weatherAirIcon');
+    if ('weatherAirText' in wfe.coords)
+        makeBlockAndInitDrag('weatherAirText');
+    if ('stepscircle' in wfe.coords) {
+        makeCircleAndInitDrag('stepscircle');
+    }
+    if ('stepsLinear' in wfe.coords) {
+        let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i]);
+        for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
+            $("editor").innerHTML +=
+                '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+            setTimeout(e_steps_linar_initdrag, 10, i);
         }
     }
-    if (wfe.coords.weather) {
-        if ('weathericon' in wfe.coords)
-            if ('CustomIcon' in wfe.coords.weathericon) {
-                $("editor").innerHTML +=
-                    '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
-                setTimeout(function() {
-                    initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon);
-                }, 10);
-            } else {
-                $("editor").innerHTML +=
-                    '<div id="e_weather_icon" style="height:' + ($("weather").height * wfe.device.editor_zoom) + 'px; width:' + ($("weather").width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
-                setTimeout(function() {
-                    initdrag('e_weather_icon', wfe.coords.weathericon.Coordinates);
-                }, 10);
-            }
-        if ('weatherOneLine' in wfe.coords)
-            makeBlockAndInitDrag('weatherOneLine');
-        if ('weatherDay' in wfe.coords)
-            makeBlockAndInitDrag('weatherDay');
-        if ('weatherNight' in wfe.coords)
-            makeBlockAndInitDrag('weatherNight');
-        if ('weatherDayAlt' in wfe.coords)
-            makeBlockAndInitDrag('weatherDayAlt');
-        if ('weatherNightAlt' in wfe.coords)
-            makeBlockAndInitDrag('weatherNightAlt');
-        if ('weatherCurrent' in wfe.coords)
-            makeBlockAndInitDrag('weatherCurrent');
-        if ('weatherAirIcon' in wfe.coords)
-            makeImgAndInitDrag('weatherAirIcon');
-        if ('weatherAirText' in wfe.coords)
-            makeBlockAndInitDrag('weatherAirText');
-    }
-    if (wfe.coords.stepsprogress) {
-        if ('stepscircle' in wfe.coords) {
-            makeCircleAndInitDrag('stepscircle');
-        }
-        if ('stepsLinear' in wfe.coords) {
-            let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i]);
-            for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
-                $("editor").innerHTML +=
-                    '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
-                setTimeout(e_steps_linar_initdrag, 10, i);
-            }
-        }
-        if ('stepsGoal' in wfe.coords)
-            makeImgAndInitDrag('stepsGoal');
-    }
+    if ('stepsGoal' in wfe.coords)
+        makeImgAndInitDrag('stepsGoal');
     if ('Animation' in wfe.coords)
         makeImgAndInitDrag('Animation');
 }
@@ -343,8 +331,8 @@ function makejsbetter() {
     if ('batteryText' in wfe.coords)
         calc(wfe.coords.batteryText, 3);
     if (wfe.coords.activity) {
-        if ('actCal' in wfe.coords)
-            calc(wfe.coords.actCal.Number, 4);
+        if ('actCalories' in wfe.coords)
+            calc(wfe.coords.actCalories.Number, 4);
         if ('actSteps' in wfe.coords)
             calc(wfe.coords.actSteps.Number, 5);
         if ('actStepsGoal' in wfe.coords)

@@ -32,51 +32,44 @@ let wf_data = {
             }
         }
         if ('Date' in json) {
-            data.date = true;
             if ('WeekDay' in json.Date)
-                data.weekDay = json.Date.WeekDay;
+                data.dateWeekday = json.Date.WeekDay;
             if ('MonthAndDay' in json.Date) {
-                data.monthandday = json.Date.MonthAndDay;
+                data.monthandday = {
+                    TwoDigitsMonth: 'TwoDigitsMonth' in json.Date.MonthAndDay ? json.Date.MonthAndDay.TwoDigitsMonth : true,
+                    TwoDigitsDay: 'TwoDigitsDay' in json.Date.MonthAndDay ? json.Date.MonthAndDay.TwoDigitsDay : true
+                };
                 if ('Separate' in json.Date.MonthAndDay) {
                     if ('Day' in json.Date.MonthAndDay.Separate)
                         data.dateDay = json.Date.MonthAndDay.Separate.Day;
                     if ('Month' in json.Date.MonthAndDay.Separate)
                         data.dateMonth = json.Date.MonthAndDay.Separate.Month;
-                    Reflect.deleteProperty(data.monthandday, 'Separate');
                 }
-                if ('OneLine' in json.Date.MonthAndDay) {
+                if ('OneLine' in json.Date.MonthAndDay)
                     data.dateOneLine = json.Date.MonthAndDay.OneLine;
-                    Reflect.deleteProperty(data.monthandday, 'OneLine');
-                }
             }
-        } else
-            data.date = false;
+        }
         if ('Battery' in json) {
-            data.battery = true;
             if ('Images' in json.Battery)
                 data.batteryIcon = json.Battery.Images;
             if ('Text' in json.Battery)
                 data.batteryText = json.Battery.Text;
             if ('Scale' in json.Battery)
                 data.batteryScale = json.Battery.Scale;
-        } else
-            data.battery = false;
+        }
         if ('Status' in json) {
-            data.status = true;
             if ('Alarm' in json.Status)
                 data.statAlarm = json.Status.Alarm;
             if ('Bluetooth' in json.Status)
-                data.statBt = json.Status.Bluetooth;
+                data.statBluetooth = json.Status.Bluetooth;
             if ('DoNotDisturb' in json.Status)
                 data.statDnd = json.Status.DoNotDisturb;
             if ('Lock' in json.Status)
                 data.statLock = json.Status.Lock;
-        } else
-            data.status = false;
+        }
         if ('Activity' in json) {
-            data.activity = true;
             if ('Calories' in json.Activity)
-                data.actCal = {Number: json.Activity.Calories};
+                data.actCalories = {Number: json.Activity.Calories};
             if ('Steps' in json.Activity)
                 data.actSteps = {Number: json.Activity.Steps.Step};
             if ('StepsGoal' in json.Activity)
@@ -87,27 +80,21 @@ let wf_data = {
                 data.actDistance = json.Activity.Distance;
             if ('StarImage' in json.Activity)
                 data.stepsGoal = json.Activity.StarImage;
-        } else
-            data.activity = false;
-        data.weather = false;
+        }
         if ('StepsProgress' in json) {
-            data.stepsprogress = true;
             if ('Circle' in json.StepsProgress)
                 data.stepscircle = json.StepsProgress.Circle;
             if ('Linear' in json.StepsProgress)
                 data.stepsLinear = json.StepsProgress.Linear;
-        } else
-            data.stepsprogress = false;
+        }
         if ('AnalogDialFace' in json) {
-            data.analog = true;
             if ('Hours' in json.AnalogDialFace)
                 data.analoghours_image = json.AnalogDialFace.Hours.CenterImage;
             if ('Minutes' in json.AnalogDialFace)
                 data.analogminutes_image = json.AnalogDialFace.Minutes.CenterImage;
             if ('Seconds' in json.AnalogDialFace)
                 data.analogseconds_image = json.AnalogDialFace.Seconds.CenterImage;
-        } else
-            data.analog = false;
+        }
         return data;
     },
     export: function(data) {
@@ -122,10 +109,10 @@ let wf_data = {
             if ('amPm' in obj)
                 packed.Time.AmPm = obj.amPm;
         }
-        if (obj.date) {
+        if (obj.dateWeekday || obj.monthandday) {
             packed.Date = {};
-            if ('weekDay' in obj)
-                packed.Date.WeekDay = obj.weekDay;
+            if ('dateWeekday' in obj)
+                packed.Date.WeekDay = obj.dateWeekday;
             if ('monthandday' in obj) {
                 packed.Date.MonthAndDay = obj.monthandday;
                 if ('dateDay' in obj || 'dateMonth' in obj) {
@@ -139,18 +126,18 @@ let wf_data = {
                     packed.Date.MonthAndDay.OneLine = obj.dateOneLine;
             }
         }
-        if (obj.status) {
+        if (obj.statAlarm || obj.statBluetooth || obj.statDnd || obj.statLock) {
             packed.Status = {};
             if ('statAlarm' in obj)
                 packed.Status.Alarm = obj.statAlarm;
-            if ('statBt' in obj)
-                packed.Status.Bluetooth = obj.statBt;
+            if ('statBluetooth' in obj)
+                packed.Status.Bluetooth = obj.statBluetooth;
             if ('statDnd' in obj)
                 packed.Status.DoNotDisturb = obj.statDnd;
             if ('statLock' in obj)
                 packed.Status.Lock = obj.statLock;
         }
-        if (obj.battery) {
+        if (obj.batteryIcon || obj.batteryText || obj.batteryScale) {
             packed.Battery = {};
             if ('batteryIcon' in obj)
                 packed.Battery.Images = obj.batteryIcon;
@@ -159,10 +146,10 @@ let wf_data = {
             if ('batteryScale' in obj)
                 packed.Battery.Scale = obj.batteryScale;
         }
-        if (obj.activity) {
+        if (obj.actCalories || obj.actSteps || obj.actStepsGoal || obj.actPulse || obj.actDistance || obj.stepsGoal) {
             packed.Activity = {};
-            if ('actCal' in obj)
-                packed.Activity.Calories = obj.actCal.Number;
+            if ('actCalories' in obj)
+                packed.Activity.Calories = obj.actCalories.Number;
             if ('actSteps' in obj)
                 packed.Activity.Steps = {Step: obj.actSteps.Number};
             if ('actStepsGoal' in obj)
@@ -174,7 +161,7 @@ let wf_data = {
             if ('stepsGoal' in obj)
                 packed.Activity.StarImage = obj.stepsGoal;
         }
-        if (obj.stepsprogress) {
+        if (obj.stepscircle || obj.stepsLinear || obj.stepsGoal) {
             packed.StepsProgress = {};
             if ('stepscircle' in obj)
                 packed.StepsProgress.Circle = obj.stepscircle;
@@ -183,19 +170,19 @@ let wf_data = {
             if ('stepsGoal' in obj)
                 packed.StepsProgress.GoalImage = obj.stepsGoal;
         }
-        if (obj.analog) {
+        if (obj.analoghours_image || obj.analogminutes_image || obj.analogseconds_image) {
             packed.AnalogDialFace = {};
             if ('analoghours_image' in obj) {
                 packed.AnalogDialFace.Hours = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
-                packed.AnalogDialFace.Hours.CenterImage = obj.analoghours;
+                packed.AnalogDialFace.Hours.CenterImage = obj.analoghours_image;
             }
             if ('analogminutes_image' in obj) {
                 packed.AnalogDialFace.Minutes = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
-                packed.AnalogDialFace.Minutes.CenterImage = obj.analogminutes;
+                packed.AnalogDialFace.Minutes.CenterImage = obj.analogminutes_image;
             }
             if ('analogseconds_image' in obj) {
                 packed.AnalogDialFace.Seconds = JSON.parse('{"unknown1":0,"unknown2":0,"unknown3":{"X":0,"Y":0},"unknown4":{"X":0,"Y":0},"CenterImage":{"X":38,"Y":227,"ImageIndex":42}}');
-                packed.AnalogDialFace.Seconds.CenterImage = obj.analogseconds;
+                packed.AnalogDialFace.Seconds.CenterImage = obj.analogseconds_image;
             }
         }
         return packed;

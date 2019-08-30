@@ -42,10 +42,10 @@ function init(coords) {
             }, coords.amPm.ImageIndexAm, 1, coords.amPm.ImageIndexPm);
     }
     if (coords.date) {
-        if ('weekDay' in coords) {
+        if ('dateWeekday' in coords) {
             insertimg({
                 label: "Week day"
-            }, coords.weekDay.ImageIndex, coords.weekDay.ImagesCount);
+            }, coords.dateWeekday.ImageIndex, coords.dateWeekday.ImagesCount);
         }
         if ('dateDay' in coords) {
             insertimg({
@@ -84,11 +84,11 @@ function init(coords) {
                 label: "Status alarm",
                 addition: (", " + coords.statAlarm.ImageIndexOff)
             }, coords.statAlarm.ImageIndexOn, 1, coords.statAlarm.ImageIndexOff);
-        if ('statBt' in coords)
+        if ('statBluetooth' in coords)
             insertimg({
                 label: "Status bluetooth",
-                addition: (", " + coords.statBt.ImageIndexOff)
-            }, coords.statBt.ImageIndexOn, 1, coords.statBt.ImageIndexOff);
+                addition: (", " + coords.statBluetooth.ImageIndexOff)
+            }, coords.statBluetooth.ImageIndexOn, 1, coords.statBluetooth.ImageIndexOff);
         if ('statDnd' in coords)
             insertimg({
                 label: "Status do not disturb",
@@ -101,10 +101,10 @@ function init(coords) {
             }, coords.statLock.ImageIndexOn, 1, coords.statLock.ImageIndexOff);
     }
     if (coords.activity) {
-        if ('actCal' in coords)
+        if ('actCalories' in coords)
             insertimg({
                 label: "Activity calories"
-            }, coords.actCal.ImageIndex, coords.actCal.ImagesCount);
+            }, coords.actCalories.ImageIndex, coords.actCalories.ImagesCount);
         if ('actSteps' in coords)
             insertimg({
                 label: "Activity steps"

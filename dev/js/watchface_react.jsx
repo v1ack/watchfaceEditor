@@ -5,11 +5,7 @@ import ReactDOM from 'react-dom';
 import wfe from './wfe_obj';
 import {$, div} from './utils';
 
-const make2digits = value => {
-    if (value.length === 1)
-        return '0' + value;
-    return value;
-};
+const make2digits = value => (value.length === 1 ? '0' + value : value);
 
 /**
  * Renders image element
@@ -486,8 +482,8 @@ class Watchface extends React.Component {
                         <ImageElement el={this.props.coords.seconds.Tens} value={seconds[0]} key={'seconds.tens'}/>
                     </>
                 }
-                {this.props.coords.weekDay &&
-                    <ImageElement el={this.props.coords.weekDay} value={this.props.data.date.weekDay} />
+                {this.props.coords.dateWeekday &&
+                    <ImageElement el={this.props.coords.dateWeekday} value={this.props.data.date.weekDay} />
                 }
                 {this.props.coords.dateDay &&
                     <BlockElement el={this.props.coords.dateDay} value={this.props.data.date.day.toString().length === 1 && this.props.coords.monthandday.TwoDigitsDay ? '0' + this.props.data.date.day : this.props.data.date.day} />
@@ -531,8 +527,8 @@ class Watchface extends React.Component {
                 {this.props.coords.statAlarm &&
                     <StatusElement el={this.props.coords.statAlarm} value={this.props.data.alarm} />
                 }
-                {this.props.coords.statBt &&
-                    <StatusElement el={this.props.coords.statBt} value={this.props.data.bluetooth} />
+                {this.props.coords.statBluetooth &&
+                    <StatusElement el={this.props.coords.statBluetooth} value={this.props.data.bluetooth} />
                 }
                 {this.props.coords.statDnd &&
                     <StatusElement el={this.props.coords.statDnd} value={this.props.data.dnd} />
@@ -540,8 +536,8 @@ class Watchface extends React.Component {
                 {this.props.coords.statLock &&
                     <StatusElement el={this.props.coords.statLock} value={this.props.data.lock} />
                 }
-                {this.props.coords.actCal &&
-                    <BlockElement el={this.props.coords.actCal} value={this.props.data.calories} />
+                {this.props.coords.actCalories &&
+                    <BlockElement el={this.props.coords.actCalories} value={this.props.data.calories} />
                 }
                 {this.props.coords.actSteps &&
                     <BlockElement el={this.props.coords.actSteps} value={this.props.data.steps} />

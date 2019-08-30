@@ -27,22 +27,21 @@ let wf_data = {
             }
         }
         if ('Date' in json) {
-            data.date = true;
             if ('WeekDay' in json.Date)
-                data.weekDay = json.Date.WeekDay;
+                data.dateWeekday = json.Date.WeekDay;
             if ('MonthAndDay' in json.Date) {
-                data.monthandday = json.Date.MonthAndDay;
+                data.monthandday = {
+                    TwoDigitsMonth: 'TwoDigitsMonth' in json.Date.MonthAndDay ? json.Date.MonthAndDay.TwoDigitsMonth : true,
+                    TwoDigitsDay: 'TwoDigitsDay' in json.Date.MonthAndDay ? json.Date.MonthAndDay.TwoDigitsDay : true
+                };
                 if ('Separate' in json.Date.MonthAndDay) {
                     if ('Day' in json.Date.MonthAndDay.Separate)
                         data.dateDay = json.Date.MonthAndDay.Separate.Day;
                     if ('Month' in json.Date.MonthAndDay.Separate)
                         data.dateMonth = json.Date.MonthAndDay.Separate.Month;
-                    delete data.monthandday.Separate;
                 }
-                if ('OneLine' in json.Date.MonthAndDay) {
+                if ('OneLine' in json.Date.MonthAndDay)
                     data.dateOneLine = json.Date.MonthAndDay.OneLine;
-                    delete data.monthandday.OneLine;
-                }
             }
             if ('DayAmPm' in json.Date) {
                 data.amPm = {
@@ -52,12 +51,9 @@ let wf_data = {
                     ImageIndexPm: json.Date.DayAmPm.ImageIndexPMEN
                 };
             }
-        } else
-            data.date = false;
+        }
         if ('Status' in json) {
-            data.status = true;
             if ('Battery' in json.Status) {
-                data.battery = true;
                 if ('BatteryConfig' in json.Status.Battery)
                     data.BatteryConfig = json.Status.Battery.BatteryConfig;
                 if ('Icon' in json.Status.Battery)
@@ -66,22 +62,19 @@ let wf_data = {
                     data.batteryText = json.Status.Battery.Text;
                 if ('Scale' in json.Status.Battery)
                     data.batteryScale = json.Status.Battery.Scale;
-            } else
-                data.battery = false;
+            }
             if ('Alarm' in json.Status)
                 data.statAlarm = json.Status.Alarm;
             if ('Bluetooth' in json.Status)
-                data.statBt = json.Status.Bluetooth;
+                data.statBluetooth = json.Status.Bluetooth;
             if ('DoNotDisturb' in json.Status)
                 data.statDnd = json.Status.DoNotDisturb;
             if ('Lock' in json.Status)
                 data.statLock = json.Status.Lock;
-        } else
-            data.status = false;
+        }
         if ('Activity' in json) {
-            data.activity = true;
             if ('Calories' in json.Activity) {
-                data.actCal = json.Activity.Calories;
+                data.actCalories = json.Activity.Calories;
             }
             if ('Steps' in json.Activity) {
                 data.actSteps = json.Activity.Steps;
@@ -98,8 +91,7 @@ let wf_data = {
             }
             if ('Distance' in json.Activity)
                 data.actDistance = json.Activity.Distance;
-        } else
-            data.activity = false;
+        }
         // if ('Weather' in json) {
         //     data.weather = true;
         //     if ('Icon' in json.Weather)
@@ -141,15 +133,13 @@ let wf_data = {
         // } else
         //     data.weather = false;
         if ('StepsProgress' in json) {
-            data.stepsprogress = true;
             if ('Circle' in json.StepsProgress)
                 data.stepscircle = json.StepsProgress.Circle;
             if ('Linear' in json.StepsProgress)
                 data.stepsLinear = json.StepsProgress.Linear;
             if ('GoalImage' in json.StepsProgress)
                 data.stepsGoal = json.StepsProgress.GoalImage;
-        } else
-            data.stepsprogress = false;
+        }
         if ('AnalogDialFace' in json) {
             data.analog = true;
             if ('Hours' in json.AnalogDialFace)
@@ -158,8 +148,7 @@ let wf_data = {
                 data.analogminutes = json.AnalogDialFace.Minutes;
             if ('Seconds' in json.AnalogDialFace)
                 data.analogseconds = json.AnalogDialFace.Seconds;
-        } else
-            data.analog = false;
+        }
         if ('Other' in json) {
             if ('Animation' in json.Other) {
                 data.Animation = json.Other.Animation;
@@ -178,10 +167,10 @@ let wf_data = {
             if ('seconds' in obj)
                 packed.Time.Seconds = obj.seconds;
         }
-        if (obj.date || 'amPm' in obj) {
+        if (obj.dateWeekday || obj.monthandday || obj.amPm) {
             packed.Date = {};
-            if ('weekDay' in obj)
-                packed.Date.WeekDay = obj.weekDay;
+            if ('dateWeekday' in obj)
+                packed.Date.WeekDay = obj.dateWeekday;
             if ('monthandday' in obj) {
                 packed.Date.MonthAndDay = obj.monthandday;
                 if ('dateDay' in obj || 'dateMonth' in obj) {
@@ -204,9 +193,9 @@ let wf_data = {
                     ImageIndexPMEN: obj.amPm.ImageIndexPm
                 };
         }
-        if (obj.status || obj.battery) {
+        if (obj.statAlarm || obj.statBluetooth || obj.statDnd || obj.statLock || obj.batteryIcon || obj.batteryText || obj.batteryScale) {
             packed.Status = {};
-            if (obj.battery) {
+            if (obj.batteryIcon || obj.batteryText || obj.batteryScale) {
                 packed.Status.Battery = {};
                 if ('BatteryConfig' in obj)
                     packed.Status.Battery.BatteryConfig = obj.BatteryConfig;
@@ -219,17 +208,17 @@ let wf_data = {
             }
             if ('statAlarm' in obj)
                 packed.Status.Alarm = obj.statAlarm;
-            if ('statBt' in obj)
-                packed.Status.Bluetooth = obj.statBt;
+            if ('statBluetooth' in obj)
+                packed.Status.Bluetooth = obj.statBluetooth;
             if ('statDnd' in obj)
                 packed.Status.DoNotDisturb = obj.statDnd;
             if ('statLock' in obj)
                 packed.Status.Lock = obj.statLock;
         }
-        if (obj.activity) {
+        if (obj.actCalories || obj.actSteps || obj.actStepsGoal || obj.actPulse || obj.actDistance) {
             packed.Activity = {};
-            if ('actCal' in obj) {
-                packed.Activity.Calories = obj.actCal;
+            if ('actCalories' in obj) {
+                packed.Activity.Calories = obj.actCalories;
             }
             if ('actSteps' in obj) {
                 packed.Activity.Steps = obj.actSteps;
@@ -286,7 +275,7 @@ let wf_data = {
         //             packed.Weather.AirPollution.Index = obj.weatherAirText;
         //     }
         // }
-        if (obj.stepsprogress) {
+        if (obj.stepscircle || obj.stepsLinear || obj.stepsGoal) {
             packed.StepsProgress = {};
             if ('stepscircle' in obj)
                 packed.StepsProgress.Circle = obj.stepscircle;
@@ -295,7 +284,7 @@ let wf_data = {
             if ('stepsGoal' in obj)
                 packed.StepsProgress.GoalImage = obj.stepsGoal;
         }
-        if (obj.analog) {
+        if (obj.analoghours || obj.analogminutes || obj.analogseconds) {
             packed.AnalogDialFace = {};
             if ('analoghours' in obj)
                 packed.AnalogDialFace.Hours = obj.analoghours;
