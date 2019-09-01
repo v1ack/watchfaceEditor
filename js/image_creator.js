@@ -1,13 +1,12 @@
-/* global saveAs, UIkit */
+/* global saveAs, UIkit, JSZip */
 function addScript(url) {
     let e = document.createElement("script");
     e.src = url;
     e.type = "text/javascript";
     document.getElementsByTagName("head")[0].appendChild(e);
 }
-let edgeBrowser = navigator.userAgent.search(/Edge/) > 0 || navigator.userAgent.search(/Firefox/) > 0 ? true : false;
+let edgeBrowser = navigator.userAgent.search(/Edge/u) > 0 || navigator.userAgent.search(/Firefox/u) > 0;
 if (edgeBrowser) {
-    addScript("js/FileSaver.min.js");
     addScript("js/canvas-toBlob.js");
 }
 
@@ -43,13 +42,14 @@ class Creator {
         this.fonts = document.getElementsByName('fontfamily');
         this.limit = 127;
     }
+
     update() {
         let images = $("images"),
             hidden_images = $("hidden-images");
         hidden_images.innerHTML = '';
         images.innerHTML = '';
         this.wordsArray = $("text").value.split(",");
-        if (this.wordsArray[0] !== '')
+        if (this.wordsArray[0])
             this.array = this.wordsArray;
         else
             this.array = this.numberArray;
@@ -97,8 +97,9 @@ class Creator {
             images.appendChild(canvas);
         }
     }
+
     heightChange() {
-        if ($("imageheight").value !== '') {
+        if ($("imageheight").value) {
             this.heightChanged = true;
             this.height = $("imageheight").value;
         } else {
@@ -106,8 +107,9 @@ class Creator {
         }
         this.update();
     }
+
     topOffsetChange() {
-        if ($("imageoffset").value !== '') {
+        if ($("imageoffset").value) {
             this.topOffsetChanged = true;
             this.topOffset = $("imageoffset").value;
         } else {
@@ -115,8 +117,9 @@ class Creator {
         }
         this.update();
     }
+
     widthChange() {
-        if ($("imagewidth").value !== '') {
+        if ($("imagewidth").value) {
             this.widthChanged = true;
             this.width = $("imagewidth").value;
         } else {
@@ -124,8 +127,9 @@ class Creator {
         }
         this.update();
     }
+
     colorLimitChange() {
-        if ($("color_limit").value !== '') {
+        if ($("color_limit").value) {
             this.limit = $("color_limit").value;
         } else {
             this.limit = 127;
@@ -133,26 +137,21 @@ class Creator {
         }
         this.update();
     }
+
     save() {
-        this.number = $("imageindex").value;
-        let saveForEdge = blob => {
-            saveAs(blob, this.number + ".png");
-            creator.number++;
-        };
+        let zip = new JSZip();
+        this.number = Number($("imageindex").value);
         for (let el = 0; el < this.array.length; el++) {
             let canvas = $('canvas-image-' + el);
-            if (edgeBrowser) {
-                canvas.toBlob(saveForEdge);
-            } else {
-                let a = document.createElement('a');
-                a.href = canvas.toDataURL("image/png");
-                a.download = this.number + '.png';
-                this.number++;
-                a.click();
-                a = null;
-            }
+            zip.file(this.number + '.png', canvas.toDataURL("image/png").replace(/^data:image\/[a-z]+;base64,/u, ""), {base64: true});
+            this.number += 1;
         }
+        zip.generateAsync({type: "blob"}).
+            then(content => {
+                saveAs(content, "images.zip");
+            });
     }
+
     cleaner(imageData) {
         let pixels = imageData.data;
         for (let i = 0; i < pixels.length; i += 4) {
@@ -162,7 +161,7 @@ class Creator {
             pixels[i] = (r > this.limit ? 255 : 0);
             pixels[i + 1] = (g > this.limit ? 255 : 0);
             pixels[i + 2] = (b > this.limit ? 255 : 0);
-            //pixels[i + 3] = (pixels[i + 3] > 127 ? 255 : 0);
+            // pixels[i + 3] = (pixels[i + 3] > 127 ? 255 : 0);
         }
         return imageData;
     }
@@ -202,32 +201,31 @@ let app_lang = {};
  * Downloads language json and applys it to app_lang
  *
  * @param {string} lang language name
+ * @returns {null} null
  */
 function changeLang(lang) {
-    try {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'assets/translation_ic/' + lang + '.json', false);
-        xhr.send();
-        if (xhr.status === 200) {
-            app_lang = JSON.parse(xhr.responseText);
+    fetch('assets/translation_ic/' + lang + '.json').
+        then(response => (response.status === 200 ? response : null)).
+        then(response => response.json()).
+        then(translation => {
+            app_lang = translation;
             let strings = document.querySelectorAll('[data-translate-id]');
             for (let i = 0; i < strings.length; i++) {
                 if (strings[i].dataset.translateId in app_lang)
-                    if (strings[i].dataset.link === undefined)
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
+                    if (strings[i].dataset.link)
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/gu, strings[i].dataset.link);
                     else
-                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId].replace(/\$link/g, strings[i].dataset.link);
+                        strings[i].innerHTML = app_lang[strings[i].dataset.translateId];
             }
-        } else
-            throw ("Respanse status: " + xhr.status);
-    } catch (error) {
-        console.warn("Loading translation error", error);
-        UIkit.notification('<b>Loading translation error: </b>' + error, {
-            status: 'danger',
-            pos: 'top-left',
-            timeout: 5000
+        }).
+        catch(error => {
+            console.warn("Loading translation error", error);
+            UIkit.notification('<b>Loading translation error: </b>' + error, {
+                status: 'danger',
+                pos: 'top-left',
+                timeout: 5000
+            });
         });
-    }
 }
 if (!('lang' in localStorage))
     localStorage.lang = navigator.language || navigator.userLanguage;
