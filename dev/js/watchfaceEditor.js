@@ -93,6 +93,9 @@ wfe.init = function() {
     if (localStorage.lang.indexOf("tr") >= 0) {
         app.changeLang('turkish');
     } else
+    if (localStorage.lang.indexOf("cs") >= 0) {
+        app.changeLang('czech');
+    } else
     if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',

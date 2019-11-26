@@ -238,6 +238,9 @@ if (localStorage.lang.indexOf("zh") >= 0) {
 if (localStorage.lang.indexOf("tr") >= 0) {
     changeLang('turkish');
 }
+if (localStorage.lang.indexOf("cs") >= 0) {
+    changeLang('czech');
+}
 $('lang-ru').addEventListener('click', () => {
     localStorage.lang = 'ru';
     changeLang('russian');
@@ -253,6 +256,10 @@ $('lang-zh').addEventListener('click', () => {
 $('lang-tr').addEventListener('click', () => {
     localStorage.lang = 'tr';
     changeLang('turkish');
+});
+$('lang-cs').addEventListener('click', () => {
+    localStorage.lang = 'cs';
+    changeLang('czech');
 });
 
 $('textsize').addEventListener('change', creator.update.bind(creator));
