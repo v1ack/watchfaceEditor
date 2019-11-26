@@ -8,6 +8,7 @@ import dutch from '../translation/dutch.json';
 import english from '../translation/english.json';
 import german from '../translation/german.json';
 import turkish from '../translation/turkish.json';
+import czech from '../translation/czech.json';
 
 import renderForm from './preview_data.jsx';
 
@@ -16,7 +17,8 @@ let languages = {
     chinese: chinese,
     dutch: dutch,
     german: german,
-    turkish: turkish
+    turkish: turkish,
+    czech: czech
 };
 for (let i in languages)
     Reflect.setPrototypeOf(languages[i], english);
@@ -176,6 +178,10 @@ $('lang-nl').addEventListener('click', () => {
 $('lang-tr').addEventListener('click', () => {
     localStorage.lang = 'tr';
     changeLang('turkish');
+});
+$('lang-cs').addEventListener('click', () => {
+    localStorage.lang = 'cs';
+    changeLang('czech');
 });
 $('theme-light').addEventListener('click', () => changeTheme('light'));
 $('theme-dark').addEventListener('click', () => changeTheme('dark'));
