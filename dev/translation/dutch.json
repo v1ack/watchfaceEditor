@@ -1,5 +1,4 @@
-{
-	"howtouse": "Handleiding",
+﻿{
     "about": "Over",
     "activity": "Activiteit",
     "airQualityLabel": "Luchtkwaliteit",
@@ -33,6 +32,7 @@
     "fixcoordsTip": "Het bepaalt de coördinaten voor onderzijde rechts op basis van de hoogte van het hoogste element en de breedte van het breedste element",
     "help": "Help",
     "hours": "Uren",
+    "howtouse": "Handleiding",
     "howtouseDescr": "Pak het <b>.bin</b> bestand uit met <a $link>AmazfitBipTools</a> (<a $link>AmazfitCorTools</a> voor Cor), klik op <b>Selecteer afbeeldingen</b> en selecteer deze in de wijzerplaat folder met <b>Ctrl+A</b>, selecteer daarna het JSON bestand door te klikken op <b>Selecteer JSON</b>. Vervolgens kun je kiezen welke waarden je wilt tonen door te klikken op <b>Instellingen</b> of de wijzerplaat te wijzigen<br><br>Je kunt de locatie van elementen wijzigen op het tabblad <b>Ontwerp</b>",
     "howtouseDescr2": "Je kunt de JSON invoer bewerken op tabblad <b>Bewerken</b>. Om het voorbeeld bij te werken klik je buiten de JSON invoer. Als je iets toevoegt door het te selecteren, zal de standaard afbeeld gebruikt worden. Je kunt dit wijzigen in je eigen afbeelding of de standaard afbeeldingen <a $link>hier</a> downloaden",
     "icon": "Symbool",
