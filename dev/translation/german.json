@@ -54,7 +54,7 @@
     "tgbatnum": "Ziffern",
     "weather": "Wetter",
     "tgweathericon": "Wettersymbol",
-    "tgweathercusticon": "benutzerdefinierte Symbole",
+    "tgweathercusticon": "Benutzerdefinierte Symbolumschalter",
     "tgweatherair": "Symbol Luftverschmutzung",
     "tgweatheroneline": "Wetter einzeilig",
     "tgweathercur": "aktuelles Wetter",
@@ -127,5 +127,5 @@
     "weatherAlt-label": "Alternatives Wetter",
     "airQualityLabel": "Luftqualität",
     "tgweatherAirIndex": "Luftverschmutzung",
-	"translatedby": "Translated by: Konrad"
+    "translatedby": "Übersetzt von: Konrad"
 }
