@@ -235,6 +235,9 @@ if (localStorage.lang.indexOf("ru") >= 0) {
 if (localStorage.lang.indexOf("zh") >= 0) {
     changeLang('chinese');
 } else
+if (localStorage.lang.indexOf("it") >= 0) {
+    changeLang('italian');
+} else
 if (localStorage.lang.indexOf("tr") >= 0) {
     changeLang('turkish');
 }
