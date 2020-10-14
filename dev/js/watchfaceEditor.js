@@ -47,7 +47,7 @@ wfe.app = {
 };
 wfe.init = function() {
     // Device
-    let device_list = ['bip', 'cor', 'band4', 'gtr'];
+    let device_list = ['bip', 'cor', 'band4', 'gtr', 'bips'];
     if (device_list.includes(location.search.slice(1))) {
         app.change_device(location.search.slice(1), wfe);
     } else if (device_list.includes(localStorage.device)) {
