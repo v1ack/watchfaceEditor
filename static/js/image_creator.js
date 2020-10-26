@@ -241,6 +241,9 @@ if (localStorage.lang.indexOf("tr") >= 0) {
 if (localStorage.lang.indexOf("cs") >= 0) {
     changeLang('czech');
 }
+if (localStorage.lang.indexOf("it") >= 0) {
+    changeLang('italian');
+}
 $('lang-ru').addEventListener('click', () => {
     localStorage.lang = 'ru';
     changeLang('russian');
@@ -252,6 +255,10 @@ $('lang-en').addEventListener('click', () => {
 $('lang-zh').addEventListener('click', () => {
     localStorage.lang = 'zh';
     changeLang('chinese');
+});
+$('lang-it').addEventListener('click', () => {
+    localStorage.lang = 'it';
+    changeLang('italian');
 });
 $('lang-tr').addEventListener('click', () => {
     localStorage.lang = 'tr';
