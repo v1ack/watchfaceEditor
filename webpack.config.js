@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './dev/js/watchfaceEditor.js',
@@ -9,7 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     devServer: {
-        contentBase: __dirname,
+        contentBase: path.resolve(__dirname, 'dist'),
         compress: true,
         port: 9000
     },
@@ -31,5 +32,11 @@ module.exports = {
         modules: ['node_modules'],
         extensions: [".js", ".jsx"]
     },
-    plugins: []
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: 'static' }
+            ]
+        })
+    ]
 };
