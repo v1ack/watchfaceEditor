@@ -90,6 +90,9 @@ wfe.init = function() {
     if (localStorage.lang.indexOf("de") >= 0) {
         app.changeLang('german');
     } else
+    if (localStorage.lang.indexOf("he") >= 0) {
+        app.changeLang('hebrew');
+    } else
     if (localStorage.lang.indexOf("it") >= 0) {
         app.changeLang('italian');
     } else
