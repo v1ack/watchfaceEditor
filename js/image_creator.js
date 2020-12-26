@@ -244,6 +244,9 @@ if (localStorage.lang.indexOf("cs") >= 0) {
 if (localStorage.lang.indexOf("it") >= 0) {
     changeLang('italian');
 }
+if (localStorage.lang.indexOf("he") >= 0) {
+    changeLang('hebrew');
+}
 $('lang-ru').addEventListener('click', () => {
     localStorage.lang = 'ru';
     changeLang('russian');
@@ -267,6 +270,10 @@ $('lang-tr').addEventListener('click', () => {
 $('lang-cs').addEventListener('click', () => {
     localStorage.lang = 'cs';
     changeLang('czech');
+});
+$('lang-he').addEventListener('click', () => {
+    localStorage.lang = 'he';
+    changeLang('hebrew');
 });
 
 $('textsize').addEventListener('change', creator.update.bind(creator));
