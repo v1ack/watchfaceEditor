@@ -7,6 +7,7 @@ import chinese from '../translation/chinese.json';
 import dutch from '../translation/dutch.json';
 import english from '../translation/english.json';
 import german from '../translation/german.json';
+import hebrew from '../translation/hebrew.json';
 import italian from '../translation/italian.json';
 import turkish from '../translation/turkish.json';
 import czech from '../translation/czech.json';
@@ -18,6 +19,7 @@ let languages = {
     chinese: chinese,
     dutch: dutch,
     german: german,
+    hebrew: hebrew,
     italian: italian,
     turkish: turkish,
     czech: czech
@@ -172,6 +174,10 @@ $('lang-zh').addEventListener('click', () => {
 $('lang-de').addEventListener('click', () => {
     localStorage.lang = 'de';
     changeLang('german');
+});
+$('lang-he').addEventListener('click', () => {
+    localStorage.lang = 'he';
+    changeLang('hebrew');
 });
 $('lang-it').addEventListener('click', () => {
     localStorage.lang = 'it';
