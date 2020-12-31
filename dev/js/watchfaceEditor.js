@@ -101,6 +101,9 @@ wfe.init = function() {
     } else
     if (localStorage.lang.indexOf("cs") >= 0) {
         app.changeLang('czech');
+    } 
+    if (localStorage.lang.indexOf("pt-br") >= 0) {
+        app.changeLang('portuguese');
     } else
     if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
