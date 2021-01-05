@@ -275,6 +275,10 @@ $('lang-he').addEventListener('click', () => {
     localStorage.lang = 'he';
     changeLang('hebrew');
 });
+$('lang-pt-br').addEventListener('click', () => {
+    localStorage.lang = 'pt-br';
+    changeLang('portuguese');
+});
 
 $('textsize').addEventListener('change', creator.update.bind(creator));
 $('text').addEventListener('change', creator.update.bind(creator));
