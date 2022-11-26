@@ -20,7 +20,7 @@ wfe.app = {
         else
             app.changeTheme('dark');
     },
-    lastimage: 302,
+    lastimage: 303,
     imagestabversion: 2,
     editortabversion: 1,
     designtabversion: 1,
@@ -47,7 +47,7 @@ wfe.app = {
 };
 wfe.init = function() {
     // Device
-    let device_list = ['bip', 'cor', 'band4', 'gtr', 'bips'];
+    let device_list = ['bip', 'cor', 'band4', 'gtr', 'bips', 'miw2l'];
     if (device_list.includes(location.search.slice(1))) {
         app.change_device(location.search.slice(1), wfe);
     } else if (device_list.includes(localStorage.device)) {
@@ -174,10 +174,10 @@ wfe.init = function() {
             }
             $('inputimages').nextElementSibling.classList.add("uk-label-success");
         }
-        if (wfe.data.imagesset && wfe.data.jsset)
-            wfe.load.disableBtn(1);
-        else
-            wfe.load.disableBtn(0);
+        // if (wfe.data.imagesset && wfe.data.jsset)
+        //     wfe.load.disableBtn(1);
+        // else
+        // wfe.load.disableBtn(0);
     };
     $('inputjs').onchange = function() {
         if ($('inputjs').files.length) {
@@ -282,6 +282,7 @@ wfe.load = {
             $("analog-watch-tab").classList.remove("uk-disabled");
             setTimeout(wfe.makeWf, 300);
         } else {
+            return;
             $("editor-tab").classList.add("uk-disabled");
             $("makepng").setAttribute("disabled", "");
             $("viewsettings").setAttribute("disabled", "");
