@@ -20,7 +20,7 @@ wfe.app = {
         else
             app.changeTheme('dark');
     },
-    lastimage: 303,
+    lastimage: 304,
     imagestabversion: 2,
     editortabversion: 1,
     designtabversion: 1,
