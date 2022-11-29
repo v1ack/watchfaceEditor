@@ -1,6 +1,18 @@
 let wf_data = {
     import: function(json) {
         let data = {};
+        if ('MetaData' in json) {
+            if ('Name' in json.MetaData)
+                data.wfname = json.MetaData.Name;
+            else
+                data.wfname = "Unnamed";
+            
+            if ('Id' in json.MetaData)
+                data.wfid = json.MetaData.Id;
+        }
+        if ('Preview' in json) {
+            data.preview = json.Preview;
+        }
         if ('Background' in json)
             data.bg = json.Background;
         if ('Time' in json) {
@@ -122,6 +134,13 @@ let wf_data = {
     export: function(data) {
         let obj = JSON.parse(JSON.stringify(data));
         let packed = {};
+        packed.MetaData = {};
+        if (obj.wfname)
+            packed.MetaData.Name = obj.wfname;
+        if (obj.wfid)
+            packed.MetaData.Id = obj.wfid;
+        if (obj.preview)
+            packed.Preview = obj.preview
         if ('bg' in obj)
             packed.Background = obj.bg;
         if ('time' in obj) {
@@ -251,21 +270,25 @@ const default_coords = {'activity': false,
 'stepsprogress': false,
 'time': {'Hours': {'Ones': {'ImageIndex': 255,
                             'ImagesCount': 10,
-                            'X': 37 + 25,
-                            'Y': 26},
+                            'X': 130 + 25,
+                            'Y': 89},
                    'Tens': {'ImageIndex': 255,
                             'ImagesCount': 10,
-                            'X': 37,
-                            'Y': 26}},
+                            'X': 130,
+                            'Y': 89}},
          'Minutes': {'Ones': {'ImageIndex': 255,
                               'ImagesCount': 10,
-                              'X': 62 + 25,
-                              'Y': 77},
+                              'X': 130 + 25,
+                              'Y': 177},
                      'Tens': {'ImageIndex': 255,
                               'ImagesCount': 10,
-                              'X': 62,
-                              'Y': 77}}},
-'weather': false}
+                              'X': 130,
+                              'Y': 177}}},
+'weather': false,
+'wfname': "Unnamed",
+'wfid': false,
+'preview': {
+    'ImageIndex': 304}}
 
 let device = {
     width: 320,
