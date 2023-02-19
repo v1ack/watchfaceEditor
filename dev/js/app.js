@@ -13,6 +13,7 @@ import turkish from '../translation/turkish.json';
 import czech from '../translation/czech.json';
 import portuguese from '../translation/portuguese.json';
 import spanish from '../translation/spanish.json'
+import japanese from '../translation/japanese.json';
 
 
 import renderForm from './preview_data.jsx';
@@ -27,7 +28,8 @@ let languages = {
     turkish: turkish,
     czech: czech,
     portuguese: portuguese,
-    spanish: spanish
+    spanish: spanish,
+    japanese: japanese
 };
 for (let i in languages)
     Reflect.setPrototypeOf(languages[i], english);
@@ -207,6 +209,10 @@ $('lang-pt-br').addEventListener('click', () => {
 $('lang-es').addEventListener('click', () => {
     localStorage.lang = 'es';
     changeLang('spanish');
+});
+$('lang-ja').addEventListener('click', () => {
+    localStorage.lang = 'ja';
+    changeLang('japanese');
 });
 $('theme-light').addEventListener('click', () => changeTheme('light'));
 $('theme-dark').addEventListener('click', () => changeTheme('dark'));
