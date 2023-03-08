@@ -108,6 +108,9 @@ wfe.init = function() {
     if (localStorage.lang.indexOf("es") >= 0) {
         app.changeLang('spanish');
     } else
+    if (localStorage.lang.indexOf("ja") >= 0) {
+        app.changeLang('japanese');
+    } else
     if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== 1) {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',
