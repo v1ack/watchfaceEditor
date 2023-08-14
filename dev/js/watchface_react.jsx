@@ -66,11 +66,13 @@ class StatusElement extends React.Component {
  */
 class SegmentsElement extends React.Component {
     render() {
-        let el = this.props.el,
-            end = Math.ceil(this.props.value / (this.props.maxValue / (el.Segments.length - 1))),
-            itemsList = [];
+        let el = this.props.el
+				let cappedValue = Math.min(this.props.value, this.props.maxValue) // allow value to be over max & not crash
+      	let end = Math.ceil(cappedValue / (this.props.maxValue / (el.Segments.length - 1)))
+        let itemsList = [];
+
         for (let i = 0; i <= end; i++) {
-            itemsList.push(<img src={$(el.StartImageIndex + i).src} style={{top: el.Segments[i].Y + 'px', left: el.Segments[i].X + 'px'}} />);
+            itemsList.push(<img src={$(el.StartImageIndex + i).src} key={`segment-${i}`} style={{top: el.Segments[i].Y + 'px', left: el.Segments[i].X + 'px'}} />);
         }
         return (
             itemsList
