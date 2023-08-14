@@ -12,8 +12,8 @@ import italian from '../translation/italian.json';
 import turkish from '../translation/turkish.json';
 import czech from '../translation/czech.json';
 import portuguese from '../translation/portuguese.json';
-import spanish from '../translation/spanish.json'
-import japanese from '../translation/japanese.json';
+import spanish from '../translation/spanish.json';
+//import japanese from '../translation/japanese.json';
 
 
 import renderForm from './preview_data.jsx';
@@ -29,7 +29,7 @@ let languages = {
     czech: czech,
     portuguese: portuguese,
     spanish: spanish,
-    japanese: japanese
+    // japanese: japanese // japanese translation couldn't be found so it threw an error
 };
 for (let i in languages)
     Reflect.setPrototypeOf(languages[i], english);
