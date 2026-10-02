@@ -6,6 +6,7 @@ import './json_editor.js';
 import './analog.js';
 import './view.js';
 import './editor';
+import imagesList from './images_list.js';
 import wfe from './wfe_obj.js';
 import set_metric from './metrika.js';
 import jsonlint from 'jsonlint-mod';
@@ -111,7 +112,7 @@ wfe.init = function() {
     if (localStorage.lang.indexOf("ja") >= 0) {
         app.changeLang('japanese');
     } else
-    if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== 1) {
+    if (localStorage.lang.indexOf("en") < 0 && localStorage.translatehelp !== '1') {
         UIkit.notification("Please contact me if you can help me to translate this app to your language", {
             status: 'primary',
             pos: 'top-left',
@@ -164,23 +165,12 @@ wfe.init = function() {
     // Buttons initialising
     $('inputimages').onchange = function() {
         if ($('inputimages').files.length) {
-            let i = 0;
             console.log("Images count: ", $('inputimages').files.length);
-            while (i < $('inputimages').files.length) {
-                wfe.load.renderImage($('inputimages').files[i]);
-                i += 1;
-            }
-            wfe.data.imagesset = true;
-            if ($('inputimages').nextElementSibling.classList.contains("uk-button-danger")) {
-                $('inputimages').nextElementSibling.classList.remove("uk-button-danger");
-                $('inputimages').nextElementSibling.classList.add("uk-button-default");
-            }
-            $('inputimages').nextElementSibling.classList.add("uk-label-success");
+            let files = Array.from($('inputimages').files);
+            $('allimages').innerHTML = '';
+            imagesList.addFiles(files);
+            $('inputimages').value = '';
         }
-        // if (wfe.data.imagesset && wfe.data.jsset)
-        //     wfe.load.disableBtn(1);
-        // else
-        // wfe.load.disableBtn(0);
     };
     $('inputjs').onchange = function() {
         if ($('inputjs').files.length) {
@@ -191,6 +181,9 @@ wfe.init = function() {
             reader.onload = function(e) {
                 try {
                     wfe.coords = wfe.converter.import(jsonlint.parse(e.target.result));
+                    wfe.coordsHistory = [];
+                    if (wfe.data.imagesset)
+                        wfe.makeWf();
                 } catch (error) {
                     $("jsonerrortext").innerHTML = error;
                     setTimeout(() => {
@@ -201,6 +194,7 @@ wfe.init = function() {
             };
             reader.readAsText($('inputjs').files[0]);
             reader = null;
+            $('inputjs').value = '';
             wfe.data.jsset = true;
             if ($('inputjs').nextElementSibling.classList.contains("uk-button-danger")) {
                 $('inputjs').nextElementSibling.classList.remove("uk-button-danger");
@@ -250,7 +244,7 @@ wfe.init = function() {
     // Shows count
     if ('showcount' in localStorage) {
         localStorage.showcount = Number(localStorage.showcount) + 1;
-        if (localStorage.showcount === 10) {
+        if (Number(localStorage.showcount) === 10) {
             setTimeout(() => UIkit.modal($("modal-donate")).show(), 250);
         }
     } else {
@@ -305,31 +299,11 @@ wfe.load = {
         wfe.load.disableBtn(0);
     },
     clearimg: function() {
-        $('inputimages').value = '';
-        $('allimages').innerHTML = '';
-        wfe.data.imagesset = false;
-        if ($('inputimages').nextElementSibling.classList.contains("uk-label-success")) $('inputimages').nextElementSibling.classList.remove("uk-label-success");
-        $('inputimages').nextElementSibling.classList.add("uk-button-danger");
-        $('inputimages').nextElementSibling.classList.remove("uk-button-default");
-        wfe.load.disableBtn(0);
+        imagesList.removeAll();
     },
     renderImage: function(file) {
-        let reader = new FileReader();
-        reader.onload = function(event) {
-            let the_url = event.target.result;
-            if (!(isNaN(Number(file.name.replace('.png', ''))))) {
-                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + Number(file.name.replace('.png', '')) + "\" >";
-            } else if (file.name === "weather.png") {
-                $('weather').parentNode.removeChild($('weather'));
-                $('allimages').innerHTML += "<img src=\"" + the_url + "\" id=\"" + file.name.replace('.png', '') + "\" >";
-            }
-        };
-        reader.readAsDataURL(file);
-        reader = null;
+        return imagesList.addFiles([file]);
     }
 };
-
-$('inputimages').addEventListener('click', wfe.load.clearimg);
-$('inputjs').addEventListener('click', wfe.load.clearjs);
 
 wfe.init();

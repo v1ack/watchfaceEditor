@@ -129,5 +129,12 @@
     "tgweatherAirIndex": "Toggle air polution",
     "imagecreator": "Image creator",
     "translatedby": "",
-    "animation": "Animation image"
+    "animation": "Animation image",
+    "imagesList": "Loaded images",
+    "imagesAdd": "Add",
+    "imagesDeleteAll": "Delete all",
+    "imageReplace": "Replace",
+    "imageDelete": "Delete",
+    "imagesListEmpty": "No images loaded",
+    "imagesSkipped": "Skipped files (name must be a number or weather.png): "
 }

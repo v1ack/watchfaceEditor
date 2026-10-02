@@ -41,7 +41,7 @@ function init(coords) {
                 label: "Time am/pm"
             }, coords.amPm.ImageIndexAm, 1, coords.amPm.ImageIndexPm);
     }
-    if (coords.date) {
+    {
         if ('dateWeekday' in coords) {
             insertimg({
                 label: "Week day"
@@ -64,7 +64,7 @@ function init(coords) {
             }, coords.dateOneLine.Number.ImageIndex, coords.dateOneLine.Number.ImagesCount, coords.dateOneLine.DelimiterImageIndex);
         }
     }
-    if (coords.battery) {
+    {
         if ('batteryIcon' in coords)
             insertimg({
                 label: "Battery icon"
@@ -78,7 +78,7 @@ function init(coords) {
                 label: "Battery scale"
             }, coords.batteryScale.StartImageIndex, coords.batteryScale.Segments.length);
     }
-    if (coords.status) {
+    {
         if ('statAlarm' in coords)
             insertimg({
                 label: "Status alarm",
@@ -100,30 +100,30 @@ function init(coords) {
                 addition: (", " + coords.statLock.ImageIndexOff)
             }, coords.statLock.ImageIndexOn, 1, coords.statLock.ImageIndexOff);
     }
-    if (coords.activity) {
+    {
         if ('actCalories' in coords)
             insertimg({
                 label: "Activity calories"
-            }, coords.actCalories.ImageIndex, coords.actCalories.ImagesCount);
+            }, coords.actCalories.Number.ImageIndex, coords.actCalories.Number.ImagesCount);
         if ('actSteps' in coords)
             insertimg({
                 label: "Activity steps"
-            }, coords.actSteps.ImageIndex, coords.actSteps.ImagesCount);
-        if ('statstepsGoal' in coords)
+            }, coords.actSteps.Number.ImageIndex, coords.actSteps.Number.ImagesCount);
+        if ('actStepsGoal' in coords)
             insertimg({
                 label: "Activity steps goal"
-            }, coords.actStepsGoal.ImageIndex, coords.actStepsGoal.ImagesCount);
+            }, coords.actStepsGoal.Number.ImageIndex, coords.actStepsGoal.Number.ImagesCount);
         if ('actPulse' in coords)
             insertimg({
                 label: "Activity pulse"
-            }, coords.actPulse.ImageIndex, coords.actPulse.ImagesCount);
+            }, coords.actPulse.Number.ImageIndex, coords.actPulse.Number.ImagesCount);
         if ('actDistance' in coords)
             insertimg({
                 label: "Activity distance",
                 addition: (", " + coords.actDistance.DecimalPointImageIndex + ", " + coords.actDistance.SuffixImageIndex)
             }, coords.actDistance.Number.ImageIndex, coords.actDistance.Number.ImagesCount, coords.actDistance.DecimalPointImageIndex, coords.actDistance.SuffixImageIndex);
     }
-    if (coords.weather) {
+    {
         if (coords.weathericon)
             if ('CustomIcon' in coords.weathericon) {
                 insertimg({
@@ -156,7 +156,7 @@ function init(coords) {
                 label: "Weather air pollution"
             }, coords.weatherAirIcon.ImageIndex, coords.weatherAirIcon.ImagesCount);
     }
-    if (coords.stepsprogress) {
+    {
         if ('stepsLinear' in coords)
             insertimg({
                 label: "Steps progress"
@@ -246,8 +246,9 @@ function insertimg(name, imageindex, imagescount) {
         name.insertto = "imagesinuse";
     if (!('addition' in name))
         name.addition = "";
+    name.addition = name.addition.replace(/, (undefined|null)/gu, '');
     if (!imagescount) imagescount = 1;
-    if (!imageindex) {
+    if (imageindex === undefined || imageindex === null) {
         imagescount = 0;
         imageindex = '';
         name.addition = name.addition.slice(2);
@@ -255,14 +256,18 @@ function insertimg(name, imageindex, imagescount) {
     $(name.insertto).innerHTML += '<div class="imagessection"><div><span class="imagessection-h">' + name.label + '</span><span class="imagessection-description">ImageIndex: ' + imageindex + name.addition + '</span></div><div class="imagessection-images"></div></div>';
     if (((imageindex - imageindex % 100) / 100 === 2) || ((imageindex - imageindex % 100) / 100 === 3))
         $(name.insertto).lastChild.classList.add("imagessection-def");
-    for (let i = 0; i < imagescount; i++) {
-        $(name.insertto).lastChild.lastChild.appendChild($c(imageindex + i));
+    let appendImage = index => {
+        if (!document.getElementById(index))
+            return;
+        $(name.insertto).lastChild.lastChild.appendChild($c(index));
         $(name.insertto).lastChild.lastChild.lastChild.removeAttribute("id");
-    }
+    };
+    for (let i = 0; i < imagescount; i++)
+        appendImage(imageindex + i);
     if (arguments.length > 3)
         for (let i = 3; i < arguments.length; i++) {
-            $(name.insertto).lastChild.lastChild.appendChild($c(arguments[i]));
-            $(name.insertto).lastChild.lastChild.lastChild.removeAttribute("id");
+            if (arguments[i] !== undefined && arguments[i] !== null)
+                appendImage(arguments[i]);
         }
 }
 

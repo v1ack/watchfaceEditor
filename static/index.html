@@ -106,7 +106,18 @@
                             <input id="inputimages" type="file" multiple accept=".png">
                             <button class="uk-button uk-button-default uk-button-small" type="button" tabindex="-1" data-translate-id="select">Select</button>
                         </div>
-                        <br>
+                        <ul uk-accordion class="uk-margin-small-top uk-margin-remove-bottom">
+                            <li>
+                                <a class="uk-accordion-title imageslist-title" href="#"><span data-translate-id="imagesList">Loaded images</span> <span id="imageslist-count"></span></a>
+                                <div class="uk-accordion-content">
+                                    <div class="uk-margin-small-bottom">
+                                        <button id="imageslist-add" class="uk-button uk-button-default uk-button-small" type="button" data-translate-id="imagesAdd">Add</button>
+                                        <button id="imageslist-clear" class="uk-button uk-button-danger uk-button-small" type="button" data-translate-id="imagesDeleteAll">Delete all</button>
+                                    </div>
+                                    <div id="imageslist"></div>
+                                </div>
+                            </li>
+                        </ul>
                         <div class="js-upload uk-margin" uk-form-custom>
                             <span>JSON: </span>
                             <input id="inputjs" type="file" accept=".json">
