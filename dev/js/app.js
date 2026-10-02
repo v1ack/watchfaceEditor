@@ -13,7 +13,6 @@ import turkish from '../translation/turkish.json';
 import czech from '../translation/czech.json';
 import portuguese from '../translation/portuguese.json';
 import spanish from '../translation/spanish.json'
-import japanese from '../translation/japanese.json';
 
 
 import renderForm from './preview_data.jsx';
@@ -29,7 +28,6 @@ let languages = {
     czech: czech,
     portuguese: portuguese,
     spanish: spanish,
-    japanese: japanese
 };
 for (let i in languages)
     Reflect.setPrototypeOf(languages[i], english);
@@ -89,7 +87,7 @@ wfe.language = english;
  * @returns {undefined} undefined
  */
 function changeLang(lang) {
-    wfe.language = languages[lang];
+    wfe.language = languages[lang] || english;
     let strings = document.querySelectorAll('[data-translate-id]');
     for (let i = 0; i < strings.length; i++) {
         if (strings[i].dataset.translateId in wfe.language)
@@ -99,6 +97,7 @@ function changeLang(lang) {
                 strings[i].innerHTML = wfe.language[strings[i].dataset.translateId];
     }
     renderForm();
+    document.dispatchEvent(new Event('wfe-langchange'));
 }
 
 /**

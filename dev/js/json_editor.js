@@ -207,8 +207,8 @@ function toggle(el) {
                         ImageIndex: wfe.coords.weatherDay.Number.ImageIndex,
                         ImagesCount: wfe.coords.weatherDay.Number.ImagesCount
                     },
-                    MinusImageIndex: wfe.coords.weatherDay.Number.MinusImageIndex,
-                    DegreesImageIndex: wfe.coords.weatherDay.Number.DegreesImageIndex
+                    MinusImageIndex: wfe.coords.weatherDay.MinusImageIndex,
+                    DegreesImageIndex: wfe.coords.weatherDay.DegreesImageIndex
                 };
             
             break;
@@ -258,8 +258,8 @@ function toggle(el) {
                         ImageIndex: wfe.coords.weatherNight.Number.ImageIndex,
                         ImagesCount: wfe.coords.weatherNight.Number.ImagesCount
                     },
-                    MinusImageIndex: wfe.coords.weatherNight.Number.MinusImageIndex,
-                    DegreesImageIndex: wfe.coords.weatherNight.Number.DegreesImageIndex
+                    MinusImageIndex: wfe.coords.weatherNight.MinusImageIndex,
+                    DegreesImageIndex: wfe.coords.weatherNight.DegreesImageIndex
                 };
             break;
         }
@@ -373,8 +373,9 @@ function exportjs() {
 
 function codeareablur() {
     try {
+        let coords = wfe.converter.import(jsonlint.parse($("codearea").innerText));
         wfe.coordsHistory.push(JSON.stringify(wfe.coords));
-        wfe.coords = wfe.converter.import(jsonlint.parse($("codearea").innerText));
+        wfe.coords = coords;
         updatecode();
     } catch (error) {
         $("jsonerrortext").innerHTML = error;

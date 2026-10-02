@@ -1,6 +1,57 @@
+// Paths handled by import/export. Everything else is kept as-is in coords.extra
+// so that a round trip (e.g. editing in codearea) doesn't drop unknown elements.
+let knownPaths = [
+    'Background', 'Time',
+    'Date.WeekDay', 'Date.MonthAndDay.TwoDigitsMonth', 'Date.MonthAndDay.TwoDigitsDay',
+    'Date.MonthAndDay.Separate.Day', 'Date.MonthAndDay.Separate.Month', 'Date.MonthAndDay.OneLine',
+    'Battery.Icon', 'Battery.Text', 'Battery.Scale',
+    'Status.Alarm', 'Status.Bluetooth', 'Status.DoNotDisturb', 'Status.Lock',
+    'Activity.Calories', 'Activity.Steps', 'Activity.StepsGoal', 'Activity.Pulse', 'Activity.Distance',
+    'Weather.Icon', 'Weather.Temperature.Current', 'Weather.Temperature.Today.OneLine',
+    'Weather.Temperature.Today.Separate.Day', 'Weather.Temperature.Today.Separate.Night',
+    'Weather.Temperature.Today.Separate.DayAlt', 'Weather.Temperature.Today.Separate.NightAlt',
+    'Weather.AirPollution.Icon', 'Weather.AirPollution.Index',
+    'StepsProgress.Circle', 'StepsProgress.Linear', 'StepsProgress.GoalImage',
+    'AnalogDialFace.Hours', 'AnalogDialFace.Minutes', 'AnalogDialFace.Seconds'
+];
+
+function isObject(value) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function removePath(obj, path) {
+    let keys = path.split('.'),
+        last = keys.pop(),
+        parents = [obj];
+    for (let i = 0; i < keys.length; i++) {
+        let next = parents[i][keys[i]];
+        if (!isObject(next))
+            return;
+        parents.push(next);
+    }
+    Reflect.deleteProperty(parents[parents.length - 1], last);
+    for (let i = keys.length - 1; i >= 0; i--)
+        if (!Object.keys(parents[i + 1]).length)
+            Reflect.deleteProperty(parents[i], keys[i]);
+}
+
+function mergeExtra(target, extra) {
+    for (let key in extra) {
+        if (isObject(extra[key]) && isObject(target[key]))
+            mergeExtra(target[key], extra[key]);
+        else if (!(key in target))
+            target[key] = extra[key];
+    }
+    return target;
+}
+
 let wf_data = {
     import: function(json) {
         let data = {};
+        let extra = JSON.parse(JSON.stringify(json));
+        knownPaths.forEach(path => removePath(extra, path));
+        if (Object.keys(extra).length)
+            data.extra = extra;
         if ('Background' in json)
             data.bg = json.Background;
         if ('Time' in json) {
@@ -36,8 +87,16 @@ let wf_data = {
         if ('Battery' in json) {
             if ('Icon' in json.Battery)
                 data.batteryIcon = json.Battery.Icon;
+            // Bip S tools expect Battery.Text as {"Number": {...}}, editor keeps plain number block
             if ('Text' in json.Battery)
-                data.batteryText = json.Battery.Text;
+                if (json.Battery.Text && 'Number' in json.Battery.Text) {
+                    data.batteryText = json.Battery.Text.Number;
+                    let extra = Object.assign({}, json.Battery.Text);
+                    Reflect.deleteProperty(extra, 'Number');
+                    if (Object.keys(extra).length)
+                        data.batteryTextExtra = extra;
+                } else
+                    data.batteryText = json.Battery.Text;
             if ('Scale' in json.Battery)
                 data.batteryScale = json.Battery.Scale;
         }
@@ -52,14 +111,17 @@ let wf_data = {
                 data.statLock = json.Status.Lock;
         }
         if ('Activity' in json) {
+            // Bip S tools expect activity numbers as {"Number": {...}, ...},
+            // plain number block ("Calories": {"TopLeftX": ...}) is wrapped
+            let wrap = value => (value && 'Number' in value ? value : {Number: value});
             if ('Calories' in json.Activity)
-                data.actCalories = json.Activity.Calories;
+                data.actCalories = wrap(json.Activity.Calories);
             if ('Steps' in json.Activity)
-                data.actSteps = json.Activity.Steps;
+                data.actSteps = wrap(json.Activity.Steps);
             if ('StepsGoal' in json.Activity)
-                data.actStepsGoal = json.Activity.StepsGoal;
+                data.actStepsGoal = wrap(json.Activity.StepsGoal);
             if ('Pulse' in json.Activity)
-                data.actPulse = json.Activity.Pulse;
+                data.actPulse = wrap(json.Activity.Pulse);
             if ('Distance' in json.Activity)
                 data.actDistance = json.Activity.Distance;
         }
@@ -75,14 +137,14 @@ let wf_data = {
                             data.weatherDay = json.Weather.Temperature.Today.Separate.Day;
                         if ('Night' in json.Weather.Temperature.Today.Separate)
                             data.weatherNight = json.Weather.Temperature.Today.Separate.Night;
-                        if ('DayAlt' in json.Weather.Temperature.Today.Separate) {
+                        if ('DayAlt' in json.Weather.Temperature.Today.Separate && 'Day' in json.Weather.Temperature.Today.Separate) {
                             data.weatherDayAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Day));
                             data.weatherDayAlt.Number.BottomRightX = data.weatherDayAlt.Number.BottomRightX - data.weatherDayAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.DayAlt.X;
                             data.weatherDayAlt.Number.BottomRightY = data.weatherDayAlt.Number.BottomRightY - data.weatherDayAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.DayAlt.Y;
                             data.weatherDayAlt.Number.TopLeftX = json.Weather.Temperature.Today.Separate.DayAlt.X;
                             data.weatherDayAlt.Number.TopLeftY = json.Weather.Temperature.Today.Separate.DayAlt.Y;
                         }
-                        if ('NightAlt' in json.Weather.Temperature.Today.Separate) {
+                        if ('NightAlt' in json.Weather.Temperature.Today.Separate && 'Night' in json.Weather.Temperature.Today.Separate) {
                             data.weatherNightAlt = JSON.parse(JSON.stringify(json.Weather.Temperature.Today.Separate.Night));
                             data.weatherNightAlt.Number.BottomRightX = data.weatherNightAlt.Number.BottomRightX - data.weatherNightAlt.Number.TopLeftX + json.Weather.Temperature.Today.Separate.NightAlt.X;
                             data.weatherNightAlt.Number.BottomRightY = data.weatherNightAlt.Number.BottomRightY - data.weatherNightAlt.Number.TopLeftY + json.Weather.Temperature.Today.Separate.NightAlt.Y;
@@ -131,12 +193,15 @@ let wf_data = {
             if ('amPm' in obj)
                 packed.Time.AmPm = obj.amPm;
         }
-        if (obj.dateWeekday || obj.monthandday) {
+        if (obj.dateWeekday || obj.dateDay || obj.dateMonth || obj.dateOneLine) {
             packed.Date = {};
             if ('dateWeekday' in obj)
                 packed.Date.WeekDay = obj.dateWeekday;
             if (obj.dateDay || obj.dateMonth || obj.dateOneLine) {
-                packed.Date.MonthAndDay = obj.monthandday;
+                packed.Date.MonthAndDay = obj.monthandday || {
+                    TwoDigitsMonth: true,
+                    TwoDigitsDay: true
+                };
                 if ('dateDay' in obj || 'dateMonth' in obj) {
                     packed.Date.MonthAndDay.Separate = {};
                     if ('dateDay' in obj)
@@ -164,20 +229,20 @@ let wf_data = {
             if ('batteryIcon' in obj)
                 packed.Battery.Icon = obj.batteryIcon;
             if ('batteryText' in obj)
-                packed.Battery.Text = obj.batteryText;
+                packed.Battery.Text = Object.assign({Number: obj.batteryText}, obj.batteryTextExtra);
             if ('batteryScale' in obj)
                 packed.Battery.Scale = obj.batteryScale;
         }
         if (obj.actCalories || obj.actSteps || obj.actStepsGoal || obj.actPulse || obj.actDistance) {
             packed.Activity = {};
             if ('actCalories' in obj)
-                packed.Activity.Calories = obj.actCalories.Number;
+                packed.Activity.Calories = obj.actCalories;
             if ('actSteps' in obj)
-                packed.Activity.Steps = obj.actSteps.Number;
+                packed.Activity.Steps = obj.actSteps;
             if ('actStepsGoal' in obj)
-                packed.Activity.StepsGoal = obj.actStepsGoal.Number;
+                packed.Activity.StepsGoal = obj.actStepsGoal;
             if ('actPulse' in obj)
-                packed.Activity.Pulse = obj.actPulse.Number;
+                packed.Activity.Pulse = obj.actPulse;
             if ('actDistance' in obj)
                 packed.Activity.Distance = obj.actDistance;
         }
@@ -238,6 +303,8 @@ let wf_data = {
             if ('analogseconds' in obj)
                 packed.AnalogDialFace.Seconds = obj.analogseconds;
         }
+        if ('extra' in obj)
+            mergeExtra(packed, obj.extra);
         return packed;
     }
 };

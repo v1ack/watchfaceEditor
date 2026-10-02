@@ -229,3 +229,37 @@ img {
     background-color: rgba(51, 153, 255, 0.75);
     border-radius: 3px;
 }
+
+#imageslist {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.imageslist-title {
+    font-size: 1rem;
+}
+
+.imageslist-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.imageslist-preview {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    background: #000;
+    flex-shrink: 0;
+}
+
+.imageslist-name {
+    min-width: 80px;
+}
+
+.imageslist-size {
+    flex-grow: 1;
+}

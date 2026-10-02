@@ -126,5 +126,12 @@
     "tgweatherNightAlt": "Toggle alt night weather",
     "weatherAlt-label": "Alt weather",
     "airQualityLabel": "Качество воздуха",
-    "tgweatherAirIndex": "Качество воздуха (индекс)"
+    "tgweatherAirIndex": "Качество воздуха (индекс)",
+    "imagesList": "Загруженные изображения",
+    "imagesAdd": "Добавить",
+    "imagesDeleteAll": "Удалить все",
+    "imageReplace": "Заменить",
+    "imageDelete": "Удалить",
+    "imagesListEmpty": "Изображения не загружены",
+    "imagesSkipped": "Пропущены файлы (имя должно быть числом или weather.png): "
 }

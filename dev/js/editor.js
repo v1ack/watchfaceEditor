@@ -3,14 +3,132 @@ import wfe from './wfe_obj.js';
 import {$, $c, styleToNum, getOffsetRect} from './utils.js';
 import updateWatchface from "./watchface_react";
 /**
+ * Element coordinates. Number blocks may be wrapped into {Number: {...}}
+ *
+ * @param {string} el name
+ * @returns {object} coordinates object
+ */
+function elCoords(el) {
+    let coords = wfe.elements[el].coords();
+    if (coords && coords.Number && !('TopLeftX' in coords) && !('X' in coords))
+        return coords.Number;
+    return coords;
+}
+
+/**
+ * Image size, works if image is not loaded
+ *
+ * @param {number|string} index image index
+ * @returns {object} width and height
+ */
+function imgSize(index) {
+    let img = document.getElementById(index);
+    return img ? {width: img.width, height: img.height} : {width: 10, height: 10};
+}
+
+// Max digits count of number blocks
+let blockDigits = {
+    dateDay: 2,
+    dateMonth: 2,
+    dateOneLine: 5,
+    actSteps: 5,
+    actStepsGoal: 5,
+    actCalories: 4,
+    actPulse: 3,
+    actDistance: 4,
+    batteryText: 3,
+    weatherAirText: 3,
+    weatherOneLine: 5,
+    weatherDay: 3,
+    weatherNight: 3,
+    weatherDayAlt: 3,
+    weatherNightAlt: 3,
+    weatherCurrent: 3
+};
+
+/**
+ * BottomRight coordinate is set (not 0 and not less than TopLeft)
+ *
+ * @param {number} bottomRight BottomRightX or BottomRightY
+ * @param {number} topLeft TopLeftX or TopLeftY
+ * @returns {boolean} is set
+ */
+const isSet = (bottomRight, topLeft) => bottomRight !== 0 && bottomRight >= topLeft;
+
+/**
+ * Block size calculated from digit images
+ *
+ * @param {object} c block coordinates
+ * @param {number} digits digits count
+ * @returns {object} width and height
+ */
+function autoSize(c, digits) {
+    let widths = [],
+        heights = [];
+    for (let i = 0; i < (c.ImagesCount || 10); i++) {
+        let size = imgSize(c.ImageIndex + i);
+        widths.push(size.width);
+        heights.push(size.height);
+    }
+    // Median, so a single wrong image in the set doesn't blow up the block
+    let median = list => list.sort((x, y) => x - y)[Math.floor(list.length / 2)] || 10,
+        width = median(widths),
+        height = median(heights);
+    return {
+        width: Math.max(1, width * digits + Math.max(0, c.Spacing || 0) * (digits - 1)),
+        height: Math.max(1, height)
+    };
+}
+
+/**
  * Makes block and inserts it (TopLeft and BottomRight) for visual editor
  *
  * @param {string} el name
  * @returns {null} null
  */
 function makeBlock(el) {
+    let c = elCoords(el),
+        auto = autoSize(c, blockDigits[el] || 2),
+        width = Math.min(auto.width, wfe.device.width),
+        height = Math.min(auto.height, wfe.device.height),
+        left = c.TopLeftX;
+    // Block shows digits size and is placed according to alignment.
+    // BottomRight may be 0 (not set) in watchface json
+    if (isSet(c.BottomRightX, c.TopLeftX)) {
+        let area = c.BottomRightX - c.TopLeftX + 1;
+        switch (c.Alignment) {
+        case 20:
+        case 'TopRight':
+        case 'Right':
+        case 'CenterRight':
+        case 'BottomRight':
+            left = c.BottomRightX - width + 1;
+            break;
+        case 24:
+        case 'TopCenter':
+        case 'Top':
+        case 'Center':
+        case 'BottomCenter':
+        case 'Bottom':
+            left = c.TopLeftX + Math.floor((area - width) / 2);
+            break;
+        default:
+        }
+    }
     $("editor").innerHTML +=
-        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ((wfe.elements[el].coords().BottomRightY - wfe.elements[el].coords().TopLeftY + 1) * wfe.device.editor_zoom) + 'px; width:' + ((wfe.elements[el].coords().BottomRightX - wfe.elements[el].coords().TopLeftX + 1) * wfe.device.editor_zoom) + 'px; top:' + (wfe.elements[el].coords().TopLeftY * wfe.device.editor_zoom) + 'px; left:' + (wfe.elements[el].coords().TopLeftX * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+        '<div id="' + wfe.elements[el].editorId + '" data-offset-x="' + (left - c.TopLeftX) + '" style="height:' + (height * wfe.device.editor_zoom) + 'px; width:' + (width * wfe.device.editor_zoom) + 'px; top:' + (clampCoord(c.TopLeftY, height, wfe.device.height) * wfe.device.editor_zoom) + 'px; left:' + (clampCoord(left, width, wfe.device.width) * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+}
+
+/**
+ * Keeps element inside editor area
+ *
+ * @param {number} value coordinate
+ * @param {number} size element size
+ * @param {number} max area size
+ * @returns {number} coordinate
+ */
+function clampCoord(value, size, max) {
+    return Math.min(Math.max(0, value), Math.max(0, max - size));
 }
 
 /**
@@ -20,8 +138,10 @@ function makeBlock(el) {
  * @returns {null} null
  */
 function makeImg(el) {
+    let c = elCoords(el),
+        size = imgSize(c.ImageIndex);
     $("editor").innerHTML +=
-        '<div id="' + wfe.elements[el].editorId + '" style="height:' + ($(wfe.elements[el].coords().ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.elements[el].coords().ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.elements[el].coords().Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.elements[el].coords().X * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
+        '<div id="' + wfe.elements[el].editorId + '" style="height:' + (size.height * wfe.device.editor_zoom) + 'px; width:' + (size.width * wfe.device.editor_zoom) + 'px; top:' + (c.Y * wfe.device.editor_zoom) + 'px; left:' + (c.X * wfe.device.editor_zoom) + 'px;" class="editor-elem" uk-tooltip="title: ' + wfe.elements[el].name + '; delay: 750; offset: 1"></div>';
 }
 
 /**
@@ -33,7 +153,7 @@ function makeImg(el) {
  */
 function makeImgStat(el, id) {
     $("editor").innerHTML +=
-        '<div id="' + id + '" style="height:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * wfe.device.editor_zoom) + 'px; width:' + ($('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * wfe.device.editor_zoom) + 'px; top:' + (el.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (el.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+        '<div id="' + id + '" style="height:' + (imgSize('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).height * wfe.device.editor_zoom) + 'px; width:' + (imgSize('ImageIndexOn' in el ? el.ImageIndexOn : el.ImageIndexOff).width * wfe.device.editor_zoom) + 'px; top:' + (el.Coordinates.Y * wfe.device.editor_zoom) + 'px; left:' + (el.Coordinates.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
 }
 
 /**
@@ -90,7 +210,7 @@ function init() {
         }
         if ('amPm' in wfe.coords) {
             $("editor").innerHTML +=
-                '<div id="e_time_am" style="height:' + ($(wfe.coords.amPm.ImageIndexAm).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.amPm.ImageIndexAm).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.amPm.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.amPm.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+                '<div id="e_time_am" style="height:' + (imgSize(wfe.coords.amPm.ImageIndexAm).height * wfe.device.editor_zoom) + 'px; width:' + (imgSize(wfe.coords.amPm.ImageIndexAm).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.amPm.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.amPm.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
             initdragN('amPm');
         }
     }
@@ -120,7 +240,7 @@ function init() {
         let e_battery_linar_initdrag = i => initdrag(('e_battery_linar_' + i), wfe.coords.batteryScale.Segments[i]);
         for (let i = 0; i < wfe.coords.batteryScale.Segments.length; i++) {
             $("editor").innerHTML +=
-                '<div id="e_battery_linar_' + i + '" style="height:' + ($(wfe.coords.batteryScale.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.batteryScale.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+                '<div id="e_battery_linar_' + i + '" style="height:' + (imgSize(wfe.coords.batteryScale.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + (imgSize(wfe.coords.batteryScale.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.batteryScale.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.batteryScale.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
             setTimeout(e_battery_linar_initdrag, 10, i);
         }
     }
@@ -143,7 +263,7 @@ function init() {
     if ('weathericon' in wfe.coords)
         if ('CustomIcon' in wfe.coords.weathericon) {
             $("editor").innerHTML +=
-                '<div id="e_weather_icon" style="height:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.weathericon.CustomIcon.ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+                '<div id="e_weather_icon" style="height:' + (imgSize(wfe.coords.weathericon.CustomIcon.ImageIndex).height * wfe.device.editor_zoom) + 'px; width:' + (imgSize(wfe.coords.weathericon.CustomIcon.ImageIndex).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.weathericon.CustomIcon.Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.weathericon.CustomIcon.X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
             setTimeout(function() {
                 initdrag('e_weather_icon', wfe.coords.weathericon.CustomIcon);
             }, 10);
@@ -177,7 +297,7 @@ function init() {
         let e_steps_linar_initdrag = i => initdrag(('e_steps_linar_' + i), wfe.coords.stepsLinear.Segments[i]);
         for (let i = 0; i < wfe.coords.stepsLinear.Segments.length; i++) {
             $("editor").innerHTML +=
-                '<div id="e_steps_linar_' + i + '" style="height:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + ($(wfe.coords.stepsLinear.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
+                '<div id="e_steps_linar_' + i + '" style="height:' + (imgSize(wfe.coords.stepsLinear.StartImageIndex + i).height * wfe.device.editor_zoom) + 'px; width:' + (imgSize(wfe.coords.stepsLinear.StartImageIndex + i).width * wfe.device.editor_zoom) + 'px; top:' + (wfe.coords.stepsLinear.Segments[i].Y * wfe.device.editor_zoom) + 'px; left:' + (wfe.coords.stepsLinear.Segments[i].X * wfe.device.editor_zoom) + 'px;" class="editor-elem"></div>';
             setTimeout(e_steps_linar_initdrag, 10, i);
         }
     }
@@ -202,27 +322,38 @@ function initdrag(el, elcoords) {
 }
 
 function drag_on_mouse_down(e) {
-    let el = e.target;
-    wfe.coordsHistory.push(JSON.stringify(wfe.coords));
-    let ed = getOffsetRect($("editor")),
+    // Dragged element is fixed here: mouse can be over another element while moving
+    let el = e.currentTarget,
+        zoom = wfe.device.editor_zoom,
+        maxLeft = Math.max(0, wfe.device.width * zoom - styleToNum(el.style.width)),
+        maxTop = Math.max(0, wfe.device.height * zoom - styleToNum(el.style.height)),
+        ed = getOffsetRect($("editor")),
         curcoords = getCoords(el),
         shiftX = e.pageX - curcoords.left,
         shiftY = e.pageY - curcoords.top;
+    e.preventDefault();
+    wfe.coordsHistory.push(JSON.stringify(wfe.coords));
     el.style.position = 'absolute';
-    moveAt(e);
     el.style.zIndex = 1000;
 
     function moveAt(e) {
-        let el = e.target;
-        if (!el.elcoords)
-            return;
-        el.style.left = e.pageX - ed.left - shiftX + 'px';
-        el.style.top = e.pageY - ed.top - shiftY + 'px';
-        $("e_coords").innerHTML = "X: " + (styleToNum(el.style.left) - styleToNum(el.style.left) % wfe.device.editor_zoom) / wfe.device.editor_zoom + ", Y: " + (styleToNum(el.style.top) - styleToNum(el.style.top) % wfe.device.editor_zoom) / wfe.device.editor_zoom;
+        let left = Math.min(Math.max(0, e.pageX - ed.left - shiftX), maxLeft),
+            top = Math.min(Math.max(0, e.pageY - ed.top - shiftY), maxTop);
+        el.style.left = Math.round(left / zoom) * zoom + 'px';
+        el.style.top = Math.round(top / zoom) * zoom + 'px';
+        $("e_coords").innerHTML = "X: " + styleToNum(el.style.left) / zoom + ", Y: " + styleToNum(el.style.top) / zoom;
     }
 
-    $("editor").onmousemove = e => moveAt(e);
-    el.onmouseup = drag_on_mouse_up;
+    function onMouseUp() {
+        document.removeEventListener('mousemove', moveAt);
+        document.removeEventListener('mouseup', onMouseUp);
+        el.style.zIndex = 'auto';
+        applyPosition(el);
+    }
+
+    moveAt(e);
+    document.addEventListener('mousemove', moveAt);
+    document.addEventListener('mouseup', onMouseUp);
 }
 
 function getCoords(elem) {
@@ -233,29 +364,33 @@ function getCoords(elem) {
     };
 }
 
-function drag_on_mouse_up(e) {
-    let el = e.target,
-        coords = el.elcoords;
-    $("editor").onmousemove = null;
-    el.onmouseup = null;
-    el.style.zIndex = 'auto';
-    let top = styleToNum(el.style.top),
-        left = styleToNum(el.style.left);
-    el.style.top = top > 0 && top < wfe.device.height * wfe.device.editor_zoom ? Math.round(top / wfe.device.editor_zoom) * wfe.device.editor_zoom + 'px' : "0px";
-    el.style.left = left > 0 && left < wfe.device.width * wfe.device.editor_zoom ? Math.round(left / wfe.device.editor_zoom) * wfe.device.editor_zoom + 'px' : "0px";
+/**
+ * Writes element position from editor to coords
+ *
+ * @param {object} el editor element
+ * @returns {null} null
+ */
+function applyPosition(el) {
+    let coords = el.elcoords,
+        zoom = wfe.device.editor_zoom,
+        left = styleToNum(el.style.left) / zoom,
+        top = styleToNum(el.style.top) / zoom;
     if ('X' in coords) {
-        coords.X = styleToNum(el.style.left) / wfe.device.editor_zoom;
-        coords.Y = styleToNum(el.style.top) / wfe.device.editor_zoom;
+        coords.X = left;
+        coords.Y = top;
     } else if ('CenterX' in coords) {
-        coords.CenterX = (styleToNum(el.style.left) + coords.RadiusX * wfe.device.editor_zoom) / wfe.device.editor_zoom;
-        coords.CenterY = (styleToNum(el.style.top) + coords.RadiusY * wfe.device.editor_zoom) / wfe.device.editor_zoom;
+        coords.CenterX = left + coords.RadiusX;
+        coords.CenterY = top + coords.RadiusY;
     } else {
         let t1 = coords.TopLeftX,
             t2 = coords.TopLeftY;
-        coords.TopLeftX = styleToNum(el.style.left) / wfe.device.editor_zoom;
-        coords.TopLeftY = styleToNum(el.style.top) / wfe.device.editor_zoom;
-        coords.BottomRightX += coords.TopLeftX - t1;
-        coords.BottomRightY += coords.TopLeftY - t2;
+        coords.TopLeftX = left - Number(el.dataset.offsetX || 0);
+        coords.TopLeftY = top;
+        // Keep unset (0) BottomRight as is
+        if (isSet(coords.BottomRightX, t1))
+            coords.BottomRightX += coords.TopLeftX - t1;
+        if (isSet(coords.BottomRightY, t2))
+            coords.BottomRightY += coords.TopLeftY - t2;
     }
     updateWatchface();
     $("e_coords").innerHTML = ('coordinates' in wfe.language ? wfe.language.coordinates : "Coordinates");
@@ -270,19 +405,26 @@ function drag_on_mouse_up(e) {
  */
 function initdragN(el) {
     setTimeout(function() {
-        initdrag(wfe.elements[el].editorId,
-            wfe.elements[el].coords());
+        initdrag(wfe.elements[el].editorId, elCoords(el));
     }, 10);
 }
 
 function makeImgAndInitDrag(el) {
-    makeImg(el);
-    initdragN(el);
+    try {
+        makeImg(el);
+        initdragN(el);
+    } catch (error) {
+        console.warn('Editor: cannot draw ' + el, error);
+    }
 }
 
 function makeBlockAndInitDrag(el) {
-    makeBlock(el);
-    initdragN(el);
+    try {
+        makeBlock(el);
+        initdragN(el);
+    } catch (error) {
+        console.warn('Editor: cannot draw ' + el, error);
+    }
 }
 
 /**
@@ -320,17 +462,15 @@ function calc(el, digitcount) {
  * @returns {null} null
  */
 function makejsbetter() {
-    if (wfe.coords.date) {
-        if ('dateDay' in wfe.coords)
-            calc(wfe.coords.dateDay, 2);
-        if ('dateMonth' in wfe.coords)
-            calc(wfe.coords.dateMonth, 2);
-        if ('dateOneLine' in wfe.coords)
-            calc(wfe.coords.dateOneLine.Number, 4, wfe.coords.dateOneLine.DelimiterImageIndex);
-    }
+    if ('dateDay' in wfe.coords)
+        calc(wfe.coords.dateDay, 2);
+    if ('dateMonth' in wfe.coords)
+        calc(wfe.coords.dateMonth, 2);
+    if ('dateOneLine' in wfe.coords)
+        calc(wfe.coords.dateOneLine.Number, 4, wfe.coords.dateOneLine.DelimiterImageIndex);
     if ('batteryText' in wfe.coords)
         calc(wfe.coords.batteryText, 3);
-    if (wfe.coords.activity) {
+    {
         if ('actCalories' in wfe.coords)
             calc(wfe.coords.actCalories.Number, 4);
         if ('actSteps' in wfe.coords)
@@ -342,15 +482,15 @@ function makejsbetter() {
         if ('actDistance' in wfe.coords)
             calc(wfe.coords.actDistance.Number, 4, wfe.coords.actDistance.DecimalPointImageIndex, wfe.coords.actDistance.SuffixImageIndex);
     }
-    if (wfe.coords.weather) {
+    {
         if ('weatherOneLine' in wfe.coords)
-            calc(wfe.coords.weatherOneLine.Number, 4, wfe.coords.weatherOneLine.MinusSignImageIndex, wfe.coords.weatherOneLine.MinusSignImageIndex, wfe.coords.weatherOneLine.DelimiterImageIndex, wfe.coords.weatherOneLine.DegreesImageIndex);
+            calc(wfe.coords.weatherOneLine.Number, 4, wfe.coords.weatherOneLine.MinusSignImageIndex, wfe.coords.weatherOneLine.DelimiterImageIndex, wfe.coords.weatherOneLine.DegreesImageIndex);
         if ('weatherDay' in wfe.coords)
-            calc(wfe.coords.weatherDay.Number, 2, wfe.coords.weatherDay.MinusImageIndex, wfe.coords.weatherDay.DegreesImageIndex);
+            calc(wfe.coords.weatherDay.Number, 2, wfe.coords.weatherDay.MinusImageIndex || wfe.coords.weatherDay.MinusSignImageIndex, wfe.coords.weatherDay.DegreesImageIndex);
         if ('weatherNight' in wfe.coords)
-            calc(wfe.coords.weatherNight.Number, 2, wfe.coords.weatherNight.MinusImageIndex, wfe.coords.weatherNight.DegreesImageIndex);
+            calc(wfe.coords.weatherNight.Number, 2, wfe.coords.weatherNight.MinusImageIndex || wfe.coords.weatherNight.MinusSignImageIndex, wfe.coords.weatherNight.DegreesImageIndex);
         if ('weatherCurrent' in wfe.coords)
-            calc(wfe.coords.weatherCurrent.Number, 2, wfe.coords.weatherCurrent.MinusImageIndex, wfe.coords.weatherCurrent.DegreesImageIndex);
+            calc(wfe.coords.weatherCurrent.Number, 2, wfe.coords.weatherCurrent.MinusImageIndex || wfe.coords.weatherCurrent.MinusSignImageIndex, wfe.coords.weatherCurrent.DegreesImageIndex);
     }
     init();
     wfe.makeWf();

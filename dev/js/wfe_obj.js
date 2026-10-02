@@ -331,7 +331,7 @@ wfe.elements = {
         coords: () => wfe.coords.weatherDay.Number,
         defaultCoords: () => JSON.parse(`{
             "Number": ` + defaultCoords.numberJson + `,
-            "MinusSignImageIndex": 217,
+            "MinusImageIndex": 217,
             "DegreesImageIndex": 218
         }`)
     },
@@ -341,7 +341,7 @@ wfe.elements = {
         coords: () => wfe.coords.weatherNight.Number,
         defaultCoords: () => JSON.parse(`{
             "Number": ` + defaultCoords.numberJson + `,
-            "MinusSignImageIndex": 217,
+            "MinusImageIndex": 217,
             "DegreesImageIndex": 218
         }`)
     },
@@ -361,7 +361,7 @@ wfe.elements = {
         coords: () => wfe.coords.weatherCurrent.Number,
         defaultCoords: () => JSON.parse(`{
             "Number": ` + defaultCoords.numberJson + `,
-            "MinusSignImageIndex": 217,
+            "MinusImageIndex": 217,
             "DegreesImageIndex": 218
         }`)
     },
